@@ -25,7 +25,7 @@ const authLimiter = rateLimit({
 // Attendance rate limiter
 const attendanceLimiter = rateLimit({
     windowMs: 1 * 60 * 1000, // 1 minute
-    max: 80, // limit each IP to 10 attendance records per minute
+    max: 80, // limit each IP to 80 attendance records per minute
     message: {
         error: 'Too many attendance requests, please wait a moment.'
     },
