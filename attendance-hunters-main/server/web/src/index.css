@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light theme - Orange primary */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --primary: 24 100% 50%; /* Orange */
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 24 100% 50%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+  }
+ 
+  .dark {
+    /* Dracula theme colors */
+    --background: 231 15% 18%; /* #282a36 */
+    --foreground: 60 30% 96%; /* #f8f8f2 */
+    --primary: 24 100% 60%; /* Brighter orange for dark mode */
+    --primary-foreground: 231 15% 18%;
+    --secondary: 232 14% 31%; /* #44475a */
+    --secondary-foreground: 60 30% 96%;
+    --muted: 232 14% 31%;
+    --muted-foreground: 225 9% 59%; /* #6272a4 */
+    --accent: 232 14% 31%;
+    --accent-foreground: 60 30% 96%;
+    --destructive: 0 100% 67%; /* #ff5555 */
+    --destructive-foreground: 60 30% 96%;
+    --border: 232 14% 31%;
+    --input: 232 14% 31%;
+    --ring: 24 100% 60%;
+    --card: 231 15% 18%;
+    --card-foreground: 60 30% 96%;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
