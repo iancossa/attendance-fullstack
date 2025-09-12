@@ -81,9 +81,6 @@ function AppContent() {
               <Route path={ROUTES.ATTENDANCE} element={<AttendancePage />} />
               <Route path={ROUTES.CLASSES} element={<ClassesPage />} />
               <Route path={ROUTES.REPORTS} element={<ReportsPage />} />
-              <Route path="/attendance/qr-mode" element={<QRModePage />} />
-              <Route path="/attendance/manual-mode" element={<ManualModePage />} />
-              <Route path="/attendance/hybrid-mode" element={<HybridModePage />} />
             </>
           )}
           
