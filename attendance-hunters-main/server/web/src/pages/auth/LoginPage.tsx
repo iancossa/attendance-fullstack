@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/card';
@@ -11,6 +12,7 @@ import { useAuth } from '../../hooks/useAuth';
 type UserRole = 'staff' | 'student';
 
 export const LoginPage: React.FC = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -31,7 +33,7 @@ export const LoginPage: React.FC = () => {
       await login(email, password, activeRole);
       addNotification({ message: `Welcome back, ${activeRole}!`, type: 'success' });
       const destination = activeRole === 'staff' ? '/staff-dashboard' : '/student-dashboard';
-      window.location.href = destination;
+      navigate(destination);
     } catch (error) {
       setError('Invalid email or password');
       addNotification({ message: 'Invalid credentials. Please try again.', type: 'error' });

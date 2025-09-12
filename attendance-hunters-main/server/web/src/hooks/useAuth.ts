@@ -62,7 +62,6 @@ export const useAuth = () => {
     localStorage.removeItem('auth_token');
     localStorage.removeItem('user_role');
     setUser(null);
-    window.location.href = '/';
   };
 
   return {
