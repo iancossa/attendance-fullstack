@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Layout } from '../../components/layout/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
 import { Badge } from '../../components/ui/badge';
+import { TakeAttendanceModal } from '../../components/modals/TakeAttendanceModal';
 import { 
   Users, 
   Calendar, 
@@ -15,6 +16,8 @@ import {
 } from 'lucide-react';
 
 export const StaffDashboard: React.FC = () => {
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <Layout>
       <div className="space-y-6">
@@ -23,7 +26,7 @@ export const StaffDashboard: React.FC = () => {
             <h1 className="text-3xl font-bold tracking-tight">Staff Dashboard</h1>
             <p className="text-muted-foreground mt-1">Manage your classes and track attendance</p>
           </div>
-          <Button className="gap-2">
+          <Button className="gap-2" onClick={() => setShowModal(true)}>
             <QrCode className="h-4 w-4" />
             Generate QR Code
           </Button>
@@ -120,11 +123,11 @@ export const StaffDashboard: React.FC = () => {
               <CardTitle>Quick Actions</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <Button className="w-full justify-start gap-2" variant="outline">
+              <Button className="w-full justify-start gap-2" variant="outline" onClick={() => setShowModal(true)}>
                 <QrCode className="h-4 w-4" />
                 Generate QR Code for Current Class
               </Button>
-              <Button className="w-full justify-start gap-2" variant="outline">
+              <Button className="w-full justify-start gap-2" variant="outline" onClick={() => setShowModal(true)}>
                 <Users className="h-4 w-4" />
                 Mark Manual Attendance
               </Button>
@@ -140,6 +143,11 @@ export const StaffDashboard: React.FC = () => {
           </Card>
         </div>
       </div>
+      
+      <TakeAttendanceModal 
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+      />
     </Layout>
   );
 };
