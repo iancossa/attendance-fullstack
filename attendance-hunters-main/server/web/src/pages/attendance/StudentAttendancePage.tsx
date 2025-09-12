@@ -4,11 +4,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/ca
 import { Badge } from '../../components/ui/badge';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
-import { Target, Calendar, CheckCircle, XCircle, Clock, QrCode, Filter } from 'lucide-react';
+import { QRScanner } from '../../components/ui/qr-scanner';
+import { Target, Calendar, CheckCircle, XCircle, Clock, QrCode, Filter, X } from 'lucide-react';
 
 export const StudentAttendancePage: React.FC = () => {
   const [selectedMonth, setSelectedMonth] = useState('2025-09');
   const [selectedClass, setSelectedClass] = useState('all');
+  const [showScanner, setShowScanner] = useState(false);
 
   const attendanceData = [
     { date: '2025-09-01', class: 'CS301', subject: 'Data Structures', status: 'present', time: '09:30 AM' },
@@ -63,7 +65,7 @@ export const StudentAttendancePage: React.FC = () => {
             <h1 className="text-3xl font-bold tracking-tight">My Attendance</h1>
             <p className="text-muted-foreground mt-1">Track your class attendance and performance</p>
           </div>
-          <Button className="gap-2">
+          <Button className="gap-2" onClick={() => setShowScanner(true)}>
             <QrCode className="h-4 w-4" />
             Scan QR Code
           </Button>
@@ -180,6 +182,31 @@ export const StudentAttendancePage: React.FC = () => {
             </div>
           </CardContent>
         </Card>
+
+        {/* QR Scanner Modal */}
+        {showScanner && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div className="bg-background p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold">Scan QR Code</h3>
+                <Button variant="ghost" size="sm" onClick={() => setShowScanner(false)}>
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+              <QRScanner
+                onScan={(result) => {
+                  console.log('QR Scanned:', result);
+                  alert(`Attendance marked! QR Data: ${result}`);
+                  setShowScanner(false);
+                }}
+                onError={(error) => {
+                  console.error('Scanner error:', error);
+                  alert('Scanner error: ' + error);
+                }}
+              />
+            </div>
+          </div>
+        )}
       </div>
     </Layout>
   );
