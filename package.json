@@ -1,0 +1,12 @@
+{
+  "name": "attendance-fullstack",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "concurrently \"npm run start:api\" \"npm run start:web\"",
+    "start:api": "cd attendance-hunters-main/server/api && npm start",
+    "start:web": "cd attendance-hunters-main/server/web && npm start"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
