@@ -79,6 +79,7 @@ export const QRModePage: React.FC = () => {
       
       if (response.data) {
         const data = response.data as QRResponse;
+        console.log('📝 Setting QR data:', data);
         setQrValue(data.qrData);
         setSessionActive(true);
         setTimeLeft(data.expiresIn);
@@ -90,8 +91,11 @@ export const QRModePage: React.FC = () => {
           expiresAt: data.expiresAt
         }));
         
+        console.log('🔄 Starting polling for session:', data.sessionId);
         // Start polling for attendees
         startPolling(data.sessionId);
+      } else {
+        console.error('❌ No data in response:', response);
       }
     } catch (error) {
       console.error('❌ Failed to generate QR code:', error);
@@ -122,19 +126,26 @@ export const QRModePage: React.FC = () => {
     // Poll every 2 seconds for new attendees
     const interval = setInterval(async () => {
       try {
+        console.log('🔍 Polling session:', sessionId);
         const response = await qrService.getSessionStatus(sessionId);
+        console.log('📡 Poll response:', response);
+        
         if (response.data) {
           const data = response.data as SessionStatus;
+          console.log('📊 Session data:', data);
           setAttendees(data.attendees || []);
           setTimeLeft(data.timeLeft || 0);
           
+          console.log('👥 Updated attendees:', data.attendees?.length || 0);
+          
           if (data.timeLeft <= 0) {
+            console.log('⏰ Session expired, stopping polling');
             setSessionActive(false);
             clearInterval(interval);
           }
         }
       } catch (error) {
-        console.error('Polling error:', error);
+        console.error('❌ Polling error:', error);
       }
     }, 2000);
     
@@ -250,23 +261,34 @@ export const QRModePage: React.FC = () => {
                   variant="outline" 
                   size="sm"
                   onClick={async () => {
-                    console.log('🧪 Direct QR test...');
+                    const session = localStorage.getItem('currentQRSession');
+                    if (!session) {
+                      alert('Generate QR first');
+                      return;
+                    }
+                    
+                    const { sessionId } = JSON.parse(session);
+                    console.log('🎯 Simulating student scan for session:', sessionId);
+                    
                     try {
-                      const response = await fetch('http://localhost:5000/api/qr/generate', {
+                      const response = await fetch(`http://localhost:5000/api/qr/mark/${sessionId}`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ classId: 'CS101', className: 'Test Class' })
+                        body: JSON.stringify({
+                          studentId: 'STU' + Math.floor(Math.random() * 1000),
+                          studentName: 'Test Student ' + Math.floor(Math.random() * 100)
+                        })
                       });
                       const data = await response.json();
-                      console.log('✅ QR test result:', data);
-                      alert('QR Generated - check console');
+                      console.log('✅ Student marked:', data);
+                      alert('Student attendance marked!');
                     } catch (err) {
-                      console.error('❌ QR test failed:', err);
-                      alert('QR test failed - check console');
+                      console.error('❌ Mark failed:', err);
+                      alert('Mark attendance failed');
                     }
                   }}
                 >
-                  Test QR
+                  Simulate Scan
                 </Button>
               </div>
             </CardContent>

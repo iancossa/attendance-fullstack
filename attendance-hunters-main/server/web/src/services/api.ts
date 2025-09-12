@@ -39,7 +39,12 @@ class ApiService {
       const result = await response.json();
       console.log('✅ API Success:', result);
       
-      return result;
+      // Backend returns data directly, wrap it in ApiResponse format
+      return {
+        data: result,
+        success: true,
+        message: 'Success'
+      };
     } catch (error) {
       console.error('🚨 Fetch Error:', {
         message: error instanceof Error ? error.message : 'Unknown error',
