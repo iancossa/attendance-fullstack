@@ -8,15 +8,10 @@
         database: process.env.PG_DATABASE,
         password: process.env.PG_PASSWORD,
         port: process.env.PG_PORT,
-        dialect: 'postgres',
-        dialectOptions: {
-            ssl: {
-                require: true,
-                rejectUnauthorized: false
-            }
-        },
-        logging: false,
-        
+        ssl: {
+            require: true,
+            rejectUnauthorized: false
+        }
     });
 
     // Example: Connecting and querying

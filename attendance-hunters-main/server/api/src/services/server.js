@@ -2,9 +2,9 @@ require('dotenv').config({ path: './config/db/.env' });
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
-const { PrismaClient } = require('../generated/prisma');
-const { apiLimiter, errorHandler, notFound } = require('./middlewares');
-const connectAndQuery = require('../config/db/db');
+const { PrismaClient } = require('../../generated/prisma');
+const { apiLimiter, errorHandler, notFound } = require('../middlewares');
+const connectAndQuery = require('../../config/db/db');
 
 const app = express();
 const prisma = new PrismaClient();
@@ -42,12 +42,13 @@ app.use((req, res, next) => {
 });
 
 // Routes
-app.use('/api/auth', require('../routes/auth'));
-app.use('/api/attendance', require('../routes/attendance'));
-app.use('/api/users', require('../routes/users'));
-app.use('/api/qr', require('../routes/qr'));
-app.use('/api/classes', require('../routes/classes'));
-app.use('/api/reports', require('../routes/reports'));
+app.use('/api/auth', require('../../routes/auth'));
+app.use('/api/attendance', require('../../routes/attendance'));
+app.use('/api/users', require('../../routes/users'));
+app.use('/api/students', require('../../routes/students'));
+app.use('/api/qr', require('../../routes/qr'));
+app.use('/api/classes', require('../../routes/classes'));
+app.use('/api/reports', require('../../routes/reports'));
 
 // Health check with database status
 app.get('/health', async (req, res) => {
@@ -97,6 +98,12 @@ app.get('/api', (req, res) => {
                 'POST /api/classes': 'Create new class (auth required)',
                 'PUT /api/classes/:id': 'Update class (auth required)',
                 'DELETE /api/classes/:id': 'Delete class (auth required)'
+            },
+            students: {
+                'GET /api/students': 'Get all students (auth required)',
+                'POST /api/students': 'Create new student (admin only)',
+                'PUT /api/students/:id': 'Update student (admin only)',
+                'GET /api/students/:id/attendance': 'Get student attendance history (auth required)'
             }
         }
     });

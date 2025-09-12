@@ -1,2 +1,2 @@
 // Main server entry point
-require('./src/server');
+require('./src/services/server');
