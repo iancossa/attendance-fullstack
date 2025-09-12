@@ -12,8 +12,8 @@ export const useAuth = () => {
     if (token && role) {
       setUser({
         id: '1',
-        email: 'admin@attendance.com',
-        name: 'Admin User',
+        email: role === 'admin' ? 'admin@attendance.com' : role === 'staff' ? 'staff@university.edu' : 'student@university.edu',
+        name: role === 'admin' ? 'Admin User' : role === 'staff' ? 'Staff User' : 'Student User',
         role: role as 'student' | 'staff' | 'admin'
       });
     }
