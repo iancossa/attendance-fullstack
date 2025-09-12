@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QR Code Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+</head>
+<body>
+    <h1>QR Code Generation Test</h1>
+    <button onclick="generateQR()">Generate QR Code</button>
+    <div id="qr-container"></div>
+    <div id="status"></div>
+    <div id="attendees"></div>
+
+    <script>
+        let currentSessionId = null;
+        let pollingInterval = null;
+
+        async function generateQR() {
+            try {
+                const response = await fetch('http://localhost:5000/api/qr/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        classId: 'CS101',
+                        className: 'Test Class'
+                    })
+                });
+
+                const data = await response.json();
+                console.log('QR Response:', data);
+
+                // Generate QR code
+                const qrContainer = document.getElementById('qr-container');
+                qrContainer.innerHTML = '<canvas id="qr-canvas"></canvas>';
+                
+                QRCode.toCanvas(document.getElementById('qr-canvas'), data.qrData, function (error) {
+                    if (error) console.error(error);
+                    console.log('QR code generated successfully!');
+                });
+
+                currentSessionId = data.sessionId;
+                document.getElementById('status').innerHTML = `
+                    <p>Session ID: ${data.sessionId}</p>
+                    <p>Expires in: ${data.expiresIn} seconds</p>
+                    <p>Class: ${data.className}</p>
+                `;
+
+                // Start polling
+                startPolling();
+
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('status').innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+            }
+        }
+
+        async function startPolling() {
+            if (pollingInterval) clearInterval(pollingInterval);
+            
+            pollingInterval = setInterval(async () => {
+                try {
+                    const response = await fetch(`http://localhost:5000/api/qr/session/${currentSessionId}`);
+                    const data = await response.json();
+                    
+                    document.getElementById('attendees').innerHTML = `
+                        <h3>Attendees (${data.totalMarked})</h3>
+                        <p>Time left: ${data.timeLeft} seconds</p>
+                        <p>Active: ${data.isActive}</p>
+                        ${data.attendees.map(a => `<div>- ${a.studentName} (${a.studentId}) at ${new Date(a.markedAt).toLocaleTimeString()}</div>`).join('')}
+                    `;
+
+                    if (!data.isActive) {
+                        clearInterval(pollingInterval);
+                    }
+                } catch (error) {
+                    console.error('Polling error:', error);
+                }
+            }, 2000);
+        }
+
+        // Test marking attendance
+        async function markAttendance() {
+            if (!currentSessionId) {
+                alert('Generate QR code first');
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:5000/api/qr/mark/${currentSessionId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        studentId: 'STU' + Math.floor(Math.random() * 1000),
+                        studentName: 'Test Student ' + Math.floor(Math.random() * 100)
+                    })
+                });
+
+                const data = await response.json();
+                console.log('Mark attendance response:', data);
+            } catch (error) {
+                console.error('Error marking attendance:', error);
+            }
+        }
+    </script>
+
+    <br><br>
+    <button onclick="markAttendance()">Test Mark Attendance</button>
+    <p><small>Click this to simulate a student scanning the QR code</small></p>
+</body>
+</html>

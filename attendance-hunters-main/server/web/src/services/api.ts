@@ -11,6 +11,8 @@ class ApiService {
     const url = `${this.baseURL}${endpoint}`;
     const token = localStorage.getItem('token');
     
+    console.log('🌐 API Request:', { url, method: options.method || 'GET', body: options.body });
+    
     const config: RequestInit = {
       headers: {
         'Content-Type': 'application/json',
@@ -20,8 +22,32 @@ class ApiService {
       ...options,
     };
 
-    const response = await fetch(url, config);
-    return response.json();
+    try {
+      const response = await fetch(url, config);
+      
+      console.log('📨 API Response Status:', response.status);
+      
+      if (!response.ok) {
+        console.error('❌ API Error:', {
+          status: response.status,
+          statusText: response.statusText,
+          url: response.url
+        });
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      const result = await response.json();
+      console.log('✅ API Success:', result);
+      
+      return result;
+    } catch (error) {
+      console.error('🚨 Fetch Error:', {
+        message: error instanceof Error ? error.message : 'Unknown error',
+        url,
+        config
+      });
+      throw error;
+    }
   }
 
   async get<T>(endpoint: string): Promise<ApiResponse<T>> {

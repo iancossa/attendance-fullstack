@@ -10,15 +10,17 @@ const qrSessions = new Map();
 
 // Generate QR session
 router.post('/generate', async (req, res) => {
+    console.log('🔵 QR Generate request received:', req.body);
     try {
         const { classId, className } = req.body;
+        console.log('📝 Processing QR generation for:', { classId, className });
         const sessionId = `qr_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-        const expiresAt = new Date(Date.now() + 60000); // 1 minute from now
+        const expiresAt = new Date(Date.now() + 300000); // 5 minutes from now
         
         const session = {
             sessionId,
-            classId,
-            className,
+            classId: classId || 'CS101',
+            className: className || 'Demo Class',
             createdBy: req.user?.id || 'demo-user',
             createdAt: new Date(),
             expiresAt,
@@ -28,20 +30,26 @@ router.post('/generate', async (req, res) => {
         
         qrSessions.set(sessionId, session);
         
-        // Auto-expire session after 1 minute
+        // Auto-expire session after 5 minutes
         setTimeout(() => {
             if (qrSessions.has(sessionId)) {
                 qrSessions.delete(sessionId);
             }
-        }, 60000);
+        }, 300000);
         
-        res.json({
+        const response = {
             sessionId,
-            qrData: `attendance://mark?session=${sessionId}&class=${className}`,
+            qrData: `attendance://mark?session=${sessionId}&class=${session.className}`,
             expiresAt,
-            expiresIn: 60
-        });
+            expiresIn: 300,
+            className: session.className,
+            classId: session.classId
+        };
+        
+        console.log('✅ QR session created successfully:', response);
+        res.json(response);
     } catch (error) {
+        console.error('❌ QR generation error:', error);
         res.status(500).json({ error: error.message });
     }
 });
@@ -88,7 +96,7 @@ router.post('/mark/:sessionId', async (req, res) => {
 });
 
 // Get session status
-router.get('/session/:sessionId', verifyToken, async (req, res) => {
+router.get('/session/:sessionId', async (req, res) => {
     try {
         const { sessionId } = req.params;
         const session = qrSessions.get(sessionId);

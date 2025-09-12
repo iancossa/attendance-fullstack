@@ -22,10 +22,11 @@
 - **Backend**: `/api/classes` (GET, POST, PUT, DELETE)
 - **Status**: ✅ CONNECTED
 
-### 5. QR Code Attendance
+### 5. QR Code Attendance ✅ FULLY CONNECTED
 - **Frontend**: QR mode page, QR scanner
 - **Backend**: `/api/qr/generate`, `/api/qr/mark/:sessionId`, `/api/qr/session/:sessionId`
-- **Status**: ✅ CONNECTED
+- **Features**: Real-time polling, live attendee updates, 5-minute sessions
+- **Status**: ✅ FULLY FUNCTIONAL
 
 ### 6. Reports Generation
 - **Frontend**: Reports page

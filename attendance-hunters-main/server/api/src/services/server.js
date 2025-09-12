@@ -50,6 +50,12 @@ app.use('/api/qr', require('../../routes/qr'));
 app.use('/api/classes', require('../../routes/classes'));
 app.use('/api/reports', require('../../routes/reports'));
 
+// Simple test endpoint
+app.get('/api/test', (req, res) => {
+    console.log('🧪 Test endpoint hit!');
+    res.json({ message: 'API is working!', timestamp: new Date().toISOString() });
+});
+
 // Health check with database status
 app.get('/health', async (req, res) => {
     try {
@@ -89,9 +95,9 @@ app.get('/api', (req, res) => {
                 'PUT /api/users/:id': 'Update user (admin only)'
             },
             qr: {
-                'POST /api/qr/generate': 'Generate QR session (auth required)',
+                'POST /api/qr/generate': 'Generate QR session (no auth required)',
                 'POST /api/qr/mark/:sessionId': 'Mark attendance via QR',
-                'GET /api/qr/session/:sessionId': 'Get session status (auth required)'
+                'GET /api/qr/session/:sessionId': 'Get session status (no auth required)'
             },
             classes: {
                 'GET /api/classes': 'Get all classes (auth required)',
