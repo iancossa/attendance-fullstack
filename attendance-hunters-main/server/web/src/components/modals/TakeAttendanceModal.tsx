@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Badge } from '../ui/badge';
@@ -14,6 +15,7 @@ interface TakeAttendanceModalProps {
 }
 
 export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({ isOpen, onClose, initialMode = 'attendance' }) => {
+  const navigate = useNavigate();
   const [selectedCourse, setSelectedCourse] = useState('');
   const [selectedSection, setSelectedSection] = useState('');
   const [sessionType, setSessionType] = useState('');
@@ -80,7 +82,8 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({ isOpen
         courseName: courses.find(c => c.id === selectedCourse)?.name
       };
       localStorage.setItem('attendanceSession', JSON.stringify(sessionData));
-      window.location.href = selectedModeData.route;
+      onClose();
+      navigate(selectedModeData.route);
     }
   };
 
