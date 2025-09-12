@@ -1,0 +1,20 @@
+{
+  "name": "attendance-fullstack",
+  "version": "1.0.0",
+  "description": "Full-stack attendance management system",
+  "scripts": {
+    "start": "concurrently \"npm run start:api\" \"npm run start:web\"",
+    "start:api": "cd attendance-hunters-main/server/api && npm start",
+    "start:web": "cd attendance-hunters-main/server/web && npm start",
+    "dev": "concurrently \"npm run dev:api\" \"npm run dev:web\"",
+    "dev:api": "cd attendance-hunters-main/server/api && npm run dev",
+    "dev:web": "cd attendance-hunters-main/server/web && npm start",
+    "install:all": "npm install && cd attendance-hunters-main/server/api && npm install && cd ../web && npm install"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "keywords": ["attendance", "fullstack", "react", "express"],
+  "author": "",
+  "license": "MIT"
+}
