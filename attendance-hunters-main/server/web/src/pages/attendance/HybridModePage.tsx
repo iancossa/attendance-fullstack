@@ -6,7 +6,8 @@ import { Badge } from '../../components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs';
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '../../components/ui/table';
 import QRCode from 'react-qr-code';
-import { RefreshCw, ArrowRight } from 'lucide-react';
+import { RefreshCw, ArrowRight, Smartphone } from 'lucide-react';
+import { QRScanner } from '../../components/QRScanner';
 import { MOCK_STUDENTS } from '../../data/mockStudents';
 
 export const HybridModePage: React.FC = () => {
@@ -18,6 +19,7 @@ export const HybridModePage: React.FC = () => {
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [sessionData, setSessionData] = useState<any>(null);
   const [recentScans, setRecentScans] = useState<any[]>([]);
+  const [showScanner, setShowScanner] = useState(false);
 
   useEffect(() => {
     // Load session data from localStorage
@@ -168,9 +170,19 @@ export const HybridModePage: React.FC = () => {
                   <div className={`text-2xl font-bold ${timeLeft <= 30 ? 'text-red-500 animate-pulse' : 'text-primary'}`}>
                     {formatTime(timeLeft)}
                   </div>
-                  <Button onClick={generateQRCode}>
-                    Regenerate QR
-                  </Button>
+                  <div className="space-y-2">
+                    <Button onClick={generateQRCode} className="w-full">
+                      Regenerate QR
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      onClick={() => setShowScanner(true)}
+                      className="w-full"
+                    >
+                      <Smartphone className="h-4 w-4 mr-2" />
+                      Scan as Student
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
 
@@ -277,6 +289,33 @@ export const HybridModePage: React.FC = () => {
             </div>
           </TabsContent>
         </Tabs>
+
+        {/* QR Scanner Modal */}
+        {showScanner && (
+          <div className="fixed inset-0 z-50">
+            <QRScanner 
+              onScan={(data) => {
+                console.log('QR scanned in hybrid mode:', data);
+                setShowScanner(false);
+              }}
+              onClose={() => setShowScanner(false)}
+              onAttendanceMarked={(studentData) => {
+                console.log('Attendance marked in hybrid mode:', studentData);
+                // Refresh recent scans
+                const scans = JSON.parse(localStorage.getItem('recentScans') || '[]');
+                setRecentScans(scans);
+                
+                // Update students list
+                setStudents(prev => prev.map(student => {
+                  if (student.studentId === studentData.studentId || student.name === studentData.studentName) {
+                    return { ...student, present: true, method: 'qr' };
+                  }
+                  return student;
+                }));
+              }}
+            />
+          </div>
+        )}
 
         {/* Save Attendance Modal */}
         {showSaveModal && (

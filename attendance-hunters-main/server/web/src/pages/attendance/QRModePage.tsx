@@ -5,6 +5,7 @@ import { Button } from '../../components/ui/button';
 import { Badge } from '../../components/ui/badge';
 import QRCode from 'react-qr-code';
 import { RefreshCw, Smartphone, QrCode, CheckCircle } from 'lucide-react';
+import { QRScanner } from '../../components/QRScanner';
 import { qrService } from '../../services/backendService';
 
 interface Attendee {
@@ -38,6 +39,7 @@ export const QRModePage: React.FC = () => {
   const [attendees, setAttendees] = useState<Attendee[]>([]);
   const [pollingInterval, setPollingInterval] = useState<NodeJS.Timeout | null>(null);
   const [recentScans, setRecentScans] = useState<Attendee[]>([]);
+  const [showScanner, setShowScanner] = useState(false);
   
   const presentCount = attendees.length;
   const totalStudents = 50; // This could come from class data
@@ -54,6 +56,8 @@ export const QRModePage: React.FC = () => {
     const loadRecentScans = () => {
       const scans = JSON.parse(localStorage.getItem('recentScans') || '[]');
       setRecentScans(scans);
+      // Also update attendees count
+      setAttendees(scans);
     };
     
     loadRecentScans();
@@ -181,6 +185,14 @@ export const QRModePage: React.FC = () => {
     };
   }, [pollingInterval]);
 
+  const handleAttendanceMarked = (studentData: any) => {
+    console.log('🔄 New attendance marked:', studentData);
+    // Refresh recent scans immediately
+    const scans = JSON.parse(localStorage.getItem('recentScans') || '[]');
+    setRecentScans(scans);
+    setAttendees(scans);
+  };
+
   return (
     <Layout>
       <div className="w-full px-4 space-y-4">
@@ -247,9 +259,19 @@ export const QRModePage: React.FC = () => {
                 </Badge>
               </div>
 
-              <Button onClick={generateQRCode} disabled={isGenerating}>
-                {isGenerating ? 'Generating...' : (qrValue ? 'Regenerate QR' : 'Generate QR Code')}
-              </Button>
+              <div className="space-y-2">
+                <Button onClick={generateQRCode} disabled={isGenerating} className="w-full">
+                  {isGenerating ? 'Generating...' : (qrValue ? 'Regenerate QR' : 'Generate QR Code')}
+                </Button>
+                
+                <Button 
+                  variant="outline" 
+                  onClick={() => setShowScanner(true)}
+                  className="w-full"
+                >
+                  📱 Scan QR as Student
+                </Button>
+              </div>
               
               <div className="flex gap-2">
                 <Button 
@@ -377,6 +399,20 @@ export const QRModePage: React.FC = () => {
             </div>
           </CardContent>
         </Card>
+
+        {/* QR Scanner Modal */}
+        {showScanner && (
+          <div className="fixed inset-0 z-50">
+            <QRScanner 
+              onScan={(data) => {
+                console.log('QR scanned:', data);
+                setShowScanner(false);
+              }}
+              onClose={() => setShowScanner(false)}
+              onAttendanceMarked={handleAttendanceMarked}
+            />
+          </div>
+        )}
 
         {/* Save Attendance Modal */}
         {showSaveModal && (

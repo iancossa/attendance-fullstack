@@ -66,6 +66,17 @@ export const classService = {
   }
 };
 
+// Student Auth Services
+export const studentAuthService = {
+  async login(email: string, password: string) {
+    return await apiService.post('/student-auth/login', { email, password });
+  },
+  
+  async getProfile(token: string) {
+    return await apiService.get('/student-auth/profile');
+  }
+};
+
 // QR Services
 export const qrService = {
   async generateQRSession(classId: string, className: string) {
@@ -78,6 +89,65 @@ export const qrService = {
   
   async getSessionStatus(sessionId: string) {
     return await apiService.get(`/qr/session/${sessionId}`);
+  },
+  
+  async processQRScan(qrData: string, email: string, password: string) {
+    // Parse QR data
+    let sessionData;
+    try {
+      sessionData = JSON.parse(qrData);
+    } catch {
+      if (qrData.includes('/api/qr/mark/')) {
+        const sessionId = qrData.split('/api/qr/mark/')[1];
+        sessionData = { sessionId };
+      } else {
+        throw new Error('Invalid QR format');
+      }
+    }
+
+    if (!sessionData.sessionId) {
+      throw new Error('No session ID found in QR code');
+    }
+
+    // Login student
+    const loginResponse = await this.studentLogin(email, password);
+    if (!loginResponse.success) {
+      throw new Error('Student login failed');
+    }
+
+    const student = loginResponse.data.student;
+    
+    // Mark attendance
+    const markResponse = await this.markAttendanceViaQR(sessionData.sessionId, {
+      studentId: student.studentId,
+      studentName: student.name
+    });
+
+    if (!markResponse.success) {
+      throw new Error('Attendance marking failed');
+    }
+
+    return {
+      student,
+      attendance: markResponse.data,
+      sessionId: sessionData.sessionId
+    };
+  },
+  
+  async studentLogin(email: string, password: string) {
+    const response = await fetch('https://attendance-fullstack.onrender.com/api/student-auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    
+    if (!response.ok) {
+      const error = await response.json();
+      return { success: false, error: error.error || 'Login failed' };
+    }
+    
+    const data = await response.json();
+    return { success: true, data };
   }
 };
 
