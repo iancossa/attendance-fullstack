@@ -81,6 +81,68 @@ export const qrService = {
   }
 };
 
+// Department Services
+export const departmentService = {
+  async getAllDepartments(filters?: { type?: string; status?: string }) {
+    const params = new URLSearchParams();
+    if (filters?.type) params.append('type', filters.type);
+    if (filters?.status) params.append('status', filters.status);
+    return await apiService.get(`/departments?${params.toString()}`);
+  },
+  
+  async getDepartmentById(id: string) {
+    return await apiService.get(`/departments/${id}`);
+  },
+  
+  async createDepartment(departmentData: {
+    name: string;
+    code: string;
+    head: string;
+    email: string;
+    phone: string;
+    type: string;
+    programs?: number;
+    description?: string;
+    location?: string;
+    budget?: number;
+  }) {
+    return await apiService.post('/departments', departmentData);
+  },
+  
+  async updateDepartment(id: string, departmentData: any) {
+    return await apiService.put(`/departments/${id}`, departmentData);
+  },
+  
+  async deleteDepartment(id: string) {
+    return await apiService.delete(`/departments/${id}`);
+  },
+  
+  async getDepartmentFaculty(id: string) {
+    return await apiService.get(`/departments/${id}/faculty`);
+  },
+  
+  async addFacultyToDepartment(id: string, facultyData: {
+    employeeId: string;
+    name: string;
+    email: string;
+    phone?: string;
+    position: string;
+    qualification?: string;
+    experience?: number;
+    salary?: number;
+  }) {
+    return await apiService.post(`/departments/${id}/faculty`, facultyData);
+  },
+  
+  async updateFaculty(departmentId: string, facultyId: string, facultyData: any) {
+    return await apiService.put(`/departments/${departmentId}/faculty/${facultyId}`, facultyData);
+  },
+  
+  async getDepartmentSettings(id: string) {
+    return await apiService.get(`/departments/${id}/settings`);
+  }
+};
+
 // Student Services
 export const studentService = {
   async getAllStudents(filters?: { department?: string; year?: string; section?: string; status?: string }) {

@@ -46,6 +46,7 @@ app.use('/api/auth', require('../../routes/auth'));
 app.use('/api/attendance', require('../../routes/attendance'));
 app.use('/api/users', require('../../routes/users'));
 app.use('/api/students', require('../../routes/students'));
+app.use('/api/departments', require('../../routes/departments'));
 app.use('/api/qr', require('../../routes/qr'));
 app.use('/api/classes', require('../../routes/classes'));
 app.use('/api/reports', require('../../routes/reports'));
@@ -110,6 +111,17 @@ app.get('/api', (req, res) => {
                 'POST /api/students': 'Create new student (admin only)',
                 'PUT /api/students/:id': 'Update student (admin only)',
                 'GET /api/students/:id/attendance': 'Get student attendance history (auth required)'
+            },
+            departments: {
+                'GET /api/departments': 'Get all departments (auth required)',
+                'GET /api/departments/:id': 'Get department details (auth required)',
+                'POST /api/departments': 'Create new department (admin only)',
+                'PUT /api/departments/:id': 'Update department (admin only)',
+                'DELETE /api/departments/:id': 'Delete department (admin only)',
+                'GET /api/departments/:id/faculty': 'Get department faculty (auth required)',
+                'POST /api/departments/:id/faculty': 'Add faculty to department (admin only)',
+                'PUT /api/departments/:id/faculty/:facultyId': 'Update faculty (admin only)',
+                'GET /api/departments/:id/settings': 'Get department settings and stats (auth required)'
             }
         }
     });
