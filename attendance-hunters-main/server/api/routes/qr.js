@@ -37,9 +37,20 @@ router.post('/generate', async (req, res) => {
             }
         }, 300000);
         
+        // Create QR data in JSON format for better mobile compatibility
+        const qrData = {
+            type: 'attendance',
+            sessionId: sessionId,
+            className: session.className,
+            classId: session.classId,
+            apiUrl: 'https://attendance-fullstack.onrender.com/api/qr/mark/' + sessionId,
+            expiresAt: expiresAt.toISOString(),
+            timestamp: new Date().toISOString()
+        };
+        
         const response = {
             sessionId,
-            qrData: `attendance://mark?session=${sessionId}&class=${session.className}`,
+            qrData: JSON.stringify(qrData),
             expiresAt,
             expiresIn: 300,
             className: session.className,
