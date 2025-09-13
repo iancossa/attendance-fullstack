@@ -8,6 +8,11 @@ const prisma = new PrismaClient();
 // In-memory store for QR sessions (use Redis in production)
 const qrSessions = new Map();
 
+// Rate limiting for session status requests
+const sessionRequestLimits = new Map();
+const RATE_LIMIT_WINDOW = 5000; // 5 seconds
+const MAX_REQUESTS_PER_WINDOW = 3;
+
 // Generate QR session
 router.post('/generate', async (req, res) => {
     console.log('🔵 QR Generate request received:', req.body);
@@ -34,6 +39,7 @@ router.post('/generate', async (req, res) => {
         setTimeout(() => {
             if (qrSessions.has(sessionId)) {
                 qrSessions.delete(sessionId);
+                console.log('🗑️ Session expired and cleaned up:', sessionId);
             }
         }, 300000);
         
@@ -194,6 +200,25 @@ router.post('/mark/:sessionId', async (req, res) => {
 router.get('/session/:sessionId', async (req, res) => {
     try {
         const { sessionId } = req.params;
+        const clientIP = req.ip || req.connection.remoteAddress;
+        const rateLimitKey = `${clientIP}-${sessionId}`;
+        
+        // Rate limiting check
+        const now = Date.now();
+        const requestHistory = sessionRequestLimits.get(rateLimitKey) || [];
+        const recentRequests = requestHistory.filter(time => now - time < RATE_LIMIT_WINDOW);
+        
+        if (recentRequests.length >= MAX_REQUESTS_PER_WINDOW) {
+            return res.status(429).json({ 
+                error: 'Too many requests. Please wait before polling again.',
+                retryAfter: Math.ceil(RATE_LIMIT_WINDOW / 1000)
+            });
+        }
+        
+        // Update request history
+        recentRequests.push(now);
+        sessionRequestLimits.set(rateLimitKey, recentRequests);
+        
         const session = qrSessions.get(sessionId);
         
         if (!session) {
@@ -204,13 +229,20 @@ router.get('/session/:sessionId', async (req, res) => {
         const isExpired = now > session.expiresAt;
         const timeLeft = Math.max(0, Math.floor((session.expiresAt - now) / 1000));
         
+        // Clean up expired sessions
+        if (isExpired) {
+            qrSessions.delete(sessionId);
+        }
+        
         res.json({
             sessionId: session.sessionId,
             className: session.className,
             isActive: !isExpired,
             timeLeft,
             attendees: session.attendees,
-            totalMarked: session.attendees.length
+            totalMarked: session.attendees.length,
+            pollInterval: isExpired ? 0 : Math.min(timeLeft * 1000, 10000), // Suggest polling interval
+            lastUpdated: now.toISOString()
         });
     } catch (error) {
         res.status(500).json({ error: error.message });

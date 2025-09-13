@@ -62,8 +62,8 @@ export const QRModePage: React.FC = () => {
     
     loadRecentScans();
     
-    // Poll for new scans every 2 seconds
-    const scanInterval = setInterval(loadRecentScans, 2000);
+    // Poll for new scans every 5 seconds to reduce load
+    const scanInterval = setInterval(loadRecentScans, 5000);
     
     return () => clearInterval(scanInterval);
   }, []);
@@ -141,22 +141,30 @@ export const QRModePage: React.FC = () => {
       clearInterval(pollingInterval);
     }
     
-    // Poll every 2 seconds for new attendees
+    let pollCount = 0;
+    const maxPolls = 150; // Stop after 5 minutes (150 * 2s = 300s)
+    
+    // Poll every 5 seconds to reduce server load
     const interval = setInterval(async () => {
       try {
-        console.log('🔍 Polling session:', sessionId);
+        pollCount++;
+        
+        if (pollCount > maxPolls) {
+          console.log('⏰ Max polling reached, stopping');
+          setSessionActive(false);
+          clearInterval(interval);
+          return;
+        }
+        
+        console.log(`🔍 Polling session (${pollCount}/${maxPolls}):`, sessionId);
         const response = await qrService.getSessionStatus(sessionId);
-        console.log('📡 Poll response:', response);
         
         if (response.data) {
-          const data = response.data as SessionStatus;
-          console.log('📊 Session data:', data);
+          const data = response.data as SessionStatus & { pollInterval?: number };
           setAttendees(data.attendees || []);
           setTimeLeft(data.timeLeft || 0);
           
-          console.log('👥 Updated attendees:', data.attendees?.length || 0);
-          
-          if (data.timeLeft <= 0) {
+          if (data.timeLeft <= 0 || !data.isActive) {
             console.log('⏰ Session expired, stopping polling');
             setSessionActive(false);
             clearInterval(interval);
@@ -164,8 +172,15 @@ export const QRModePage: React.FC = () => {
         }
       } catch (error) {
         console.error('❌ Polling error:', error);
+        // Stop polling on repeated errors
+        if (error instanceof Error && error.message.includes('429')) {
+          console.log('🚫 Rate limited, reducing polling frequency');
+          clearInterval(interval);
+          // Restart with longer interval
+          setTimeout(() => startPolling(sessionId), 10000);
+        }
       }
-    }, 2000);
+    }, 5000); // Increased from 2s to 5s
     
     setPollingInterval(interval);
   };
