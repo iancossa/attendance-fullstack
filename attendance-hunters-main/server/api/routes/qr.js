@@ -71,6 +71,23 @@ router.post('/mark/:sessionId', async (req, res) => {
         const { sessionId } = req.params;
         const { studentId, studentName } = req.body;
         
+        // Validate student exists in database
+        const student = await prisma.student.findUnique({
+            where: { studentId: studentId }
+        });
+        
+        if (!student) {
+            return res.status(403).json({ 
+                error: 'Student not found in database. Only registered students can mark attendance.' 
+            });
+        }
+        
+        if (student.status !== 'Active') {
+            return res.status(403).json({ 
+                error: 'Student account is not active. Please contact administration.' 
+            });
+        }
+        
         const session = qrSessions.get(sessionId);
         
         if (!session) {
@@ -85,23 +102,38 @@ router.post('/mark/:sessionId', async (req, res) => {
         // Check if student already marked
         const alreadyMarked = session.attendees.find(a => a.studentId === studentId);
         if (alreadyMarked) {
-            return res.status(409).json({ error: 'Attendance already marked' });
+            return res.status(409).json({ error: 'Attendance already marked for this session' });
         }
         
-        // Add to session attendees
+        // Add to session attendees with validated student info
         session.attendees.push({
-            studentId,
-            studentName,
+            studentId: student.studentId,
+            studentName: student.name,
+            department: student.department,
+            class: student.class,
             markedAt: new Date(),
             status: 'present'
         });
         
+        // Create attendance record in database
+        await prisma.studentAttendance.create({
+            data: {
+                studentId: student.id,
+                classId: session.classId,
+                status: 'present',
+                timestamp: new Date().toISOString()
+            }
+        });
+        
         res.json({
             message: 'Attendance marked successfully',
-            studentName,
+            studentName: student.name,
+            studentId: student.studentId,
+            department: student.department,
             markedAt: new Date()
         });
     } catch (error) {
+        console.error('QR mark attendance error:', error);
         res.status(500).json({ error: error.message });
     }
 });
