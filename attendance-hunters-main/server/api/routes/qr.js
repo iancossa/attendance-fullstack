@@ -225,9 +225,9 @@ router.get('/session/:sessionId', async (req, res) => {
             return res.status(404).json({ error: 'Session not found' });
         }
         
-        const now = new Date();
-        const isExpired = now > session.expiresAt;
-        const timeLeft = Math.max(0, Math.floor((session.expiresAt - now) / 1000));
+        const currentTime = new Date();
+        const isExpired = currentTime > session.expiresAt;
+        const timeLeft = Math.max(0, Math.floor((session.expiresAt - currentTime) / 1000));
         
         // Clean up expired sessions
         if (isExpired) {
@@ -242,7 +242,7 @@ router.get('/session/:sessionId', async (req, res) => {
             attendees: session.attendees,
             totalMarked: session.attendees.length,
             pollInterval: isExpired ? 0 : Math.min(timeLeft * 1000, 10000), // Suggest polling interval
-            lastUpdated: now.toISOString()
+            lastUpdated: currentTime.toISOString()
         });
     } catch (error) {
         res.status(500).json({ error: error.message });
