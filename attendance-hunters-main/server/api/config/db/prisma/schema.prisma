@@ -40,45 +40,6 @@ model Student {
   attendance     StudentAttendance[]
 }
 
-model Department {
-  id          Int       @id @default(autoincrement())
-  name        String
-  code        String    @unique
-  head        String
-  email       String
-  phone       String
-  type        String    // "Technology", "Engineering", "Science"
-  programs    Int       @default(0)
-  faculty     Int       @default(0)
-  students    Int       @default(0)
-  status      String    @default("Active")
-  description String?
-  location    String?
-  budget      Float?    @default(0.0)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  faculties   Faculty[]
-}
-
-model Faculty {
-  id           Int        @id @default(autoincrement())
-  employeeId   String     @unique
-  name         String
-  email        String     @unique
-  phone        String?
-  department   String
-  departmentId Int
-  position     String     // "Professor", "Associate Professor", "Assistant Professor"
-  qualification String?
-  experience   Int?       @default(0)
-  salary       Float?     @default(0.0)
-  status       String     @default("Active")
-  joinDate     DateTime   @default(now())
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
-  dept         Department @relation(fields: [departmentId], references: [id])
-}
-
 model StudentAttendance {
   id        Int      @id @default(autoincrement())
   studentId Int

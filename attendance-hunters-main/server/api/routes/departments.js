@@ -1,33 +1,90 @@
 const express = require('express');
-const { PrismaClient } = require('../generated/prisma');
 const { verifyToken, adminOnly } = require('../src/middlewares');
 
 const router = express.Router();
-const prisma = new PrismaClient();
+
+// Mock data for departments (replace with database when models are ready)
+let mockDepartments = [
+    {
+        id: 1,
+        name: 'Computer Science',
+        code: 'CS',
+        head: 'Dr. John Smith',
+        email: 'cs.head@university.edu',
+        phone: '+1234567890',
+        type: 'Technology',
+        programs: 5,
+        faculty: 12,
+        students: 150,
+        status: 'Active',
+        description: 'Department of Computer Science and Engineering',
+        location: 'Building A, Floor 3',
+        budget: 500000,
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        id: 2,
+        name: 'Mathematics',
+        code: 'MATH',
+        head: 'Dr. Jane Doe',
+        email: 'math.head@university.edu',
+        phone: '+1234567891',
+        type: 'Science',
+        programs: 3,
+        faculty: 8,
+        students: 100,
+        status: 'Active',
+        description: 'Department of Mathematics',
+        location: 'Building B, Floor 2',
+        budget: 300000,
+        createdAt: new Date(),
+        updatedAt: new Date()
+    }
+];
+
+let mockFaculty = [
+    {
+        id: 1,
+        employeeId: 'EMP001',
+        name: 'Dr. Alice Johnson',
+        email: 'alice.johnson@university.edu',
+        phone: '+1234567892',
+        department: 'Computer Science',
+        departmentId: 1,
+        position: 'Professor',
+        qualification: 'PhD in Computer Science',
+        experience: 10,
+        salary: 80000,
+        status: 'Active',
+        joinDate: new Date(),
+        createdAt: new Date(),
+        updatedAt: new Date()
+    }
+];
+
+let nextDeptId = 3;
+let nextFacultyId = 2;
 
 // Get all departments
 router.get('/', verifyToken, async (req, res) => {
     try {
         const { type, status } = req.query;
         
-        let where = {};
-        if (type) where.type = type;
-        if (status) where.status = status;
+        let departments = [...mockDepartments];
+        
+        if (type) {
+            departments = departments.filter(d => d.type === type);
+        }
+        if (status) {
+            departments = departments.filter(d => d.status === status);
+        }
 
-        const departments = await prisma.department.findMany({
-            where,
-            include: {
-                faculties: {
-                    select: {
-                        id: true,
-                        name: true,
-                        position: true,
-                        status: true
-                    }
-                }
-            },
-            orderBy: { createdAt: 'desc' }
-        });
+        // Add faculty info to each department
+        departments = departments.map(dept => ({
+            ...dept,
+            faculties: mockFaculty.filter(f => f.departmentId === dept.id)
+        }));
 
         res.json({ departments });
     } catch (error) {
@@ -39,32 +96,18 @@ router.get('/', verifyToken, async (req, res) => {
 router.get('/:id', verifyToken, async (req, res) => {
     try {
         const { id } = req.params;
-
-        const department = await prisma.department.findUnique({
-            where: { id: parseInt(id) },
-            include: {
-                faculties: {
-                    select: {
-                        id: true,
-                        employeeId: true,
-                        name: true,
-                        email: true,
-                        phone: true,
-                        position: true,
-                        qualification: true,
-                        experience: true,
-                        status: true,
-                        joinDate: true
-                    }
-                }
-            }
-        });
+        const department = mockDepartments.find(d => d.id === parseInt(id));
 
         if (!department) {
             return res.status(404).json({ error: 'Department not found' });
         }
 
-        res.json({ department });
+        const departmentWithFaculty = {
+            ...department,
+            faculties: mockFaculty.filter(f => f.departmentId === parseInt(id))
+        };
+
+        res.json({ department: departmentWithFaculty });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -87,30 +130,33 @@ router.post('/', verifyToken, adminOnly, async (req, res) => {
         } = req.body;
 
         // Check if department code already exists
-        const existingDept = await prisma.department.findUnique({
-            where: { code }
-        });
-
+        const existingDept = mockDepartments.find(d => d.code === code);
         if (existingDept) {
             return res.status(400).json({ 
                 error: 'Department with this code already exists' 
             });
         }
 
-        const department = await prisma.department.create({
-            data: {
-                name,
-                code,
-                head,
-                email,
-                phone,
-                type,
-                programs: programs ? parseInt(programs) : 0,
-                description,
-                location,
-                budget: budget ? parseFloat(budget) : 0.0
-            }
-        });
+        const department = {
+            id: nextDeptId++,
+            name,
+            code,
+            head,
+            email,
+            phone,
+            type,
+            programs: programs ? parseInt(programs) : 0,
+            faculty: 0,
+            students: 0,
+            status: 'Active',
+            description,
+            location,
+            budget: budget ? parseFloat(budget) : 0.0,
+            createdAt: new Date(),
+            updatedAt: new Date()
+        };
+
+        mockDepartments.push(department);
 
         res.status(201).json({
             message: 'Department created successfully',
@@ -126,6 +172,11 @@ router.put('/:id', verifyToken, adminOnly, async (req, res) => {
     try {
         const { id } = req.params;
         const updates = req.body;
+        
+        const deptIndex = mockDepartments.findIndex(d => d.id === parseInt(id));
+        if (deptIndex === -1) {
+            return res.status(404).json({ error: 'Department not found' });
+        }
 
         // Remove id from updates if present
         delete updates.id;
@@ -133,20 +184,19 @@ router.put('/:id', verifyToken, adminOnly, async (req, res) => {
         // Convert numeric fields
         if (updates.programs) updates.programs = parseInt(updates.programs);
         if (updates.budget) updates.budget = parseFloat(updates.budget);
-
-        const department = await prisma.department.update({
-            where: { id: parseInt(id) },
-            data: updates
-        });
+        
+        // Update department
+        mockDepartments[deptIndex] = {
+            ...mockDepartments[deptIndex],
+            ...updates,
+            updatedAt: new Date()
+        };
 
         res.json({
             message: 'Department updated successfully',
-            department
+            department: mockDepartments[deptIndex]
         });
     } catch (error) {
-        if (error.code === 'P2025') {
-            return res.status(404).json({ error: 'Department not found' });
-        }
         res.status(400).json({ error: error.message });
     }
 });
@@ -155,23 +205,16 @@ router.put('/:id', verifyToken, adminOnly, async (req, res) => {
 router.get('/:id/faculty', verifyToken, async (req, res) => {
     try {
         const { id } = req.params;
-
-        const faculties = await prisma.faculty.findMany({
-            where: { departmentId: parseInt(id) },
-            orderBy: { createdAt: 'desc' }
-        });
-
-        const department = await prisma.department.findUnique({
-            where: { id: parseInt(id) },
-            select: { name: true, code: true }
-        });
-
+        const department = mockDepartments.find(d => d.id === parseInt(id));
+        
         if (!department) {
             return res.status(404).json({ error: 'Department not found' });
         }
 
+        const faculties = mockFaculty.filter(f => f.departmentId === parseInt(id));
+
         res.json({ 
-            department,
+            department: { name: department.name, code: department.code },
             faculties,
             totalFaculty: faculties.length
         });
@@ -195,46 +238,44 @@ router.post('/:id/faculty', verifyToken, adminOnly, async (req, res) => {
             salary 
         } = req.body;
 
-        // Check if department exists
-        const department = await prisma.department.findUnique({
-            where: { id: parseInt(id) }
-        });
-
+        const department = mockDepartments.find(d => d.id === parseInt(id));
         if (!department) {
             return res.status(404).json({ error: 'Department not found' });
         }
 
         // Check if employee ID already exists
-        const existingFaculty = await prisma.faculty.findUnique({
-            where: { employeeId }
-        });
-
+        const existingFaculty = mockFaculty.find(f => f.employeeId === employeeId);
         if (existingFaculty) {
             return res.status(400).json({ 
                 error: 'Faculty with this employee ID already exists' 
             });
         }
 
-        const faculty = await prisma.faculty.create({
-            data: {
-                employeeId,
-                name,
-                email,
-                phone,
-                department: department.name,
-                departmentId: parseInt(id),
-                position,
-                qualification,
-                experience: experience ? parseInt(experience) : 0,
-                salary: salary ? parseFloat(salary) : 0.0
-            }
-        });
+        const faculty = {
+            id: nextFacultyId++,
+            employeeId,
+            name,
+            email,
+            phone,
+            department: department.name,
+            departmentId: parseInt(id),
+            position,
+            qualification,
+            experience: experience ? parseInt(experience) : 0,
+            salary: salary ? parseFloat(salary) : 0.0,
+            status: 'Active',
+            joinDate: new Date(),
+            createdAt: new Date(),
+            updatedAt: new Date()
+        };
 
+        mockFaculty.push(faculty);
+        
         // Update department faculty count
-        await prisma.department.update({
-            where: { id: parseInt(id) },
-            data: { faculty: { increment: 1 } }
-        });
+        const deptIndex = mockDepartments.findIndex(d => d.id === parseInt(id));
+        if (deptIndex !== -1) {
+            mockDepartments[deptIndex].faculty += 1;
+        }
 
         res.status(201).json({
             message: 'Faculty added successfully',
@@ -250,6 +291,14 @@ router.put('/:id/faculty/:facultyId', verifyToken, adminOnly, async (req, res) =
     try {
         const { id, facultyId } = req.params;
         const updates = req.body;
+        
+        const facultyIndex = mockFaculty.findIndex(f => 
+            f.id === parseInt(facultyId) && f.departmentId === parseInt(id)
+        );
+        
+        if (facultyIndex === -1) {
+            return res.status(404).json({ error: 'Faculty not found' });
+        }
 
         // Remove ids from updates
         delete updates.id;
@@ -259,22 +308,17 @@ router.put('/:id/faculty/:facultyId', verifyToken, adminOnly, async (req, res) =
         if (updates.experience) updates.experience = parseInt(updates.experience);
         if (updates.salary) updates.salary = parseFloat(updates.salary);
 
-        const faculty = await prisma.faculty.update({
-            where: { 
-                id: parseInt(facultyId),
-                departmentId: parseInt(id)
-            },
-            data: updates
-        });
+        mockFaculty[facultyIndex] = {
+            ...mockFaculty[facultyIndex],
+            ...updates,
+            updatedAt: new Date()
+        };
 
         res.json({
             message: 'Faculty updated successfully',
-            faculty
+            faculty: mockFaculty[facultyIndex]
         });
     } catch (error) {
-        if (error.code === 'P2025') {
-            return res.status(404).json({ error: 'Faculty not found' });
-        }
         res.status(400).json({ error: error.message });
     }
 });
@@ -283,30 +327,20 @@ router.put('/:id/faculty/:facultyId', verifyToken, adminOnly, async (req, res) =
 router.get('/:id/settings', verifyToken, async (req, res) => {
     try {
         const { id } = req.params;
-
-        const department = await prisma.department.findUnique({
-            where: { id: parseInt(id) },
-            include: {
-                faculties: {
-                    select: {
-                        status: true,
-                        position: true,
-                        salary: true
-                    }
-                }
-            }
-        });
-
+        const department = mockDepartments.find(d => d.id === parseInt(id));
+        
         if (!department) {
             return res.status(404).json({ error: 'Department not found' });
         }
 
+        const faculties = mockFaculty.filter(f => f.departmentId === parseInt(id));
+        
         // Calculate statistics
-        const activeFaculty = department.faculties.filter(f => f.status === 'Active').length;
-        const totalSalary = department.faculties.reduce((sum, f) => sum + (f.salary || 0), 0);
+        const activeFaculty = faculties.filter(f => f.status === 'Active').length;
+        const totalSalary = faculties.reduce((sum, f) => sum + (f.salary || 0), 0);
         const avgSalary = activeFaculty > 0 ? totalSalary / activeFaculty : 0;
 
-        const positionCounts = department.faculties.reduce((acc, f) => {
+        const positionCounts = faculties.reduce((acc, f) => {
             acc[f.position] = (acc[f.position] || 0) + 1;
             return acc;
         }, {});
@@ -323,7 +357,7 @@ router.get('/:id/settings', verifyToken, async (req, res) => {
                 location: department.location
             },
             statistics: {
-                totalFaculty: department.faculties.length,
+                totalFaculty: faculties.length,
                 activeFaculty,
                 totalPrograms: department.programs,
                 totalStudents: department.students,
@@ -343,27 +377,23 @@ router.get('/:id/settings', verifyToken, async (req, res) => {
 router.delete('/:id', verifyToken, adminOnly, async (req, res) => {
     try {
         const { id } = req.params;
+        const deptIndex = mockDepartments.findIndex(d => d.id === parseInt(id));
+        
+        if (deptIndex === -1) {
+            return res.status(404).json({ error: 'Department not found' });
+        }
 
         // Check if department has faculty
-        const facultyCount = await prisma.faculty.count({
-            where: { departmentId: parseInt(id) }
-        });
-
+        const facultyCount = mockFaculty.filter(f => f.departmentId === parseInt(id)).length;
         if (facultyCount > 0) {
             return res.status(400).json({ 
                 error: 'Cannot delete department with existing faculty members' 
             });
         }
 
-        await prisma.department.delete({
-            where: { id: parseInt(id) }
-        });
-
+        mockDepartments.splice(deptIndex, 1);
         res.json({ message: 'Department deleted successfully' });
     } catch (error) {
-        if (error.code === 'P2025') {
-            return res.status(404).json({ error: 'Department not found' });
-        }
         res.status(400).json({ error: error.message });
     }
 });
