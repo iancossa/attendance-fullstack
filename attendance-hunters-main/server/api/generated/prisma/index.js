@@ -182,6 +182,30 @@ const config = {
         "fromEnvVar": null,
         "value": "windows",
         "native": true
+      },
+      {
+        "fromEnvVar": null,
+        "value": "debian-openssl-1.1.x"
+      },
+      {
+        "fromEnvVar": null,
+        "value": "debian-openssl-3.0.x"
+      },
+      {
+        "fromEnvVar": null,
+        "value": "linux-musl"
+      },
+      {
+        "fromEnvVar": null,
+        "value": "rhel-openssl-1.0.x"
+      },
+      {
+        "fromEnvVar": null,
+        "value": "rhel-openssl-1.1.x"
+      },
+      {
+        "fromEnvVar": null,
+        "value": "rhel-openssl-3.0.x"
       }
     ],
     "previewFeatures": [],
@@ -207,8 +231,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../../../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id         Int          @id @default(autoincrement())\n  email      String       @unique\n  password   String\n  name       String\n  employeeId String?      @unique\n  role       String       @default(\"employee\")\n  createdAt  DateTime     @default(now())\n  updatedAt  DateTime     @updatedAt\n  attendance Attendance[]\n}\n\nmodel Student {\n  id             Int                 @id @default(autoincrement())\n  studentId      String              @unique\n  name           String\n  email          String              @unique\n  phone          String?\n  department     String\n  class          String\n  section        String\n  year           String\n  enrollmentDate DateTime            @default(now())\n  status         String              @default(\"Active\")\n  gpa            Float?              @default(0.0)\n  createdAt      DateTime            @default(now())\n  updatedAt      DateTime            @updatedAt\n  attendance     StudentAttendance[]\n}\n\nmodel StudentAttendance {\n  id        Int      @id @default(autoincrement())\n  studentId Int\n  classId   String\n  date      DateTime @default(now())\n  status    String // \"present\", \"absent\", \"late\"\n  timestamp String?\n  student   Student  @relation(fields: [studentId], references: [id])\n  createdAt DateTime @default(now())\n}\n\nmodel Attendance {\n  id         Int      @id @default(autoincrement())\n  employeeId String\n  type       String // \"check-in\" or \"check-out\"\n  timestamp  DateTime @default(now())\n  userId     Int\n  user       User     @relation(fields: [userId], references: [id])\n  createdAt  DateTime @default(now())\n}\n",
-  "inlineSchemaHash": "a93990b819715fd9793a7ab1f2157b6242807f722c681a7c77aa75bde4d5c99b",
+  "inlineSchema": "generator client {\n  provider      = \"prisma-client-js\"\n  binaryTargets = [\"native\", \"debian-openssl-1.1.x\", \"debian-openssl-3.0.x\", \"linux-musl\", \"rhel-openssl-1.0.x\", \"rhel-openssl-1.1.x\", \"rhel-openssl-3.0.x\"]\n  output        = \"../../../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id         Int          @id @default(autoincrement())\n  email      String       @unique\n  password   String\n  name       String\n  employeeId String?      @unique\n  role       String       @default(\"employee\")\n  createdAt  DateTime     @default(now())\n  updatedAt  DateTime     @updatedAt\n  attendance Attendance[]\n}\n\nmodel Student {\n  id             Int                 @id @default(autoincrement())\n  studentId      String              @unique\n  name           String\n  email          String              @unique\n  phone          String?\n  department     String\n  class          String\n  section        String\n  year           String\n  enrollmentDate DateTime            @default(now())\n  status         String              @default(\"Active\")\n  gpa            Float?              @default(0.0)\n  createdAt      DateTime            @default(now())\n  updatedAt      DateTime            @updatedAt\n  attendance     StudentAttendance[]\n}\n\nmodel StudentAttendance {\n  id        Int      @id @default(autoincrement())\n  studentId Int\n  classId   String\n  date      DateTime @default(now())\n  status    String // \"present\", \"absent\", \"late\"\n  timestamp String?\n  student   Student  @relation(fields: [studentId], references: [id])\n  createdAt DateTime @default(now())\n}\n\nmodel Attendance {\n  id         Int      @id @default(autoincrement())\n  employeeId String\n  type       String // \"check-in\" or \"check-out\"\n  timestamp  DateTime @default(now())\n  userId     Int\n  user       User     @relation(fields: [userId], references: [id])\n  createdAt  DateTime @default(now())\n}\n",
+  "inlineSchemaHash": "1e9760133ab8419550cd85230e19e61bb4b97096f345c1cab8bcb1c0b7657c23",
   "copyEngine": true
 }
 
@@ -248,6 +272,30 @@ Object.assign(exports, Prisma)
 // file annotations for bundling tools to include these files
 path.join(__dirname, "query_engine-windows.dll.node");
 path.join(process.cwd(), "generated/prisma/query_engine-windows.dll.node")
+
+// file annotations for bundling tools to include these files
+path.join(__dirname, "libquery_engine-debian-openssl-1.1.x.so.node");
+path.join(process.cwd(), "generated/prisma/libquery_engine-debian-openssl-1.1.x.so.node")
+
+// file annotations for bundling tools to include these files
+path.join(__dirname, "libquery_engine-debian-openssl-3.0.x.so.node");
+path.join(process.cwd(), "generated/prisma/libquery_engine-debian-openssl-3.0.x.so.node")
+
+// file annotations for bundling tools to include these files
+path.join(__dirname, "libquery_engine-linux-musl.so.node");
+path.join(process.cwd(), "generated/prisma/libquery_engine-linux-musl.so.node")
+
+// file annotations for bundling tools to include these files
+path.join(__dirname, "libquery_engine-rhel-openssl-1.0.x.so.node");
+path.join(process.cwd(), "generated/prisma/libquery_engine-rhel-openssl-1.0.x.so.node")
+
+// file annotations for bundling tools to include these files
+path.join(__dirname, "libquery_engine-rhel-openssl-1.1.x.so.node");
+path.join(process.cwd(), "generated/prisma/libquery_engine-rhel-openssl-1.1.x.so.node")
+
+// file annotations for bundling tools to include these files
+path.join(__dirname, "libquery_engine-rhel-openssl-3.0.x.so.node");
+path.join(process.cwd(), "generated/prisma/libquery_engine-rhel-openssl-3.0.x.so.node")
 // file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
 path.join(process.cwd(), "generated/prisma/schema.prisma")
