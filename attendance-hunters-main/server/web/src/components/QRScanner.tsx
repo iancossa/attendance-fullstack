@@ -14,6 +14,7 @@ export const QRScanner: React.FC<QRScannerProps> = ({ onScan, onClose }) => {
   const [isScanning, setIsScanning] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
+  const [codeReader] = useState(() => new BrowserQRCodeReader());
 
   useEffect(() => {
     startCamera();
@@ -46,9 +47,11 @@ export const QRScanner: React.FC<QRScannerProps> = ({ onScan, onClose }) => {
         setStream(mediaStream);
         setIsScanning(true);
         
-        // Start scanning for QR codes
-        videoRef.current.onloadedmetadata = () => {
-          setTimeout(scanForQR, 1000); // Wait 1 second for camera to stabilize
+        // Start scanning when video is ready
+        videoRef.current.oncanplay = () => {
+          console.log('📹 Video ready, starting QR scan');
+          setIsScanning(true);
+          scanForQR();
         };
       }
     } catch (err: any) {
@@ -74,43 +77,25 @@ export const QRScanner: React.FC<QRScannerProps> = ({ onScan, onClose }) => {
   const scanForQR = async () => {
     if (!videoRef.current || !isScanning) return;
 
-    try {
-      const codeReader = new BrowserQRCodeReader();
-      
-      // Use canvas-based detection for better browser compatibility
-      const canvas = canvasRef.current;
-      const video = videoRef.current;
-      
-      if (canvas && video && video.videoWidth > 0) {
-        const context = canvas.getContext('2d');
-        if (context) {
-          canvas.width = video.videoWidth;
-          canvas.height = video.videoHeight;
-          context.drawImage(video, 0, 0);
-          
-          try {
-            const dataUrl = canvas.toDataURL();
-            const result = await codeReader.decodeFromImage(dataUrl);
-            if (result) {
-              onScan(result.getText());
-              stopCamera();
-              return;
-            }
-          } catch (decodeError) {
-            // No QR code found, continue scanning
-          }
+    const video = videoRef.current;
+    
+    if (video && video.readyState >= 2) { // HAVE_CURRENT_DATA or better
+      try {
+        const result = await codeReader.decodeOnceFromVideoDevice(undefined, video);
+        if (result && result.getText()) {
+          console.log('✅ QR Code detected:', result.getText());
+          onScan(result.getText());
+          stopCamera();
+          return;
         }
+      } catch (error) {
+        // No QR code found, continue scanning
       }
-      
-      // Continue scanning if no QR found
-      if (isScanning) {
-        setTimeout(scanForQR, 300); // Try again in 300ms
-      }
-    } catch (error) {
-      console.error('QR scan error:', error);
-      if (isScanning) {
-        setTimeout(scanForQR, 500);
-      }
+    }
+    
+    // Continue scanning
+    if (isScanning) {
+      requestAnimationFrame(scanForQR);
     }
   };
 
@@ -181,11 +166,26 @@ export const QRScanner: React.FC<QRScannerProps> = ({ onScan, onClose }) => {
                   Position the QR code within the frame
                 </p>
                 <div className="space-y-2">
-
+                  <Button 
+                    variant="secondary" 
+                    onClick={() => {
+                      // Test QR data for debugging
+                      const testQR = JSON.stringify({
+                        sessionId: 'test_session_' + Date.now(),
+                        className: 'Test Class',
+                        timestamp: new Date().toISOString()
+                      });
+                      console.log('Test QR scan:', testQR);
+                      onScan(testQR);
+                      stopCamera();
+                    }}
+                    className="w-full"
+                  >
+                    Test QR Scan
+                  </Button>
                   <Button variant="outline" onClick={handleManualInput} className="w-full">
                     Enter QR Data Manually
                   </Button>
-
                 </div>
               </div>
             </div>
