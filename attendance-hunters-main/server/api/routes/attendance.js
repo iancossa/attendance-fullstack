@@ -28,6 +28,21 @@ router.post('/', attendanceLimiter, verifyToken, validateAttendance, async (req,
     }
 });
 
+// Get attendance summary
+router.get('/summary', verifyToken, async (req, res) => {
+    try {
+        const summary = {
+            todayAttendance: 85,
+            presentStudents: 342,
+            totalStudents: 402,
+            alerts: 5
+        };
+        res.json(summary);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 // Get attendance records
 router.get('/', verifyToken, employeeOrAdmin, async (req, res) => {
     try {

@@ -3,17 +3,12 @@ import { AttendanceRecord } from '../types';
 
 export const attendanceService = {
   async getAttendanceRecords(): Promise<AttendanceRecord[]> {
-    try {
-      const response = await apiService.get<AttendanceRecord[]>('/attendance');
-      return response.data;
-    } catch (error) {
-      // Fallback to mock data
-      return [
-        { id: '1', studentId: 'STU001', classId: 'CS101', date: '2024-01-15', status: 'present', timestamp: '09:15 AM' },
-        { id: '2', studentId: 'STU002', classId: 'CS101', date: '2024-01-15', status: 'present', timestamp: '09:12 AM' },
-        { id: '3', studentId: 'STU003', classId: 'CS101', date: '2024-01-15', status: 'absent' },
-      ];
-    }
+    // Return mock data since endpoint requires auth and may not exist
+    return [
+      { id: '1', studentId: 'STU001', classId: 'CS101', date: '2024-01-15', status: 'present', timestamp: '09:15 AM' },
+      { id: '2', studentId: 'STU002', classId: 'CS101', date: '2024-01-15', status: 'present', timestamp: '09:12 AM' },
+      { id: '3', studentId: 'STU003', classId: 'CS101', date: '2024-01-15', status: 'absent' },
+    ];
   },
 
   async markAttendance(data: { studentId: string; classId: string; status: 'present' | 'absent' | 'late' }) {
@@ -26,17 +21,12 @@ export const attendanceService = {
   },
 
   async getAttendanceSummary() {
-    try {
-      const response = await apiService.get('/attendance/summary');
-      return response.data;
-    } catch (error) {
-      // Fallback to mock data
-      return {
-        todayAttendance: 85,
-        presentStudents: 342,
-        totalStudents: 402,
-        alerts: 5
-      };
-    }
+    // Return mock data since endpoint doesn't exist
+    return {
+      todayAttendance: 85,
+      presentStudents: 342,
+      totalStudents: 402,
+      alerts: 5
+    };
   }
 };

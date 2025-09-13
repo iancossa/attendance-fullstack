@@ -149,6 +149,23 @@ export const LoginPage: React.FC = () => {
             </form>
 
             <div className="mt-6 text-center space-y-2">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={async () => {
+                  try {
+                    const response = await fetch('https://attendance-fullstack.onrender.com/api');
+                    const data = await response.json();
+                    alert(`✅ Production API Connected!\nMessage: ${data.message}\nVersion: ${data.version}`);
+                  } catch (error) {
+                    alert('❌ Production API Connection Failed');
+                  }
+                }}
+                className="mb-4"
+              >
+                Test Production API
+              </Button>
+              
               <p className="text-sm text-muted-foreground">
                 Administrator?{' '}
                 <a href="/admin" className="text-primary hover:underline">
@@ -156,8 +173,8 @@ export const LoginPage: React.FC = () => {
                 </a>
               </p>
               <div className="text-xs text-muted-foreground space-y-1">
-                <p>Demo: student@university.edu / student123</p>
-                <p>Demo: staff@university.edu / staff123</p>
+                <p>✅ Demo: student@university.edu / student123</p>
+                <p>✅ Demo: staff@university.edu / staff123</p>
               </div>
             </div>
           </CardContent>
