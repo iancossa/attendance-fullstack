@@ -2207,6 +2207,7 @@ export namespace Prisma {
     studentId: string | null
     name: string | null
     email: string | null
+    password: string | null
     phone: string | null
     department: string | null
     class: string | null
@@ -2224,6 +2225,7 @@ export namespace Prisma {
     studentId: string | null
     name: string | null
     email: string | null
+    password: string | null
     phone: string | null
     department: string | null
     class: string | null
@@ -2241,6 +2243,7 @@ export namespace Prisma {
     studentId: number
     name: number
     email: number
+    password: number
     phone: number
     department: number
     class: number
@@ -2270,6 +2273,7 @@ export namespace Prisma {
     studentId?: true
     name?: true
     email?: true
+    password?: true
     phone?: true
     department?: true
     class?: true
@@ -2287,6 +2291,7 @@ export namespace Prisma {
     studentId?: true
     name?: true
     email?: true
+    password?: true
     phone?: true
     department?: true
     class?: true
@@ -2304,6 +2309,7 @@ export namespace Prisma {
     studentId?: true
     name?: true
     email?: true
+    password?: true
     phone?: true
     department?: true
     class?: true
@@ -2408,6 +2414,7 @@ export namespace Prisma {
     studentId: string
     name: string
     email: string
+    password: string
     phone: string | null
     department: string
     class: string
@@ -2444,6 +2451,7 @@ export namespace Prisma {
     studentId?: boolean
     name?: boolean
     email?: boolean
+    password?: boolean
     phone?: boolean
     department?: boolean
     class?: boolean
@@ -2463,6 +2471,7 @@ export namespace Prisma {
     studentId?: boolean
     name?: boolean
     email?: boolean
+    password?: boolean
     phone?: boolean
     department?: boolean
     class?: boolean
@@ -2480,6 +2489,7 @@ export namespace Prisma {
     studentId?: boolean
     name?: boolean
     email?: boolean
+    password?: boolean
     phone?: boolean
     department?: boolean
     class?: boolean
@@ -2508,6 +2518,7 @@ export namespace Prisma {
       studentId: string
       name: string
       email: string
+      password: string
       phone: string | null
       department: string
       class: string
@@ -2916,6 +2927,7 @@ export namespace Prisma {
     readonly studentId: FieldRef<"Student", 'String'>
     readonly name: FieldRef<"Student", 'String'>
     readonly email: FieldRef<"Student", 'String'>
+    readonly password: FieldRef<"Student", 'String'>
     readonly phone: FieldRef<"Student", 'String'>
     readonly department: FieldRef<"Student", 'String'>
     readonly class: FieldRef<"Student", 'String'>
@@ -5285,6 +5297,7 @@ export namespace Prisma {
     studentId: 'studentId',
     name: 'name',
     email: 'email',
+    password: 'password',
     phone: 'phone',
     department: 'department',
     class: 'class',
@@ -5493,6 +5506,7 @@ export namespace Prisma {
     studentId?: StringFilter<"Student"> | string
     name?: StringFilter<"Student"> | string
     email?: StringFilter<"Student"> | string
+    password?: StringFilter<"Student"> | string
     phone?: StringNullableFilter<"Student"> | string | null
     department?: StringFilter<"Student"> | string
     class?: StringFilter<"Student"> | string
@@ -5511,6 +5525,7 @@ export namespace Prisma {
     studentId?: SortOrder
     name?: SortOrder
     email?: SortOrder
+    password?: SortOrder
     phone?: SortOrderInput | SortOrder
     department?: SortOrder
     class?: SortOrder
@@ -5532,6 +5547,7 @@ export namespace Prisma {
     OR?: StudentWhereInput[]
     NOT?: StudentWhereInput | StudentWhereInput[]
     name?: StringFilter<"Student"> | string
+    password?: StringFilter<"Student"> | string
     phone?: StringNullableFilter<"Student"> | string | null
     department?: StringFilter<"Student"> | string
     class?: StringFilter<"Student"> | string
@@ -5550,6 +5566,7 @@ export namespace Prisma {
     studentId?: SortOrder
     name?: SortOrder
     email?: SortOrder
+    password?: SortOrder
     phone?: SortOrderInput | SortOrder
     department?: SortOrder
     class?: SortOrder
@@ -5575,6 +5592,7 @@ export namespace Prisma {
     studentId?: StringWithAggregatesFilter<"Student"> | string
     name?: StringWithAggregatesFilter<"Student"> | string
     email?: StringWithAggregatesFilter<"Student"> | string
+    password?: StringWithAggregatesFilter<"Student"> | string
     phone?: StringNullableWithAggregatesFilter<"Student"> | string | null
     department?: StringWithAggregatesFilter<"Student"> | string
     class?: StringWithAggregatesFilter<"Student"> | string
@@ -5798,6 +5816,7 @@ export namespace Prisma {
     studentId: string
     name: string
     email: string
+    password?: string
     phone?: string | null
     department: string
     class: string
@@ -5816,6 +5835,7 @@ export namespace Prisma {
     studentId: string
     name: string
     email: string
+    password?: string
     phone?: string | null
     department: string
     class: string
@@ -5833,6 +5853,7 @@ export namespace Prisma {
     studentId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     department?: StringFieldUpdateOperationsInput | string
     class?: StringFieldUpdateOperationsInput | string
@@ -5851,6 +5872,7 @@ export namespace Prisma {
     studentId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     department?: StringFieldUpdateOperationsInput | string
     class?: StringFieldUpdateOperationsInput | string
@@ -5869,6 +5891,7 @@ export namespace Prisma {
     studentId: string
     name: string
     email: string
+    password?: string
     phone?: string | null
     department: string
     class: string
@@ -5885,6 +5908,7 @@ export namespace Prisma {
     studentId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     department?: StringFieldUpdateOperationsInput | string
     class?: StringFieldUpdateOperationsInput | string
@@ -5902,6 +5926,7 @@ export namespace Prisma {
     studentId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     department?: StringFieldUpdateOperationsInput | string
     class?: StringFieldUpdateOperationsInput | string
@@ -6239,6 +6264,7 @@ export namespace Prisma {
     studentId?: SortOrder
     name?: SortOrder
     email?: SortOrder
+    password?: SortOrder
     phone?: SortOrder
     department?: SortOrder
     class?: SortOrder
@@ -6261,6 +6287,7 @@ export namespace Prisma {
     studentId?: SortOrder
     name?: SortOrder
     email?: SortOrder
+    password?: SortOrder
     phone?: SortOrder
     department?: SortOrder
     class?: SortOrder
@@ -6278,6 +6305,7 @@ export namespace Prisma {
     studentId?: SortOrder
     name?: SortOrder
     email?: SortOrder
+    password?: SortOrder
     phone?: SortOrder
     department?: SortOrder
     class?: SortOrder
@@ -6814,6 +6842,7 @@ export namespace Prisma {
     studentId: string
     name: string
     email: string
+    password?: string
     phone?: string | null
     department: string
     class: string
@@ -6831,6 +6860,7 @@ export namespace Prisma {
     studentId: string
     name: string
     email: string
+    password?: string
     phone?: string | null
     department: string
     class: string
@@ -6863,6 +6893,7 @@ export namespace Prisma {
     studentId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     department?: StringFieldUpdateOperationsInput | string
     class?: StringFieldUpdateOperationsInput | string
@@ -6880,6 +6911,7 @@ export namespace Prisma {
     studentId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     department?: StringFieldUpdateOperationsInput | string
     class?: StringFieldUpdateOperationsInput | string

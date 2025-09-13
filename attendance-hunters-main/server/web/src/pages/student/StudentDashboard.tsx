@@ -24,17 +24,18 @@ export const StudentDashboard: React.FC = () => {
   const [currentStudent, setCurrentStudent] = useState<any>(null);
 
   useEffect(() => {
-    // Initialize with a demo student (in real app, get from auth context)
-    const demoStudent = {
-      studentId: 'CS2024001',
-      name: 'Alice Johnson',
-      department: 'Computer Science',
-      class: 'CS-301',
-      email: 'alice.johnson@university.edu'
-    };
-    
-    localStorage.setItem('studentInfo', JSON.stringify(demoStudent));
-    setCurrentStudent(demoStudent);
+    // Get student info from localStorage (set during login)
+    const studentData = localStorage.getItem('studentInfo');
+    if (studentData) {
+      const student = JSON.parse(studentData);
+      setCurrentStudent({
+        studentId: student.studentId,
+        name: student.name,
+        department: student.department,
+        class: student.class,
+        email: student.email
+      });
+    }
   }, []);
 
   const handleQRScan = () => {
@@ -63,16 +64,15 @@ export const StudentDashboard: React.FC = () => {
         throw new Error('Invalid QR code format');
       }
 
-      // Get student info from localStorage or context (should be set during login)
+      // Get student info from localStorage (set during login)
       const studentData = localStorage.getItem('studentInfo');
-      let studentId = 'CS2024001'; // Default for demo
-      let studentName = 'Demo Student';
-      
-      if (studentData) {
-        const student = JSON.parse(studentData);
-        studentId = student.studentId;
-        studentName = student.name;
+      if (!studentData) {
+        throw new Error('Student not logged in');
       }
+      
+      const student = JSON.parse(studentData);
+      const studentId = student.studentId;
+      const studentName = student.name;
 
       // Mark attendance with validation
       const response = await fetch(`https://attendance-fullstack.onrender.com/api/qr/mark/${sessionId}`, {

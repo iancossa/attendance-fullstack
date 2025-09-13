@@ -173,7 +173,8 @@ export const LoginPage: React.FC = () => {
                 </a>
               </p>
               <div className="text-xs text-muted-foreground space-y-1">
-                <p>✅ Demo: student@university.edu / student123</p>
+                <p>✅ Demo: alice.johnson@university.edu / student123</p>
+                <p>✅ Demo: bob.smith@university.edu / student123</p>
                 <p>✅ Demo: staff@university.edu / staff123</p>
               </div>
             </div>

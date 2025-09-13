@@ -257,12 +257,10 @@ export const Header: React.FC = () => {
                         </Avatar>
                         <div>
                           <p className="font-medium">
-                            {user?.role === 'admin' ? 'Admin User' : 
-                             user?.role === 'staff' ? 'Staff User' : 'Eldo Macuacua'}
+                            {user?.name || 'Student User'}
                           </p>
                           <p className="text-sm text-muted-foreground">
-                            {user?.role === 'admin' ? 'admin@attendance.com' : 
-                             user?.role === 'staff' ? 'staff@university.edu' : 'macuacua.eldo@university.edu'}
+                            {user?.email || 'student@university.edu'}
                           </p>
                         </div>
                       </div>

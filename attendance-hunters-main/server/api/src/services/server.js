@@ -43,6 +43,7 @@ app.use((req, res, next) => {
 
 // Routes
 app.use('/api/auth', require('../../routes/auth'));
+app.use('/api/student-auth', require('../../routes/student-auth'));
 app.use('/api/attendance', require('../../routes/attendance'));
 app.use('/api/users', require('../../routes/users'));
 app.use('/api/students', require('../../routes/students'));

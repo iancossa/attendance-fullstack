@@ -22,36 +22,65 @@ export const useAuth = () => {
 
   const login = async (email: string, password: string, role?: 'admin' | 'staff' | 'student') => {
     try {
-      // Demo login logic - replace with actual API call
-      const isValidLogin = (
-        (role === 'admin' && email === 'admin@attendance.com' && password === 'admin123') ||
-        (role === 'staff' && email === 'staff@university.edu' && password === 'staff123') ||
-        (role === 'student' && email === 'student@university.edu' && password === 'student123')
-      );
+      if (role === 'student') {
+        // Real API call for student login
+        const response = await fetch('https://attendance-fullstack.onrender.com/api/student-auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }),
+        });
 
-      if (isValidLogin && role) {
-        // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        if (!response.ok) {
+          throw new Error('Invalid credentials');
+        }
+
+        const data = await response.json();
         
-        const token = `${role}_token_${Date.now()}`;
-        localStorage.setItem('auth_token', token);
-        localStorage.setItem('user_role', role);
+        localStorage.setItem('auth_token', data.token);
+        localStorage.setItem('user_role', 'student');
+        localStorage.setItem('studentInfo', JSON.stringify(data.student));
         
         const newUser = {
-          id: '1',
-          email: email,
-          name: role === 'admin' ? 'Admin User' : role === 'staff' ? 'Staff User' : 'Student User',
-          role: role
+          id: data.student.id.toString(),
+          email: data.student.email,
+          name: data.student.name,
+          role: 'student' as const
         };
         
-        // Use a Promise to ensure state is set before returning
         return new Promise<typeof newUser>((resolve) => {
           setUser(newUser);
-          // Small delay to ensure state update is processed
           setTimeout(() => resolve(newUser), 50);
         });
       } else {
-        throw new Error('Invalid credentials');
+        // Demo login logic for admin/staff
+        const isValidLogin = (
+          (role === 'admin' && email === 'admin@attendance.com' && password === 'admin123') ||
+          (role === 'staff' && email === 'staff@university.edu' && password === 'staff123')
+        );
+
+        if (isValidLogin && role) {
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          
+          const token = `${role}_token_${Date.now()}`;
+          localStorage.setItem('auth_token', token);
+          localStorage.setItem('user_role', role);
+          
+          const newUser = {
+            id: '1',
+            email: email,
+            name: role === 'admin' ? 'Admin User' : 'Staff User',
+            role: role
+          };
+          
+          return new Promise<typeof newUser>((resolve) => {
+            setUser(newUser);
+            setTimeout(() => resolve(newUser), 50);
+          });
+        } else {
+          throw new Error('Invalid credentials');
+        }
       }
     } catch (error) {
       throw error;

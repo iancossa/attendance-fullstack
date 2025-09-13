@@ -28,6 +28,7 @@ model Student {
   studentId      String              @unique
   name           String
   email          String              @unique
+  password       String              @default("$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi")
   phone          String?
   department     String
   class          String
