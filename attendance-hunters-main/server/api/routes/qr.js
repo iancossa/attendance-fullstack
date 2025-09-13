@@ -67,20 +67,60 @@ router.post('/generate', async (req, res) => {
 
 // Mark attendance via QR
 router.post('/mark/:sessionId', async (req, res) => {
+    console.log('🎯 QR Mark Attendance Request:', {
+        sessionId: req.params.sessionId,
+        body: req.body,
+        timestamp: new Date().toISOString()
+    });
+    
     try {
         const { sessionId } = req.params;
         const { studentId, studentName } = req.body;
         
-        // Validate student exists in database
-        const student = await prisma.student.findUnique({
+        console.log('🔍 Looking up student:', { studentId, studentName });
+        
+        // Validate student exists in database - handle both studentId and email
+        let student;
+        
+        // First try to find by studentId
+        student = await prisma.student.findUnique({
             where: { studentId: studentId }
         });
         
-        if (!student) {
-            return res.status(403).json({ 
-                error: 'Student not found in database. Only registered students can mark attendance.' 
+        // If not found and looks like email, try email lookup
+        if (!student && studentId.includes('@')) {
+            student = await prisma.student.findUnique({
+                where: { email: studentId }
             });
         }
+        
+        // If still not found, try by name (fallback)
+        if (!student && studentName) {
+            student = await prisma.student.findFirst({
+                where: { 
+                    name: {
+                        contains: studentName,
+                        mode: 'insensitive'
+                    }
+                }
+            });
+        }
+        
+        if (!student) {
+            console.log('❌ Student not found:', { studentId, studentName });
+            return res.status(403).json({ 
+                error: 'Student not found in database. Only registered students can mark attendance.',
+                searchedFor: studentId,
+                suggestion: 'Use student ID (e.g., CS2024001) or registered email'
+            });
+        }
+        
+        console.log('✅ Student found:', {
+            id: student.id,
+            studentId: student.studentId,
+            name: student.name,
+            email: student.email
+        });
         
         if (student.status !== 'Active') {
             return res.status(403).json({ 
@@ -116,7 +156,13 @@ router.post('/mark/:sessionId', async (req, res) => {
         });
         
         // Create attendance record in database
-        await prisma.studentAttendance.create({
+        console.log('💾 Creating attendance record:', {
+            studentId: student.id,
+            classId: session.classId,
+            status: 'present'
+        });
+        
+        const attendanceRecord = await prisma.studentAttendance.create({
             data: {
                 studentId: student.id,
                 classId: session.classId,
@@ -125,13 +171,19 @@ router.post('/mark/:sessionId', async (req, res) => {
             }
         });
         
-        res.json({
+        console.log('✅ Attendance record created:', attendanceRecord.id);
+        
+        const response = {
             message: 'Attendance marked successfully',
             studentName: student.name,
             studentId: student.studentId,
             department: student.department,
-            markedAt: new Date()
-        });
+            markedAt: new Date(),
+            attendanceId: attendanceRecord.id
+        };
+        
+        console.log('🎉 QR Attendance Success:', response);
+        res.json(response);
     } catch (error) {
         console.error('QR mark attendance error:', error);
         res.status(500).json({ error: error.message });
