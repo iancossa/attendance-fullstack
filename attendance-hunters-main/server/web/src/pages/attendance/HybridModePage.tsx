@@ -17,6 +17,7 @@ export const HybridModePage: React.FC = () => {
   const [activeTab, setActiveTab] = useState('qr');
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [sessionData, setSessionData] = useState<any>(null);
+  const [recentScans, setRecentScans] = useState<any[]>([]);
 
   useEffect(() => {
     // Load session data from localStorage
@@ -26,6 +27,28 @@ export const HybridModePage: React.FC = () => {
       setSessionData(parsed);
     }
     generateQRCode();
+    
+    // Load recent scans and update students
+    const loadRecentScans = () => {
+      const scans = JSON.parse(localStorage.getItem('recentScans') || '[]');
+      setRecentScans(scans);
+      
+      // Update students based on scans
+      setStudents(prev => prev.map(student => {
+        const scan = scans.find((s: any) => s.studentId === student.studentId || s.studentName === student.name);
+        if (scan && !student.present) {
+          return { ...student, present: true, method: 'qr' };
+        }
+        return student;
+      }));
+    };
+    
+    loadRecentScans();
+    
+    // Poll for new scans every 2 seconds
+    const scanInterval = setInterval(loadRecentScans, 2000);
+    
+    return () => clearInterval(scanInterval);
   }, []);
 
   useEffect(() => {
@@ -157,18 +180,23 @@ export const HybridModePage: React.FC = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2 max-h-64 overflow-y-auto">
-                    {qrScannedStudents.slice(0, 8).map((student) => (
-                      <div key={student.id} className="flex items-center justify-between p-2 bg-blue-50 dark:bg-blue-950/30 rounded border">
+                    {recentScans.slice(0, 8).map((scan, index) => (
+                      <div key={index} className="flex items-center justify-between p-2 bg-blue-50 dark:bg-blue-950/30 rounded border">
                         <div>
-                          <div className="font-medium text-sm">{student.name}</div>
-                          <div className="text-xs text-muted-foreground">{student.rollNumber}</div>
+                          <div className="font-medium text-sm">{scan.studentName}</div>
+                          <div className="text-xs text-muted-foreground">{scan.studentId}</div>
                         </div>
-                        <Badge className="bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300">
-                          QR Scanned
-                        </Badge>
+                        <div className="text-right">
+                          <Badge className="bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300">
+                            QR Scanned
+                          </Badge>
+                          <div className="text-xs text-muted-foreground mt-1">
+                            {new Date(scan.markedAt).toLocaleTimeString()}
+                          </div>
+                        </div>
                       </div>
                     ))}
-                    {qrScannedStudents.length === 0 && (
+                    {recentScans.length === 0 && (
                       <div className="text-center py-8 text-muted-foreground">
                         <p className="text-sm">Waiting for QR scans...</p>
                       </div>

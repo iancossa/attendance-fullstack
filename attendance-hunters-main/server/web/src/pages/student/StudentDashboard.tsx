@@ -11,7 +11,6 @@ import {
   TrendingUp, 
   Award,
   Clock,
-  BookOpen,
   Target,
   Trophy,
   CheckCircle,
@@ -90,6 +89,20 @@ export const StudentDashboard: React.FC = () => {
       
       if (response.ok) {
         setScanResult(`✅ Attendance marked for ${result.studentName} in ${className}`);
+        
+        // Add to recent scans for QR/Hybrid modes
+        const scanData = {
+          studentId: studentId,
+          studentName: studentName,
+          markedAt: new Date().toISOString(),
+          status: 'present',
+          sessionId: sessionId,
+          className: className
+        };
+        
+        const existingScans = JSON.parse(localStorage.getItem('recentScans') || '[]');
+        existingScans.unshift(scanData);
+        localStorage.setItem('recentScans', JSON.stringify(existingScans.slice(0, 50)));
       } else {
         // Handle specific error cases
         if (response.status === 403) {

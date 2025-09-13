@@ -20,16 +20,24 @@ export const QRScanner: React.FC<QRScannerProps> = ({ onScan, onClose }) => {
     return () => {
       stopCamera();
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const startCamera = async () => {
     try {
       setError(null);
+      
+      // Check if getUserMedia is supported
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        setError('Camera not supported in this browser');
+        return;
+      }
+      
       const mediaStream = await navigator.mediaDevices.getUserMedia({
         video: { 
-          facingMode: 'environment', // Use back camera
-          width: { ideal: 640 },
-          height: { ideal: 480 }
+          facingMode: { ideal: 'environment' }, // Prefer back camera but allow front
+          width: { ideal: 640, min: 320 },
+          height: { ideal: 480, min: 240 }
         }
       });
       
@@ -43,9 +51,15 @@ export const QRScanner: React.FC<QRScannerProps> = ({ onScan, onClose }) => {
           setTimeout(scanForQR, 1000); // Wait 1 second for camera to stabilize
         };
       }
-    } catch (err) {
-      setError('Camera access denied or not available');
+    } catch (err: any) {
       console.error('Camera error:', err);
+      if (err?.name === 'NotAllowedError') {
+        setError('Camera access denied. Please allow camera access and try again.');
+      } else if (err?.name === 'NotFoundError') {
+        setError('No camera found on this device.');
+      } else {
+        setError('Camera not available. You can still enter QR data manually.');
+      }
     }
   };
 
@@ -63,31 +77,18 @@ export const QRScanner: React.FC<QRScannerProps> = ({ onScan, onClose }) => {
     try {
       const codeReader = new BrowserQRCodeReader();
       
-      // Scan from video element
-      const result = await codeReader.decodeOnceFromVideoDevice(undefined, videoRef.current);
+      // Use canvas-based detection for better browser compatibility
+      const canvas = canvasRef.current;
+      const video = videoRef.current;
       
-      if (result) {
-        onScan(result.getText());
-        stopCamera();
-        return;
-      }
-    } catch (error) {
-      // Fallback: Use canvas-based detection
-      try {
-        const canvas = canvasRef.current;
-        const video = videoRef.current;
-        
-        if (canvas && video) {
-          const context = canvas.getContext('2d');
-          if (context) {
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            context.drawImage(video, 0, 0);
-            
-            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-            const codeReader = new BrowserQRCodeReader();
-            
-            // Convert canvas to data URL and decode
+      if (canvas && video && video.videoWidth > 0) {
+        const context = canvas.getContext('2d');
+        if (context) {
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          context.drawImage(video, 0, 0);
+          
+          try {
             const dataUrl = canvas.toDataURL();
             const result = await codeReader.decodeFromImage(dataUrl);
             if (result) {
@@ -95,15 +96,20 @@ export const QRScanner: React.FC<QRScannerProps> = ({ onScan, onClose }) => {
               stopCamera();
               return;
             }
+          } catch (decodeError) {
+            // No QR code found, continue scanning
           }
         }
-      } catch (canvasError) {
-        // Continue scanning
       }
       
       // Continue scanning if no QR found
       if (isScanning) {
-        setTimeout(scanForQR, 500); // Try again in 500ms
+        setTimeout(scanForQR, 300); // Try again in 300ms
+      }
+    } catch (error) {
+      console.error('QR scan error:', error);
+      if (isScanning) {
+        setTimeout(scanForQR, 500);
       }
     }
   };
@@ -115,6 +121,8 @@ export const QRScanner: React.FC<QRScannerProps> = ({ onScan, onClose }) => {
       stopCamera();
     }
   };
+
+
 
   return (
     <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50">
@@ -134,8 +142,9 @@ export const QRScanner: React.FC<QRScannerProps> = ({ onScan, onClose }) => {
               <div className="space-y-2">
                 <Button onClick={startCamera} className="w-full">
                   <RotateCcw className="h-4 w-4 mr-2" />
-                  Try Again
+                  Try Camera Again
                 </Button>
+
                 <Button variant="outline" onClick={handleManualInput} className="w-full">
                   Enter Manually
                 </Button>
@@ -172,21 +181,11 @@ export const QRScanner: React.FC<QRScannerProps> = ({ onScan, onClose }) => {
                   Position the QR code within the frame
                 </p>
                 <div className="space-y-2">
+
                   <Button variant="outline" onClick={handleManualInput} className="w-full">
                     Enter QR Data Manually
                   </Button>
-                  <Button 
-                    onClick={() => {
-                      // Simulate successful scan for demo
-                      const demoQR = 'attendance://mark?session=qr_demo_camera&class=Camera Demo';
-                      onScan(demoQR);
-                      stopCamera();
-                    }}
-                    variant="secondary" 
-                    className="w-full"
-                  >
-                    Demo Scan (Test)
-                  </Button>
+
                 </div>
               </div>
             </div>

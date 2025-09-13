@@ -37,6 +37,7 @@ export const QRModePage: React.FC = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [attendees, setAttendees] = useState<Attendee[]>([]);
   const [pollingInterval, setPollingInterval] = useState<NodeJS.Timeout | null>(null);
+  const [recentScans, setRecentScans] = useState<Attendee[]>([]);
   
   const presentCount = attendees.length;
   const totalStudents = 50; // This could come from class data
@@ -48,6 +49,19 @@ export const QRModePage: React.FC = () => {
       const parsed = JSON.parse(storedSession);
       setSessionData(parsed);
     }
+    
+    // Load recent scans
+    const loadRecentScans = () => {
+      const scans = JSON.parse(localStorage.getItem('recentScans') || '[]');
+      setRecentScans(scans);
+    };
+    
+    loadRecentScans();
+    
+    // Poll for new scans every 2 seconds
+    const scanInterval = setInterval(loadRecentScans, 2000);
+    
+    return () => clearInterval(scanInterval);
   }, []);
 
   useEffect(() => {
@@ -300,17 +314,17 @@ export const QRModePage: React.FC = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-2 max-h-64 overflow-y-auto">
-                {attendees.length > 0 ? (
-                  attendees.slice(-10).reverse().map((attendee, index) => (
+                {recentScans.length > 0 ? (
+                  recentScans.slice(0, 10).map((scan, index) => (
                     <div key={index} className="flex items-center justify-between p-2 bg-green-50 dark:bg-green-950/20 rounded border border-green-200">
                       <div>
-                        <div className="font-medium text-sm">{attendee.studentName}</div>
-                        <div className="text-xs text-muted-foreground">{attendee.studentId}</div>
+                        <div className="font-medium text-sm">{scan.studentName}</div>
+                        <div className="text-xs text-muted-foreground">{scan.studentId}</div>
                       </div>
                       <div className="text-right">
                         <Badge className="bg-green-500 text-white text-xs">Present</Badge>
                         <div className="text-xs text-muted-foreground mt-1">
-                          {new Date(attendee.markedAt).toLocaleTimeString()}
+                          {new Date(scan.markedAt).toLocaleTimeString()}
                         </div>
                       </div>
                     </div>
