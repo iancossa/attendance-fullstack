@@ -8,10 +8,23 @@ import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '.
 import QRCode from 'react-qr-code';
 import { RefreshCw, ArrowRight, Smartphone } from 'lucide-react';
 import { QRScanner } from '../../components/QRScanner';
-import { MOCK_STUDENTS } from '../../data/mockStudents';
+import { studentService } from '../../services/backendService';
+
+interface Student {
+  id: number;
+  studentId: string;
+  name: string;
+  email: string;
+  department: string;
+  class: string;
+  section: string;
+  present: boolean;
+  method: 'qr' | 'manual' | '';
+}
 
 export const HybridModePage: React.FC = () => {
-  const [students, setStudents] = useState(MOCK_STUDENTS.map(s => ({ ...s, present: false, method: '' as 'qr' | 'manual' | '' })));
+  const [students, setStudents] = useState<Student[]>([]);
+  const [loading, setLoading] = useState(true);
   const [qrValue, setQrValue] = useState('');
   const [timeLeft, setTimeLeft] = useState(180);
   const [sessionActive, setSessionActive] = useState(false);
@@ -22,6 +35,36 @@ export const HybridModePage: React.FC = () => {
   const [showScanner, setShowScanner] = useState(false);
 
   useEffect(() => {
+    // Load real students from database
+    const loadStudents = async () => {
+      try {
+        setLoading(true);
+        const response = await studentService.getAllStudents();
+        if (response.data && (response.data as any).students) {
+          const dbStudents = (response.data as any).students.map((s: any) => ({
+            id: s.id,
+            studentId: s.studentId,
+            name: s.name,
+            email: s.email,
+            department: s.department,
+            class: s.class,
+            section: s.section,
+            present: false,
+            method: '' as 'qr' | 'manual' | ''
+          }));
+          setStudents(dbStudents);
+        }
+      } catch (error) {
+        console.error('Failed to load students:', error);
+        // Fallback to empty array if API fails
+        setStudents([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadStudents();
+
     // Load session data from localStorage
     const storedSession = localStorage.getItem('attendanceSession');
     if (storedSession) {
@@ -89,7 +132,7 @@ export const HybridModePage: React.FC = () => {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const toggleManualAttendance = (studentId: string) => {
+  const toggleManualAttendance = (studentId: number) => {
     setStudents(prev => prev.map(student => 
       student.id === studentId 
         ? { ...student, present: !student.present, method: !student.present ? 'manual' : '' }
@@ -240,18 +283,31 @@ export const HybridModePage: React.FC = () => {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {students.map((student) => (
-                        <TableRow key={student.id} className="hover:bg-muted/30">
-                          <TableCell>
-                            <input
-                              type="checkbox"
-                              checked={student.present}
-                              onChange={() => toggleManualAttendance(student.id)}
-                              className="w-4 h-4 text-primary bg-background border-border rounded focus:ring-primary"
-                            />
+                      {loading ? (
+                        <TableRow>
+                          <TableCell colSpan={5} className="text-center py-8">
+                            Loading students...
                           </TableCell>
-                          <TableCell className="font-medium">{student.name}</TableCell>
-                          <TableCell className="text-muted-foreground">{student.rollNumber}</TableCell>
+                        </TableRow>
+                      ) : students.length === 0 ? (
+                        <TableRow>
+                          <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
+                            No students found. Please check your database connection.
+                          </TableCell>
+                        </TableRow>
+                      ) : (
+                        students.map((student) => (
+                          <TableRow key={student.id} className="hover:bg-muted/30">
+                            <TableCell>
+                              <input
+                                type="checkbox"
+                                checked={student.present}
+                                onChange={() => toggleManualAttendance(student.id)}
+                                className="w-4 h-4 text-primary bg-background border-border rounded focus:ring-primary"
+                              />
+                            </TableCell>
+                            <TableCell className="font-medium">{student.name}</TableCell>
+                            <TableCell className="text-muted-foreground">{student.studentId}</TableCell>
                           <TableCell>
                             <Badge variant={student.present ? 'default' : 'secondary'}>
                               {student.present ? 'Present' : 'Absent'}
@@ -274,8 +330,9 @@ export const HybridModePage: React.FC = () => {
                               </Badge>
                             )}
                           </TableCell>
-                        </TableRow>
-                      ))}
+                          </TableRow>
+                        ))
+                      )}
                     </TableBody>
                   </Table>
                 </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layout } from '../../components/layout/Layout';
 import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
@@ -6,26 +6,67 @@ import { Input } from '../../components/ui/input';
 import { Badge } from '../../components/ui/badge';
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '../../components/ui/table';
 import { Users, Search, Send, Save } from 'lucide-react';
-import { MOCK_STUDENTS } from '../../data/mockStudents';
+import { studentService } from '../../services/backendService';
+
+interface Student {
+  id: number;
+  studentId: string;
+  name: string;
+  email: string;
+  department: string;
+  class: string;
+  section: string;
+  present: boolean;
+}
 
 export const ManualModePage: React.FC = () => {
-  const [students, setStudents] = useState(MOCK_STUDENTS.map(s => ({ ...s, present: false })));
+  const [students, setStudents] = useState<Student[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [rollNumbers, setRollNumbers] = useState('');
   const [showSubmitModal, setShowSubmitModal] = useState(false);
   const [showSaveModal, setShowSaveModal] = useState(false);
 
+  useEffect(() => {
+    const loadStudents = async () => {
+      try {
+        setLoading(true);
+        const response = await studentService.getAllStudents();
+        if (response.data && (response.data as any).students && Array.isArray((response.data as any).students)) {
+          const dbStudents = (response.data as any).students.map((s: any) => ({
+            id: s.id,
+            studentId: s.studentId,
+            name: s.name,
+            email: s.email,
+            department: s.department,
+            class: s.class,
+            section: s.section,
+            present: false
+          }));
+          setStudents(dbStudents);
+        }
+      } catch (error) {
+        console.error('Failed to load students:', error);
+        setStudents([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadStudents();
+  }, []);
+
   const filteredStudents = students.filter(student => 
     student.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    student.rollNumber.toLowerCase().includes(searchQuery.toLowerCase())
+    student.studentId.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const toggleAttendance = (studentId: string) => {
+  const toggleAttendance = (studentId: number) => {
     setStudents(prev => {
       const updated = prev.map(student => 
         student.id === studentId ? { ...student, present: !student.present } : student
       );
-      const presentRollNumbers = updated.filter(s => s.present).map(s => s.rollNumber);
+      const presentRollNumbers = updated.filter(s => s.present).map(s => s.studentId);
       setRollNumbers(presentRollNumbers.join(', '));
       return updated;
     });
@@ -33,7 +74,7 @@ export const ManualModePage: React.FC = () => {
 
   const markAllPresent = () => {
     setStudents(prev => prev.map(student => ({ ...student, present: true })));
-    setRollNumbers(students.map(s => s.rollNumber).join(', '));
+    setRollNumbers(students.map(s => s.studentId).join(', '));
   };
 
   const markAllAbsent = () => {
@@ -46,7 +87,7 @@ export const ManualModePage: React.FC = () => {
     const numbers = value.split(',').map(n => n.trim()).filter(n => n);
     setStudents(prev => prev.map(student => ({
       ...student,
-      present: numbers.includes(student.rollNumber)
+      present: numbers.includes(student.studentId)
     })));
   };
 
@@ -101,7 +142,7 @@ export const ManualModePage: React.FC = () => {
           <CardContent>
             <div className="flex gap-2">
               <Input
-                placeholder="Enter roll numbers separated by commas (e.g., 1, 5, 12, 20)"
+                placeholder="Enter student IDs separated by commas (e.g., STU001, CS2024001)"
                 value={rollNumbers}
                 onChange={(e) => handleRollNumbersChange(e.target.value)}
                 className="text-sm flex-1"
@@ -115,7 +156,7 @@ export const ManualModePage: React.FC = () => {
               </Button>
             </div>
             <p className="text-xs text-muted-foreground mt-1">
-              Type roll numbers to mark present, or check students to auto-fill this field
+              Type student IDs to mark present, or check students to auto-fill this field
             </p>
           </CardContent>
         </Card>
@@ -154,13 +195,26 @@ export const ManualModePage: React.FC = () => {
                       />
                     </TableHead>
                     <TableHead className="font-medium text-sm p-2">Student</TableHead>
-                    <TableHead className="font-medium text-center w-16 text-sm p-2">Roll</TableHead>
+                    <TableHead className="font-medium text-center w-20 text-sm p-2">Student ID</TableHead>
                     <TableHead className="font-medium text-center w-20 text-sm p-2">Status</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredStudents.map((student, index) => (
-                    <TableRow 
+                  {loading ? (
+                    <TableRow>
+                      <TableCell colSpan={4} className="text-center py-8">
+                        Loading students...
+                      </TableCell>
+                    </TableRow>
+                  ) : students.length === 0 ? (
+                    <TableRow>
+                      <TableCell colSpan={4} className="text-center py-8 text-muted-foreground">
+                        No students found. Please check your database connection.
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    filteredStudents.map((student, index) => (
+                      <TableRow 
                       key={student.id} 
                       className={`
                         h-12 transition-colors cursor-pointer hover:bg-muted/30
@@ -184,11 +238,11 @@ export const ManualModePage: React.FC = () => {
                       <TableCell className="p-2">
                         <div>
                           <div className="font-medium text-sm">{student.name}</div>
-                          <div className="text-xs text-muted-foreground">{student.enrollmentNumber}</div>
+                          <div className="text-xs text-muted-foreground">{student.email}</div>
                         </div>
                       </TableCell>
                       <TableCell className="text-center font-mono text-xs font-medium p-2">
-                        <span className="px-1 py-0.5 bg-muted rounded text-xs">{student.rollNumber}</span>
+                        <span className="px-1 py-0.5 bg-muted rounded text-xs">{student.studentId}</span>
                       </TableCell>
                       <TableCell className="text-center p-2">
                         <Badge 
@@ -201,8 +255,9 @@ export const ManualModePage: React.FC = () => {
                           {student.present ? 'Present' : 'Absent'}
                         </Badge>
                       </TableCell>
-                    </TableRow>
-                  ))}
+                      </TableRow>
+                    ))
+                  )}
                 </TableBody>
               </Table>
             </div>
@@ -221,7 +276,7 @@ export const ManualModePage: React.FC = () => {
             <div className="bg-background p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
               <h3 className="text-lg font-semibold mb-4">Confirm Roll Numbers</h3>
               <p className="text-sm text-muted-foreground mb-4">
-                Mark the following roll numbers as present: <strong>{rollNumbers}</strong>
+                Mark the following student IDs as present: <strong>{rollNumbers}</strong>
               </p>
               <div className="flex gap-2 justify-end">
                 <Button variant="outline" onClick={() => setShowSubmitModal(false)}>
@@ -231,7 +286,7 @@ export const ManualModePage: React.FC = () => {
                   const numbers = rollNumbers.split(',').map(n => n.trim()).filter(n => n);
                   setStudents(prev => prev.map(student => ({
                     ...student,
-                    present: numbers.includes(student.rollNumber)
+                    present: numbers.includes(student.studentId)
                   })));
                   setShowSubmitModal(false);
                 }}>
