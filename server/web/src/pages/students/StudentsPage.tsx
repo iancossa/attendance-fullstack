@@ -4,12 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/ca
 import { Input } from '../../components/ui/input';
 import { Button } from '../../components/ui/button';
 import { Badge } from '../../components/ui/badge';
-import { Avatar, AvatarFallback } from '../../components/ui/avatar';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components/ui/table';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../../components/ui/dropdown-menu';
 import { 
   Users, 
-  UserPlus, 
+ 
   GraduationCap, 
   Search, 
   Filter,
@@ -28,27 +26,15 @@ import {
   History,
   BarChart3
 } from 'lucide-react';
-import { exportToPDF, exportToExcel } from '../../utils/exportUtils';
-import { MOCK_STUDENTS } from '../../data/mockStudents';
+import { exportToExcel } from '../../utils/exportUtils';
+import { MOCK_STUDENTS, Student } from '../../data/mockStudents';
+import { ViewProfileModal } from '../../components/modals/ViewProfileModal';
+import { EditDetailsModal } from '../../components/modals/EditDetailsModal';
+import { AttendanceReportModal } from '../../components/modals/AttendanceReportModal';
+import { AttendanceHistoryModal } from '../../components/modals/AttendanceHistoryModal';
+import { SendMessageModal } from '../../components/modals/SendMessageModal';
 
-interface Student {
-  id: string;
-  name: string;
-  email: string;
-  studentId: string;
-  class: string;
-  section: string;
-  year: string;
-  department: string;
-  attendance: number;
-  status: 'Active' | 'Inactive' | 'Suspended';
-  lastSeen: string;
-  phone: string;
-  enrollmentDate: string;
-  gpa: number;
-}
 
-const mockStudents = MOCK_STUDENTS;
 
 export const StudentsPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -58,13 +44,16 @@ export const StudentsPage: React.FC = () => {
   const [selectedSection, setSelectedSection] = useState('All');
   const [attendanceFilter, setAttendanceFilter] = useState('All');
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+  const [activeModal, setActiveModal] = useState<string | null>(null);
+  const [students, setStudents] = useState<Student[]>(MOCK_STUDENTS);
 
-  const departments = Array.from(new Set(mockStudents.map(s => s.department)));
-  const sections = Array.from(new Set(mockStudents.map(s => s.section)));
-  const years = Array.from(new Set(mockStudents.map(s => s.year)));
+  const departments = Array.from(new Set(MOCK_STUDENTS.map(s => s.department)));
+  const sections = Array.from(new Set(MOCK_STUDENTS.map(s => s.section)));
+  const years = Array.from(new Set(MOCK_STUDENTS.map(s => s.year)));
 
   const filteredStudents = useMemo(() => {
-    return mockStudents.filter(student => {
+    return students.filter(student => {
       const matchesSearch = student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            student.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            (student.studentId || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -84,7 +73,7 @@ export const StudentsPage: React.FC = () => {
       
       return matchesSearch && matchesYear && matchesStatus && matchesDepartment && matchesSection && matchesAttendance;
     });
-  }, [searchTerm, selectedYear, selectedStatus, selectedDepartment, selectedSection, attendanceFilter]);
+  }, [searchTerm, selectedYear, selectedStatus, selectedDepartment, selectedSection, attendanceFilter, students]);
 
   const clearFilters = () => {
     setSearchTerm('');
@@ -93,6 +82,21 @@ export const StudentsPage: React.FC = () => {
     setSelectedDepartment('All');
     setSelectedSection('All');
     setAttendanceFilter('All');
+  };
+
+  const handleModalOpen = (student: Student, modalType: string) => {
+    setSelectedStudent(student);
+    setActiveModal(modalType);
+    setOpenDropdown(null);
+  };
+
+  const handleModalClose = () => {
+    setSelectedStudent(null);
+    setActiveModal(null);
+  };
+
+  const handleStudentUpdate = (updatedStudent: Student) => {
+    setStudents(prev => prev.map(s => s.id === updatedStudent.id ? updatedStudent : s));
   };
 
   const getAttendanceColor = (attendance: number) => {
@@ -388,35 +392,35 @@ export const StudentsPage: React.FC = () => {
                               <div className="fixed inset-0 z-40" onClick={() => setOpenDropdown(null)} />
                               <div className="absolute right-0 top-8 mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-1">
                                 <button 
-                                  onClick={() => setOpenDropdown(null)} 
+                                  onClick={() => handleModalOpen(student, 'viewProfile')} 
                                   className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left"
                                 >
                                   <Eye className="h-4 w-4" />
                                   View Profile
                                 </button>
                                 <button 
-                                  onClick={() => setOpenDropdown(null)} 
+                                  onClick={() => handleModalOpen(student, 'editDetails')} 
                                   className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left"
                                 >
                                   <Edit className="h-4 w-4" />
                                   Edit Details
                                 </button>
                                 <button 
-                                  onClick={() => setOpenDropdown(null)} 
+                                  onClick={() => handleModalOpen(student, 'attendanceReport')} 
                                   className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left"
                                 >
                                   <BarChart3 className="h-4 w-4" />
                                   Attendance Report
                                 </button>
                                 <button 
-                                  onClick={() => setOpenDropdown(null)} 
+                                  onClick={() => handleModalOpen(student, 'attendanceHistory')} 
                                   className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left"
                                 >
                                   <History className="h-4 w-4" />
                                   Attendance History
                                 </button>
                                 <button 
-                                  onClick={() => setOpenDropdown(null)} 
+                                  onClick={() => handleModalOpen(student, 'sendMessage')} 
                                   className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left"
                                 >
                                   <MessageSquare className="h-4 w-4" />
@@ -464,19 +468,19 @@ export const StudentsPage: React.FC = () => {
                         <>
                           <div className="fixed inset-0 z-40" onClick={() => setOpenDropdown(null)} />
                           <div className="absolute right-0 top-8 mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-1">
-                            <button onClick={() => setOpenDropdown(null)} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left">
+                            <button onClick={() => handleModalOpen(student, 'viewProfile')} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left">
                               <Eye className="h-4 w-4" />View Profile
                             </button>
-                            <button onClick={() => setOpenDropdown(null)} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left">
+                            <button onClick={() => handleModalOpen(student, 'editDetails')} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left">
                               <Edit className="h-4 w-4" />Edit Details
                             </button>
-                            <button onClick={() => setOpenDropdown(null)} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left">
+                            <button onClick={() => handleModalOpen(student, 'attendanceReport')} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left">
                               <BarChart3 className="h-4 w-4" />Attendance Report
                             </button>
-                            <button onClick={() => setOpenDropdown(null)} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left">
+                            <button onClick={() => handleModalOpen(student, 'attendanceHistory')} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left">
                               <History className="h-4 w-4" />Attendance History
                             </button>
-                            <button onClick={() => setOpenDropdown(null)} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left">
+                            <button onClick={() => handleModalOpen(student, 'sendMessage')} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left">
                               <MessageSquare className="h-4 w-4" />Send Message
                             </button>
                           </div>
@@ -543,6 +547,38 @@ export const StudentsPage: React.FC = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Modals */}
+      {selectedStudent && (
+        <>
+          <ViewProfileModal
+            student={selectedStudent}
+            isOpen={activeModal === 'viewProfile'}
+            onClose={handleModalClose}
+          />
+          <EditDetailsModal
+            student={selectedStudent}
+            isOpen={activeModal === 'editDetails'}
+            onClose={handleModalClose}
+            onSave={handleStudentUpdate}
+          />
+          <AttendanceReportModal
+            student={selectedStudent}
+            isOpen={activeModal === 'attendanceReport'}
+            onClose={handleModalClose}
+          />
+          <AttendanceHistoryModal
+            student={selectedStudent}
+            isOpen={activeModal === 'attendanceHistory'}
+            onClose={handleModalClose}
+          />
+          <SendMessageModal
+            student={selectedStudent}
+            isOpen={activeModal === 'sendMessage'}
+            onClose={handleModalClose}
+          />
+        </>
+      )}
     </Layout>
   );
 };
