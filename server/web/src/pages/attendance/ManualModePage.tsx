@@ -98,33 +98,33 @@ export const ManualModePage: React.FC = () => {
     <Layout>
       <div className="w-full px-4 space-y-4">
         <div className="text-center">
-          <h1 className="text-2xl font-bold mb-1">Manual Attendance Mode</h1>
-          <p className="text-muted-foreground text-sm">Mark attendance manually from student list</p>
+          <h1 className="text-lg font-semibold text-gray-900 mb-1">Manual Attendance Mode</h1>
+          <p className="text-sm text-gray-600">Mark attendance manually from student list</p>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <Card className="bg-green-50 dark:bg-green-950/20 border-green-200">
-            <CardContent className="p-3 text-center">
-              <div className="text-xl font-bold text-green-600">{presentCount}</div>
+          <Card className="bg-green-50 border-green-200">
+            <CardContent className="p-3 pt-3 text-center">
+              <div className="text-xl font-semibold text-green-700">{presentCount}</div>
               <div className="text-xs text-green-600">Present</div>
             </CardContent>
           </Card>
-          <Card className="bg-red-50 dark:bg-red-950/20 border-red-200">
-            <CardContent className="p-3 text-center">
-              <div className="text-xl font-bold text-red-600">{absentCount}</div>
+          <Card className="bg-red-50 border-red-200">
+            <CardContent className="p-3 pt-3 text-center">
+              <div className="text-xl font-semibold text-red-700">{absentCount}</div>
               <div className="text-xs text-red-600">Absent</div>
             </CardContent>
           </Card>
-          <Card className="bg-blue-50 dark:bg-blue-950/20 border-blue-200">
-            <CardContent className="p-3 text-center">
-              <div className="text-xl font-bold text-blue-600">{Math.round((presentCount / students.length) * 100)}%</div>
+          <Card className="bg-blue-50 border-blue-200">
+            <CardContent className="p-3 pt-3 text-center">
+              <div className="text-xl font-semibold text-blue-700">{Math.round((presentCount / students.length) * 100)}%</div>
               <div className="text-xs text-blue-600">Rate</div>
             </CardContent>
           </Card>
-          <Card className="bg-gray-50 dark:bg-gray-950/20">
-            <CardContent className="p-2">
+          <Card className="bg-gray-50 border-gray-200">
+            <CardContent className="p-2 pt-2">
               <div className="flex gap-1">
-                <Button size="sm" onClick={markAllPresent} className="flex-1 h-7 text-xs bg-green-600 hover:bg-green-700">
+                <Button size="sm" onClick={markAllPresent} className="flex-1 h-7 text-xs">
                   All
                 </Button>
                 <Button size="sm" variant="outline" onClick={markAllAbsent} className="flex-1 h-7 text-xs">
@@ -136,8 +136,8 @@ export const ManualModePage: React.FC = () => {
         </div>
 
         <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-base">Roll Numbers Input</CardTitle>
+          <CardHeader>
+            <CardTitle>Roll Numbers Input</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex gap-2">
@@ -162,14 +162,14 @@ export const ManualModePage: React.FC = () => {
         </Card>
 
         <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="flex items-center justify-between text-base">
+          <CardHeader>
+            <CardTitle className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Users className="h-4 w-4" />
                 Students ({filteredStudents.length})
               </div>
               <div className="relative w-60">
-                <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-3 w-3 text-muted-foreground" />
+                <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-3 w-3 text-gray-400" />
                 <Input
                   placeholder="Search..."
                   value={searchQuery}
@@ -265,7 +265,7 @@ export const ManualModePage: React.FC = () => {
         </Card>
 
         <div className="flex justify-center">
-          <Button onClick={() => setShowSaveModal(true)}>
+          <Button onClick={() => setShowSaveModal(true)} size="sm">
             Save Attendance ({presentCount}/{students.length})
           </Button>
         </div>

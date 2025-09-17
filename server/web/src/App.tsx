@@ -20,6 +20,7 @@ import { StudentProfilePage } from './pages/profile/StudentProfilePage';
 import { QRModePage } from './pages/attendance/QRModePage';
 import { ManualModePage } from './pages/attendance/ManualModePage';
 import { HybridModePage } from './pages/attendance/HybridModePage';
+import { TakeAttendancePage } from './pages/attendance/TakeAttendancePage';
 import { LoginPage } from './pages/auth/LoginPage';
 import { useAuth } from './hooks/useAuth';
 import { ROUTES } from './constants';
@@ -67,6 +68,7 @@ function AppContent() {
               <Route path="/faculty" element={<FacultyPage />} />
               <Route path="/departments" element={<DepartmentsPage />} />
               <Route path="/calendar" element={<CalendarPage />} />
+              <Route path="/attendance/take" element={<TakeAttendancePage />} />
               <Route path="/attendance/qr-mode" element={<QRModePage />} />
               <Route path="/attendance/manual-mode" element={<ManualModePage />} />
               <Route path="/attendance/hybrid-mode" element={<HybridModePage />} />

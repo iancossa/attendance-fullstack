@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Layout } from '../../components/layout/Layout';
 import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
@@ -6,16 +7,15 @@ import { Input } from '../../components/ui/input';
 import { Badge } from '../../components/ui/badge';
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '../../components/ui/table';
 import { QrCode, UserCheck, Users, UserX, Clock, Search, Filter, Download, Edit, MoreVertical, Eye, History, MessageSquare } from 'lucide-react';
-import { TakeAttendanceModal } from '../../components/modals/TakeAttendanceModal';
 import { exportToExcel } from '../../utils/exportUtils';
 import { useAppStore } from '../../store';
 import { ATTENDANCE_RECORDS } from '../../data/mockStudents';
 
 export const AttendancePage: React.FC = () => {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDate, setSelectedDate] = useState('');
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
-  const [showModal, setShowModal] = useState(false);
 
   const { addNotification } = useAppStore();
   
@@ -38,14 +38,14 @@ export const AttendancePage: React.FC = () => {
             <Button 
               variant="outline" 
               size="sm"
-              onClick={() => setShowModal(true)}
+              onClick={() => navigate('/attendance/take')}
             >
               <QrCode className="h-4 w-4 mr-2" />
               QR Scanner
             </Button>
             <Button 
               size="sm"
-              onClick={() => setShowModal(true)}
+              onClick={() => navigate('/attendance/take')}
             >
               <UserCheck className="h-4 w-4 mr-2" />
               Mark Attendance
@@ -274,11 +274,6 @@ export const AttendancePage: React.FC = () => {
           </CardContent>
         </Card>
       </div>
-      
-      <TakeAttendanceModal 
-        isOpen={showModal}
-        onClose={() => setShowModal(false)}
-      />
     </Layout>
   );
 };

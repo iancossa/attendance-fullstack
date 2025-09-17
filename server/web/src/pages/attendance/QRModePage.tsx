@@ -212,15 +212,15 @@ export const QRModePage: React.FC = () => {
     <Layout>
       <div className="w-full px-4 space-y-4">
         <div className="text-center">
-          <h1 className="text-2xl font-bold mb-1">QR Code Attendance Mode</h1>
-          <p className="text-muted-foreground text-sm">Students scan QR code with mobile app</p>
+          <h1 className="text-lg font-semibold text-gray-900 mb-1">QR Code Attendance Mode</h1>
+          <p className="text-sm text-gray-600">Students scan QR code with mobile app</p>
           {sessionData && (
-            <Card className="mt-3 bg-primary/5 border-primary/20">
-              <CardContent className="p-3">
+            <Card className="mt-3 bg-orange-50 border-orange-200">
+              <CardContent className="p-3 pt-3">
                 <div className="text-sm">
                   <strong>{sessionData.courseName}</strong> • Section {sessionData.section} • {sessionData.sessionType}
                 </div>
-                <div className="text-xs text-muted-foreground">
+                <div className="text-xs text-gray-500">
                   {new Date().toLocaleDateString()} • {new Date().toLocaleTimeString()}
                 </div>
               </CardContent>
@@ -229,27 +229,27 @@ export const QRModePage: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <Card className="bg-green-50 dark:bg-green-950/20 border-green-200">
-            <CardContent className="p-3 text-center">
-              <div className="text-xl font-bold text-green-600">{presentCount}</div>
+          <Card className="bg-green-50 border-green-200">
+            <CardContent className="p-3 pt-3 text-center">
+              <div className="text-xl font-semibold text-green-700">{presentCount}</div>
               <div className="text-xs text-green-600">Present</div>
             </CardContent>
           </Card>
-          <Card className="bg-yellow-50 dark:bg-yellow-950/20 border-yellow-200">
-            <CardContent className="p-3 text-center">
-              <div className="text-xl font-bold text-yellow-600">3</div>
+          <Card className="bg-yellow-50 border-yellow-200">
+            <CardContent className="p-3 pt-3 text-center">
+              <div className="text-xl font-semibold text-yellow-700">3</div>
               <div className="text-xs text-yellow-600">Late</div>
             </CardContent>
           </Card>
-          <Card className="bg-red-50 dark:bg-red-950/20 border-red-200">
-            <CardContent className="p-3 text-center">
-              <div className="text-xl font-bold text-red-600">{totalStudents - presentCount - 3}</div>
+          <Card className="bg-red-50 border-red-200">
+            <CardContent className="p-3 pt-3 text-center">
+              <div className="text-xl font-semibold text-red-700">{totalStudents - presentCount - 3}</div>
               <div className="text-xs text-red-600">Absent</div>
             </CardContent>
           </Card>
-          <Card className="bg-blue-50 dark:bg-blue-950/20 border-blue-200">
-            <CardContent className="p-3 text-center">
-              <div className="text-xl font-bold text-blue-600">{Math.round((presentCount / totalStudents) * 100)}%</div>
+          <Card className="bg-blue-50 border-blue-200">
+            <CardContent className="p-3 pt-3 text-center">
+              <div className="text-xl font-semibold text-blue-700">{Math.round((presentCount / totalStudents) * 100)}%</div>
               <div className="text-xs text-blue-600">Rate</div>
             </CardContent>
           </Card>
@@ -257,8 +257,8 @@ export const QRModePage: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base">Live QR Code</CardTitle>
+            <CardHeader>
+              <CardTitle>Live QR Code</CardTitle>
             </CardHeader>
             <CardContent className="text-center space-y-4">
               <div className="p-6 bg-white rounded-lg inline-block">
@@ -275,99 +275,36 @@ export const QRModePage: React.FC = () => {
               </div>
 
               <div className="space-y-2">
-                <Button onClick={generateQRCode} disabled={isGenerating} className="w-full">
+                <Button onClick={generateQRCode} disabled={isGenerating} size="sm" className="w-full">
                   {isGenerating ? 'Generating...' : (qrValue ? 'Regenerate QR' : 'Generate QR Code')}
-                </Button>
-                
-                <Button 
-                  variant="outline" 
-                  onClick={() => setShowScanner(true)}
-                  className="w-full"
-                >
-                  📱 Scan QR as Student
-                </Button>
-              </div>
-              
-              <div className="flex gap-2">
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={async () => {
-                    console.log('🔍 Testing API connectivity...');
-                    try {
-                      const response = await fetch('http://localhost:5000/api/test');
-                      const data = await response.json();
-                      console.log('✅ Connectivity test:', data);
-                      alert(`API Connected: ${data.message}`);
-                    } catch (err) {
-                      console.error('❌ Connectivity failed:', err);
-                      alert('API Connection Failed - check console');
-                    }
-                  }}
-                >
-                  Test API
-                </Button>
-                
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={async () => {
-                    const session = localStorage.getItem('currentQRSession');
-                    if (!session) {
-                      alert('Generate QR first');
-                      return;
-                    }
-                    
-                    const { sessionId } = JSON.parse(session);
-                    console.log('🎯 Simulating student scan for session:', sessionId);
-                    
-                    try {
-                      const response = await fetch(`http://localhost:5000/api/qr/mark/${sessionId}`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                          studentId: 'STU' + Math.floor(Math.random() * 1000),
-                          studentName: 'Test Student ' + Math.floor(Math.random() * 100)
-                        })
-                      });
-                      const data = await response.json();
-                      console.log('✅ Student marked:', data);
-                      alert('Student attendance marked!');
-                    } catch (err) {
-                      console.error('❌ Mark failed:', err);
-                      alert('Mark attendance failed');
-                    }
-                  }}
-                >
-                  Simulate Scan
                 </Button>
               </div>
             </CardContent>
           </Card>
 
           <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base">Recent Scans</CardTitle>
+            <CardHeader>
+              <CardTitle>Recent Scans</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-2 max-h-64 overflow-y-auto">
                 {recentScans.length > 0 ? (
                   recentScans.slice(0, 10).map((scan, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 bg-green-50 dark:bg-green-950/20 rounded border border-green-200">
+                    <div key={index} className="flex items-center justify-between p-2 bg-green-50 rounded border border-green-200">
                       <div>
-                        <div className="font-medium text-sm">{scan.studentName}</div>
-                        <div className="text-xs text-muted-foreground">{scan.studentId}</div>
+                        <div className="font-medium text-sm text-gray-900">{scan.studentName}</div>
+                        <div className="text-xs text-gray-600">{scan.studentId}</div>
                       </div>
                       <div className="text-right">
-                        <Badge className="bg-green-500 text-white text-xs">Present</Badge>
-                        <div className="text-xs text-muted-foreground mt-1">
+                        <Badge className="bg-green-100 text-green-700 border-green-200 text-xs">Present</Badge>
+                        <div className="text-xs text-gray-500 mt-1">
                           {new Date(scan.markedAt).toLocaleTimeString()}
                         </div>
                       </div>
                     </div>
                   ))
                 ) : (
-                  <div className="text-center py-8 text-muted-foreground">
+                  <div className="text-center py-8 text-gray-500">
                     <QrCode className="h-12 w-12 mx-auto mb-3 opacity-30" />
                     <p className="text-sm">Waiting for QR scans...</p>
                     <p className="text-xs mt-1">Students will appear here as they scan</p>
@@ -379,7 +316,7 @@ export const QRModePage: React.FC = () => {
         </div>
 
         <div className="text-center">
-          <Button onClick={() => setShowSaveModal(true)}>
+          <Button onClick={() => setShowSaveModal(true)} size="sm">
             Save Attendance ({presentCount}/{totalStudents})
           </Button>
         </div>
@@ -390,26 +327,26 @@ export const QRModePage: React.FC = () => {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-              <div className="text-center p-6 bg-blue-50 dark:bg-blue-950/20 rounded-lg h-32 flex flex-col justify-center">
-                <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-full w-12 h-12 mx-auto mb-3 flex items-center justify-center">
-                  <Smartphone className="h-6 w-6 text-blue-600" />
+              <div className="text-center p-4 bg-orange-50 rounded-lg flex flex-col justify-center">
+                <div className="p-2 bg-orange-100 rounded-full w-10 h-10 mx-auto mb-2 flex items-center justify-center">
+                  <Smartphone className="h-5 w-5 text-orange-600" />
                 </div>
-                <h3 className="font-medium mb-1 text-sm">Step 1: Open App</h3>
-                <p className="text-xs text-muted-foreground">Launch mobile app</p>
+                <h3 className="font-medium mb-1 text-sm text-gray-900">Step 1: Open App</h3>
+                <p className="text-xs text-gray-600">Launch mobile app</p>
               </div>
-              <div className="text-center p-6 bg-green-50 dark:bg-green-950/20 rounded-lg h-32 flex flex-col justify-center">
-                <div className="p-3 bg-green-100 dark:bg-green-900/30 rounded-full w-12 h-12 mx-auto mb-3 flex items-center justify-center">
-                  <QrCode className="h-6 w-6 text-green-600" />
+              <div className="text-center p-4 bg-orange-50 rounded-lg flex flex-col justify-center">
+                <div className="p-2 bg-orange-100 rounded-full w-10 h-10 mx-auto mb-2 flex items-center justify-center">
+                  <QrCode className="h-5 w-5 text-orange-600" />
                 </div>
-                <h3 className="font-medium mb-1 text-sm">Step 2: Scan QR</h3>
-                <p className="text-xs text-muted-foreground">Point camera at QR code</p>
+                <h3 className="font-medium mb-1 text-sm text-gray-900">Step 2: Scan QR</h3>
+                <p className="text-xs text-gray-600">Point camera at QR code</p>
               </div>
-              <div className="text-center p-6 bg-purple-50 dark:bg-purple-950/20 rounded-lg h-32 flex flex-col justify-center">
-                <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-full w-12 h-12 mx-auto mb-3 flex items-center justify-center">
-                  <CheckCircle className="h-6 w-6 text-purple-600" />
+              <div className="text-center p-4 bg-orange-50 rounded-lg flex flex-col justify-center">
+                <div className="p-2 bg-orange-100 rounded-full w-10 h-10 mx-auto mb-2 flex items-center justify-center">
+                  <CheckCircle className="h-5 w-5 text-orange-600" />
                 </div>
-                <h3 className="font-medium mb-1 text-sm">Step 3: Confirm</h3>
-                <p className="text-xs text-muted-foreground">Attendance marked</p>
+                <h3 className="font-medium mb-1 text-sm text-gray-900">Step 3: Confirm</h3>
+                <p className="text-xs text-gray-600">Attendance marked</p>
               </div>
             </div>
           </CardContent>
