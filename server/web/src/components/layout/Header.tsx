@@ -15,14 +15,20 @@ import {
   Monitor,
   ChevronRight,
   Circle,
-  User
+  User,
+  Menu
 } from 'lucide-react';
 import { Avatar, AvatarFallback } from '../ui/avatar';
 import { useTheme } from '../../hooks/useTheme';
 import { useAuth } from '../../hooks/useAuth';
 import { useAppStore } from '../../store';
+import logo from '../../assets/img/logo.png';
 
-export const Header: React.FC = () => {
+interface HeaderProps {
+  onMobileMenuToggle?: () => void;
+}
+
+export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [notificationCount] = useState(0);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
@@ -51,29 +57,37 @@ export const Header: React.FC = () => {
   ] as const;
 
   return (
-    <header className="bg-background border-b border-border sticky top-0 z-50">
-      <div className="px-4 lg:px-6">
-        <div className="flex justify-between items-center h-16">
+    <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+      <div className="px-4">
+        <div className="flex justify-between items-center h-14">
           {/* Logo and Brand */}
           <div className="flex items-center gap-3">
-
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="md:hidden"
+              onClick={onMobileMenuToggle}
+            >
+              <Menu className="h-4 w-4" />
+            </Button>
+            <img src={logo} alt="Logo" className="h-16 w-16" />
             <div>
-              <h1 className="text-lg font-semibold text-foreground">
+              <h1 className="text-sm font-semibold text-gray-900">
                 Attendance Hunters
               </h1>
-              <p className="text-xs text-muted-foreground hidden sm:block">
+              <p className="text-xs text-gray-600 hidden sm:block">
                 Academic Year 2024-25
               </p>
             </div>
           </div>
           
           {/* Search Bar */}
-          <div className="hidden md:flex flex-1 max-w-md mx-6">
+          <div className="hidden md:flex flex-1 max-w-md mx-4">
             <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
               <Input 
-                placeholder="Search students, classes, or reports..."
-                className="pl-10 bg-muted/50 border-0 focus:bg-background"
+                placeholder="Search students, classes..."
+                className="pl-10 bg-gray-50 border-gray-200 text-sm h-8"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -81,7 +95,7 @@ export const Header: React.FC = () => {
           </div>
           
           {/* Actions */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             {/* Mobile Search */}
             <Button 
               variant="ghost" 
@@ -347,12 +361,12 @@ export const Header: React.FC = () => {
         
         {/* Mobile Search Overlay */}
         {mobileSearchOpen && (
-          <div className="md:hidden absolute top-full left-0 right-0 bg-background border-b border-border p-4 z-50 animate-in slide-in-from-top-2">
+          <div className="md:hidden absolute top-full left-0 right-0 bg-white border-b border-gray-200 p-4 z-50">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
               <Input 
-                placeholder="Search students, classes, or reports..."
-                className="pl-10 bg-muted/50 border-0 focus:bg-background"
+                placeholder="Search students, classes..."
+                className="pl-10 bg-gray-50 border-gray-200 text-sm h-8"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 autoFocus
