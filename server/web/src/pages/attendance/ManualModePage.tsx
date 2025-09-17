@@ -17,6 +17,7 @@ interface Student {
   class: string;
   section: string;
   present: boolean;
+  method: 'manual' | '';
 }
 
 export const ManualModePage: React.FC = () => {
@@ -41,7 +42,8 @@ export const ManualModePage: React.FC = () => {
             department: s.department,
             class: s.class,
             section: s.section,
-            present: false
+            present: false,
+            method: '' as 'manual' | ''
           }));
           setStudents(dbStudents);
         }
@@ -64,30 +66,34 @@ export const ManualModePage: React.FC = () => {
   const toggleAttendance = (studentId: number) => {
     setStudents(prev => {
       const updated = prev.map(student => 
-        student.id === studentId ? { ...student, present: !student.present } : student
+        student.id === studentId ? { ...student, present: !student.present, method: (!student.present ? 'manual' : '') as 'manual' | '' } : student
       );
-      const presentRollNumbers = updated.filter(s => s.present).map(s => s.studentId);
+      const presentRollNumbers = updated.map((student, index) => student.present ? index + 1 : null).filter(n => n !== null);
       setRollNumbers(presentRollNumbers.join(', '));
       return updated;
     });
   };
 
   const markAllPresent = () => {
-    setStudents(prev => prev.map(student => ({ ...student, present: true })));
-    setRollNumbers(students.map(s => s.studentId).join(', '));
+    setStudents(prev => prev.map(student => ({ ...student, present: true, method: 'manual' as 'manual' | '' })));
+    setRollNumbers(students.map((_, index) => index + 1).join(', '));
   };
 
   const markAllAbsent = () => {
-    setStudents(prev => prev.map(student => ({ ...student, present: false })));
+    setStudents(prev => prev.map(student => ({ ...student, present: false, method: '' as 'manual' | '' })));
     setRollNumbers('');
   };
 
   const handleRollNumbersChange = (value: string) => {
-    setRollNumbers(value);
-    const numbers = value.split(',').map(n => n.trim()).filter(n => n);
-    setStudents(prev => prev.map(student => ({
+    // Only allow numbers, commas, and spaces
+    const sanitized = value.replace(/[^0-9,\s]/g, '');
+    setRollNumbers(sanitized);
+    
+    const numbers = sanitized.split(',').map(n => n.trim()).filter(n => n && /^\d+$/.test(n));
+    setStudents(prev => prev.map((student, index) => ({
       ...student,
-      present: numbers.includes(student.studentId)
+      present: numbers.includes(String(index + 1)),
+      method: (numbers.includes(String(index + 1)) ? 'manual' : '') as 'manual' | ''
     })));
   };
 
@@ -142,7 +148,7 @@ export const ManualModePage: React.FC = () => {
           <CardContent>
             <div className="flex gap-2">
               <Input
-                placeholder="Enter student IDs separated by commas (e.g., STU001, CS2024001)"
+                placeholder="Enter roll numbers separated by commas (e.g., 1, 2, 15, 23)"
                 value={rollNumbers}
                 onChange={(e) => handleRollNumbersChange(e.target.value)}
                 className="text-sm flex-1"
@@ -155,8 +161,8 @@ export const ManualModePage: React.FC = () => {
                 Submit
               </Button>
             </div>
-            <p className="text-xs text-muted-foreground mt-1">
-              Type student IDs to mark present, or check students to auto-fill this field
+            <p className="text-xs text-gray-500 mt-1">
+              Enter natural numbers (1, 2, 3...) separated by commas
             </p>
           </CardContent>
         </Card>
@@ -183,20 +189,12 @@ export const ManualModePage: React.FC = () => {
             <div className="max-h-[400px] overflow-y-auto">
               <Table>
                 <TableHeader className="sticky top-0 bg-background z-10">
-                  <TableRow className="bg-muted/80 backdrop-blur-sm border-b h-10">
-                    <TableHead className="w-10 text-center p-2">
-                      <input
-                        type="checkbox"
-                        className="w-3 h-3 rounded"
-                        onChange={(e) => {
-                          if (e.target.checked) markAllPresent();
-                          else markAllAbsent();
-                        }}
-                      />
-                    </TableHead>
-                    <TableHead className="font-medium text-sm p-2">Student</TableHead>
-                    <TableHead className="font-medium text-center w-20 text-sm p-2">Student ID</TableHead>
-                    <TableHead className="font-medium text-center w-20 text-sm p-2">Status</TableHead>
+                  <TableRow className="bg-gray-50 border-b">
+                    <TableHead className="w-12 text-center">Select</TableHead>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Roll No.</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Method</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -213,48 +211,35 @@ export const ManualModePage: React.FC = () => {
                       </TableCell>
                     </TableRow>
                   ) : (
-                    filteredStudents.map((student, index) => (
-                      <TableRow 
-                      key={student.id} 
-                      className={`
-                        h-12 transition-colors cursor-pointer hover:bg-muted/30
-                        ${student.present 
-                          ? 'bg-green-50 dark:bg-green-950/20 border-l-2 border-l-green-500' 
-                          : ''
-                        }
-                        ${index % 2 === 0 ? 'bg-muted/5' : ''}
-                      `}
-                      onClick={() => toggleAttendance(student.id)}
-                    >
-                      <TableCell className="text-center p-2">
-                        <input
-                          type="checkbox"
-                          checked={student.present}
-                          onChange={() => toggleAttendance(student.id)}
-                          className="w-3 h-3 text-green-600 rounded"
-                          onClick={(e) => e.stopPropagation()}
-                        />
-                      </TableCell>
-                      <TableCell className="p-2">
-                        <div>
-                          <div className="font-medium text-sm">{student.name}</div>
-                          <div className="text-xs text-muted-foreground">{student.email}</div>
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-center font-mono text-xs font-medium p-2">
-                        <span className="px-1 py-0.5 bg-muted rounded text-xs">{student.studentId}</span>
-                      </TableCell>
-                      <TableCell className="text-center p-2">
-                        <Badge 
-                          className={`text-xs h-5 ${
-                            student.present 
-                              ? 'bg-green-100 text-green-700 border-green-200' 
-                              : 'bg-red-100 text-red-700 border-red-200'
-                          }`}
-                        >
-                          {student.present ? 'Present' : 'Absent'}
-                        </Badge>
-                      </TableCell>
+                    filteredStudents.map((student) => (
+                      <TableRow key={student.id} className="hover:bg-gray-50">
+                        <TableCell className="text-center">
+                          <input
+                            type="checkbox"
+                            checked={student.present}
+                            onChange={() => toggleAttendance(student.id)}
+                            className="w-4 h-4 text-orange-600 rounded"
+                          />
+                        </TableCell>
+                        <TableCell className="font-medium text-gray-900">{student.name}</TableCell>
+                        <TableCell className="text-gray-600">{filteredStudents.indexOf(student) + 1}</TableCell>
+                        <TableCell>
+                          <Badge className={student.present ? 'bg-green-100 text-green-700 border-green-200' : 'bg-red-100 text-red-700 border-red-200'}>
+                            {student.present ? 'Present' : 'Absent'}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          {student.method === 'manual' && (
+                            <Badge className="bg-purple-100 text-purple-700 border-purple-200">
+                              Manual
+                            </Badge>
+                          )}
+                          {!student.method && (
+                            <Badge variant="outline" className="text-gray-500">
+                              Not Marked
+                            </Badge>
+                          )}
+                        </TableCell>
                       </TableRow>
                     ))
                   )}
