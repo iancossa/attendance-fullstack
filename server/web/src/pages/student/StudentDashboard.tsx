@@ -132,74 +132,74 @@ export const StudentDashboard: React.FC = () => {
 
   return (
     <Layout>
-      <div className="space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="space-y-4">
+        <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-lg font-semibold text-gray-900">My Dashboard</h1>
-            <p className="text-sm text-gray-600 mt-1">
+            <h1 className="text-base font-semibold text-gray-900">My Dashboard</h1>
+            <p className="text-sm text-gray-600">
               {currentStudent ? `Welcome, ${currentStudent.name} (${currentStudent.studentId})` : 'Track your attendance and achievements'}
             </p>
           </div>
-          <Button onClick={handleQRScan} size="sm" className="gap-2 w-full sm:w-auto">
+          <Button onClick={handleQRScan} className="gap-2">
             <QrCode className="h-4 w-4" />
             Scan QR Code
           </Button>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="border-l-4 border-l-green-500 bg-green-50">
-            <CardContent className="p-4">
+        {/* Summary Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <Card className="border-l-4 border-l-orange-500">
+            <CardContent className="pt-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Overall Attendance</p>
-                  <div className="text-lg font-semibold text-gray-900 mt-1">87%</div>
-                  <p className="text-xs text-gray-500">This semester</p>
+                  <p className="text-xs font-medium text-gray-600">Overall Attendance</p>
+                  <div className="text-2xl font-semibold text-gray-900 mt-1">87%</div>
+                  <p className="text-xs text-green-600 mt-1">↗ +3% this week</p>
                 </div>
-                <div className="p-2 bg-green-100 rounded-lg">
-                  <TrendingUp className="h-4 w-4 text-green-600" />
+                <div className="p-2 bg-orange-100 rounded-lg">
+                  <TrendingUp className="h-4 w-4 text-orange-600" />
                 </div>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="border-l-4 border-l-blue-500 bg-blue-50">
-            <CardContent className="p-4">
+          <Card className="border-l-4 border-l-orange-500">
+            <CardContent className="pt-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Classes Today</p>
-                  <div className="text-lg font-semibold text-gray-900 mt-1">4</div>
-                  <p className="text-xs text-gray-500">2 completed</p>
+                  <p className="text-xs font-medium text-gray-600">Classes Today</p>
+                  <div className="text-2xl font-semibold text-gray-900 mt-1">4</div>
+                  <p className="text-xs text-gray-500 mt-1">2 completed</p>
                 </div>
-                <div className="p-2 bg-blue-100 rounded-lg">
-                  <Calendar className="h-4 w-4 text-blue-600" />
+                <div className="p-2 bg-orange-100 rounded-lg">
+                  <Calendar className="h-4 w-4 text-orange-600" />
                 </div>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="border-l-4 border-l-purple-500 bg-purple-50">
-            <CardContent className="p-4">
+          <Card className="border-l-4 border-l-orange-500">
+            <CardContent className="pt-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Current Streak</p>
-                  <div className="text-lg font-semibold text-gray-900 mt-1">12</div>
-                  <p className="text-xs text-gray-500">days present</p>
+                  <p className="text-xs font-medium text-gray-600">Current Streak</p>
+                  <div className="text-2xl font-semibold text-gray-900 mt-1">12</div>
+                  <p className="text-xs text-gray-500 mt-1">days present</p>
                 </div>
-                <div className="p-2 bg-purple-100 rounded-lg">
-                  <Target className="h-4 w-4 text-purple-600" />
+                <div className="p-2 bg-orange-100 rounded-lg">
+                  <Target className="h-4 w-4 text-orange-600" />
                 </div>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="border-l-4 border-l-orange-500 bg-orange-50">
-            <CardContent className="p-4">
+          <Card className="border-l-4 border-l-orange-500">
+            <CardContent className="pt-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Rank</p>
-                  <div className="text-lg font-semibold text-gray-900 mt-1">#8</div>
-                  <p className="text-xs text-gray-500">in class</p>
+                  <p className="text-xs font-medium text-gray-600">Class Rank</p>
+                  <div className="text-2xl font-semibold text-gray-900 mt-1">#8</div>
+                  <p className="text-xs text-gray-500 mt-1">out of 45 students</p>
                 </div>
                 <div className="p-2 bg-orange-100 rounded-lg">
                   <Trophy className="h-4 w-4 text-orange-600" />
@@ -209,95 +209,77 @@ export const StudentDashboard: React.FC = () => {
           </Card>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {/* Today's Classes */}
-          <div className="lg:col-span-2">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-sm font-medium text-gray-900">
-                  <Clock className="h-4 w-4" />
-                  Today's Classes
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {[
-                  { time: '09:00 AM', subject: 'Data Structures', room: 'CS-101', status: 'present', attendance: 95 },
-                  { time: '11:00 AM', subject: 'Algorithms', room: 'CS-102', status: 'present', attendance: 88 },
-                  { time: '02:00 PM', subject: 'Database Systems', room: 'CS-103', status: 'upcoming', attendance: 92 },
-                  { time: '04:00 PM', subject: 'Software Engineering', room: 'CS-104', status: 'upcoming', attendance: 85 }
-                ].map((item, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <div className="text-sm font-medium w-16">{item.time}</div>
-                      <div className="flex-1">
-                        <div className="font-medium text-sm">{item.subject}</div>
-                        <div className="text-sm text-gray-600">{item.room}</div>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="text-sm text-gray-600">{item.attendance}%</div>
-                      <Badge variant={item.status === 'present' ? 'default' : item.status === 'upcoming' ? 'secondary' : 'destructive'}>
-                        {item.status === 'present' && <CheckCircle className="h-3 w-3 mr-1" />}
-                        {item.status === 'absent' && <AlertTriangle className="h-3 w-3 mr-1" />}
-                        {item.status}
-                      </Badge>
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <div className="p-2 bg-orange-50 rounded-lg">
+                  <Clock className="h-4 w-4 text-orange-600" />
+                </div>
+                Today's Classes
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {[
+                { time: '09:00 AM', subject: 'Data Structures', room: 'CS-101', status: 'present', attendance: 95 },
+                { time: '11:00 AM', subject: 'Algorithms', room: 'CS-102', status: 'present', attendance: 88 },
+                { time: '02:00 PM', subject: 'Database Systems', room: 'CS-103', status: 'upcoming', attendance: 92 },
+                { time: '04:00 PM', subject: 'Software Engineering', room: 'CS-104', status: 'upcoming', attendance: 85 }
+              ].map((item, index) => (
+                <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <div className="text-sm font-medium w-16">{item.time}</div>
+                    <div className="flex-1">
+                      <div className="font-medium text-sm">{item.subject}</div>
+                      <div className="text-xs text-gray-600">{item.room}</div>
                     </div>
                   </div>
-                ))}
-              </CardContent>
-            </Card>
-          </div>
+                  <div className="flex items-center gap-2">
+                    <Badge className={
+                      item.status === 'present' 
+                        ? 'bg-green-100 text-green-700 border-green-200'
+                        : item.status === 'upcoming'
+                        ? 'bg-blue-100 text-blue-700 border-blue-200'
+                        : 'bg-red-100 text-red-700 border-red-200'
+                    }>
+                      {item.status === 'present' && <CheckCircle className="h-3 w-3 mr-1" />}
+                      {item.status === 'absent' && <AlertTriangle className="h-3 w-3 mr-1" />}
+                      {item.status}
+                    </Badge>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
 
-          {/* Achievements & Quick Actions */}
-          <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-sm font-medium text-gray-900">
-                  <Award className="h-4 w-4" />
-                  Recent Achievements
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {[
-                  { name: 'Perfect Week', desc: '100% attendance this week', color: 'bg-green-500' },
-                  { name: '10 Day Streak', desc: 'Attended 10 days in a row', color: 'bg-blue-500' },
-                  { name: 'Early Bird', desc: 'First to scan QR code', color: 'bg-purple-500' }
-                ].map((achievement, index) => (
-                  <div key={index} className="flex items-center gap-3 p-2 rounded-lg bg-gray-50">
-                    <div className={`w-8 h-8 rounded-full ${achievement.color} flex items-center justify-center`}>
-                      <Award className="h-4 w-4 text-white" />
-                    </div>
-                    <div>
-                      <div className="font-medium text-sm">{achievement.name}</div>
-                      <div className="text-xs text-gray-600">{achievement.desc}</div>
-                    </div>
+          {/* Subject Progress */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <div className="p-2 bg-orange-50 rounded-lg">
+                  <TrendingUp className="h-4 w-4 text-orange-600" />
+                </div>
+                Subject Progress
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {[
+                { subject: 'Data Structures', attendance: 95 },
+                { subject: 'Algorithms', attendance: 88 },
+                { subject: 'Database Systems', attendance: 92 },
+                { subject: 'Software Engineering', attendance: 85 }
+              ].map((item, index) => (
+                <div key={index} className="p-3 bg-gradient-to-r from-orange-50 to-transparent rounded-lg">
+                  <div className="flex justify-between text-sm mb-2">
+                    <span className="font-medium text-gray-700">{item.subject}</span>
+                    <span className="text-orange-600 font-medium">{item.attendance}%</span>
                   </div>
-                ))}
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-sm font-medium text-gray-900">Subject Progress</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {[
-                  { subject: 'Data Structures', attendance: 95, color: 'bg-green-500' },
-                  { subject: 'Algorithms', attendance: 88, color: 'bg-blue-500' },
-                  { subject: 'Database Systems', attendance: 92, color: 'bg-purple-500' },
-                  { subject: 'Software Eng.', attendance: 85, color: 'bg-orange-500' }
-                ].map((item, index) => (
-                  <div key={index} className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="font-medium">{item.subject}</span>
-                      <span className="text-gray-600">{item.attendance}%</span>
-                    </div>
-                    <Progress value={item.attendance} className="h-2" />
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-          </div>
+                  <Progress value={item.attendance} />
+                </div>
+              ))}
+            </CardContent>
+          </Card>
         </div>
 
         {/* QR Scanner */}

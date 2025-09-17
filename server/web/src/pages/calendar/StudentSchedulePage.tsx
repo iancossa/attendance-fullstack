@@ -73,38 +73,40 @@ export const StudentSchedulePage: React.FC = () => {
 
   return (
     <Layout>
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
+      <div className="space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Class Schedule</h1>
-            <p className="text-muted-foreground mt-1">Academic Year 2024-25 | September 1-5, 2025</p>
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Class Schedule</h1>
+            <p className="text-sm text-gray-600">Academic Year 2024-25 | September 1-5, 2025</p>
           </div>
-          <div className="text-sm text-muted-foreground">
-            Generated on {new Date().toLocaleDateString()} at {new Date().toLocaleTimeString()}
+          <div className="text-xs sm:text-sm text-gray-500">
+            Generated on {new Date().toLocaleDateString()}
           </div>
         </div>
 
-        <Card>
+        <Card className="border-l-4 border-l-orange-500">
           <CardHeader>
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <CardTitle className="flex items-center gap-2 mb-2">
-                  <Calendar className="h-5 w-5" />
+                <CardTitle className="flex items-center gap-2 mb-2 text-base">
+                  <div className="p-2 bg-orange-100 rounded-lg">
+                    <Calendar className="h-4 w-4 text-orange-600" />
+                  </div>
                   Student Timetable
                 </CardTitle>
-                <div className="space-y-1 text-sm text-muted-foreground">
-                  <div className="font-medium text-foreground">IT-3A-2025-26</div>
+                <div className="space-y-1 text-sm text-gray-600">
+                  <div className="font-medium text-gray-900">IT-3A-2025-26</div>
                   <div>PIET-1 - BTech - IT</div>
                   <div>06-09-2025</div>
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <Calendar className="h-4 w-4 text-muted-foreground" />
+                <Calendar className="h-4 w-4 text-gray-500" />
                 <Input
                   type="date"
                   value={selectedDate}
                   onChange={(e) => setSelectedDate(e.target.value)}
-                  className="w-auto min-w-[150px] border-input bg-background"
+                  className="w-auto min-w-[150px] text-sm"
                 />
               </div>
             </div>
@@ -114,9 +116,9 @@ export const StudentSchedulePage: React.FC = () => {
               <table className="w-full border-collapse">
                 <thead>
                   <tr className="border-b">
-                    <th className="text-left p-3 font-medium bg-muted/50">Time</th>
+                    <th className="text-left p-2 sm:p-3 font-medium bg-orange-50 text-orange-800 text-sm">Time</th>
                     {days.map(day => (
-                      <th key={day} className="text-center p-3 font-medium bg-muted/50 min-w-[200px]">
+                      <th key={day} className="text-center p-2 sm:p-3 font-medium bg-orange-50 text-orange-800 min-w-[180px] text-sm">
                         {day}
                       </th>
                     ))}
@@ -124,11 +126,11 @@ export const StudentSchedulePage: React.FC = () => {
                 </thead>
                 <tbody>
                   {timeSlots.map((time, timeIndex) => (
-                    <tr key={time} className="border-b hover:bg-muted/30">
-                      <td className="p-3 font-medium text-sm bg-muted/20">
+                    <tr key={time} className="border-b hover:bg-gray-50">
+                      <td className="p-2 sm:p-3 font-medium text-sm bg-orange-50/50">
                         <div className="flex items-center gap-2">
-                          <Clock className="h-4 w-4" />
-                          {time}
+                          <Clock className="h-4 w-4 text-orange-600" />
+                          <span className="text-gray-700">{time}</span>
                         </div>
                       </td>
                       {days.map(day => {
@@ -136,9 +138,9 @@ export const StudentSchedulePage: React.FC = () => {
                         
                         if (classInfo.code === 'BREAK') {
                           return (
-                            <td key={day} className="p-3 text-center">
-                              <div className="bg-orange-50 dark:bg-orange-900/20 p-2 rounded border-l-4 border-orange-400">
-                                <span className="text-orange-700 dark:text-orange-400 font-medium">
+                            <td key={day} className="p-2 text-center">
+                              <div className="bg-orange-100 p-2 rounded border-l-4 border-orange-500">
+                                <span className="text-orange-700 font-medium text-sm">
                                   Lunch Break
                                 </span>
                               </div>
@@ -147,21 +149,21 @@ export const StudentSchedulePage: React.FC = () => {
                         }
 
                         return (
-                          <td key={day} className="p-2">
-                            <div className="bg-background border rounded-lg p-3 hover:shadow-sm transition-shadow">
+                          <td key={day} className="p-1.5 sm:p-2">
+                            <div className="bg-white border border-orange-200 rounded-lg p-2 sm:p-3 hover:shadow-sm hover:border-orange-300 transition-all">
                               <div className="flex items-start justify-between mb-2">
-                                <span className="font-bold text-sm text-primary">{classInfo.code}</span>
+                                <span className="font-bold text-sm text-orange-700">{classInfo.code}</span>
                                 <Badge className={`text-xs ${getTypeColor(classInfo.type)}`}>
                                   {classInfo.type}
                                 </Badge>
                               </div>
                               <div className="space-y-1">
-                                <div className="font-medium text-sm">{classInfo.name}</div>
-                                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                                <div className="font-medium text-sm text-gray-900">{classInfo.name}</div>
+                                <div className="flex items-center gap-1 text-xs text-gray-600">
                                   <User className="h-3 w-3" />
                                   {classInfo.instructor}
                                 </div>
-                                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                                <div className="flex items-center gap-1 text-xs text-gray-600">
                                   <MapPin className="h-3 w-3" />
                                   {classInfo.room}
                                 </div>
