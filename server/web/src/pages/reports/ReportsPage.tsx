@@ -7,7 +7,7 @@ import { Badge } from '../../components/ui/badge';
 import { Input } from '../../components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components/ui/table';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../../components/ui/dropdown-menu';
-import { FileText, Download, TrendingUp, Users, AlertTriangle, Calendar, Search, BarChart3, MoreVertical } from 'lucide-react';
+import { FileText, Download, TrendingUp, Users, AlertTriangle, Calendar, Search, BarChart3, MoreVertical, X, Plus } from 'lucide-react';
 import { AttendanceChart, ClassPerformanceChart } from '../../components/charts';
 import { exportToExcel, exportToPDF } from '../../utils/exportUtils';
 import { useAppStore } from '../../store';
@@ -101,6 +101,14 @@ export const ReportsPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedType, setSelectedType] = useState('All');
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [showGenerateModal, setShowGenerateModal] = useState(false);
+  const [reportForm, setReportForm] = useState({
+    type: 'Weekly Report',
+    class: '',
+    dateFrom: '',
+    dateTo: '',
+    format: 'PDF'
+  });
   const { addNotification } = useAppStore();
 
   const filteredReports = mockReports.filter(report => {
@@ -141,115 +149,122 @@ export const ReportsPage: React.FC = () => {
   return (
     <Layout>
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Reports & Analytics</h1>
-            <p className="text-muted-foreground mt-1">Comprehensive attendance insights and analytics</p>
+            <h1 className="text-lg font-semibold text-gray-900">Reports & Analytics</h1>
+            <p className="text-sm text-gray-600 mt-1">Comprehensive attendance insights and analytics</p>
           </div>
-          <div className="flex items-center gap-3">
-            <Button variant="outline" className="gap-2">
+          <div className="flex items-center gap-2">
+            <Button 
+              variant="outline" 
+              className="gap-2 flex-1 sm:flex-none"
+              onClick={() => setShowGenerateModal(true)}
+            >
               <FileText className="h-4 w-4" />
-              Generate Report
+              <span className="hidden sm:inline">Generate Report</span>
             </Button>
             <Button 
-              className="gap-2"
+              className="gap-2 flex-1 sm:flex-none"
               onClick={() => {
                 exportToExcel(filteredReports, 'reports-data');
                 addNotification({ message: 'Reports exported successfully', type: 'success' });
               }}
             >
               <Download className="h-4 w-4" />
-              Export Data
+              <span className="hidden sm:inline">Export Data</span>
             </Button>
           </div>
         </div>
 
         {/* Search and Filters */}
-        <Card className="shadow-sm">
-          <CardContent className="p-4">
-            <div className="flex flex-col sm:flex-row gap-4">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input 
-                  placeholder="Search reports by type, class, or period..." 
-                  className="pl-10"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
-              <div className="flex gap-2">
-                <select 
-                  className="px-3 py-2 border border-input bg-background rounded-md text-sm"
-                  value={selectedType}
-                  onChange={(e) => setSelectedType(e.target.value)}
-                >
-                  <option value="All">All Types</option>
-                  <option value="Weekly Report">Weekly Report</option>
-                  <option value="Monthly Report">Monthly Report</option>
-                  <option value="Semester Report">Semester Report</option>
-                </select>
-              </div>
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-sm font-medium text-gray-900">
+              <Search className="h-4 w-4" />
+              Search & Filters
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-4 pt-6 space-y-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <input 
+                type="text"
+                placeholder="Search reports by type, class, or period..."
+                className="w-full h-9 pl-10 pr-3 border border-gray-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
             </div>
+            <select 
+              className="h-9 px-3 py-2 border border-gray-200 bg-white rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+              value={selectedType}
+              onChange={(e) => setSelectedType(e.target.value)}
+            >
+              <option value="All">All Types</option>
+              <option value="Weekly Report">Weekly Report</option>
+              <option value="Monthly Report">Monthly Report</option>
+              <option value="Semester Report">Semester Report</option>
+            </select>
           </CardContent>
         </Card>
 
         {/* Overview Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card className="border-l-4 border-l-primary bg-gradient-to-r from-primary/5 to-transparent">
-            <CardContent className="p-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <Card className="border-l-4 border-l-orange-500">
+            <CardContent className="p-4 pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Total Reports</p>
-                  <div className="text-3xl font-bold text-primary mt-2">{mockReports.length}</div>
-                  <p className="text-xs text-muted-foreground mt-1">generated this year</p>
+                  <p className="text-sm font-medium text-gray-600">Total Reports</p>
+                  <div className="text-2xl font-semibold text-gray-900 mt-2">{mockReports.length}</div>
+                  <p className="text-xs text-gray-500 mt-1">generated this year</p>
                 </div>
-                <div className="p-3 bg-primary/10 rounded-full">
-                  <FileText className="h-6 w-6 text-primary" />
+                <div className="p-2 bg-orange-50 rounded-lg">
+                  <FileText className="h-5 w-5 text-orange-600" />
                 </div>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="border-l-4 border-l-green-500 bg-gradient-to-r from-green-50 dark:from-green-950/30 to-transparent">
-            <CardContent className="p-6">
+          <Card className="border-l-4 border-l-orange-500 bg-green-200">
+            <CardContent className="p-4 pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Overall Attendance</p>
-                  <div className="text-3xl font-bold text-green-600 dark:text-green-400 mt-2">{Math.round(MOCK_STUDENTS.reduce((acc, s) => acc + (s.attendance || 0), 0) / MOCK_STUDENTS.length)}%</div>
-                  <p className="text-xs text-muted-foreground mt-1">semester average</p>
+                  <p className="text-sm font-medium text-gray-600">Overall Attendance</p>
+                  <div className="text-2xl font-semibold text-gray-900 mt-2">{Math.round(MOCK_STUDENTS.reduce((acc, s) => acc + (s.attendance || 0), 0) / MOCK_STUDENTS.length)}%</div>
+                  <p className="text-xs text-gray-500 mt-1">semester average</p>
                 </div>
-                <div className="p-3 bg-green-100 dark:bg-green-900/30 rounded-full">
-                  <TrendingUp className="h-6 w-6 text-green-600 dark:text-green-400" />
+                <div className="p-2 bg-green-100 rounded-lg">
+                  <TrendingUp className="h-5 w-5 text-green-600" />
                 </div>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="border-l-4 border-l-blue-500 bg-gradient-to-r from-blue-50 dark:from-blue-950/30 to-transparent">
-            <CardContent className="p-6">
+          <Card className="border-l-4 border-l-orange-500 bg-blue-200">
+            <CardContent className="p-4 pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Best Performing</p>
-                  <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mt-2">303191203</div>
-                  <p className="text-xs text-muted-foreground mt-1">91.0% attendance</p>
+                  <p className="text-sm font-medium text-gray-600">Best Performing</p>
+                  <div className="text-2xl font-semibold text-gray-900 mt-2">303191203</div>
+                  <p className="text-xs text-gray-500 mt-1">91.0% attendance</p>
                 </div>
-                <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-full">
-                  <BarChart3 className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                <div className="p-2 bg-blue-100 rounded-lg">
+                  <BarChart3 className="h-5 w-5 text-blue-600" />
                 </div>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="border-l-4 border-l-red-500 bg-gradient-to-r from-red-50 dark:from-red-950/30 to-transparent">
-            <CardContent className="p-6">
+          <Card className="border-l-4 border-l-orange-500 bg-red-200">
+            <CardContent className="p-4 pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">At-Risk Students</p>
-                  <div className="text-3xl font-bold text-red-600 dark:text-red-400 mt-2">{MOCK_STUDENTS.filter(s => (s.attendance || 0) < 75).length}</div>
-                  <p className="text-xs text-muted-foreground mt-1">below 75% attendance</p>
+                  <p className="text-sm font-medium text-gray-600">At-Risk Students</p>
+                  <div className="text-2xl font-semibold text-gray-900 mt-2">{MOCK_STUDENTS.filter(s => (s.attendance || 0) < 75).length}</div>
+                  <p className="text-xs text-gray-500 mt-1">below 75% attendance</p>
                 </div>
-                <div className="p-3 bg-red-100 dark:bg-red-900/30 rounded-full">
-                  <AlertTriangle className="h-6 w-6 text-red-600 dark:text-red-400" />
+                <div className="p-2 bg-red-100 rounded-lg">
+                  <AlertTriangle className="h-5 w-5 text-red-600" />
                 </div>
               </div>
             </CardContent>
@@ -257,57 +272,55 @@ export const ReportsPage: React.FC = () => {
         </div>
 
         {/* Reports Table */}
-        <Card className="shadow-sm">
-          <CardHeader className="pb-4">
+        <Card>
+          <CardHeader>
             <div className="flex items-center justify-between">
-              <CardTitle className="flex items-center gap-2">
-                <div className="p-2 bg-primary/10 rounded-lg">
-                  <FileText className="h-4 w-4 text-primary" />
-                </div>
+              <CardTitle className="flex items-center gap-2 text-sm font-medium text-gray-900">
+                <FileText className="h-4 w-4" />
                 Generated Reports ({filteredReports.length})
               </CardTitle>
-              <Badge variant="outline" className="text-muted-foreground">
+              <Badge variant="outline" className="text-gray-600">
                 Academic Year 2024-25
               </Badge>
             </div>
           </CardHeader>
-          <CardContent>
-            <div className="rounded-lg border border-border overflow-hidden">
+          <CardContent className="p-4 pt-6">
+            <div className="rounded-lg border border-gray-200 overflow-hidden">
               <Table>
                 <TableHeader>
-                  <TableRow className="bg-muted/50">
-                    <TableHead className="font-semibold">Report Details</TableHead>
-                    <TableHead className="font-semibold">Class & Period</TableHead>
-                    <TableHead className="font-semibold">Attendance Rate</TableHead>
-                    <TableHead className="font-semibold">Students</TableHead>
-                    <TableHead className="font-semibold">Generated</TableHead>
-                    <TableHead className="font-semibold">Status</TableHead>
-                    <TableHead className="font-semibold">Actions</TableHead>
+                  <TableRow className="bg-gray-50">
+                    <TableHead className="h-8 px-3 text-xs font-medium text-gray-600">Report Details</TableHead>
+                    <TableHead className="h-8 px-3 text-xs font-medium text-gray-600">Class & Period</TableHead>
+                    <TableHead className="h-8 px-3 text-xs font-medium text-gray-600">Attendance Rate</TableHead>
+                    <TableHead className="h-8 px-3 text-xs font-medium text-gray-600">Students</TableHead>
+                    <TableHead className="h-8 px-3 text-xs font-medium text-gray-600">Generated</TableHead>
+                    <TableHead className="h-8 px-3 text-xs font-medium text-gray-600">Status</TableHead>
+                    <TableHead className="h-8 px-3 text-xs font-medium text-gray-600">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {filteredReports.map((report) => (
-                    <TableRow key={report.id} className="hover:bg-muted/30 transition-colors">
-                      <TableCell>
+                    <TableRow key={report.id} className="hover:bg-gray-50 transition-colors">
+                      <TableCell className="px-3 py-2">
                         <div>
-                          <div className="font-medium">{report.type}</div>
+                          <div className="font-medium text-sm text-gray-900">{report.type}</div>
                           <Badge variant="outline" className="text-xs mt-1">
                             ID: {report.id}
                           </Badge>
                         </div>
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="px-3 py-2">
                         <div>
-                          <div className="font-medium text-sm">{report.class}</div>
-                          <div className="text-xs text-muted-foreground">{report.period}</div>
+                          <div className="font-medium text-sm text-gray-900">{report.class}</div>
+                          <div className="text-xs text-gray-500">{report.period}</div>
                         </div>
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="px-3 py-2">
                         <div className="flex items-center gap-2">
                           <span className={`font-medium ${getAttendanceColor(report.attendance)}`}>
                             {report.attendance}%
                           </span>
-                          <div className="w-16 bg-muted rounded-full h-2">
+                          <div className="w-16 bg-gray-200 rounded-full h-2">
                             <div 
                               className={`h-2 rounded-full ${getAttendanceBg(report.attendance)}`}
                               style={{ width: `${report.attendance}%` }}
@@ -315,19 +328,19 @@ export const ReportsPage: React.FC = () => {
                           </div>
                         </div>
                       </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-1 text-sm">
-                          <Users className="h-3 w-3 text-muted-foreground" />
+                      <TableCell className="px-3 py-2">
+                        <div className="flex items-center gap-1 text-sm text-gray-600">
+                          <Users className="h-3 w-3 text-gray-400" />
                           {report.students}
                         </div>
                       </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                      <TableCell className="px-3 py-2">
+                        <div className="flex items-center gap-1 text-sm text-gray-500">
                           <Calendar className="h-3 w-3" />
                           {report.generated}
                         </div>
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="px-3 py-2">
                         <Badge className={getStatusColor(report.status)}>
                           {report.status}
                         </Badge>
@@ -348,23 +361,20 @@ export const ReportsPage: React.FC = () => {
                             </Button>
                           </DropdownMenuTrigger>
                           {openDropdown === report.id && (
-                            <>
-                              <div className="fixed inset-0 bg-black/20 dark:bg-black/40 z-40" onClick={() => setOpenDropdown(null)} />
-                              <DropdownMenuContent>
-                                <DropdownMenuItem onClick={() => setOpenDropdown(null)}>
-                                  <div className="font-medium text-sm">View Report</div>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => setOpenDropdown(null)}>
-                                  <div className="font-medium text-sm">Download PDF</div>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => setOpenDropdown(null)}>
-                                  <div className="font-medium text-sm">Export Data</div>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => setOpenDropdown(null)}>
-                                  <div className="font-medium text-sm">Share Report</div>
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </>
+                            <DropdownMenuContent>
+                              <DropdownMenuItem onClick={() => setOpenDropdown(null)}>
+                                <div className="font-medium text-sm">View Report</div>
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => setOpenDropdown(null)}>
+                                <div className="font-medium text-sm">Download PDF</div>
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => setOpenDropdown(null)}>
+                                <div className="font-medium text-sm">Export Data</div>
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => setOpenDropdown(null)}>
+                                <div className="font-medium text-sm">Share Report</div>
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
                           )}
                         </DropdownMenu>
                       </TableCell>
@@ -375,23 +385,29 @@ export const ReportsPage: React.FC = () => {
             </div>
             
             {filteredReports.length === 0 && (
-              <div className="text-center py-8 text-muted-foreground">
-                <FileText className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                <p>No reports found</p>
-                <p className="text-sm">Try adjusting your search criteria or filters</p>
+              <div className="text-center py-12">
+                <div className="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                  <FileText className="h-12 w-12 text-gray-400" />
+                </div>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">No reports found</h3>
+                <p className="text-sm text-gray-600 mb-6 max-w-sm mx-auto">
+                  Try adjusting your search criteria or filters to find the reports you're looking for.
+                </p>
+                <Button className="gap-2" onClick={() => setShowGenerateModal(true)}>
+                  <FileText className="h-4 w-4" />
+                  Generate New Report
+                </Button>
               </div>
             )}
           </CardContent>
         </Card>
 
         {/* Analytics Charts */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Card className="shadow-sm">
-            <CardHeader className="pb-4">
-              <CardTitle className="flex items-center gap-2">
-                <div className="p-2 bg-primary/10 rounded-lg">
-                  <TrendingUp className="h-4 w-4 text-primary" />
-                </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-sm font-medium text-gray-900">
+                <TrendingUp className="h-4 w-4" />
                 Monthly Trends
               </CardTitle>
             </CardHeader>
@@ -406,12 +422,10 @@ export const ReportsPage: React.FC = () => {
             </CardContent>
           </Card>
           
-          <Card className="shadow-sm">
-            <CardHeader className="pb-4">
-              <CardTitle className="flex items-center gap-2">
-                <div className="p-2 bg-primary/10 rounded-lg">
-                  <BarChart3 className="h-4 w-4 text-primary" />
-                </div>
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-sm font-medium text-gray-900">
+                <BarChart3 className="h-4 w-4" />
                 Department Performance
               </CardTitle>
             </CardHeader>
@@ -426,13 +440,11 @@ export const ReportsPage: React.FC = () => {
         </div>
 
         {/* Quick Analytics */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Card className="shadow-sm">
-            <CardHeader className="pb-4">
-              <CardTitle className="flex items-center gap-2">
-                <div className="p-2 bg-primary/10 rounded-lg">
-                  <BarChart3 className="h-4 w-4 text-primary" />
-                </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-sm font-medium text-gray-900">
+                <BarChart3 className="h-4 w-4" />
                 Class Performance
               </CardTitle>
             </CardHeader>
@@ -461,12 +473,10 @@ export const ReportsPage: React.FC = () => {
             </CardContent>
           </Card>
 
-          <Card className="shadow-sm">
-            <CardHeader className="pb-4">
-              <CardTitle className="flex items-center gap-2">
-                <div className="p-2 bg-primary/10 rounded-lg">
-                  <AlertTriangle className="h-4 w-4 text-primary" />
-                </div>
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-sm font-medium text-gray-900">
+                <AlertTriangle className="h-4 w-4" />
                 Recent Alerts
               </CardTitle>
             </CardHeader>
@@ -492,6 +502,131 @@ export const ReportsPage: React.FC = () => {
             </CardContent>
           </Card>
         </div>
+
+        {/* Generate Report Modal */}
+        {showGenerateModal && (
+          <>
+            <div className="fixed inset-0 bg-black/50 z-50" onClick={() => setShowGenerateModal(false)} />
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+              <Card className="w-full max-w-md bg-white">
+                <CardHeader className="flex flex-row items-center justify-between">
+                  <CardTitle className="text-lg font-semibold text-gray-900">Generate Report</CardTitle>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="h-8 w-8 p-0"
+                    onClick={() => setShowGenerateModal(false)}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </CardHeader>
+                <CardContent className="p-6 pt-0 space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Report Type</label>
+                    <select 
+                      className="w-full h-9 px-3 py-2 border border-gray-200 bg-white rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                      value={reportForm.type}
+                      onChange={(e) => setReportForm({...reportForm, type: e.target.value})}
+                    >
+                      <option value="Weekly Report">Weekly Report</option>
+                      <option value="Monthly Report">Monthly Report</option>
+                      <option value="Semester Report">Semester Report</option>
+                      <option value="Custom Report">Custom Report</option>
+                    </select>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Class</label>
+                    <select 
+                      className="w-full h-9 px-3 py-2 border border-gray-200 bg-white rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                      value={reportForm.class}
+                      onChange={(e) => setReportForm({...reportForm, class: e.target.value})}
+                    >
+                      <option value="">Select Class</option>
+                      <option value="303105221">303105221 - Digital Electronics Laboratory</option>
+                      <option value="303191202">303191202 - Discrete Mathematics</option>
+                      <option value="303201301">303201301 - Data Structures and Algorithms</option>
+                      <option value="303105222">303105222 - Microprocessor Systems</option>
+                      <option value="303191203">303191203 - Linear Algebra</option>
+                    </select>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">From Date</label>
+                      <input 
+                        type="date"
+                        className="w-full h-9 px-3 py-2 border border-gray-200 bg-white rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                        value={reportForm.dateFrom}
+                        onChange={(e) => setReportForm({...reportForm, dateFrom: e.target.value})}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">To Date</label>
+                      <input 
+                        type="date"
+                        className="w-full h-9 px-3 py-2 border border-gray-200 bg-white rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                        value={reportForm.dateTo}
+                        onChange={(e) => setReportForm({...reportForm, dateTo: e.target.value})}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Export Format</label>
+                    <select 
+                      className="w-full h-9 px-3 py-2 border border-gray-200 bg-white rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                      value={reportForm.format}
+                      onChange={(e) => setReportForm({...reportForm, format: e.target.value})}
+                    >
+                      <option value="PDF">PDF Document</option>
+                      <option value="Excel">Excel Spreadsheet</option>
+                      <option value="CSV">CSV File</option>
+                    </select>
+                  </div>
+                  
+                  <div className="flex gap-3 pt-4">
+                    <Button 
+                      variant="outline" 
+                      className="flex-1"
+                      onClick={() => setShowGenerateModal(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button 
+                      className="flex-1"
+                      onClick={() => {
+                        if (!reportForm.class || !reportForm.dateFrom || !reportForm.dateTo) {
+                          addNotification({ message: 'Please fill in all required fields', type: 'error' });
+                          return;
+                        }
+                        
+                        // Simulate report generation
+                        addNotification({ message: `${reportForm.type} is being generated...`, type: 'info' });
+                        
+                        setTimeout(() => {
+                          addNotification({ message: `${reportForm.type} generated successfully!`, type: 'success' });
+                        }, 2000);
+                        
+                        setShowGenerateModal(false);
+                        setReportForm({
+                          type: 'Weekly Report',
+                          class: '',
+                          dateFrom: '',
+                          dateTo: '',
+                          format: 'PDF'
+                        });
+                      }}
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      Generate
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </>
+        )}
       </div>
     </Layout>
   );

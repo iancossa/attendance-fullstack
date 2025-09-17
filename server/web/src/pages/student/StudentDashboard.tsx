@@ -135,12 +135,12 @@ export const StudentDashboard: React.FC = () => {
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">My Dashboard</h1>
-            <p className="text-muted-foreground mt-1">
+            <h1 className="text-lg font-semibold text-gray-900">My Dashboard</h1>
+            <p className="text-sm text-gray-600 mt-1">
               {currentStudent ? `Welcome, ${currentStudent.name} (${currentStudent.studentId})` : 'Track your attendance and achievements'}
             </p>
           </div>
-          <Button onClick={handleQRScan} className="gap-2 w-full sm:w-auto">
+          <Button onClick={handleQRScan} size="sm" className="gap-2 w-full sm:w-auto">
             <QrCode className="h-4 w-4" />
             Scan QR Code
           </Button>
@@ -148,54 +148,62 @@ export const StudentDashboard: React.FC = () => {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="border-l-4 border-l-green-500">
+          <Card className="border-l-4 border-l-green-500 bg-green-50">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Overall Attendance</p>
-                  <div className="text-2xl font-bold text-green-600 mt-1">87%</div>
-                  <p className="text-xs text-muted-foreground">This semester</p>
+                  <p className="text-sm font-medium text-gray-600">Overall Attendance</p>
+                  <div className="text-lg font-semibold text-gray-900 mt-1">87%</div>
+                  <p className="text-xs text-gray-500">This semester</p>
                 </div>
-                <TrendingUp className="h-6 w-6 text-green-600" />
+                <div className="p-2 bg-green-100 rounded-lg">
+                  <TrendingUp className="h-4 w-4 text-green-600" />
+                </div>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="border-l-4 border-l-blue-500">
+          <Card className="border-l-4 border-l-blue-500 bg-blue-50">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Classes Today</p>
-                  <div className="text-2xl font-bold text-blue-600 mt-1">4</div>
-                  <p className="text-xs text-muted-foreground">2 completed</p>
+                  <p className="text-sm font-medium text-gray-600">Classes Today</p>
+                  <div className="text-lg font-semibold text-gray-900 mt-1">4</div>
+                  <p className="text-xs text-gray-500">2 completed</p>
                 </div>
-                <Calendar className="h-6 w-6 text-blue-600" />
+                <div className="p-2 bg-blue-100 rounded-lg">
+                  <Calendar className="h-4 w-4 text-blue-600" />
+                </div>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="border-l-4 border-l-purple-500">
+          <Card className="border-l-4 border-l-purple-500 bg-purple-50">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Current Streak</p>
-                  <div className="text-2xl font-bold text-purple-600 mt-1">12</div>
-                  <p className="text-xs text-muted-foreground">days present</p>
+                  <p className="text-sm font-medium text-gray-600">Current Streak</p>
+                  <div className="text-lg font-semibold text-gray-900 mt-1">12</div>
+                  <p className="text-xs text-gray-500">days present</p>
                 </div>
-                <Target className="h-6 w-6 text-purple-600" />
+                <div className="p-2 bg-purple-100 rounded-lg">
+                  <Target className="h-4 w-4 text-purple-600" />
+                </div>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="border-l-4 border-l-orange-500">
+          <Card className="border-l-4 border-l-orange-500 bg-orange-50">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Rank</p>
-                  <div className="text-2xl font-bold text-orange-600 mt-1">#8</div>
-                  <p className="text-xs text-muted-foreground">in class</p>
+                  <p className="text-sm font-medium text-gray-600">Rank</p>
+                  <div className="text-lg font-semibold text-gray-900 mt-1">#8</div>
+                  <p className="text-xs text-gray-500">in class</p>
                 </div>
-                <Trophy className="h-6 w-6 text-orange-600" />
+                <div className="p-2 bg-orange-100 rounded-lg">
+                  <Trophy className="h-4 w-4 text-orange-600" />
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -206,8 +214,8 @@ export const StudentDashboard: React.FC = () => {
           <div className="lg:col-span-2">
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Clock className="h-5 w-5" />
+                <CardTitle className="flex items-center gap-2 text-sm font-medium text-gray-900">
+                  <Clock className="h-4 w-4" />
                   Today's Classes
                 </CardTitle>
               </CardHeader>
@@ -218,16 +226,16 @@ export const StudentDashboard: React.FC = () => {
                   { time: '02:00 PM', subject: 'Database Systems', room: 'CS-103', status: 'upcoming', attendance: 92 },
                   { time: '04:00 PM', subject: 'Software Engineering', room: 'CS-104', status: 'upcoming', attendance: 85 }
                 ].map((item, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+                  <div key={index} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
                     <div className="flex items-center gap-3">
                       <div className="text-sm font-medium w-16">{item.time}</div>
                       <div className="flex-1">
-                        <div className="font-medium">{item.subject}</div>
-                        <div className="text-sm text-muted-foreground">{item.room}</div>
+                        <div className="font-medium text-sm">{item.subject}</div>
+                        <div className="text-sm text-gray-600">{item.room}</div>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <div className="text-sm text-muted-foreground">{item.attendance}%</div>
+                      <div className="text-sm text-gray-600">{item.attendance}%</div>
                       <Badge variant={item.status === 'present' ? 'default' : item.status === 'upcoming' ? 'secondary' : 'destructive'}>
                         {item.status === 'present' && <CheckCircle className="h-3 w-3 mr-1" />}
                         {item.status === 'absent' && <AlertTriangle className="h-3 w-3 mr-1" />}
@@ -244,8 +252,8 @@ export const StudentDashboard: React.FC = () => {
           <div className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Award className="h-5 w-5" />
+                <CardTitle className="flex items-center gap-2 text-sm font-medium text-gray-900">
+                  <Award className="h-4 w-4" />
                   Recent Achievements
                 </CardTitle>
               </CardHeader>
@@ -255,13 +263,13 @@ export const StudentDashboard: React.FC = () => {
                   { name: '10 Day Streak', desc: 'Attended 10 days in a row', color: 'bg-blue-500' },
                   { name: 'Early Bird', desc: 'First to scan QR code', color: 'bg-purple-500' }
                 ].map((achievement, index) => (
-                  <div key={index} className="flex items-center gap-3 p-2 rounded-lg bg-muted/50">
+                  <div key={index} className="flex items-center gap-3 p-2 rounded-lg bg-gray-50">
                     <div className={`w-8 h-8 rounded-full ${achievement.color} flex items-center justify-center`}>
                       <Award className="h-4 w-4 text-white" />
                     </div>
                     <div>
                       <div className="font-medium text-sm">{achievement.name}</div>
-                      <div className="text-xs text-muted-foreground">{achievement.desc}</div>
+                      <div className="text-xs text-gray-600">{achievement.desc}</div>
                     </div>
                   </div>
                 ))}
@@ -270,7 +278,7 @@ export const StudentDashboard: React.FC = () => {
 
             <Card>
               <CardHeader>
-                <CardTitle>Subject Progress</CardTitle>
+                <CardTitle className="text-sm font-medium text-gray-900">Subject Progress</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 {[
@@ -282,7 +290,7 @@ export const StudentDashboard: React.FC = () => {
                   <div key={index} className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span className="font-medium">{item.subject}</span>
-                      <span className="text-muted-foreground">{item.attendance}%</span>
+                      <span className="text-gray-600">{item.attendance}%</span>
                     </div>
                     <Progress value={item.attendance} className="h-2" />
                   </div>
@@ -303,10 +311,10 @@ export const StudentDashboard: React.FC = () => {
         {/* Scan Result Modal */}
         {scanResult && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <div className="bg-background rounded-lg shadow-lg max-w-md w-full p-6">
+            <div className="bg-white rounded-lg shadow-lg max-w-md w-full p-6">
               <div className="text-center py-4">
-                <div className="text-lg mb-4">{scanResult}</div>
-                <Button onClick={() => setScanResult(null)} className="w-full">
+                <div className="text-sm mb-4">{scanResult}</div>
+                <Button onClick={() => setScanResult(null)} size="sm" className="w-full">
                   Close
                 </Button>
               </div>

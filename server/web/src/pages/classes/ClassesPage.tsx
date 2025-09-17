@@ -45,16 +45,16 @@ export const ClassesPage: React.FC = () => {
 
   return (
     <Layout>
-      <div className="space-y-6">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div className="space-y-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
           <div>
-            <h1 className="text-2xl font-semibold text-foreground">Class Management</h1>
-            <p className="text-muted-foreground">Manage classes, faculty assignments, and student enrollment</p>
+            <h1 className="text-lg font-semibold text-gray-900">Class Management</h1>
+            <p className="text-sm text-gray-600">Manage classes, faculty assignments, and student enrollment</p>
           </div>
           <div className="flex gap-2">
             <Button 
               variant="outline" 
-              className="border-primary/20 text-primary hover:bg-primary/10"
+              size="sm"
               onClick={() => {
                 exportToExcel(filteredClasses, 'classes-data');
                 addNotification({ message: 'Classes data exported successfully', type: 'success' });
@@ -63,7 +63,7 @@ export const ClassesPage: React.FC = () => {
               <Upload className="h-4 w-4 mr-2" />
               Export Classes
             </Button>
-            <Button className="bg-primary hover:bg-primary/90">
+            <Button size="sm">
               <Plus className="h-4 w-4 mr-2" />
               Add Class
             </Button>
@@ -72,61 +72,61 @@ export const ClassesPage: React.FC = () => {
 
         {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="border-l-4 border-l-primary bg-gradient-to-r from-primary/5 to-transparent">
-            <CardContent className="p-6">
+          <Card className="border-l-4 border-l-orange-500">
+            <CardContent className="p-4 pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Total Classes</p>
-                  <div className="text-3xl font-bold text-primary mt-2">12</div>
-                  <p className="text-xs text-muted-foreground mt-1">across all departments</p>
+                  <p className="text-sm font-medium text-gray-600">Total Classes</p>
+                  <div className="text-2xl font-semibold text-gray-900 mt-2">12</div>
+                  <p className="text-xs text-gray-500 mt-1">across all departments</p>
                 </div>
-                <div className="p-3 bg-primary/10 rounded-full">
-                  <GraduationCap className="h-6 w-6 text-primary" />
+                <div className="p-2 bg-orange-50 rounded-lg">
+                  <GraduationCap className="h-5 w-5 text-orange-600" />
                 </div>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="border-l-4 border-l-blue-500 bg-gradient-to-r from-blue-50 dark:from-blue-950/30 to-transparent">
-            <CardContent className="p-6">
+          <Card className="border-l-4 border-l-orange-500">
+            <CardContent className="p-4 pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Total Students</p>
-                  <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mt-2">402</div>
-                  <p className="text-xs text-muted-foreground mt-1">enrolled students</p>
+                  <p className="text-sm font-medium text-gray-600">Total Students</p>
+                  <div className="text-2xl font-semibold text-gray-900 mt-2">402</div>
+                  <p className="text-xs text-gray-500 mt-1">enrolled students</p>
                 </div>
-                <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-full">
-                  <Users className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                <div className="p-2 bg-blue-50 rounded-lg">
+                  <Users className="h-5 w-5 text-blue-600" />
                 </div>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="border-l-4 border-l-purple-500 bg-gradient-to-r from-purple-50 dark:from-purple-950/30 to-transparent">
-            <CardContent className="p-6">
+          <Card className="border-l-4 border-l-orange-500">
+            <CardContent className="p-4 pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Faculty Members</p>
-                  <div className="text-3xl font-bold text-purple-600 dark:text-purple-400 mt-2">8</div>
-                  <p className="text-xs text-muted-foreground mt-1">active instructors</p>
+                  <p className="text-sm font-medium text-gray-600">Faculty Members</p>
+                  <div className="text-2xl font-semibold text-gray-900 mt-2">8</div>
+                  <p className="text-xs text-gray-500 mt-1">active instructors</p>
                 </div>
-                <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-full">
-                  <UserPlus className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                <div className="p-2 bg-purple-50 rounded-lg">
+                  <UserPlus className="h-5 w-5 text-purple-600" />
                 </div>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="border-l-4 border-l-green-500 bg-gradient-to-r from-green-50 dark:from-green-950/30 to-transparent">
-            <CardContent className="p-6">
+          <Card className="border-l-4 border-l-orange-500">
+            <CardContent className="p-4 pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Active Sessions</p>
-                  <div className="text-3xl font-bold text-green-600 dark:text-green-400 mt-2">3</div>
-                  <p className="text-xs text-muted-foreground mt-1">currently in progress</p>
+                  <p className="text-sm font-medium text-gray-600">Active Sessions</p>
+                  <div className="text-2xl font-semibold text-gray-900 mt-2">3</div>
+                  <p className="text-xs text-gray-500 mt-1">currently in progress</p>
                 </div>
-                <div className="p-3 bg-green-100 dark:bg-green-900/30 rounded-full">
-                  <Clock className="h-6 w-6 text-green-600 dark:text-green-400" />
+                <div className="p-2 bg-green-50 rounded-lg">
+                  <Clock className="h-5 w-5 text-green-600" />
                 </div>
               </div>
             </CardContent>
@@ -134,10 +134,10 @@ export const ClassesPage: React.FC = () => {
         </div>
 
         {/* Search */}
-        <Card className="shadow-sm">
-          <CardContent className="p-4">
+        <Card>
+          <CardContent className="p-4 pt-6">
             <div className="relative">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
               <Input 
                 placeholder="Search classes, codes, or faculty..." 
                 className="pl-10"
@@ -149,67 +149,67 @@ export const ClassesPage: React.FC = () => {
         </Card>
 
         {/* Classes Table */}
-        <Card className="shadow-sm">
-          <CardHeader className="pb-4">
+        <Card>
+          <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle className="flex items-center gap-2">
-                <div className="p-2 bg-primary/10 rounded-lg">
-                  <GraduationCap className="h-4 w-4 text-primary" />
+                <div className="p-2 bg-orange-50 rounded-lg">
+                  <GraduationCap className="h-4 w-4 text-orange-600" />
                 </div>
                 All Classes ({filteredClasses.length})
               </CardTitle>
-              <Badge variant="outline" className="text-muted-foreground">
+              <Badge variant="outline" className="text-gray-600">
                 Academic Year 2024-25
               </Badge>
             </div>
           </CardHeader>
           <CardContent>
-            <div className="rounded-lg border border-border overflow-hidden">
+            <div className="rounded-lg border border-gray-200 overflow-hidden">
               <Table>
                 <TableHeader>
-                  <TableRow className="bg-muted/50">
-                    <TableHead className="font-semibold">Class Details</TableHead>
-                    <TableHead className="font-semibold">Faculty</TableHead>
-                    <TableHead className="font-semibold">Enrollment</TableHead>
-                    <TableHead className="font-semibold">Schedule</TableHead>
-                    <TableHead className="font-semibold">Status</TableHead>
-                    <TableHead className="font-semibold">Actions</TableHead>
+                  <TableRow className="bg-gray-50">
+                    <TableHead>Class Details</TableHead>
+                    <TableHead>Faculty</TableHead>
+                    <TableHead>Enrollment</TableHead>
+                    <TableHead>Schedule</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {filteredClasses.map((classItem) => (
-                    <TableRow key={classItem.id} className="hover:bg-muted/30 transition-colors">
+                    <TableRow key={classItem.id} className="hover:bg-gray-50">
                       <TableCell>
                         <div>
-                          <div className="font-medium">{classItem.name}</div>
+                          <div className="font-medium text-gray-900">{classItem.name}</div>
                           <div className="flex items-center gap-2 mt-1">
                             <Badge variant="outline" className="text-xs">
                               {classItem.code}
                             </Badge>
-                            <span className="text-xs text-muted-foreground">{classItem.room}</span>
+                            <span className="text-xs text-gray-500">{classItem.room}</span>
                           </div>
                         </div>
                       </TableCell>
-                      <TableCell className="text-muted-foreground">{classItem.faculty}</TableCell>
+                      <TableCell className="text-gray-600">{classItem.faculty}</TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
-                          <span className="font-medium">{classItem.students}/{classItem.enrolled}</span>
-                          <div className="w-16 bg-muted rounded-full h-2">
+                          <span className="font-medium text-gray-900">{classItem.students}/{classItem.enrolled}</span>
+                          <div className="w-16 bg-gray-200 rounded-full h-2">
                             <div 
-                              className="bg-primary h-2 rounded-full" 
+                              className="bg-orange-500 h-2 rounded-full" 
                               style={{ width: `${(classItem.students / (classItem.enrolled || 1)) * 100}%` }}
                             ></div>
                           </div>
                         </div>
                       </TableCell>
                       <TableCell>
-                        <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                        <div className="flex items-center gap-1 text-sm text-gray-600">
                           <Calendar className="h-3 w-3" />
                           {classItem.schedule}
                         </div>
                       </TableCell>
                       <TableCell>
-                        <Badge className="bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-300 border-green-300 dark:border-green-700">
+                        <Badge className="bg-green-100 text-green-700 border-green-200">
                           {classItem.status}
                         </Badge>
                       </TableCell>
@@ -219,7 +219,7 @@ export const ClassesPage: React.FC = () => {
                             <Button 
                               variant="ghost" 
                               size="sm" 
-                              className="h-8 w-8 p-0 hover:bg-muted/80 transition-colors"
+                              className="h-8 w-8 p-0 hover:bg-gray-100 transition-colors"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 setOpenDropdown(openDropdown === classItem.id ? null : classItem.id);
@@ -230,15 +230,15 @@ export const ClassesPage: React.FC = () => {
                           </DropdownMenuTrigger>
                           {openDropdown === classItem.id && (
                             <>
-                              <div className="fixed inset-0 bg-black/20 dark:bg-black/40 z-40" onClick={() => setOpenDropdown(null)} />
+                              <div className="fixed inset-0 z-40" onClick={() => setOpenDropdown(null)} />
                               <DropdownMenuContent>
-                                <DropdownMenuItem onClick={() => setOpenDropdown(null)}>
+                                <DropdownMenuItem onClick={() => setOpenDropdown(null)} className="hover:bg-orange-50 hover:text-orange-600">
                                   <div className="font-medium text-sm">Edit Class</div>
                                 </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => setOpenDropdown(null)}>
+                                <DropdownMenuItem onClick={() => setOpenDropdown(null)} className="hover:bg-orange-50 hover:text-orange-600">
                                   <div className="font-medium text-sm">Manage Students</div>
                                 </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => setOpenDropdown(null)}>
+                                <DropdownMenuItem onClick={() => setOpenDropdown(null)} className="hover:bg-orange-50 hover:text-orange-600">
                                   <div className="font-medium text-sm">View Reports</div>
                                 </DropdownMenuItem>
                               </DropdownMenuContent>
@@ -253,7 +253,7 @@ export const ClassesPage: React.FC = () => {
             </div>
             
             {filteredClasses.length === 0 && (
-              <div className="text-center py-8 text-muted-foreground">
+              <div className="text-center py-8 text-gray-500">
                 <GraduationCap className="h-12 w-12 mx-auto mb-4 opacity-50" />
                 <p>No classes found</p>
                 <p className="text-sm">Try adjusting your search criteria</p>
