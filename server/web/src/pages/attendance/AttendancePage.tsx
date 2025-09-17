@@ -6,16 +6,23 @@ import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Badge } from '../../components/ui/badge';
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '../../components/ui/table';
-import { QrCode, UserCheck, Users, UserX, Clock, Search, Filter, Download, Edit, MoreVertical, Eye, History, MessageSquare } from 'lucide-react';
+import { QrCode, UserCheck, Users, UserX, Clock, Search, Filter, Download, Edit, MoreVertical, Eye, History, MessageSquare, BarChart3 } from 'lucide-react';
 import { exportToExcel } from '../../utils/exportUtils';
 import { useAppStore } from '../../store';
-import { ATTENDANCE_RECORDS } from '../../data/mockStudents';
+import { ATTENDANCE_RECORDS, MOCK_STUDENTS, Student } from '../../data/mockStudents';
+import { ViewProfileModal } from '../../components/modals/ViewProfileModal';
+import { EditDetailsModal } from '../../components/modals/EditDetailsModal';
+import { AttendanceReportModal } from '../../components/modals/AttendanceReportModal';
+import { AttendanceHistoryModal } from '../../components/modals/AttendanceHistoryModal';
+import { SendMessageModal } from '../../components/modals/SendMessageModal';
 
 export const AttendancePage: React.FC = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDate, setSelectedDate] = useState('');
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
+  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+  const [activeModal, setActiveModal] = useState<string | null>(null);
 
   const { addNotification } = useAppStore();
   
@@ -25,6 +32,20 @@ export const AttendancePage: React.FC = () => {
     record.student.toLowerCase().includes(searchTerm.toLowerCase()) ||
     record.class.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleModalOpen = (studentName: string, modalType: string) => {
+    const student = MOCK_STUDENTS.find(s => s.name === studentName);
+    if (student) {
+      setSelectedStudent(student);
+      setActiveModal(modalType);
+      setOpenDropdown(null);
+    }
+  };
+
+  const handleModalClose = () => {
+    setSelectedStudent(null);
+    setActiveModal(null);
+  };
 
   return (
     <Layout>
@@ -219,38 +240,38 @@ export const AttendancePage: React.FC = () => {
                               <div className="fixed inset-0 z-40" onClick={() => setOpenDropdown(null)} />
                               <div className="absolute right-0 top-8 mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-1">
                                 <button 
-                                  onClick={() => setOpenDropdown(null)} 
+                                  onClick={() => handleModalOpen(record.student, 'viewProfile')} 
                                   className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left"
                                 >
                                   <Eye className="h-4 w-4" />
                                   View Profile
                                 </button>
                                 <button 
-                                  onClick={() => setOpenDropdown(null)} 
+                                  onClick={() => handleModalOpen(record.student, 'editDetails')} 
                                   className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left"
                                 >
                                   <Edit className="h-4 w-4" />
                                   Edit Details
                                 </button>
                                 <button 
-                                  onClick={() => setOpenDropdown(null)} 
+                                  onClick={() => handleModalOpen(record.student, 'attendanceHistory')} 
                                   className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left"
                                 >
                                   <History className="h-4 w-4" />
                                   Attendance History
                                 </button>
                                 <button 
-                                  onClick={() => setOpenDropdown(null)} 
+                                  onClick={() => handleModalOpen(record.student, 'sendMessage')} 
                                   className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left"
                                 >
                                   <MessageSquare className="h-4 w-4" />
                                   Send Message
                                 </button>
                                 <button 
-                                  onClick={() => setOpenDropdown(null)} 
+                                  onClick={() => handleModalOpen(record.student, 'attendanceReport')} 
                                   className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left"
                                 >
-                                  <Download className="h-4 w-4" />
+                                  <BarChart3 className="h-4 w-4" />
                                   Attendance Report
                                 </button>
                               </div>
@@ -274,6 +295,38 @@ export const AttendancePage: React.FC = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Modals */}
+      {selectedStudent && (
+        <>
+          <ViewProfileModal
+            student={selectedStudent}
+            isOpen={activeModal === 'viewProfile'}
+            onClose={handleModalClose}
+          />
+          <EditDetailsModal
+            student={selectedStudent}
+            isOpen={activeModal === 'editDetails'}
+            onClose={handleModalClose}
+            onSave={() => {}}
+          />
+          <AttendanceReportModal
+            student={selectedStudent}
+            isOpen={activeModal === 'attendanceReport'}
+            onClose={handleModalClose}
+          />
+          <AttendanceHistoryModal
+            student={selectedStudent}
+            isOpen={activeModal === 'attendanceHistory'}
+            onClose={handleModalClose}
+          />
+          <SendMessageModal
+            student={selectedStudent}
+            isOpen={activeModal === 'sendMessage'}
+            onClose={handleModalClose}
+          />
+        </>
+      )}
     </Layout>
   );
 };

@@ -21,6 +21,9 @@ import { Avatar, AvatarFallback } from '../ui/avatar';
 import { useTheme } from '../../hooks/useTheme';
 import { useAuth } from '../../hooks/useAuth';
 import { useAppStore } from '../../store';
+import { AddStudentModal } from '../modals/AddStudentModal';
+import { AddClassModal } from '../modals/AddClassModal';
+import { ScheduleSessionModal } from '../modals/ScheduleSessionModal';
 import logo from '../../assets/img/logo.png';
 
 interface HeaderProps {
@@ -35,6 +38,7 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [themeSubmenuOpen, setThemeSubmenuOpen] = useState(false);
+  const [activeModal, setActiveModal] = useState<string | null>(null);
   const { theme, setTheme } = useTheme();
   const { logout, user } = useAuth();
   const { notifications, addNotification } = useAppStore();
@@ -46,6 +50,27 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
     { id: 'dark', name: 'Dark', icon: <Moon className="h-4 w-4" /> },
     { id: 'system', name: 'System', icon: <Monitor className="h-4 w-4" /> }
   ] as const;
+
+  const handleModalOpen = (modalType: string) => {
+    setActiveModal(modalType);
+    setQuickActionsOpen(false);
+  };
+
+  const handleModalClose = () => {
+    setActiveModal(null);
+  };
+
+  const handleAddStudent = (studentData: any) => {
+    addNotification({ message: 'Student added successfully', type: 'success' });
+  };
+
+  const handleAddClass = (classData: any) => {
+    addNotification({ message: 'Class created successfully', type: 'success' });
+  };
+
+  const handleScheduleSession = (sessionData: any) => {
+    addNotification({ message: 'Session scheduled successfully', type: 'success' });
+  };
 
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
@@ -113,21 +138,21 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
                     <DropdownMenuContent className="w-48">
                       <DropdownMenuItem 
                         className="hover:bg-orange-50 hover:text-orange-600"
-                        onClick={() => setQuickActionsOpen(false)}
+                        onClick={() => handleModalOpen('addStudent')}
                       >
                         <Users className="h-4 w-4 mr-2" />
                         Add Student
                       </DropdownMenuItem>
                       <DropdownMenuItem 
                         className="hover:bg-orange-50 hover:text-orange-600"
-                        onClick={() => setQuickActionsOpen(false)}
+                        onClick={() => handleModalOpen('addClass')}
                       >
                         <BookOpen className="h-4 w-4 mr-2" />
                         Create Class
                       </DropdownMenuItem>
                       <DropdownMenuItem 
                         className="hover:bg-orange-50 hover:text-orange-600"
-                        onClick={() => setQuickActionsOpen(false)}
+                        onClick={() => handleModalOpen('scheduleSession')}
                       >
                         <Calendar className="h-4 w-4 mr-2" />
                         Schedule Session
@@ -330,6 +355,23 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
           </div>
         )}
       </div>
+
+      {/* Modals */}
+      <AddStudentModal
+        isOpen={activeModal === 'addStudent'}
+        onClose={handleModalClose}
+        onSave={handleAddStudent}
+      />
+      <AddClassModal
+        isOpen={activeModal === 'addClass'}
+        onClose={handleModalClose}
+        onSave={handleAddClass}
+      />
+      <ScheduleSessionModal
+        isOpen={activeModal === 'scheduleSession'}
+        onClose={handleModalClose}
+        onSave={handleScheduleSession}
+      />
     </header>
   );
 };

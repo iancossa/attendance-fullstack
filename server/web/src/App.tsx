@@ -68,6 +68,7 @@ function AppContent() {
               <Route path="/faculty" element={<FacultyPage />} />
               <Route path="/departments" element={<DepartmentsPage />} />
               <Route path="/calendar" element={<CalendarPage />} />
+              <Route path="/take-attendance" element={<TakeAttendancePage />} />
               <Route path="/attendance/take" element={<TakeAttendancePage />} />
               <Route path="/attendance/qr-mode" element={<QRModePage />} />
               <Route path="/attendance/manual-mode" element={<ManualModePage />} />

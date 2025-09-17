@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Layout } from '../../components/layout/Layout';
 import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/card';
 import { Badge } from '../../components/ui/badge';
 import { Button } from '../../components/ui/button';
 import { Progress } from '../../components/ui/progress';
-import { TakeAttendanceModal } from '../../components/modals/TakeAttendanceModal';
 import { TrendingUp, Users, Calendar, AlertTriangle, Plus } from 'lucide-react';
 import { AttendanceChart, ClassPerformanceChart } from '../../components/charts';
 import { useAttendance } from '../../hooks/useAttendance';
 
 
 export const Dashboard: React.FC = () => {
-  const [isAttendanceModalOpen, setIsAttendanceModalOpen] = useState(false);
+  const navigate = useNavigate();
   const { summary } = useAttendance();
   return (
     <Layout>
@@ -22,7 +22,7 @@ export const Dashboard: React.FC = () => {
             <p className="text-sm text-gray-600">Welcome back, here's what's happening today</p>
           </div>
           <Button 
-            onClick={() => setIsAttendanceModalOpen(true)}
+            onClick={() => navigate('/take-attendance')}
           >
             <Plus className="h-4 w-4 mr-2" />
             Take Attendance
@@ -219,11 +219,6 @@ export const Dashboard: React.FC = () => {
           </Card>
         </div>
       </div>
-      
-      <TakeAttendanceModal 
-        isOpen={isAttendanceModalOpen}
-        onClose={() => setIsAttendanceModalOpen(false)}
-      />
     </Layout>
   );
 };
