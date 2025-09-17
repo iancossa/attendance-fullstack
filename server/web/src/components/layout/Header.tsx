@@ -13,7 +13,6 @@ import {
   Sun,
   Moon,
   Monitor,
-  ChevronRight,
   Circle,
   User,
   Menu
@@ -31,22 +30,14 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [notificationCount] = useState(0);
-  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
-  const [notificationDropdownOpen, setNotificationDropdownOpen] = useState(false);
-  const [quickActionDropdownOpen, setQuickActionDropdownOpen] = useState(false);
-  const [themeDropdownOpen, setThemeDropdownOpen] = useState(false);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+  const [quickActionsOpen, setQuickActionsOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [themeSubmenuOpen, setThemeSubmenuOpen] = useState(false);
   const { theme, setTheme } = useTheme();
   const { logout, user } = useAuth();
-  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const { notifications, addNotification } = useAppStore();
-
-  const closeAllDropdowns = () => {
-    setUserDropdownOpen(false);
-    setNotificationDropdownOpen(false);
-    setQuickActionDropdownOpen(false);
-    setThemeDropdownOpen(false);
-    setMobileSearchOpen(false);
-  };
 
   const notificationsList = notifications || [];
 
@@ -108,126 +99,95 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
 
             {/* Quick Actions - Admin Only */}
             {user?.role === 'admin' && (
-              <DropdownMenu open={quickActionDropdownOpen} onOpenChange={setQuickActionDropdownOpen}>
-              <DropdownMenuTrigger 
-                className="inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-muted/80 h-9 px-3"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (quickActionDropdownOpen) {
-                    setQuickActionDropdownOpen(false);
-                  } else {
-                    closeAllDropdowns();
-                    setQuickActionDropdownOpen(true);
-                  }
-                }}
-              >
-                <Plus className="h-4 w-4" />
-                <span className="hidden sm:inline">Quick Add</span>
-              </DropdownMenuTrigger>
-              {quickActionDropdownOpen && (
-                <>
-                  <div className="fixed inset-0 z-40" onClick={closeAllDropdowns} />
-                  <DropdownMenuContent className="w-48 z-50 bg-background dark:bg-background border-border dark:border-border shadow-lg">
-                    <DropdownMenuItem 
-                      onClick={() => {
-                        closeAllDropdowns();
-                        // Add student action
-                      }}
-                      className="hover:bg-primary/10 hover:text-primary transition-colors"
-                    >
-                      <Users className="h-4 w-4 mr-2" />
-                      Add Student
-                    </DropdownMenuItem>
-                    <DropdownMenuItem 
-                      onClick={() => {
-                        closeAllDropdowns();
-                        // Create class action
-                      }}
-                      className="hover:bg-primary/10 hover:text-primary transition-colors"
-                    >
-                      <BookOpen className="h-4 w-4 mr-2" />
-                      Create Class
-                    </DropdownMenuItem>
-                    <DropdownMenuItem 
-                      onClick={() => {
-                        closeAllDropdowns();
-                        // Schedule session action
-                      }}
-                      className="hover:bg-primary/10 hover:text-primary transition-colors"
-                    >
-                      <Calendar className="h-4 w-4 mr-2" />
-                      Schedule Session
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </>
-              )}
+              <DropdownMenu>
+                <DropdownMenuTrigger 
+                  className="inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-colors hover:bg-gray-100 h-8 px-3"
+                  onClick={() => setQuickActionsOpen(!quickActionsOpen)}
+                >
+                  <Plus className="h-4 w-4" />
+                  <span className="hidden sm:inline">Quick Add</span>
+                </DropdownMenuTrigger>
+                {quickActionsOpen && (
+                  <>
+                    <div className="fixed inset-0 z-40" onClick={() => setQuickActionsOpen(false)} />
+                    <DropdownMenuContent className="w-48">
+                      <DropdownMenuItem 
+                        className="hover:bg-orange-50 hover:text-orange-600"
+                        onClick={() => setQuickActionsOpen(false)}
+                      >
+                        <Users className="h-4 w-4 mr-2" />
+                        Add Student
+                      </DropdownMenuItem>
+                      <DropdownMenuItem 
+                        className="hover:bg-orange-50 hover:text-orange-600"
+                        onClick={() => setQuickActionsOpen(false)}
+                      >
+                        <BookOpen className="h-4 w-4 mr-2" />
+                        Create Class
+                      </DropdownMenuItem>
+                      <DropdownMenuItem 
+                        className="hover:bg-orange-50 hover:text-orange-600"
+                        onClick={() => setQuickActionsOpen(false)}
+                      >
+                        <Calendar className="h-4 w-4 mr-2" />
+                        Schedule Session
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </>
+                )}
               </DropdownMenu>
             )}
 
             {/* Notifications */}
-            <DropdownMenu open={notificationDropdownOpen} onOpenChange={setNotificationDropdownOpen}>
+            <DropdownMenu>
               <DropdownMenuTrigger 
-                className="relative inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-muted/80 h-9 px-3"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (notificationDropdownOpen) {
-                    setNotificationDropdownOpen(false);
-                  } else {
-                    closeAllDropdowns();
-                    setNotificationDropdownOpen(true);
-                  }
-                }}
+                className="relative inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-colors hover:bg-gray-100 h-8 px-3"
+                onClick={() => setNotificationsOpen(!notificationsOpen)}
               >
                 <Bell className={`h-4 w-4 ${notificationCount > 0 ? 'animate-pulse' : ''}`} />
                 <span className="hidden sm:inline">Notifications</span>
                 {notificationCount > 0 && (
-                  <Badge className="absolute -top-1 -right-1 h-5 w-5 p-0 text-xs bg-red-500 hover:bg-red-500 animate-pulse">
+                  <Badge className="absolute -top-1 -right-1 h-5 w-5 p-0 text-xs bg-red-500">
                     {notificationCount}
                   </Badge>
                 )}
               </DropdownMenuTrigger>
-              {notificationDropdownOpen && (
+              {notificationsOpen && (
                 <>
-                  <div className="fixed inset-0 z-40" onClick={closeAllDropdowns} />
-                  <DropdownMenuContent className="w-80 z-50 bg-background dark:bg-background border-border dark:border-border shadow-lg">
-                    <div className="p-3 border-b bg-muted/30">
-                      <div className="flex items-center justify-between">
-                        <h4 className="font-medium">Notifications</h4>
-                        <Button variant="ghost" size="sm" className="text-xs h-6 px-2">
-                          Mark all read
-                        </Button>
-                      </div>
-                      <p className="text-sm text-muted-foreground">{notificationsList.length} unread</p>
+                  <div className="fixed inset-0 z-40" onClick={() => setNotificationsOpen(false)} />
+                  <DropdownMenuContent className="w-80">
+                <div className="p-3 border-b bg-gray-50">
+                  <div className="flex items-center justify-between">
+                    <h4 className="font-medium text-gray-900">Notifications</h4>
+                    <Button variant="ghost" size="sm" className="text-xs h-6 px-2">
+                      Mark all read
+                    </Button>
+                  </div>
+                  <p className="text-sm text-gray-600">{notificationsList.length} unread</p>
+                </div>
+                <div className="max-h-64 overflow-y-auto">
+                  {notificationsList.length === 0 ? (
+                    <div className="p-8 text-center">
+                      <Bell className="h-12 w-12 text-gray-300 mx-auto mb-3" />
+                      <p className="text-sm text-gray-600 mb-1">No notifications</p>
+                      <p className="text-xs text-gray-500">You're all caught up!</p>
                     </div>
-                    <div className="max-h-64 overflow-y-auto">
-                      {notificationsList.length === 0 ? (
-                        <div className="p-8 text-center">
-                          <Bell className="h-12 w-12 text-muted-foreground/30 mx-auto mb-3" />
-                          <p className="text-sm text-muted-foreground mb-1">No notifications</p>
-                          <p className="text-xs text-muted-foreground">You're all caught up!</p>
+                  ) : (
+                    notificationsList.map((notification) => (
+                      <DropdownMenuItem key={notification.id} className="p-3 hover:bg-gray-50">
+                        <div className="flex-1">
+                          <p className="font-medium text-sm text-gray-900">{notification.type.toUpperCase()}</p>
+                          <p className="text-xs text-gray-600 mb-1">{notification.message}</p>
+                          <p className="text-xs text-gray-500">Just now</p>
                         </div>
-                      ) : (
-                        notificationsList.map((notification) => (
-                          <DropdownMenuItem 
-                            key={notification.id} 
-                            className="p-3 cursor-pointer hover:bg-muted/50 transition-colors border-l-2 border-l-transparent hover:border-l-primary" 
-                            onClick={() => closeAllDropdowns()}
-                          >
-                            <div className="flex items-start gap-3 flex-1">
-                              <div className="flex-1">
-                                <p className="font-medium text-sm">{notification.type.toUpperCase()}</p>
-                                <p className="text-xs text-muted-foreground mb-1">{notification.message}</p>
-                                <p className="text-xs text-muted-foreground">Just now</p>
-                              </div>
-                            </div>
-                          </DropdownMenuItem>
-                        ))
-                      )}
-                    </div>
-                    <div className="border-t mx-1" />
+                      </DropdownMenuItem>
+                    ))
+                  )}
+                </div>
+                <div className="border-t" />
                     <DropdownMenuItem 
-                      className="p-3 text-center text-sm text-primary cursor-pointer hover:bg-primary/10 transition-colors font-medium" 
-                      onClick={() => closeAllDropdowns()}
+                      className="p-3 text-center text-sm text-orange-600 hover:bg-orange-50 font-medium"
+                      onClick={() => setNotificationsOpen(false)}
                     >
                       View all notifications
                     </DropdownMenuItem>
@@ -239,41 +199,33 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
 
 
             {/* User Menu */}
-            <DropdownMenu open={userDropdownOpen} onOpenChange={setUserDropdownOpen}>
+            <DropdownMenu>
               <DropdownMenuTrigger 
-                className="relative inline-flex items-center justify-center rounded-full text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-muted/80 h-9 w-9"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (userDropdownOpen) {
-                    setUserDropdownOpen(false);
-                  } else {
-                    closeAllDropdowns();
-                    setUserDropdownOpen(true);
-                  }
-                }}
+                className="inline-flex items-center justify-center rounded-full transition-colors hover:bg-gray-100 h-8 w-8"
+                onClick={() => setUserMenuOpen(!userMenuOpen)}
               >
-                <Avatar className="h-8 w-8 ring-2 ring-transparent hover:ring-primary/20 transition-all">
-                  <AvatarFallback className="bg-primary/10 text-primary">
+                <Avatar className="h-8 w-8">
+                  <AvatarFallback className="bg-orange-100 text-orange-600">
                     <User className="h-4 w-4" />
                   </AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
-              {userDropdownOpen && (
+              {userMenuOpen && (
                 <>
-                  <div className="fixed inset-0 z-40" onClick={closeAllDropdowns} />
-                  <DropdownMenuContent className="w-64 z-50 bg-background dark:bg-background border-border dark:border-border shadow-lg">
-                    <div className="p-3 border-b bg-gradient-to-r from-primary/5 to-transparent">
+                  <div className="fixed inset-0 z-40" onClick={() => setUserMenuOpen(false)} />
+                  <DropdownMenuContent className="w-64">
+                    <div className="p-3 border-b bg-gradient-to-r from-orange-50 to-transparent">
                       <div className="flex items-center gap-3">
                         <Avatar className="h-10 w-10">
-                          <AvatarFallback className="bg-primary/10 text-primary">
+                          <AvatarFallback className="bg-orange-100 text-orange-600">
                             <User className="h-5 w-5" />
                           </AvatarFallback>
                         </Avatar>
                         <div>
-                          <p className="font-medium">
+                          <p className="font-medium text-gray-900">
                             {user?.name || 'Student User'}
                           </p>
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-sm text-gray-600">
                             {user?.email || 'student@university.edu'}
                           </p>
                         </div>
@@ -284,42 +236,45 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
                       </Badge>
                     </div>
                     <DropdownMenuItem 
-                      onClick={() => closeAllDropdowns()}
-                      className="hover:bg-primary/10 hover:text-primary transition-colors"
+                      className="hover:bg-orange-50 hover:text-orange-600"
+                      onClick={() => setUserMenuOpen(false)}
                     >
                       Profile Settings
                     </DropdownMenuItem>
                     <div className="relative">
                       <DropdownMenuItem 
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setThemeDropdownOpen(!themeDropdownOpen);
-                        }}
-                        className="flex items-center justify-between hover:bg-primary/10 hover:text-primary transition-colors"
+                        className="flex items-center justify-between hover:bg-orange-50 hover:text-orange-600"
+                        onClick={() => setThemeSubmenuOpen(!themeSubmenuOpen)}
                       >
-                        <div className="flex items-center">
-                          Theme
+                        <div className="flex items-center gap-2">
+                          {theme === 'light' && <Sun className="h-4 w-4" />}
+                          {theme === 'dark' && <Moon className="h-4 w-4" />}
+                          {theme === 'system' && <Monitor className="h-4 w-4" />}
+                          <span>Theme</span>
                         </div>
-                        <ChevronRight className={`h-3 w-3 transition-transform ${themeDropdownOpen ? 'rotate-90' : ''}`} />
+                        <span className="text-xs text-gray-500">
+                          {theme === 'light' && 'Light'}
+                          {theme === 'dark' && 'Dark'}
+                          {theme === 'system' && 'System'}
+                        </span>
                       </DropdownMenuItem>
-                      {themeDropdownOpen && (
-                        <div className="absolute right-full top-0 mr-1 w-40 bg-background dark:bg-background border border-border dark:border-border rounded-lg shadow-xl z-50 py-1 animate-in slide-in-from-right-2">
+                      {themeSubmenuOpen && (
+                        <div className="absolute right-full top-0 mr-1 w-32 bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-1">
                           {themeOptions.map((themeOption) => (
                             <div
                               key={themeOption.id}
-                              className="flex items-center justify-between px-3 py-2 text-sm cursor-pointer hover:bg-primary/10 hover:text-primary transition-colors"
+                              className="flex items-center justify-between px-3 py-2 text-sm cursor-pointer hover:bg-orange-50 hover:text-orange-600 transition-colors"
                               onClick={() => {
                                 setTheme(themeOption.id);
-                                setThemeDropdownOpen(false);
+                                setThemeSubmenuOpen(false);
                               }}
                             >
-                              <div className="flex items-center">
+                              <div className="flex items-center gap-2">
+                                {themeOption.icon}
                                 <span>{themeOption.name}</span>
                               </div>
-                              {theme === themeOption.id ? (
-                                <Circle className="h-2 w-2 fill-primary text-primary" />
-                              ) : (
-                                <Circle className="h-2 w-2 text-muted-foreground" />
+                              {theme === themeOption.id && (
+                                <Circle className="h-2 w-2 fill-orange-500 text-orange-500" />
                               )}
                             </div>
                           ))}
@@ -328,26 +283,26 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
                     </div>
                     <DropdownMenuItem 
                       onClick={() => {
-                        closeAllDropdowns();
                         window.location.href = '/settings';
+                        setUserMenuOpen(false);
                       }}
-                      className="hover:bg-primary/10 hover:text-primary transition-colors"
+                      className="hover:bg-orange-50 hover:text-orange-600"
                     >
                       System Settings
                     </DropdownMenuItem>
                     <DropdownMenuItem 
-                      onClick={() => closeAllDropdowns()}
-                      className="hover:bg-primary/10 hover:text-primary transition-colors"
+                      className="hover:bg-orange-50 hover:text-orange-600"
+                      onClick={() => setUserMenuOpen(false)}
                     >
                       Help & Support
                     </DropdownMenuItem>
-                    <div className="border-t mx-1" />
+                    <div className="border-t" />
                     <DropdownMenuItem 
-                      className="text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors" 
+                      className="text-red-600 hover:bg-red-50" 
                       onClick={() => {
-                        closeAllDropdowns();
                         logout();
                         addNotification({ message: 'Logged out successfully', type: 'info' });
+                        setUserMenuOpen(false);
                       }}
                     >
                       Sign Out
