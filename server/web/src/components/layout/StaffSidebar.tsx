@@ -101,12 +101,14 @@ export const StaffSidebar: React.FC<StaffSidebarProps> = ({ isMobileOpen = false
       `}>
         <div className="h-full flex flex-col">
           {/* Sidebar Header */}
-          <div className="h-14 flex items-center px-3 border-b border-gray-200">
-            <img src={logo} alt="Logo" className="h-8 w-8" />
-            <div className="ml-2">
-              <h1 className="text-sm font-semibold text-gray-900">Attendance Hunters</h1>
+          <header className="bg-white border-b border-gray-200">
+            <div className="px-4">
+              <div className="flex items-center h-14">
+                <img src={logo} alt="Logo" className="h-8 w-8" />
+                <h1 className="ml-3 text-sm font-semibold text-gray-900">Attendance Hunters</h1>
+              </div>
             </div>
-          </div>
+          </header>
           <nav className="flex-1 p-3 overflow-y-auto pt-4">
             {renderMenuGroup('Main', mainMenuItems)}
             {analyticsItems.length > 0 && renderMenuGroup('Analytics', analyticsItems)}
