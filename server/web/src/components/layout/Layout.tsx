@@ -34,10 +34,10 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   };
   
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Header onMobileMenuToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)} />
-      <div className="flex h-[calc(100vh-3.5rem)]">
-        {renderSidebar()}
+    <div className="min-h-screen bg-gray-50 flex">
+      {renderSidebar()}
+      <div className="flex-1 flex flex-col">
+        <Header onMobileMenuToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)} />
         <main className="flex-1 overflow-y-auto">
           <div className="p-4 md:p-6 max-w-full mx-auto">
             <div className="space-y-4">

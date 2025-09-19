@@ -83,7 +83,14 @@ function AppContent() {
               <Route path="/staff-dashboard" element={<StaffDashboard />} />
               <Route path={ROUTES.ATTENDANCE} element={<AttendancePage />} />
               <Route path={ROUTES.CLASSES} element={<ClassesPage />} />
+              <Route path="/students" element={<StudentsPage />} />
+              <Route path="/calendar" element={<CalendarPage />} />
               <Route path={ROUTES.REPORTS} element={<ReportsPage />} />
+              <Route path={ROUTES.SETTINGS} element={<SettingsPage />} />
+              <Route path="/attendance/take" element={<TakeAttendancePage />} />
+              <Route path="/attendance/qr-mode" element={<QRModePage />} />
+              <Route path="/attendance/manual-mode" element={<ManualModePage />} />
+              <Route path="/attendance/hybrid-mode" element={<HybridModePage />} />
             </>
           )}
           

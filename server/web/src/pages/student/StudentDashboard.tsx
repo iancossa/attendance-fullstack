@@ -41,22 +41,24 @@ export const StudentDashboard: React.FC = () => {
     setShowQRScanner(true);
   };
 
-  const processQRCode = async (qrData: string) => {
+  const handleScanResult = async (qrData: string) => {
+    setShowQRScanner(false);
+    
     try {
       let sessionId: string;
-      let className: string;
+      let className: string = 'Unknown Class';
       
       // Handle both JSON and URL formats
       try {
         // Try JSON format first (new format)
         const qrJson = JSON.parse(qrData);
         sessionId = qrJson.sessionId;
-        className = qrJson.className;
+        className = qrJson.className || 'Unknown Class';
       } catch {
         // Fallback to URL format (old format)
         const url = new URL(qrData);
         sessionId = url.searchParams.get('session') || '';
-        className = url.searchParams.get('class') || '';
+        className = url.searchParams.get('class') || 'Unknown Class';
       }
       
       if (!sessionId) {
@@ -70,8 +72,6 @@ export const StudentDashboard: React.FC = () => {
       }
       
       const student = JSON.parse(studentData);
-      const studentId = student.studentId;
-      const studentName = student.name;
 
       // Mark attendance with validation
       const response = await fetch(`https://attendance-fullstack.onrender.com/api/qr/mark/${sessionId}`, {
@@ -80,20 +80,20 @@ export const StudentDashboard: React.FC = () => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          studentId: studentId,
-          studentName: studentName
+          studentId: student.studentId,
+          studentName: student.name
         })
       });
 
       const result = await response.json();
       
       if (response.ok) {
-        setScanResult(`✅ Attendance marked for ${result.studentName} in ${className}`);
+        setScanResult(`✅ Attendance marked successfully for ${className}!`);
         
         // Add to recent scans for QR/Hybrid modes
         const scanData = {
-          studentId: studentId,
-          studentName: studentName,
+          studentId: student.studentId,
+          studentName: student.name,
           markedAt: new Date().toISOString(),
           status: 'present',
           sessionId: sessionId,
@@ -120,11 +120,6 @@ export const StudentDashboard: React.FC = () => {
     }
   };
 
-  const handleScanResult = async (qrData: string) => {
-    setShowQRScanner(false);
-    await processQRCode(qrData);
-  };
-
   const closeQRScanner = () => {
     setShowQRScanner(false);
     setScanResult(null);
@@ -140,7 +135,7 @@ export const StudentDashboard: React.FC = () => {
               {currentStudent ? `Welcome, ${currentStudent.name} (${currentStudent.studentId})` : 'Track your attendance and achievements'}
             </p>
           </div>
-          <Button onClick={handleQRScan} className="gap-2">
+          <Button onClick={handleQRScan} className="gap-2 bg-orange-500 hover:bg-orange-600">
             <QrCode className="h-4 w-4" />
             Scan QR Code
           </Button>
@@ -295,9 +290,14 @@ export const StudentDashboard: React.FC = () => {
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-lg shadow-lg max-w-md w-full p-6">
               <div className="text-center py-4">
-                <div className="text-sm mb-4">{scanResult}</div>
-                <Button onClick={() => setScanResult(null)} size="sm" className="w-full">
-                  Close
+                <div className={`text-4xl mb-4 ${
+                  scanResult.includes('✅') ? 'text-green-500' : 'text-red-500'
+                }`}>
+                  {scanResult.includes('✅') ? '🎉' : '⚠️'}
+                </div>
+                <div className="text-base mb-6 font-medium">{scanResult}</div>
+                <Button onClick={() => setScanResult(null)} className="w-full">
+                  {scanResult.includes('✅') ? 'Great!' : 'Try Again'}
                 </Button>
               </div>
             </div>

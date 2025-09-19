@@ -24,7 +24,7 @@ import { useAppStore } from '../../store';
 import { AddStudentModal } from '../modals/AddStudentModal';
 import { AddClassModal } from '../modals/AddClassModal';
 import { ScheduleSessionModal } from '../modals/ScheduleSessionModal';
-import logo from '../../assets/img/logo.png';
+import { Breadcrumb } from '../ui/breadcrumb';
 
 interface HeaderProps {
   onMobileMenuToggle?: () => void;
@@ -76,7 +76,7 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
       <div className="px-4">
         <div className="flex justify-between items-center h-14">
-          {/* Logo and Brand */}
+          {/* Breadcrumb Navigation */}
           <div className="flex items-center gap-3">
             <Button 
               variant="ghost" 
@@ -86,15 +86,7 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
             >
               <Menu className="h-4 w-4" />
             </Button>
-            <img src={logo} alt="Logo" className="h-16 w-16" />
-            <div>
-              <h1 className="text-sm font-semibold text-gray-900">
-                Attendance Hunters
-              </h1>
-              <p className="text-xs text-gray-600 hidden sm:block">
-                Academic Year 2024-25
-              </p>
-            </div>
+            <Breadcrumb />
           </div>
           
           {/* Search Bar */}

@@ -128,39 +128,23 @@ export const QRScanner: React.FC<QRScannerProps> = ({ onScan, onClose, onAttenda
         throw new Error('No session ID found in QR code');
       }
 
-      // Prompt for student credentials
-      const email = prompt('Enter your university email:');
-      const password = prompt('Enter your password:') || 'student123';
+      // Get student info from localStorage (already logged in)
+      const studentData = localStorage.getItem('studentInfo');
+      if (!studentData) {
+        throw new Error('Student not logged in');
+      }
       
-      if (!email) {
-        alert('Email is required');
-        return;
-      }
+      const student = JSON.parse(studentData);
+      console.log('✅ Using logged in student:', student.name);
 
-      // Login student
-      console.log('🔐 Logging in student...');
-      const loginResponse = await fetch('https://attendance-fullstack.onrender.com/api/student-auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
-
-      if (!loginResponse.ok) {
-        const error = await loginResponse.json();
-        throw new Error(error.error || 'Login failed');
-      }
-
-      const loginData = await loginResponse.json();
-      console.log('✅ Student logged in:', loginData.student.name);
-
-      // Mark attendance
+      // Mark attendance directly
       console.log('📝 Marking attendance...');
       const markResponse = await fetch(`https://attendance-fullstack.onrender.com/api/qr/mark/${sessionData.sessionId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          studentId: loginData.student.studentId,
-          studentName: loginData.student.name
+          studentId: student.studentId,
+          studentName: student.name
         })
       });
 
@@ -174,8 +158,8 @@ export const QRScanner: React.FC<QRScannerProps> = ({ onScan, onClose, onAttenda
 
       // Update localStorage for real-time updates
       const scanData = {
-        studentId: loginData.student.studentId,
-        studentName: loginData.student.name,
+        studentId: student.studentId,
+        studentName: student.name,
         markedAt: new Date().toISOString(),
         status: 'present',
         sessionId: sessionData.sessionId
@@ -190,13 +174,12 @@ export const QRScanner: React.FC<QRScannerProps> = ({ onScan, onClose, onAttenda
         onAttendanceMarked(scanData);
       }
 
-      alert(`✅ Attendance marked for ${loginData.student.name}`);
       onScan(qrData);
       stopCamera();
 
     } catch (error) {
       console.error('❌ QR processing error:', error);
-      alert(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw error; // Let parent handle the error display
     }
   };
 
@@ -259,22 +242,7 @@ export const QRScanner: React.FC<QRScannerProps> = ({ onScan, onClose, onAttenda
                   Position the QR code within the frame
                 </p>
                 <div className="space-y-2">
-                  <Button 
-                    variant="secondary" 
-                    onClick={() => {
-                      // Test with current session from localStorage
-                      const currentSession = localStorage.getItem('currentQRSession');
-                      if (currentSession) {
-                        const session = JSON.parse(currentSession);
-                        processQRData(JSON.stringify({ sessionId: session.sessionId }));
-                      } else {
-                        alert('Generate a QR session first in QR Mode');
-                      }
-                    }}
-                    className="w-full"
-                  >
-                    Test QR Scan
-                  </Button>
+
                   <Button variant="outline" onClick={handleManualInput} className="w-full">
                     Enter QR Data Manually
                   </Button>

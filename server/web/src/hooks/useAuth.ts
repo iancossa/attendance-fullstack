@@ -56,7 +56,7 @@ export const useAuth = () => {
       } else {
         // Demo login logic for admin/staff
         const isValidLogin = (
-          (role === 'admin' && email === 'admin@attendance.com' && password === 'admin123') ||
+          (role === 'admin' && email === 'admin@university.edu' && password === 'admin123') ||
           (role === 'staff' && email === 'staff@university.edu' && password === 'staff123')
         );
 

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BarChart3, Target, Trophy, User, Calendar, BookOpen } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import { useAppStore } from '../../store';
+import logo from '../../assets/img/logo.png';
 
 interface StudentSidebarProps {
   isMobileOpen?: boolean;
@@ -87,14 +88,21 @@ export const StudentSidebar: React.FC<StudentSidebarProps> = ({ isMobileOpen = f
 
       {/* Sidebar */}
       <aside className={`
-        fixed md:static top-14 md:top-0 inset-y-0 left-0 z-30 md:z-auto
+        fixed md:static inset-y-0 left-0 z-30 md:z-auto
         w-60 md:w-60
         bg-white border-r border-gray-200
         transform transition-transform duration-300 ease-in-out
         ${isMobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
-        max-h-screen overflow-hidden
+        h-screen overflow-hidden
       `}>
         <div className="h-full flex flex-col">
+          {/* Sidebar Header */}
+          <div className="h-14 flex items-center px-3 border-b border-gray-200">
+            <img src={logo} alt="Logo" className="h-8 w-8" />
+            <div className="ml-2">
+              <h1 className="text-sm font-semibold text-gray-900">Attendance Hunters</h1>
+            </div>
+          </div>
           <nav className="flex-1 p-3 overflow-y-auto pt-4">
             {renderMenuGroup('Main', mainMenuItems)}
             {renderMenuGroup('Academic', academicItems)}

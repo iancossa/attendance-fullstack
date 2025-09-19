@@ -346,37 +346,48 @@ export const ReportsPage: React.FC = () => {
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger>
-                            <Button 
-                              variant="ghost" 
-                              size="sm" 
-                              className="h-8 w-8 p-0 hover:bg-muted/80 transition-colors"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setOpenDropdown(openDropdown === report.id ? null : report.id);
-                              }}
-                            >
-                              <MoreVertical className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
+                        <div className="relative">
+                          <button 
+                            className="h-8 w-8 p-0 hover:bg-gray-100 transition-colors rounded-md flex items-center justify-center border border-transparent hover:border-gray-200"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setOpenDropdown(openDropdown === report.id ? null : report.id);
+                            }}
+                          >
+                            <MoreVertical className="h-4 w-4" />
+                          </button>
                           {openDropdown === report.id && (
-                            <DropdownMenuContent>
-                              <DropdownMenuItem onClick={() => setOpenDropdown(null)}>
-                                <div className="font-medium text-sm">View Report</div>
-                              </DropdownMenuItem>
-                              <DropdownMenuItem onClick={() => setOpenDropdown(null)}>
-                                <div className="font-medium text-sm">Download PDF</div>
-                              </DropdownMenuItem>
-                              <DropdownMenuItem onClick={() => setOpenDropdown(null)}>
-                                <div className="font-medium text-sm">Export Data</div>
-                              </DropdownMenuItem>
-                              <DropdownMenuItem onClick={() => setOpenDropdown(null)}>
-                                <div className="font-medium text-sm">Share Report</div>
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
+                            <>
+                              <div className="fixed inset-0 z-40" onClick={() => setOpenDropdown(null)} />
+                              <div className="absolute right-0 top-8 mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-1">
+                                <button 
+                                  onClick={() => setOpenDropdown(null)} 
+                                  className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left"
+                                >
+                                  View Report
+                                </button>
+                                <button 
+                                  onClick={() => setOpenDropdown(null)} 
+                                  className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left"
+                                >
+                                  Download PDF
+                                </button>
+                                <button 
+                                  onClick={() => setOpenDropdown(null)} 
+                                  className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left"
+                                >
+                                  Export Data
+                                </button>
+                                <button 
+                                  onClick={() => setOpenDropdown(null)} 
+                                  className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left"
+                                >
+                                  Share Report
+                                </button>
+                              </div>
+                            </>
                           )}
-                        </DropdownMenu>
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
