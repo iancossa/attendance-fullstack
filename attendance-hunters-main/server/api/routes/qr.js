@@ -1,6 +1,7 @@
 const express = require('express');
 const { PrismaClient } = require('../generated/prisma');
 const { verifyToken } = require('../src/middlewares');
+const { validateGeofence } = require('../utils/geofencing');
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -17,7 +18,7 @@ const MAX_REQUESTS_PER_WINDOW = 3;
 router.post('/generate', async (req, res) => {
     console.log('🔵 QR Generate request received:', req.body);
     try {
-        const { classId, className } = req.body;
+        const { classId, className, latitude, longitude } = req.body;
         console.log('📝 Processing QR generation for:', { classId, className });
         const sessionId = `qr_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
         const expiresAt = new Date(Date.now() + 300000); // 5 minutes from now
@@ -26,6 +27,8 @@ router.post('/generate', async (req, res) => {
             sessionId,
             classId: classId || 'CS101',
             className: className || 'Demo Class',
+            latitude: latitude || null,
+            longitude: longitude || null,
             createdBy: req.user?.id || 'demo-user',
             createdAt: new Date(),
             expiresAt,
@@ -51,7 +54,8 @@ router.post('/generate', async (req, res) => {
             classId: session.classId,
             apiUrl: 'https://attendance-fullstack.onrender.com/api/qr/mark/' + sessionId,
             expiresAt: expiresAt.toISOString(),
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
+            requiresLocation: !!(latitude && longitude)
         };
         
         const response = {
@@ -81,7 +85,7 @@ router.post('/mark/:sessionId', async (req, res) => {
     
     try {
         const { sessionId } = req.params;
-        const { studentId, studentName } = req.body;
+        const { studentId, studentName, latitude, longitude } = req.body;
         
         console.log('🔍 Looking up student:', { studentId, studentName });
         
@@ -145,6 +149,33 @@ router.post('/mark/:sessionId', async (req, res) => {
             return res.status(410).json({ error: 'QR session has expired' });
         }
         
+        // Geofence validation
+        let geofenceResult = null;
+        if (session.latitude && session.longitude) {
+            if (!latitude || !longitude) {
+                return res.status(400).json({ 
+                    error: 'Location required for this session',
+                    requiresLocation: true
+                });
+            }
+            
+            geofenceResult = validateGeofence(
+                session.latitude, 
+                session.longitude, 
+                latitude, 
+                longitude
+            );
+            
+            if (!geofenceResult.isValid) {
+                return res.status(403).json({ 
+                    error: `You must be within ${geofenceResult.allowedRadius}m of the class location`,
+                    distance: geofenceResult.distance,
+                    allowedRadius: geofenceResult.allowedRadius,
+                    geofenceViolation: true
+                });
+            }
+        }
+        
         // Check if student already marked
         const alreadyMarked = session.attendees.find(a => a.studentId === studentId);
         if (alreadyMarked) {
@@ -173,7 +204,11 @@ router.post('/mark/:sessionId', async (req, res) => {
                 studentId: student.id,
                 classId: session.classId,
                 status: 'present',
-                timestamp: new Date().toISOString()
+                timestamp: new Date().toISOString(),
+                studentLatitude: latitude || null,
+                studentLongitude: longitude || null,
+                distanceFromClass: geofenceResult?.distance || null,
+                locationVerified: !!geofenceResult?.isValid
             }
         });
         
@@ -185,7 +220,9 @@ router.post('/mark/:sessionId', async (req, res) => {
             studentId: student.studentId,
             department: student.department,
             markedAt: new Date(),
-            attendanceId: attendanceRecord.id
+            attendanceId: attendanceRecord.id,
+            locationVerified: !!geofenceResult?.isValid,
+            distance: geofenceResult?.distance || null
         };
         
         console.log('🎉 QR Attendance Success:', response);
