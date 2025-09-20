@@ -117,10 +117,11 @@ export const QRModePage: React.FC = () => {
       }
     } catch (error) {
       console.error('❌ Failed to generate QR code:', error);
+      const sanitize = (str: string) => str.replace(/[\r\n\t]/g, ' ');
       console.error('❌ Error details:', {
-        message: error instanceof Error ? error.message : 'Unknown error',
-        stack: error instanceof Error ? error.stack : undefined,
-        response: (error as any)?.response?.data
+        message: error instanceof Error ? sanitize(error.message) : 'Unknown error',
+        stack: error instanceof Error ? sanitize(error.stack || '') : undefined,
+        response: (error as any)?.response?.data ? sanitize(JSON.stringify((error as any).response.data)) : undefined
       });
       
       // Fallback to local generation
