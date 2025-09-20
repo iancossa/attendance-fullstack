@@ -149,10 +149,10 @@ export const HybridModePage: React.FC = () => {
     <Layout>
       <div className="w-full px-4 space-y-4">
         <div className="text-center">
-          <h1 className="text-lg font-semibold text-gray-900 mb-1">Hybrid Attendance Mode</h1>
-          <p className="text-sm text-gray-600">Start with QR scanning, then manual adjustments</p>
+          <h1 className="text-lg font-semibold text-gray-900 dark:text-[#f8f8f2] mb-1">Hybrid Attendance Mode</h1>
+          <p className="text-sm text-gray-600 dark:text-[#6272a4]">Start with QR scanning, then manual adjustments</p>
           {sessionData && (
-            <Card className="mt-3 bg-orange-50 border-orange-200">
+            <Card className="mt-3 bg-orange-50 dark:bg-orange-500/10 border-orange-200 dark:border-orange-500/20">
               <CardContent className="p-3 pt-3">
                 <div className="text-sm">
                   <strong>{sessionData.courseName}</strong> • Section {sessionData.section} • {sessionData.sessionType}
@@ -167,25 +167,25 @@ export const HybridModePage: React.FC = () => {
 
         {/* Progress Overview */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <Card className="bg-blue-50 border-blue-200">
+          <Card className="bg-blue-50 dark:bg-blue-500/10 border-blue-200 dark:border-blue-500/20">
             <CardContent className="p-3 pt-3 text-center">
               <div className="text-xl font-semibold text-blue-700">{qrScannedStudents.length}</div>
               <div className="text-xs text-blue-600">QR Scanned</div>
             </CardContent>
           </Card>
-          <Card className="bg-purple-50 border-purple-200">
+          <Card className="bg-purple-50 dark:bg-purple-500/10 border-purple-200 dark:border-purple-500/20">
             <CardContent className="p-3 pt-3 text-center">
               <div className="text-xl font-semibold text-purple-700">{manualMarkedStudents.length}</div>
               <div className="text-xs text-purple-600">Manual</div>
             </CardContent>
           </Card>
-          <Card className="bg-green-50 border-green-200">
+          <Card className="bg-green-50 dark:bg-green-500/10 border-green-200 dark:border-green-500/20">
             <CardContent className="p-3 pt-3 text-center">
               <div className="text-xl font-semibold text-green-700">{presentCount}</div>
               <div className="text-xs text-green-600">Present</div>
             </CardContent>
           </Card>
-          <Card className="bg-red-50 border-red-200">
+          <Card className="bg-red-50 dark:bg-red-500/10 border-red-200 dark:border-red-500/20">
             <CardContent className="p-3 pt-3 text-center">
               <div className="text-xl font-semibold text-red-700">{absentStudents.length}</div>
               <div className="text-xs text-red-600">Absent</div>
@@ -207,7 +207,7 @@ export const HybridModePage: React.FC = () => {
                   <CardTitle>QR Code Scanner</CardTitle>
                 </CardHeader>
                 <CardContent className="text-center space-y-4">
-                  <div className="p-6 bg-white rounded-lg inline-block">
+                  <div className="p-6 bg-white rounded-lg inline-block shadow-sm">
                     {qrValue && <QRCode value={qrValue} size={180} />}
                   </div>
                   <div className={`text-2xl font-bold ${timeLeft <= 30 ? 'text-red-500 animate-pulse' : 'text-primary'}`}>
@@ -228,9 +228,9 @@ export const HybridModePage: React.FC = () => {
                 <CardContent>
                   <div className="space-y-2 max-h-64 overflow-y-auto">
                     {recentScans.slice(0, 8).map((scan, index) => (
-                      <div key={index} className="flex items-center justify-between p-2 bg-blue-50 dark:bg-blue-950/30 rounded border">
+                      <div key={index} className="flex items-center justify-between p-2 bg-blue-50 dark:bg-blue-500/10 rounded border border-blue-200 dark:border-blue-500/20">
                         <div>
-                          <div className="font-medium text-sm">{scan.studentName}</div>
+                          <div className="font-medium text-sm text-gray-900 dark:text-[#f8f8f2]">{scan.studentName}</div>
                           <div className="text-xs text-muted-foreground">{scan.studentId}</div>
                         </div>
                         <div className="text-right">
@@ -298,7 +298,7 @@ export const HybridModePage: React.FC = () => {
                                 className="w-4 h-4 text-primary bg-background border-border rounded focus:ring-primary"
                               />
                             </TableCell>
-                            <TableCell className="font-medium">{student.name}</TableCell>
+                            <TableCell className="font-medium text-gray-900 dark:text-[#f8f8f2]">{student.name}</TableCell>
                             <TableCell className="text-muted-foreground">{student.studentId}</TableCell>
                           <TableCell>
                             <Badge variant={student.present ? 'default' : 'secondary'}>
@@ -369,8 +369,8 @@ export const HybridModePage: React.FC = () => {
         {/* Save Attendance Modal */}
         {showSaveModal && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-background p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
-              <h3 className="text-lg font-semibold mb-4">Save Attendance</h3>
+            <div className="bg-white dark:bg-[#282a36] p-6 rounded-lg shadow-lg max-w-md w-full mx-4 border border-gray-200 dark:border-[#6272a4]">
+              <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-[#f8f8f2]">Save Attendance</h3>
               <p className="text-sm text-muted-foreground mb-4">
                 Save attendance for <strong>{presentCount}</strong> present and <strong>{absentStudents.length}</strong> absent students?
               </p>

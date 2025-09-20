@@ -22,6 +22,8 @@
     --ring: 24 100% 50%;
     --card: 0 0% 100%;
     --card-foreground: 0 0% 3.9%;
+    --sidebar: 33 100% 97%; /* orange-50 #fff7ed */
+    --sidebar-foreground: 0 0% 12.2%;
   }
  
   .dark {
@@ -43,6 +45,8 @@
     --ring: 24 100% 60%;
     --card: 231 15% 18%;
     --card-foreground: 60 30% 96%;
+    --sidebar: 232 14% 31%; /* #44475a */
+    --sidebar-foreground: 60 30% 96%;
   }
 }
 

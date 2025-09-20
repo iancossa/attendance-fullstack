@@ -46,19 +46,19 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-background to-indigo-50 dark:from-slate-900 dark:via-background dark:to-slate-800 flex items-center justify-center p-3 md:p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-[#282a36] dark:to-slate-800 flex items-center justify-center p-3 md:p-4">
       <div className="w-full max-w-sm md:max-w-md">
         {/* Header */}
         <div className="text-center mb-6 md:mb-8">
           <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-primary rounded-full mb-3 md:mb-4">
             <img src={logo} alt="Logo" className="h-28 w-28 md:h-32 md:w-32 object-contain" />
           </div>
-          <h1 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">Attendance Hunters</h1>
-          <p className="text-sm md:text-base text-muted-foreground">Sign in to your account</p>
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight mb-2 text-gray-900 dark:text-[#f8f8f2]">Attendance Hunters</h1>
+          <p className="text-sm md:text-base text-gray-600 dark:text-[#6272a4]">Sign in to your account</p>
         </div>
 
         {/* Role Tabs */}
-        <div className="flex mb-4 md:mb-6 bg-muted p-1 rounded-lg">
+        <div className="flex mb-4 md:mb-6 bg-gray-100 dark:bg-[#44475a] p-1 rounded-lg">
           <button
             onClick={() => setActiveRole('student')}
             className={`flex-1 flex items-center justify-center gap-1 md:gap-2 py-2 px-2 md:px-4 rounded-md text-xs md:text-sm font-medium transition-colors ${
@@ -154,9 +154,9 @@ export const LoginPage: React.FC = () => {
             </form>
 
             <div className="mt-4 md:mt-6 text-center">
-              <p className="text-xs md:text-sm text-muted-foreground">
+              <p className="text-xs md:text-sm text-gray-600 dark:text-[#6272a4]">
                 Administrator?{' '}
-                <a href="/admin" className="text-primary hover:underline">
+                <a href="/admin" className="text-orange-600 dark:text-orange-400 hover:underline">
                   Admin Login
                 </a>
               </p>

@@ -51,20 +51,24 @@ export const Breadcrumb: React.FC = () => {
   const breadcrumbs = getBreadcrumbs();
   
   return (
-    <nav className="flex items-center space-x-1 text-sm text-gray-600">
+    <nav className="flex items-center h-8 space-x-1 text-sm text-muted-foreground">
       {breadcrumbs.map((item, index) => (
         <React.Fragment key={index}>
           {index === 0 ? (
-            <div className="flex items-center">
-              <Home className="h-4 w-4" />
+            <div className="flex items-center transition-colors duration-200">
+              <Home className="h-4 w-4 text-muted-foreground" />
               {breadcrumbs.length > 1 && (
-                <span className="ml-1 hidden sm:inline">{item.label}</span>
+                <span className="ml-1 hidden sm:inline text-muted-foreground">{item.label}</span>
               )}
             </div>
           ) : (
             <>
-              <ChevronRight className="h-4 w-4 text-gray-400" />
-              <span className={index === breadcrumbs.length - 1 ? 'text-gray-900 font-medium' : 'hover:text-gray-900'}>
+              <ChevronRight className="h-4 w-4 text-muted-foreground/60" />
+              <span className={`transition-colors duration-200 ${
+                index === breadcrumbs.length - 1 
+                  ? 'text-foreground font-medium' 
+                  : 'text-muted-foreground hover:text-primary cursor-pointer'
+              }`}>
                 {item.label}
               </span>
             </>

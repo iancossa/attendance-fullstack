@@ -48,11 +48,11 @@ export const AttendanceReportModal: React.FC<AttendanceReportModalProps> = ({ st
 
   return (
     <div className="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center z-50 p-2 sm:p-4">
-      <div className="bg-white rounded-lg shadow-lg w-full max-w-4xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
-        <div className="flex items-center justify-between p-4 border-b border-gray-200">
+      <div className="bg-white dark:bg-[#282a36] rounded-lg shadow-lg w-full max-w-4xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto border border-gray-200 dark:border-[#6272a4]">
+        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-[#6272a4]">
           <div>
-            <h2 className="text-lg font-semibold text-gray-900">Attendance Report</h2>
-            <p className="text-sm text-gray-600">{student.name} - {student.studentId}</p>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-[#f8f8f2]">Attendance Report</h2>
+            <p className="text-sm text-gray-600 dark:text-[#6272a4]">{student.name} - {student.studentId}</p>
           </div>
           <div className="flex items-center gap-2">
             <Button variant="outline" onClick={exportReport} className="gap-2">
@@ -61,7 +61,7 @@ export const AttendanceReportModal: React.FC<AttendanceReportModalProps> = ({ st
             </Button>
             <button
               onClick={onClose}
-              className="h-8 w-8 rounded-md hover:bg-gray-100 flex items-center justify-center"
+              className="h-8 w-8 rounded-md hover:bg-gray-100 dark:hover:bg-[#44475a] flex items-center justify-center"
             >
               <X className="h-4 w-4" />
             </button>
@@ -71,36 +71,36 @@ export const AttendanceReportModal: React.FC<AttendanceReportModalProps> = ({ st
         <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
           {/* Overview Stats */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <Card className="bg-blue-50 border-blue-200">
+            <Card className="bg-blue-50 dark:bg-blue-500/10 border-blue-200 dark:border-blue-500/20">
               <CardContent className="p-4 pt-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-blue-600">Overall Attendance</p>
+                    <p className="text-sm font-medium text-blue-600 dark:text-blue-400">Overall Attendance</p>
                     <div className={`text-2xl font-semibold mt-2 ${getAttendanceColor(student.attendance || 0)}`}>
                       {student.attendance || 0}%
                     </div>
                   </div>
-                  <TrendingUp className="h-8 w-8 text-blue-600" />
+                  <TrendingUp className="h-8 w-8 text-blue-600 dark:text-blue-400" />
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-green-50 border-green-200">
+            <Card className="bg-green-50 dark:bg-green-500/10 border-green-200 dark:border-green-500/20">
               <CardContent className="p-4 pt-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-green-600">Classes Attended</p>
-                    <div className="text-2xl font-semibold text-green-600 mt-2">
+                    <p className="text-sm font-medium text-green-600 dark:text-green-400">Classes Attended</p>
+                    <div className="text-2xl font-semibold text-green-600 dark:text-green-400 mt-2">
                       {attendanceData.attendedClasses}
                     </div>
-                    <p className="text-xs text-green-500">out of {attendanceData.totalClasses}</p>
+                    <p className="text-xs text-green-500 dark:text-green-300">out of {attendanceData.totalClasses}</p>
                   </div>
-                  <Calendar className="h-8 w-8 text-green-600" />
+                  <Calendar className="h-8 w-8 text-green-600 dark:text-green-400" />
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-red-50 border-red-200">
+            <Card className="bg-red-50 dark:bg-red-500/10 border-red-200 dark:border-red-500/20">
               <CardContent className="p-4 pt-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -115,7 +115,7 @@ export const AttendanceReportModal: React.FC<AttendanceReportModalProps> = ({ st
               </CardContent>
             </Card>
 
-            <Card className="bg-yellow-50 border-yellow-200">
+            <Card className="bg-yellow-50 dark:bg-yellow-500/10 border-yellow-200 dark:border-yellow-500/20">
               <CardContent className="p-4 pt-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -134,12 +134,12 @@ export const AttendanceReportModal: React.FC<AttendanceReportModalProps> = ({ st
           {/* Monthly Trend */}
           <Card>
             <CardContent className="p-4 pt-6">
-              <h3 className="text-sm font-medium text-gray-900 mb-4">Monthly Attendance Trend</h3>
+              <h3 className="text-sm font-medium text-gray-900 dark:text-[#f8f8f2] mb-4">Monthly Attendance Trend</h3>
               <div className="space-y-4">
                 {attendanceData.monthlyData.map((month, index) => (
                   <div key={index} className="flex items-center gap-4">
-                    <div className="w-12 text-sm font-medium text-gray-600">{month.month}</div>
-                    <div className="flex-1 bg-gray-200 rounded-full h-3">
+                    <div className="w-12 text-sm font-medium text-gray-600 dark:text-[#6272a4]">{month.month}</div>
+                    <div className="flex-1 bg-gray-200 dark:bg-[#6272a4] rounded-full h-3">
                       <div
                         className={`h-3 rounded-full ${getAttendanceBg(month.attendance || 0)}`}
                         style={{ width: `${month.attendance}%` }}
@@ -157,7 +157,7 @@ export const AttendanceReportModal: React.FC<AttendanceReportModalProps> = ({ st
           {/* Subject-wise Breakdown */}
           <Card>
             <CardContent className="p-4 pt-6">
-              <h3 className="text-sm font-medium text-gray-900 mb-4">Subject-wise Attendance</h3>
+              <h3 className="text-sm font-medium text-gray-900 dark:text-[#f8f8f2] mb-4">Subject-wise Attendance</h3>
               <div className="space-y-3">
                 {[
                   { subject: 'Data Structures', attendance: 95, total: 30 },
@@ -166,13 +166,13 @@ export const AttendanceReportModal: React.FC<AttendanceReportModalProps> = ({ st
                   { subject: 'Software Engineering', attendance: 85, total: 22 },
                   { subject: 'Computer Networks', attendance: 78, total: 20 }
                 ].map((subject, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-[#44475a] rounded-lg">
                     <div className="flex-1">
-                      <div className="font-medium text-sm">{subject.subject}</div>
-                      <div className="text-xs text-gray-600">{Math.round((subject.attendance / 100) * subject.total)}/{subject.total} classes</div>
+                      <div className="font-medium text-sm text-gray-900 dark:text-[#f8f8f2]">{subject.subject}</div>
+                      <div className="text-xs text-gray-600 dark:text-[#6272a4]">{Math.round((subject.attendance / 100) * subject.total)}/{subject.total} classes</div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <div className="w-20 bg-gray-200 rounded-full h-2">
+                      <div className="w-20 bg-gray-200 dark:bg-[#6272a4] rounded-full h-2">
                         <div
                           className={`h-2 rounded-full ${getAttendanceBg(subject.attendance)}`}
                           style={{ width: `${subject.attendance}%` }}
@@ -191,14 +191,14 @@ export const AttendanceReportModal: React.FC<AttendanceReportModalProps> = ({ st
           {/* Recommendations */}
           <Card>
             <CardContent className="p-4 pt-6">
-              <h3 className="text-sm font-medium text-gray-900 mb-4">Recommendations</h3>
+              <h3 className="text-sm font-medium text-gray-900 dark:text-[#f8f8f2] mb-4">Recommendations</h3>
               <div className="space-y-2">
                 {(student.attendance || 0) >= 90 ? (
-                  <div className="flex items-start gap-2 p-3 bg-green-50 rounded-lg">
-                    <TrendingUp className="h-4 w-4 text-green-600 mt-0.5" />
+                  <div className="flex items-start gap-2 p-3 bg-green-50 dark:bg-green-500/10 rounded-lg">
+                    <TrendingUp className="h-4 w-4 text-green-600 dark:text-green-400 mt-0.5" />
                     <div>
-                      <p className="text-sm font-medium text-green-800">Excellent Attendance!</p>
-                      <p className="text-xs text-green-600">Keep up the great work. Your consistent attendance is commendable.</p>
+                      <p className="text-sm font-medium text-green-800 dark:text-green-400">Excellent Attendance!</p>
+                      <p className="text-xs text-green-600 dark:text-green-300">Keep up the great work. Your consistent attendance is commendable.</p>
                     </div>
                   </div>
                 ) : (student.attendance || 0) >= 75 ? (
@@ -223,7 +223,7 @@ export const AttendanceReportModal: React.FC<AttendanceReportModalProps> = ({ st
           </Card>
         </div>
 
-        <div className="flex justify-end gap-2 p-4 border-t border-gray-200">
+        <div className="flex justify-end gap-2 p-4 border-t border-gray-200 dark:border-[#6272a4]">
           <Button variant="outline" onClick={onClose}>
             Close
           </Button>

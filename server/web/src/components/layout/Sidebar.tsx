@@ -63,7 +63,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen = false, setIsMob
 
   const renderMenuGroup = (title: string, items: any[]) => (
     <div className="mb-4">
-      <h3 className="px-3 mb-2 text-xs font-medium text-gray-500 uppercase tracking-wider">
+      <h3 className="px-3 mb-2 text-xs font-medium text-gray-500 dark:text-[#6272a4] uppercase tracking-wider">
         {title}
       </h3>
       <div className="space-y-1">
@@ -77,13 +77,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen = false, setIsMob
               onClick={() => handleItemClick(item.path)}
               className={`group flex items-center justify-between px-3 py-2 text-sm font-medium rounded-md transition-colors ${
                 isActive
-                  ? 'bg-orange-50 text-orange-600 border-r-2 border-orange-500'
-                  : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                  ? 'bg-orange-50 dark:bg-[#bd93f9]/20 text-orange-600 dark:text-[#bd93f9] border-r-2 border-orange-500 dark:border-[#bd93f9]'
+                  : 'text-gray-600 dark:text-[#f8f8f2] hover:bg-orange-100 dark:hover:bg-[#6272a4]/30 hover:text-orange-700 dark:hover:text-[#f8f8f2]'
               }`}
             >
               <div className="flex items-center gap-3">
                 <Icon className={`h-4 w-4 transition-colors ${
-                  isActive ? 'text-orange-600' : 'group-hover:text-gray-900'
+                  isActive ? 'text-orange-600 dark:text-[#bd93f9]' : 'group-hover:text-orange-700 dark:group-hover:text-[#f8f8f2]'
                 }`} />
                 <span className="truncate">{item.name}</span>
               </div>
@@ -120,18 +120,18 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen = false, setIsMob
       <aside className={`
         fixed md:static inset-y-0 left-0 z-30 md:z-auto
         w-60 md:w-60
-        bg-white border-r border-gray-200
+        bg-orange-50 dark:bg-[#44475a] border-r border-orange-100 dark:border-[#6272a4]
         transform transition-transform duration-300 ease-in-out
         ${isMobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
         h-screen overflow-hidden
       `}>
         <div className="h-full flex flex-col">
           {/* Sidebar Header */}
-          <header className="bg-white border-b border-gray-200">
+          <header className="bg-white dark:bg-[#282a36] border-b border-orange-100 dark:border-[#6272a4]">
             <div className="px-4">
               <div className="flex items-center h-14">
-                <img src={logo} alt="Logo" className="h-8 w-8" />
-                <h1 className="ml-3 text-sm font-semibold text-gray-900">Attendance Hunters</h1>
+                <img src={logo} alt="Logo" className="h-14 w-14" />
+                <h1 className="ml-3 text-sm font-semibold text-gray-900 dark:text-[#f8f8f2]">Attendance Hunters</h1>
               </div>
             </div>
           </header>
@@ -143,9 +143,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen = false, setIsMob
           </nav>
 
           {/* Footer */}
-          <div className="p-3 border-t border-gray-200">
+          <div className="p-3 border-t border-orange-100 dark:border-[#44475a]">
             <div className="text-center">
-              <p className="text-xs text-gray-500">Academic Year 2024-25</p>
+              <p className="text-xs text-gray-500 dark:text-[#6272a4]">Academic Year 2024-25</p>
             </div>
           </div>
         </div>

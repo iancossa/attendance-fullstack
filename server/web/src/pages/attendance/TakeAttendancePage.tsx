@@ -137,8 +137,8 @@ const TakeAttendancePage: React.FC = () => {
   const renderClassSelection = () => (
     <div className="space-y-4">
       <div className="text-center">
-        <h2 className="text-lg font-semibold text-gray-900 mb-1">Select Class</h2>
-        <p className="text-sm text-gray-600">Choose the class for attendance session</p>
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-[#f8f8f2] mb-1">Select Class</h2>
+        <p className="text-sm text-gray-600 dark:text-[#6272a4]">Choose the class for attendance session</p>
       </div>
 
       {loading ? (
@@ -150,17 +150,17 @@ const TakeAttendancePage: React.FC = () => {
           {classes.map((classItem) => (
             <Card
               key={classItem.id}
-              className="cursor-pointer hover:shadow-sm transition-all duration-200 border-2 hover:border-orange-200 hover:bg-orange-50"
+              className="cursor-pointer hover:shadow-sm transition-all duration-200 border-2 hover:border-orange-200 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-500/10"
               onClick={() => handleClassSelect(classItem)}
             >
               <CardContent className="p-6 pt-6">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <h3 className="font-medium text-gray-900">{classItem.name}</h3>
+                      <h3 className="font-medium text-gray-900 dark:text-[#f8f8f2]">{classItem.name}</h3>
                       <Badge variant="outline" className="text-xs">{classItem.code}</Badge>
                     </div>
-                    <p className="text-sm text-gray-600 mb-1">{classItem.department}</p>
+                    <p className="text-sm text-gray-600 dark:text-[#6272a4] mb-1">{classItem.department}</p>
                     <div className="flex items-center gap-4 text-sm text-gray-500">
                       <span className="flex items-center gap-1">
                         <Users className="w-4 h-4" />
@@ -180,23 +180,23 @@ const TakeAttendancePage: React.FC = () => {
   const renderSessionDetails = () => (
     <div className="space-y-4">
       <div className="text-center">
-        <h2 className="text-lg font-semibold text-gray-900 mb-1">Session Details</h2>
-        <p className="text-sm text-gray-600">Configure your attendance session</p>
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-[#f8f8f2] mb-1">Session Details</h2>
+        <p className="text-sm text-gray-600 dark:text-[#6272a4]">Configure your attendance session</p>
       </div>
 
       <div className="mb-4">
-        <h3 className="font-medium text-gray-900 mb-2">Selected Class</h3>
-        <div className="flex items-center gap-3 p-3 bg-orange-50 rounded-lg border border-orange-200">
+        <h3 className="font-medium text-gray-900 dark:text-[#f8f8f2] mb-2">Selected Class</h3>
+        <div className="flex items-center gap-3 p-3 bg-orange-50 dark:bg-orange-500/10 rounded-lg border border-orange-200 dark:border-orange-500/20">
           <div>
-            <p className="font-medium text-gray-900">{selectedClass?.name}</p>
-            <p className="text-sm text-gray-600">{selectedClass?.code} • {selectedClass?.department}</p>
+            <p className="font-medium text-gray-900 dark:text-[#f8f8f2]">{selectedClass?.name}</p>
+            <p className="text-sm text-gray-600 dark:text-[#6272a4]">{selectedClass?.code} • {selectedClass?.department}</p>
           </div>
         </div>
       </div>
 
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-900 mb-2">
+          <label className="block text-sm font-medium text-gray-900 dark:text-[#f8f8f2] mb-2">
             Session Type
           </label>
           <select
@@ -205,7 +205,7 @@ const TakeAttendancePage: React.FC = () => {
               ...prev, 
               sessionType: e.target.value as AttendanceData['sessionType']
             }))}
-            className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white text-gray-900"
+            className="w-full p-3 border border-gray-200 dark:border-[#6272a4] rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white dark:bg-[#44475a] text-gray-900 dark:text-[#f8f8f2]"
           >
             <option value="lecture">Lecture</option>
             <option value="lab">Lab</option>
@@ -215,7 +215,7 @@ const TakeAttendancePage: React.FC = () => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-900 mb-2">
+          <label className="block text-sm font-medium text-gray-900 dark:text-[#f8f8f2] mb-2">
             Location
           </label>
           <Input
@@ -226,13 +226,13 @@ const TakeAttendancePage: React.FC = () => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-900 mb-2">
+          <label className="block text-sm font-medium text-gray-900 dark:text-[#f8f8f2] mb-2">
             Planned Topic
           </label>
           <select
             value={attendanceData.plannedTopic}
             onChange={(e) => setAttendanceData(prev => ({ ...prev, plannedTopic: e.target.value }))}
-            className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white text-gray-900"
+            className="w-full p-3 border border-gray-200 dark:border-[#6272a4] rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white dark:bg-[#44475a] text-gray-900 dark:text-[#f8f8f2]"
           >
             <option value="">Select Topic</option>
             <option value="Boolean Algebra">Boolean Algebra</option>
@@ -244,24 +244,24 @@ const TakeAttendancePage: React.FC = () => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-900 mb-2">
+          <label className="block text-sm font-medium text-gray-900 dark:text-[#f8f8f2] mb-2">
             Conducted By
           </label>
           <Input
             value={attendanceData.conductedBy}
             readOnly
-            className="bg-gray-50 cursor-not-allowed"
+            className="bg-gray-50 dark:bg-[#44475a] cursor-not-allowed"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-900 mb-2">
+          <label className="block text-sm font-medium text-gray-900 dark:text-[#f8f8f2] mb-2">
             Planning Status
           </label>
           <select
             value={attendanceData.planningStatus}
             onChange={(e) => setAttendanceData(prev => ({ ...prev, planningStatus: e.target.value as AttendanceData['planningStatus'] }))}
-            className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white text-gray-900"
+            className="w-full p-3 border border-gray-200 dark:border-[#6272a4] rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white dark:bg-[#44475a] text-gray-900 dark:text-[#f8f8f2]"
           >
             <option value="planned">Planned</option>
             <option value="in_progress">In Progress</option>
@@ -270,13 +270,13 @@ const TakeAttendancePage: React.FC = () => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-900 mb-2">
+          <label className="block text-sm font-medium text-gray-900 dark:text-[#f8f8f2] mb-2">
             Target Level
           </label>
           <select
             value={attendanceData.tgLevel}
             onChange={(e) => setAttendanceData(prev => ({ ...prev, tgLevel: e.target.value }))}
-            className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white text-gray-900"
+            className="w-full p-3 border border-gray-200 dark:border-[#6272a4] rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white dark:bg-[#44475a] text-gray-900 dark:text-[#f8f8f2]"
           >
             <option value="">Select Level</option>
             <option value="Beginner">Beginner</option>
@@ -290,27 +290,27 @@ const TakeAttendancePage: React.FC = () => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-900 mb-2">
+          <label className="block text-sm font-medium text-gray-900 dark:text-[#f8f8f2] mb-2">
             Target Learning
           </label>
           <textarea
             value={attendanceData.targetLearning}
             onChange={(e) => setAttendanceData(prev => ({ ...prev, targetLearning: e.target.value }))}
             placeholder="Expected learning outcome of this session..."
-            className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white text-gray-900 resize-none"
+            className="w-full p-3 border border-gray-200 dark:border-[#6272a4] rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white dark:bg-[#44475a] text-gray-900 dark:text-[#f8f8f2] resize-none"
             rows={3}
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-900 mb-2">
+          <label className="block text-sm font-medium text-gray-900 dark:text-[#f8f8f2] mb-2">
             Notes
           </label>
           <textarea
             value={attendanceData.notes}
             onChange={(e) => setAttendanceData(prev => ({ ...prev, notes: e.target.value }))}
             placeholder="Optional session notes..."
-            className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white text-gray-900 resize-none"
+            className="w-full p-3 border border-gray-200 dark:border-[#6272a4] rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white dark:bg-[#44475a] text-gray-900 dark:text-[#f8f8f2] resize-none"
             rows={3}
           />
         </div>
@@ -339,13 +339,13 @@ const TakeAttendancePage: React.FC = () => {
   const renderModeSelection = () => (
     <div className="space-y-4">
       <div className="text-center">
-        <h2 className="text-lg font-semibold text-gray-900 mb-1">Choose Attendance Mode</h2>
-        <p className="text-sm text-gray-600">Select how you want to take attendance</p>
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-[#f8f8f2] mb-1">Choose Attendance Mode</h2>
+        <p className="text-sm text-gray-600 dark:text-[#6272a4]">Select how you want to take attendance</p>
       </div>
 
       <div className="grid gap-3">
         <Card 
-          className="cursor-pointer hover:shadow-sm transition-all duration-200 border-2 hover:border-orange-200 hover:bg-orange-50"
+          className="cursor-pointer hover:shadow-sm transition-all duration-200 border-2 hover:border-orange-200 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-500/10"
           onClick={async () => {
             await handleCreateSession();
             navigate('/attendance/qr-mode');
@@ -353,17 +353,17 @@ const TakeAttendancePage: React.FC = () => {
         >
           <CardContent className="p-6 pt-6">
             <div className="text-center">
-              <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <QrCode className="w-6 h-6 text-orange-600" />
+              <div className="w-12 h-12 bg-orange-100 dark:bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                <QrCode className="w-6 h-6 text-orange-600 dark:text-orange-400" />
               </div>
-              <h3 className="font-medium text-gray-900 mb-1">QR Code Mode</h3>
-              <p className="text-sm text-gray-600">Students scan QR code to mark attendance</p>
+              <h3 className="font-medium text-gray-900 dark:text-[#f8f8f2] mb-1">QR Code Mode</h3>
+              <p className="text-sm text-gray-600 dark:text-[#6272a4]">Students scan QR code to mark attendance</p>
             </div>
           </CardContent>
         </Card>
 
         <Card 
-          className="cursor-pointer hover:shadow-sm transition-all duration-200 border-2 hover:border-orange-200 hover:bg-orange-50"
+          className="cursor-pointer hover:shadow-sm transition-all duration-200 border-2 hover:border-orange-200 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-500/10"
           onClick={async () => {
             await handleCreateSession();
             navigate('/attendance/manual-mode');
@@ -371,17 +371,17 @@ const TakeAttendancePage: React.FC = () => {
         >
           <CardContent className="p-6 pt-6">
             <div className="text-center">
-              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Users className="w-6 h-6 text-green-600" />
+              <div className="w-12 h-12 bg-green-100 dark:bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Users className="w-6 h-6 text-green-600 dark:text-green-400" />
               </div>
-              <h3 className="font-medium text-gray-900 mb-1">Manual Mode</h3>
-              <p className="text-sm text-gray-600">Manually mark attendance for each student</p>
+              <h3 className="font-medium text-gray-900 dark:text-[#f8f8f2] mb-1">Manual Mode</h3>
+              <p className="text-sm text-gray-600 dark:text-[#6272a4]">Manually mark attendance for each student</p>
             </div>
           </CardContent>
         </Card>
 
         <Card 
-          className="cursor-pointer hover:shadow-sm transition-all duration-200 border-2 hover:border-orange-200 hover:bg-orange-50"
+          className="cursor-pointer hover:shadow-sm transition-all duration-200 border-2 hover:border-orange-200 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-500/10"
           onClick={async () => {
             await handleCreateSession();
             navigate('/attendance/hybrid-mode');
@@ -389,11 +389,11 @@ const TakeAttendancePage: React.FC = () => {
         >
           <CardContent className="p-6 pt-6">
             <div className="text-center">
-              <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Zap className="w-6 h-6 text-purple-600" />
+              <div className="w-12 h-12 bg-purple-100 dark:bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Zap className="w-6 h-6 text-purple-600 dark:text-purple-400" />
               </div>
-              <h3 className="font-medium text-gray-900 mb-1">Hybrid Mode</h3>
-              <p className="text-sm text-gray-600">Combine QR code and manual attendance</p>
+              <h3 className="font-medium text-gray-900 dark:text-[#f8f8f2] mb-1">Hybrid Mode</h3>
+              <p className="text-sm text-gray-600 dark:text-[#6272a4]">Combine QR code and manual attendance</p>
             </div>
           </CardContent>
         </Card>
@@ -426,8 +426,8 @@ const TakeAttendancePage: React.FC = () => {
         <CheckCircle className="w-8 h-8 text-green-600" />
       </div>
       <div>
-        <h2 className="text-lg font-semibold text-gray-900 mb-1">Session Created!</h2>
-        <p className="text-sm text-gray-600">Your attendance session has been created successfully</p>
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-[#f8f8f2] mb-1">Session Created!</h2>
+        <p className="text-sm text-gray-600 dark:text-[#6272a4]">Your attendance session has been created successfully</p>
       </div>
       <Button size="sm" onClick={() => navigate('/attendance')} className="w-full">
         Go to Attendance
@@ -440,8 +440,8 @@ const TakeAttendancePage: React.FC = () => {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-lg font-semibold text-gray-900">Take Attendance</h1>
-            <p className="text-sm text-gray-600">Create a new attendance session</p>
+            <h1 className="text-lg font-semibold text-gray-900 dark:text-[#f8f8f2]">Take Attendance</h1>
+            <p className="text-sm text-gray-600 dark:text-[#6272a4]">Create a new attendance session</p>
           </div>
           <Button
             variant="outline"

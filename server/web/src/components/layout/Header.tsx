@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Badge } from '../ui/badge';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '../ui/dropdown-menu';
 import { 
   Search, 
   Bell, 
@@ -73,7 +73,7 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
   };
 
   return (
-    <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <header className="bg-white dark:bg-[#282a36] border-b border-gray-200 dark:border-[#6272a4] sticky top-0 z-50">
       <div className="px-4">
         <div className="flex justify-between items-center h-14">
           {/* Breadcrumb Navigation */}
@@ -81,7 +81,7 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
             <Button 
               variant="ghost" 
               size="sm" 
-              className="md:hidden"
+              className="md:hidden hover:bg-orange-100 dark:hover:bg-[#44475a] text-gray-700 dark:text-[#f8f8f2]"
               onClick={onMobileMenuToggle}
             >
               <Menu className="h-4 w-4" />
@@ -92,10 +92,10 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
           {/* Search Bar */}
           <div className="hidden md:flex flex-1 max-w-md mx-4">
             <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-[#6272a4]" />
               <Input 
                 placeholder="Search students, classes..."
-                className="pl-10 bg-gray-50 border-gray-200 text-sm h-8"
+                className="pl-10 bg-orange-50 dark:bg-[#44475a] border-orange-200 dark:border-[#6272a4] text-sm h-8 text-gray-900 dark:text-[#f8f8f2] placeholder:text-gray-500 dark:placeholder:text-[#6272a4] focus:border-orange-300 dark:focus:border-[#bd93f9]"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -108,7 +108,7 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
             <Button 
               variant="ghost" 
               size="sm" 
-              className="md:hidden"
+              className="md:hidden hover:bg-orange-100 dark:hover:bg-[#44475a] text-gray-700 dark:text-[#f8f8f2]"
               onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
             >
               <Search className="h-4 w-4" />
@@ -118,7 +118,7 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
             {user?.role === 'admin' && (
               <DropdownMenu>
                 <DropdownMenuTrigger 
-                  className="inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-colors hover:bg-gray-100 h-8 px-3"
+                  className="gap-2 text-foreground"
                   onClick={() => setQuickActionsOpen(!quickActionsOpen)}
                 >
                   <Plus className="h-4 w-4" />
@@ -128,24 +128,15 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
                   <>
                     <div className="fixed inset-0 z-40" onClick={() => setQuickActionsOpen(false)} />
                     <DropdownMenuContent className="w-48">
-                      <DropdownMenuItem 
-                        className="hover:bg-orange-50 hover:text-orange-600"
-                        onClick={() => handleModalOpen('addStudent')}
-                      >
+                      <DropdownMenuItem onClick={() => handleModalOpen('addStudent')}>
                         <Users className="h-4 w-4 mr-2" />
                         Add Student
                       </DropdownMenuItem>
-                      <DropdownMenuItem 
-                        className="hover:bg-orange-50 hover:text-orange-600"
-                        onClick={() => handleModalOpen('addClass')}
-                      >
+                      <DropdownMenuItem onClick={() => handleModalOpen('addClass')}>
                         <BookOpen className="h-4 w-4 mr-2" />
                         Create Class
                       </DropdownMenuItem>
-                      <DropdownMenuItem 
-                        className="hover:bg-orange-50 hover:text-orange-600"
-                        onClick={() => handleModalOpen('scheduleSession')}
-                      >
+                      <DropdownMenuItem onClick={() => handleModalOpen('scheduleSession')}>
                         <Calendar className="h-4 w-4 mr-2" />
                         Schedule Session
                       </DropdownMenuItem>
@@ -158,13 +149,13 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
             {/* Notifications */}
             <DropdownMenu>
               <DropdownMenuTrigger 
-                className="relative inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-colors hover:bg-gray-100 h-8 px-3"
+                className="relative gap-2 text-foreground"
                 onClick={() => setNotificationsOpen(!notificationsOpen)}
               >
                 <Bell className={`h-4 w-4 ${notificationCount > 0 ? 'animate-pulse' : ''}`} />
                 <span className="hidden sm:inline">Notifications</span>
                 {notificationCount > 0 && (
-                  <Badge className="absolute -top-1 -right-1 h-5 w-5 p-0 text-xs bg-red-500">
+                  <Badge className="absolute -top-1 -right-1 h-5 w-5 p-0 text-xs bg-destructive text-destructive-foreground">
                     {notificationCount}
                   </Badge>
                 )}
@@ -173,37 +164,37 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
                 <>
                   <div className="fixed inset-0 z-40" onClick={() => setNotificationsOpen(false)} />
                   <DropdownMenuContent className="w-80">
-                <div className="p-3 border-b bg-gray-50">
-                  <div className="flex items-center justify-between">
-                    <h4 className="font-medium text-gray-900">Notifications</h4>
-                    <Button variant="ghost" size="sm" className="text-xs h-6 px-2">
-                      Mark all read
-                    </Button>
-                  </div>
-                  <p className="text-sm text-gray-600">{notificationsList.length} unread</p>
-                </div>
-                <div className="max-h-64 overflow-y-auto">
-                  {notificationsList.length === 0 ? (
-                    <div className="p-8 text-center">
-                      <Bell className="h-12 w-12 text-gray-300 mx-auto mb-3" />
-                      <p className="text-sm text-gray-600 mb-1">No notifications</p>
-                      <p className="text-xs text-gray-500">You're all caught up!</p>
+                    <div className="p-3 border-b bg-orange-50 dark:bg-[#282a36] border-orange-100 dark:border-[#6272a4]">
+                      <div className="flex items-center justify-between">
+                        <h4 className="font-medium text-gray-900 dark:text-[#f8f8f2]">Notifications</h4>
+                        <Button variant="ghost" size="sm" className="text-xs h-6 px-2">
+                          Mark all read
+                        </Button>
+                      </div>
+                      <p className="text-sm text-gray-600 dark:text-[#6272a4]">{notificationsList.length} unread</p>
                     </div>
-                  ) : (
-                    notificationsList.map((notification) => (
-                      <DropdownMenuItem key={notification.id} className="p-3 hover:bg-gray-50">
-                        <div className="flex-1">
-                          <p className="font-medium text-sm text-gray-900">{notification.type.toUpperCase()}</p>
-                          <p className="text-xs text-gray-600 mb-1">{notification.message}</p>
-                          <p className="text-xs text-gray-500">Just now</p>
+                    <div className="max-h-64 overflow-y-auto">
+                      {notificationsList.length === 0 ? (
+                        <div className="p-8 text-center">
+                          <Bell className="h-12 w-12 text-gray-300 dark:text-[#6272a4] mx-auto mb-3" />
+                          <p className="text-sm text-gray-600 dark:text-[#6272a4] mb-1">No notifications</p>
+                          <p className="text-xs text-gray-500 dark:text-[#6272a4]">You're all caught up!</p>
                         </div>
-                      </DropdownMenuItem>
-                    ))
-                  )}
-                </div>
-                <div className="border-t" />
+                      ) : (
+                        notificationsList.map((notification) => (
+                          <DropdownMenuItem key={notification.id} className="p-3">
+                            <div className="flex-1">
+                              <p className="font-medium text-sm text-gray-900 dark:text-[#f8f8f2]">{notification.type.toUpperCase()}</p>
+                              <p className="text-xs text-gray-600 dark:text-[#6272a4] mb-1">{notification.message}</p>
+                              <p className="text-xs text-gray-500 dark:text-[#6272a4]">Just now</p>
+                            </div>
+                          </DropdownMenuItem>
+                        ))
+                      )}
+                    </div>
+                    <DropdownMenuSeparator />
                     <DropdownMenuItem 
-                      className="p-3 text-center text-sm text-orange-600 hover:bg-orange-50 font-medium"
+                      className="p-3 text-center text-sm text-orange-600 dark:text-[#bd93f9] font-medium justify-center"
                       onClick={() => setNotificationsOpen(false)}
                     >
                       View all notifications
@@ -218,11 +209,11 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
             {/* User Menu */}
             <DropdownMenu>
               <DropdownMenuTrigger 
-                className="inline-flex items-center justify-center rounded-full transition-colors hover:bg-gray-100 h-8 w-8"
+                className="rounded-full p-0 h-8 w-8 hover:bg-accent"
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
               >
                 <Avatar className="h-8 w-8">
-                  <AvatarFallback className="bg-orange-100 text-orange-600">
+                  <AvatarFallback className="bg-primary/10 text-primary">
                     <User className="h-4 w-4" />
                   </AvatarFallback>
                 </Avatar>
@@ -231,7 +222,7 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
                 <>
                   <div className="fixed inset-0 z-40" onClick={() => setUserMenuOpen(false)} />
                   <DropdownMenuContent className="w-64">
-                    <div className="p-3 border-b bg-gradient-to-r from-orange-50 to-transparent">
+                    <div className="p-3 border-b bg-gradient-to-r from-orange-50 to-transparent dark:from-[#282a36] dark:to-transparent border-orange-100 dark:border-[#6272a4]">
                       <div className="flex items-center gap-3">
                         <Avatar className="h-10 w-10">
                           <AvatarFallback className="bg-orange-100 text-orange-600">
@@ -239,11 +230,11 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
                           </AvatarFallback>
                         </Avatar>
                         <div>
-                          <p className="font-medium text-gray-900">
-                            {user?.name || 'Student User'}
+                          <p className="font-medium text-gray-900 dark:text-[#f8f8f2]">
+                            {user?.name || user?.email?.split('@')[0] || 'User'}
                           </p>
-                          <p className="text-sm text-gray-600">
-                            {user?.email || 'student@university.edu'}
+                          <p className="text-sm text-gray-600 dark:text-[#6272a4]">
+                            {user?.email || 'user@university.edu'}
                           </p>
                         </div>
                       </div>
@@ -252,15 +243,12 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
                          user?.role === 'staff' ? 'Faculty Staff' : 'Student'}
                       </Badge>
                     </div>
-                    <DropdownMenuItem 
-                      className="hover:bg-orange-50 hover:text-orange-600"
-                      onClick={() => setUserMenuOpen(false)}
-                    >
+                    <DropdownMenuItem onClick={() => setUserMenuOpen(false)}>
                       Profile Settings
                     </DropdownMenuItem>
                     <div className="relative">
                       <DropdownMenuItem 
-                        className="flex items-center justify-between hover:bg-orange-50 hover:text-orange-600"
+                        className="flex items-center justify-between"
                         onClick={() => setThemeSubmenuOpen(!themeSubmenuOpen)}
                       >
                         <div className="flex items-center gap-2">
@@ -269,18 +257,16 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
                           {theme === 'system' && <Monitor className="h-4 w-4" />}
                           <span>Theme</span>
                         </div>
-                        <span className="text-xs text-gray-500">
-                          {theme === 'light' && 'Light'}
-                          {theme === 'dark' && 'Dark'}
-                          {theme === 'system' && 'System'}
+                        <span className="text-xs text-gray-500 dark:text-[#6272a4] capitalize">
+                          {theme}
                         </span>
                       </DropdownMenuItem>
                       {themeSubmenuOpen && (
-                        <div className="absolute right-full top-0 mr-1 w-32 bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-1">
+                        <div className="absolute right-full top-0 mr-1 w-32 bg-white dark:bg-[#44475a] border border-gray-200 dark:border-[#6272a4] rounded-md shadow-lg z-50 py-1 animate-in fade-in-0 zoom-in-95 slide-in-from-right-2 duration-200">
                           {themeOptions.map((themeOption) => (
                             <div
                               key={themeOption.id}
-                              className="flex items-center justify-between px-3 py-2 text-sm cursor-pointer hover:bg-orange-50 hover:text-orange-600 transition-colors"
+                              className="flex items-center justify-between px-3 py-2 text-sm cursor-pointer text-gray-700 dark:text-[#f8f8f2] hover:bg-orange-50 dark:hover:bg-[#bd93f9]/20 hover:text-orange-600 dark:hover:text-[#bd93f9] transition-colors mx-1"
                               onClick={() => {
                                 setTheme(themeOption.id);
                                 setThemeSubmenuOpen(false);
@@ -303,19 +289,15 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
                         window.location.href = '/settings';
                         setUserMenuOpen(false);
                       }}
-                      className="hover:bg-orange-50 hover:text-orange-600"
                     >
                       System Settings
                     </DropdownMenuItem>
-                    <DropdownMenuItem 
-                      className="hover:bg-orange-50 hover:text-orange-600"
-                      onClick={() => setUserMenuOpen(false)}
-                    >
+                    <DropdownMenuItem onClick={() => setUserMenuOpen(false)}>
                       Help & Support
                     </DropdownMenuItem>
-                    <div className="border-t" />
+                    <DropdownMenuSeparator />
                     <DropdownMenuItem 
-                      className="text-red-600 hover:bg-red-50" 
+                      className="text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20" 
                       onClick={() => {
                         logout();
                         addNotification({ message: 'Logged out successfully', type: 'info' });
@@ -333,12 +315,12 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
         
         {/* Mobile Search Overlay */}
         {mobileSearchOpen && (
-          <div className="md:hidden absolute top-full left-0 right-0 bg-white border-b border-gray-200 p-4 z-50">
+          <div className="md:hidden absolute top-full left-0 right-0 bg-white dark:bg-[#282a36] border-b border-orange-200 dark:border-[#6272a4] p-4 z-50">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
               <Input 
                 placeholder="Search students, classes..."
-                className="pl-10 bg-gray-50 border-gray-200 text-sm h-8"
+                className="pl-10 bg-orange-50 dark:bg-[#44475a] border-orange-200 dark:border-[#6272a4] text-sm h-8 text-gray-900 dark:text-[#f8f8f2] placeholder:text-gray-500 dark:placeholder:text-[#6272a4]"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 autoFocus

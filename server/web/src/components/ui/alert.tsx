@@ -12,10 +12,10 @@ const Alert = React.forwardRef<
     role="alert"
     className={cn(
       "relative w-full rounded-lg border p-3 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-3 [&>svg]:top-3 [&>svg]:h-4 [&>svg]:w-4",
-      variant === "default" && "bg-white text-gray-900 border-gray-200",
-      variant === "destructive" && "border-red-200 text-red-700 bg-red-50 [&>svg]:text-red-600",
-      variant === "success" && "border-green-200 text-green-700 bg-green-50 [&>svg]:text-green-600",
-      variant === "warning" && "border-yellow-200 text-yellow-700 bg-yellow-50 [&>svg]:text-yellow-600",
+      variant === "default" && "bg-white dark:bg-[#44475a] text-gray-900 dark:text-[#f8f8f2] border-gray-200 dark:border-[#6272a4]",
+      variant === "destructive" && "border-red-200 dark:border-red-500/20 text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-500/10 [&>svg]:text-red-600 dark:[&>svg]:text-red-400",
+      variant === "success" && "border-green-200 dark:border-green-500/20 text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-500/10 [&>svg]:text-green-600 dark:[&>svg]:text-green-400",
+      variant === "warning" && "border-yellow-200 dark:border-yellow-500/20 text-yellow-700 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-500/10 [&>svg]:text-yellow-600 dark:[&>svg]:text-yellow-400",
       className
     )}
     {...props}

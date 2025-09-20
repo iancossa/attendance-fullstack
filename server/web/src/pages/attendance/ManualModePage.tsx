@@ -104,30 +104,40 @@ export const ManualModePage: React.FC = () => {
     <Layout>
       <div className="w-full px-4 space-y-4">
         <div className="text-center">
-          <h1 className="text-lg font-semibold text-gray-900 mb-1">Manual Attendance Mode</h1>
-          <p className="text-sm text-gray-600">Mark attendance manually from student list</p>
+          <h1 className="text-lg font-semibold text-gray-900 dark:text-[#f8f8f2] mb-1">Manual Attendance Mode</h1>
+          <p className="text-sm text-gray-600 dark:text-[#6272a4]">Mark attendance manually from student list</p>
+          <Card className="mt-3 bg-orange-50 dark:bg-orange-500/10 border-orange-200 dark:border-orange-500/20">
+            <CardContent className="p-3 pt-3">
+              <div className="text-sm text-gray-900 dark:text-[#f8f8f2]">
+                <strong>Demo Class</strong> • Section A • Lecture
+              </div>
+              <div className="text-xs text-gray-500 dark:text-[#6272a4]">
+                {new Date().toLocaleDateString()} • {new Date().toLocaleTimeString()}
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <Card className="bg-green-50 border-green-200">
+          <Card className="bg-green-50 dark:bg-green-500/10 border-green-200 dark:border-green-500/20">
             <CardContent className="p-3 pt-3 text-center">
               <div className="text-xl font-semibold text-green-700">{presentCount}</div>
               <div className="text-xs text-green-600">Present</div>
             </CardContent>
           </Card>
-          <Card className="bg-red-50 border-red-200">
+          <Card className="bg-red-50 dark:bg-red-500/10 border-red-200 dark:border-red-500/20">
             <CardContent className="p-3 pt-3 text-center">
               <div className="text-xl font-semibold text-red-700">{absentCount}</div>
               <div className="text-xs text-red-600">Absent</div>
             </CardContent>
           </Card>
-          <Card className="bg-blue-50 border-blue-200">
+          <Card className="bg-blue-50 dark:bg-blue-500/10 border-blue-200 dark:border-blue-500/20">
             <CardContent className="p-3 pt-3 text-center">
               <div className="text-xl font-semibold text-blue-700">{Math.round((presentCount / students.length) * 100)}%</div>
               <div className="text-xs text-blue-600">Rate</div>
             </CardContent>
           </Card>
-          <Card className="bg-gray-50 border-gray-200">
+          <Card className="bg-gray-50 dark:bg-[#44475a] border-gray-200 dark:border-[#6272a4]">
             <CardContent className="p-2 pt-2">
               <div className="flex gap-1">
                 <Button size="sm" onClick={markAllPresent} className="flex-1 h-7 text-xs">
@@ -221,8 +231,8 @@ export const ManualModePage: React.FC = () => {
                             className="w-4 h-4 text-orange-600 rounded"
                           />
                         </TableCell>
-                        <TableCell className="font-medium text-gray-900">{student.name}</TableCell>
-                        <TableCell className="text-gray-600">{filteredStudents.indexOf(student) + 1}</TableCell>
+                        <TableCell className="font-medium text-gray-900 dark:text-[#f8f8f2]">{student.name}</TableCell>
+                        <TableCell className="text-gray-600 dark:text-[#6272a4]">{filteredStudents.indexOf(student) + 1}</TableCell>
                         <TableCell>
                           <Badge className={student.present ? 'bg-green-100 text-green-700 border-green-200' : 'bg-red-100 text-red-700 border-red-200'}>
                             {student.present ? 'Present' : 'Absent'}

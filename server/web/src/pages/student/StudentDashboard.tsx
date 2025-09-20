@@ -130,74 +130,77 @@ export const StudentDashboard: React.FC = () => {
       <div className="space-y-4">
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-base font-semibold text-gray-900">My Dashboard</h1>
-            <p className="text-sm text-gray-600">
+            <h1 className="text-base font-semibold text-gray-900 dark:text-[#f8f8f2]">My Dashboard</h1>
+            <p className="text-sm text-gray-600 dark:text-[#6272a4]">
               {currentStudent ? `Welcome, ${currentStudent.name} (${currentStudent.studentId})` : 'Track your attendance and achievements'}
             </p>
           </div>
-          <Button onClick={handleQRScan} className="gap-2 bg-orange-500 hover:bg-orange-600">
+          <Button onClick={handleQRScan} className="gap-2 bg-orange-500 hover:bg-orange-600 hidden sm:flex">
             <QrCode className="h-4 w-4" />
             Scan QR Code
+          </Button>
+          <Button onClick={handleQRScan} size="sm" className="bg-orange-500 hover:bg-orange-600 sm:hidden">
+            <QrCode className="h-4 w-4" />
           </Button>
         </div>
 
         {/* Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="border-l-4 border-l-orange-500">
+          <Card className="border-l-4 border-l-primary bg-orange-50 dark:bg-[#44475a]">
             <CardContent className="pt-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs font-medium text-gray-600">Overall Attendance</p>
-                  <div className="text-2xl font-semibold text-gray-900 mt-1">87%</div>
-                  <p className="text-xs text-green-600 mt-1">↗ +3% this week</p>
+                  <p className="text-xs font-medium text-gray-600 dark:text-[#f8f8f2]">Overall Attendance</p>
+                  <div className="text-2xl font-semibold text-gray-900 dark:text-[#f8f8f2] mt-1">87%</div>
+                  <p className="text-xs text-green-600 dark:text-green-400 mt-1">↗ +3% this week</p>
                 </div>
-                <div className="p-2 bg-orange-100 rounded-lg">
-                  <TrendingUp className="h-4 w-4 text-orange-600" />
+                <div className="p-2 bg-orange-100 dark:bg-orange-500/20 rounded-lg">
+                  <TrendingUp className="h-4 w-4 text-orange-600 dark:text-orange-400" />
                 </div>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="border-l-4 border-l-orange-500">
+          <Card className="border-l-4 border-l-primary bg-orange-50 dark:bg-[#44475a]">
             <CardContent className="pt-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs font-medium text-gray-600">Classes Today</p>
-                  <div className="text-2xl font-semibold text-gray-900 mt-1">4</div>
-                  <p className="text-xs text-gray-500 mt-1">2 completed</p>
+                  <p className="text-xs font-medium text-gray-600 dark:text-[#f8f8f2]">Classes Today</p>
+                  <div className="text-2xl font-semibold text-gray-900 dark:text-[#f8f8f2] mt-1">4</div>
+                  <p className="text-xs text-gray-500 dark:text-[#e5e7eb] mt-1">2 completed</p>
                 </div>
-                <div className="p-2 bg-orange-100 rounded-lg">
-                  <Calendar className="h-4 w-4 text-orange-600" />
+                <div className="p-2 bg-orange-100 dark:bg-orange-500/20 rounded-lg">
+                  <Calendar className="h-4 w-4 text-orange-600 dark:text-orange-400" />
                 </div>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="border-l-4 border-l-orange-500">
+          <Card className="border-l-4 border-l-primary bg-orange-50 dark:bg-[#44475a]">
             <CardContent className="pt-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs font-medium text-gray-600">Current Streak</p>
-                  <div className="text-2xl font-semibold text-gray-900 mt-1">12</div>
-                  <p className="text-xs text-gray-500 mt-1">days present</p>
+                  <p className="text-xs font-medium text-gray-600 dark:text-[#f8f8f2]">Current Streak</p>
+                  <div className="text-2xl font-semibold text-gray-900 dark:text-[#f8f8f2] mt-1">12</div>
+                  <p className="text-xs text-gray-500 dark:text-[#e5e7eb] mt-1">days present</p>
                 </div>
-                <div className="p-2 bg-orange-100 rounded-lg">
-                  <Target className="h-4 w-4 text-orange-600" />
+                <div className="p-2 bg-orange-100 dark:bg-orange-500/20 rounded-lg">
+                  <Target className="h-4 w-4 text-orange-600 dark:text-orange-400" />
                 </div>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="border-l-4 border-l-orange-500">
+          <Card className="border-l-4 border-l-primary bg-orange-50 dark:bg-[#44475a]">
             <CardContent className="pt-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs font-medium text-gray-600">Class Rank</p>
-                  <div className="text-2xl font-semibold text-gray-900 mt-1">#8</div>
-                  <p className="text-xs text-gray-500 mt-1">out of 45 students</p>
+                  <p className="text-xs font-medium text-gray-600 dark:text-[#f8f8f2]">Class Rank</p>
+                  <div className="text-2xl font-semibold text-gray-900 dark:text-[#f8f8f2] mt-1">#8</div>
+                  <p className="text-xs text-gray-500 dark:text-[#e5e7eb] mt-1">out of 45 students</p>
                 </div>
-                <div className="p-2 bg-orange-100 rounded-lg">
-                  <Trophy className="h-4 w-4 text-orange-600" />
+                <div className="p-2 bg-orange-100 dark:bg-orange-500/20 rounded-lg">
+                  <Trophy className="h-4 w-4 text-orange-600 dark:text-orange-400" />
                 </div>
               </div>
             </CardContent>
@@ -222,12 +225,12 @@ export const StudentDashboard: React.FC = () => {
                 { time: '02:00 PM', subject: 'Database Systems', room: 'CS-103', status: 'upcoming', attendance: 92 },
                 { time: '04:00 PM', subject: 'Software Engineering', room: 'CS-104', status: 'upcoming', attendance: 85 }
               ].map((item, index) => (
-                <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-[#44475a] rounded-lg border border-gray-200 dark:border-[#6272a4]">
                   <div className="flex items-center gap-3">
-                    <div className="text-sm font-medium w-16">{item.time}</div>
+                    <div className="text-sm font-medium w-16 text-gray-900 dark:text-[#f8f8f2]">{item.time}</div>
                     <div className="flex-1">
-                      <div className="font-medium text-sm">{item.subject}</div>
-                      <div className="text-xs text-gray-600">{item.room}</div>
+                      <div className="font-medium text-sm text-gray-900 dark:text-[#f8f8f2]">{item.subject}</div>
+                      <div className="text-xs text-gray-600 dark:text-[#6272a4]">{item.room}</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
@@ -265,9 +268,9 @@ export const StudentDashboard: React.FC = () => {
                 { subject: 'Database Systems', attendance: 92 },
                 { subject: 'Software Engineering', attendance: 85 }
               ].map((item, index) => (
-                <div key={index} className="p-3 bg-gradient-to-r from-orange-50 to-transparent rounded-lg">
+                <div key={index} className="p-3 bg-gradient-to-r from-orange-50 dark:from-orange-500/10 to-transparent rounded-lg">
                   <div className="flex justify-between text-sm mb-2">
-                    <span className="font-medium text-gray-700">{item.subject}</span>
+                    <span className="font-medium text-gray-700 dark:text-[#f8f8f2]">{item.subject}</span>
                     <span className="text-orange-600 font-medium">{item.attendance}%</span>
                   </div>
                   <Progress value={item.attendance} />
@@ -288,14 +291,14 @@ export const StudentDashboard: React.FC = () => {
         {/* Scan Result Modal */}
         {scanResult && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg shadow-lg max-w-md w-full p-6">
+            <div className="bg-white dark:bg-[#282a36] rounded-lg shadow-lg max-w-md w-full p-6 border border-gray-200 dark:border-[#6272a4]">
               <div className="text-center py-4">
                 <div className={`text-4xl mb-4 ${
                   scanResult.includes('✅') ? 'text-green-500' : 'text-red-500'
                 }`}>
                   {scanResult.includes('✅') ? '🎉' : '⚠️'}
                 </div>
-                <div className="text-base mb-6 font-medium">{scanResult}</div>
+                <div className="text-base mb-6 font-medium text-gray-900 dark:text-[#f8f8f2]">{scanResult}</div>
                 <Button onClick={() => setScanResult(null)} className="w-full">
                   {scanResult.includes('✅') ? 'Great!' : 'Try Again'}
                 </Button>

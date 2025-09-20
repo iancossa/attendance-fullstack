@@ -52,8 +52,8 @@ export const AttendancePage: React.FC = () => {
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
           <div>
-            <h1 className="text-lg font-semibold text-gray-900">Attendance Records</h1>
-            <p className="text-sm text-gray-600">Track and manage student attendance</p>
+            <h1 className="text-lg font-semibold text-gray-900 dark:text-[#f8f8f2]">Attendance Records</h1>
+            <p className="text-sm text-gray-600 dark:text-[#6272a4]">Track and manage student attendance</p>
           </div>
           <div className="flex gap-2">
             <Button 
@@ -80,27 +80,12 @@ export const AttendancePage: React.FC = () => {
             <CardContent className="p-4 pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Present Today</p>
-                  <div className="text-2xl font-semibold text-gray-900 mt-2">285</div>
-                  <p className="text-xs text-gray-500 mt-1">out of 342 total</p>
+                  <p className="text-sm font-medium text-gray-600 dark:text-[#f8f8f2]">Present Today</p>
+                  <div className="text-2xl font-semibold text-gray-900 dark:text-[#f8f8f2] mt-2">285</div>
+                  <p className="text-xs text-gray-500 dark:text-[#6272a4] mt-1">out of 342 total</p>
                 </div>
-                <div className="p-2 bg-green-50 rounded-lg">
-                  <UserCheck className="h-5 w-5 text-green-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card className="border-l-4 border-l-orange-500">
-            <CardContent className="p-4 pt-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Absent Today</p>
-                  <div className="text-2xl font-semibold text-gray-900 mt-2">45</div>
-                  <p className="text-xs text-gray-500 mt-1">requires follow-up</p>
-                </div>
-                <div className="p-2 bg-red-50 rounded-lg">
-                  <UserX className="h-5 w-5 text-red-600" />
+                <div className="p-2 bg-green-50 dark:bg-green-500/20 rounded-lg">
+                  <UserCheck className="h-5 w-5 text-green-600 dark:text-green-400" />
                 </div>
               </div>
             </CardContent>
@@ -110,12 +95,27 @@ export const AttendancePage: React.FC = () => {
             <CardContent className="p-4 pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Late Arrivals</p>
-                  <div className="text-2xl font-semibold text-gray-900 mt-2">12</div>
-                  <p className="text-xs text-gray-500 mt-1">within grace period</p>
+                  <p className="text-sm font-medium text-gray-600 dark:text-[#f8f8f2]">Absent Today</p>
+                  <div className="text-2xl font-semibold text-gray-900 dark:text-[#f8f8f2] mt-2">45</div>
+                  <p className="text-xs text-gray-500 dark:text-[#6272a4] mt-1">requires follow-up</p>
                 </div>
-                <div className="p-2 bg-yellow-50 rounded-lg">
-                  <Clock className="h-5 w-5 text-yellow-600" />
+                <div className="p-2 bg-red-50 dark:bg-red-500/20 rounded-lg">
+                  <UserX className="h-5 w-5 text-red-600 dark:text-red-400" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card className="border-l-4 border-l-orange-500">
+            <CardContent className="p-4 pt-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600 dark:text-[#f8f8f2]">Late Arrivals</p>
+                  <div className="text-2xl font-semibold text-gray-900 dark:text-[#f8f8f2] mt-2">12</div>
+                  <p className="text-xs text-gray-500 dark:text-[#6272a4] mt-1">within grace period</p>
+                </div>
+                <div className="p-2 bg-yellow-50 dark:bg-yellow-500/20 rounded-lg">
+                  <Clock className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
                 </div>
               </div>
             </CardContent>
@@ -197,7 +197,7 @@ export const AttendancePage: React.FC = () => {
                 <TableBody>
                   {filteredRecords.map((record) => (
                     <TableRow key={record.id} className="hover:bg-gray-50">
-                      <TableCell className="font-medium text-gray-900">{record.student}</TableCell>
+                      <TableCell className="font-medium text-gray-900 dark:text-[#f8f8f2]">{record.student}</TableCell>
                       <TableCell>
                         <Badge variant="outline" className="text-xs">
                           {record.class}
@@ -227,7 +227,7 @@ export const AttendancePage: React.FC = () => {
                       <TableCell>
                         <div className="relative">
                           <button 
-                            className="h-8 w-8 p-0 hover:bg-gray-100 transition-colors rounded-md flex items-center justify-center"
+                            className="h-8 w-8 p-0 hover:bg-gray-100 dark:hover:bg-[#44475a] transition-colors rounded-md flex items-center justify-center"
                             onClick={(e) => {
                               e.stopPropagation();
                               setOpenDropdown(openDropdown === record.id ? null : record.id);
@@ -238,7 +238,7 @@ export const AttendancePage: React.FC = () => {
                           {openDropdown === record.id && (
                             <>
                               <div className="fixed inset-0 z-40" onClick={() => setOpenDropdown(null)} />
-                              <div className="absolute right-0 top-8 mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-1">
+                              <div className="absolute right-0 top-8 mt-1 w-48 bg-white dark:bg-[#44475a] border border-gray-200 dark:border-[#6272a4] rounded-lg shadow-lg z-50 py-1">
                                 <button 
                                   onClick={() => handleModalOpen(record.student, 'viewProfile')} 
                                   className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left"
@@ -286,7 +286,7 @@ export const AttendancePage: React.FC = () => {
             </div>
             
             {filteredRecords.length === 0 && (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-gray-500 dark:text-[#6272a4]">
                 <Users className="h-12 w-12 mx-auto mb-4 opacity-50" />
                 <p>No attendance records found</p>
                 <p className="text-sm">Try adjusting your search criteria</p>

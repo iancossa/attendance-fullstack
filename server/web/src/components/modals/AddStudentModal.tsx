@@ -50,12 +50,12 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({ isOpen, onClos
 
   return (
     <div className="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        <div className="flex items-center justify-between p-4 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900">Add New Student</h2>
+      <div className="bg-white dark:bg-[#282a36] rounded-lg shadow-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-gray-200 dark:border-[#6272a4]">
+        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-[#6272a4]">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-[#f8f8f2]">Add New Student</h2>
           <button
             onClick={onClose}
-            className="h-8 w-8 rounded-md hover:bg-gray-100 flex items-center justify-center"
+            className="h-8 w-8 rounded-md hover:bg-gray-100 dark:hover:bg-[#44475a] flex items-center justify-center"
           >
             <X className="h-4 w-4" />
           </button>
@@ -64,7 +64,7 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({ isOpen, onClos
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#f8f8f2] mb-1">Full Name</label>
                 <Input
                   value={formData.name}
                   onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
@@ -73,7 +73,7 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({ isOpen, onClos
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Student ID</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#f8f8f2] mb-1">Student ID</label>
                 <Input
                   value={formData.studentId}
                   onChange={(e) => setFormData(prev => ({ ...prev, studentId: e.target.value }))}
@@ -85,7 +85,7 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({ isOpen, onClos
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#f8f8f2] mb-1">Email</label>
                 <Input
                   type="email"
                   value={formData.email}
@@ -95,7 +95,7 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({ isOpen, onClos
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#f8f8f2] mb-1">Phone</label>
                 <Input
                   value={formData.phone}
                   onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
@@ -107,7 +107,7 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({ isOpen, onClos
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Department</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#f8f8f2] mb-1">Department</label>
                 <select
                   value={formData.department}
                   onChange={(e) => setFormData(prev => ({ ...prev, department: e.target.value }))}
@@ -122,7 +122,7 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({ isOpen, onClos
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Class</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#f8f8f2] mb-1">Class</label>
                 <Input
                   value={formData.class}
                   onChange={(e) => setFormData(prev => ({ ...prev, class: e.target.value }))}
@@ -134,7 +134,7 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({ isOpen, onClos
 
             <div className="grid grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Section</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#f8f8f2] mb-1">Section</label>
                 <Input
                   value={formData.section}
                   onChange={(e) => setFormData(prev => ({ ...prev, section: e.target.value }))}
@@ -143,7 +143,7 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({ isOpen, onClos
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Year</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#f8f8f2] mb-1">Year</label>
                 <select
                   value={formData.year}
                   onChange={(e) => setFormData(prev => ({ ...prev, year: e.target.value }))}
@@ -158,7 +158,7 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({ isOpen, onClos
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Enrollment Date</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#f8f8f2] mb-1">Enrollment Date</label>
                 <Input
                   type="date"
                   value={formData.enrollmentDate}
