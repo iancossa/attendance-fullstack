@@ -1,5 +1,6 @@
 const express = require('express');
-const { verifyToken, adminOnly } = require('../src/middlewares');
+const middlewares = require('../src/middlewares');
+const { verifyToken, adminOnly } = middlewares;
 
 const router = express.Router();
 

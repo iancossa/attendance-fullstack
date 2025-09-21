@@ -39,7 +39,7 @@ async function testBasicAttendance() {
         // Login
         const login = await makeRequest('https://attendance-fullstack.onrender.com/api/auth/login', {
             method: 'POST',
-            body: { email: 'staff@university.edu', password: 'staff123' }
+            body: { email: 'staff@university.edu', password: process.env.TEST_STAFF_PASSWORD || 'defaultpass' }
         });
         
         const token = login.data.token;

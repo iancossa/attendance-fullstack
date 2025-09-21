@@ -22,7 +22,13 @@ router.get('/', verifyToken, async (req, res) => {
 });
 
 // Create new class
-router.post('/', verifyToken, async (req, res) => {
+router.post('/', verifyToken, (req, res, next) => {
+    // CSRF protection
+    if (!req.headers['x-requested-with'] && !req.headers['x-csrf-token']) {
+        return res.status(403).json({ error: 'CSRF token required' });
+    }
+    next();
+}, async (req, res) => {
     try {
         const { name, code, faculty, maxStudents, schedule, room } = req.body;
         
