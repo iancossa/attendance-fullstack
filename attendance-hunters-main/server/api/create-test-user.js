@@ -29,7 +29,7 @@ async function createTestUser() {
         console.log(`   User ID: ${user.id}\n`);
 
         // Also create a staff user
-        const hashedStaffPassword = await bcrypt.hash('staff123', 10);
+        const hashedStaffPassword = await bcrypt.hash(process.env.TEST_STAFF_PASSWORD || 'defaultpass', 10);
         
         const staffUser = await prisma.user.create({
             data: {

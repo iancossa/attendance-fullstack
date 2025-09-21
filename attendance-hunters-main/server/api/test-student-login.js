@@ -7,7 +7,7 @@ async function testStudentLogin() {
         // Test with Alice Johnson
         const loginData = {
             email: 'alice.johnson@university.edu',
-            password: 'student123'
+            password: process.env.TEST_STUDENT_PASSWORD || 'defaultpass'
         };
 
         console.log('📧 Testing login for:', loginData.email);
@@ -16,6 +16,7 @@ async function testStudentLogin() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
             },
             body: JSON.stringify(loginData)
         });
@@ -58,13 +59,15 @@ async function testStudentLogin() {
         console.log('\n🧪 Testing with Bob Smith...');
         const loginData2 = {
             email: 'bob.smith@university.edu',
-            password: 'student123'
+            password: process.env.TEST_STUDENT_PASSWORD || 'defaultpass'
         };
 
         const response2 = await fetch('https://attendance-fullstack.onrender.com/api/student-auth/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-Token': 'test-token'
             },
             body: JSON.stringify(loginData2)
         });

@@ -6,6 +6,7 @@
  */
 
 require('dotenv').config({ path: './server/api/.env' });
+const { PrismaClient } = require('./server/api/generated/prisma');
 
 async function debugQRDatabase() {
     console.log('🔍 Debugging QR Database Saving Issue\n');
@@ -13,7 +14,6 @@ async function debugQRDatabase() {
     try {
         // 1. Test Prisma connection
         console.log('1️⃣ Testing Prisma Connection...');
-        const { PrismaClient } = require('./server/api/generated/prisma');
         const prisma = new PrismaClient();
         
         await prisma.$connect();
