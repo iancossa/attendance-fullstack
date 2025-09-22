@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ROUTES } from '../../constants';
-import { BarChart3, GraduationCap, FileText, Trophy, Settings, Users, Target, UserCheck, Building2, Calendar } from 'lucide-react';
+import { BarChart3, GraduationCap, FileText, Trophy, Settings, Users, Target, UserCheck, Building2, Calendar, AlertTriangle } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import { useAppStore } from '../../store';
 import { useAuth } from '../../hooks/useAuth';
@@ -23,6 +23,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen = false, setIsMob
         { name: 'Attendance', path: ROUTES.ATTENDANCE, icon: Target, badge: null },
         { name: 'Classes', path: ROUTES.CLASSES, icon: GraduationCap, badge: null },
         { name: 'Students', path: '/students', icon: Users, badge: null },
+        { name: 'Detention', path: '/detention', icon: AlertTriangle, badge: null },
         { name: 'Faculty', path: '/faculty', icon: UserCheck, badge: null },
         { name: 'Departments', path: '/departments', icon: Building2, badge: null },
         { name: 'Calendar', path: '/calendar', icon: Calendar, badge: null },

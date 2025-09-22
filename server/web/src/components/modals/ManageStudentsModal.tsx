@@ -42,13 +42,13 @@ export const ManageStudentsModal: React.FC<ManageStudentsModalProps> = ({ isOpen
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto modal-scrollbar">
-        <div className="sticky top-0 z-10 flex items-center justify-between p-6 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900">Manage Students - {classData?.name}</h2>
+    <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50 p-4">
+      <div className="bg-white dark:bg-[#282a36] rounded-lg shadow-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto modal-scrollbar border border-gray-200 dark:border-[#6272a4]">
+        <div className="sticky top-0 z-10 flex items-center justify-between p-6 border-b border-gray-200 dark:border-[#6272a4] bg-white dark:bg-[#282a36]">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-[#f8f8f2]">Manage Students - {classData?.name}</h2>
           <button
             onClick={onClose}
-            className="h-8 w-8 rounded-md hover:bg-gray-100 flex items-center justify-center"
+            className="h-8 w-8 rounded-md hover:bg-gray-100 dark:hover:bg-[#44475a] flex items-center justify-center"
           >
             <X className="h-4 w-4" />
           </button>
@@ -57,7 +57,7 @@ export const ManageStudentsModal: React.FC<ManageStudentsModalProps> = ({ isOpen
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Users className="h-5 w-5 text-orange-600" />
-            <span className="font-medium">Class: {classData?.code}</span>
+            <span className="font-medium text-gray-900 dark:text-[#f8f8f2]">Class: {classData?.code}</span>
           </div>
           <Badge variant="outline">
             {enrolledStudents.length}/{classData?.enrolled} enrolled
@@ -76,11 +76,11 @@ export const ManageStudentsModal: React.FC<ManageStudentsModalProps> = ({ isOpen
 
         <div className="max-h-96 overflow-y-auto space-y-2">
           {filteredStudents.map((student) => (
-            <div key={student.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+            <div key={student.id} className="flex items-center justify-between p-3 border border-gray-200 dark:border-[#6272a4] rounded-lg bg-white dark:bg-[#44475a]">
               <div className="flex-1">
-                <div className="font-medium text-gray-900">{student.name}</div>
-                <div className="text-sm text-gray-600">{student.email}</div>
-                <div className="text-xs text-gray-500">{student.studentId} • {student.department}</div>
+                <div className="font-medium text-gray-900 dark:text-[#f8f8f2]">{student.name}</div>
+                <div className="text-sm text-gray-600 dark:text-[#6272a4]">{student.email}</div>
+                <div className="text-xs text-gray-500 dark:text-[#6272a4]">{student.studentId} • {student.department}</div>
               </div>
               <div className="flex items-center gap-2">
                 <Badge className={student.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'}>
@@ -111,7 +111,7 @@ export const ManageStudentsModal: React.FC<ManageStudentsModalProps> = ({ isOpen
           ))}
         </div>
 
-          <div className="flex justify-end gap-2 pt-4 border-t">
+          <div className="flex justify-end gap-2 pt-4 border-t border-gray-200 dark:border-[#6272a4]">
             <Button variant="outline" onClick={onClose}>
               Close
             </Button>

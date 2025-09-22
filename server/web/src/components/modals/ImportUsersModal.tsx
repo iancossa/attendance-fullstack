@@ -60,7 +60,7 @@ export const ImportUsersModal: React.FC<ImportUsersModalProps> = ({ isOpen, onCl
 
   return (
     <>
-      <div className="fixed inset-0 bg-black/50 z-50" onClick={onClose} />
+      <div className="fixed inset-0 bg-black/30 z-50" onClick={onClose} />
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
         <Card className="w-full max-w-lg bg-white dark:bg-[#282a36] border-gray-200 dark:border-[#6272a4]">
           <CardHeader className="flex flex-row items-center justify-between">

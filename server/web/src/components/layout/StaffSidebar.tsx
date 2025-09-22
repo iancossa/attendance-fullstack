@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BarChart3, Target, GraduationCap, FileText, Users, Calendar, Settings, User } from 'lucide-react';
+import { BarChart3, Target, GraduationCap, FileText, Users, Calendar, Settings, User, AlertTriangle } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import { useAppStore } from '../../store';
 import { ROUTES } from '../../constants';
@@ -19,6 +19,7 @@ export const StaffSidebar: React.FC<StaffSidebarProps> = ({ isMobileOpen = false
     { name: 'Attendance', path: ROUTES.ATTENDANCE, icon: Target, badge: null },
     { name: 'Classes', path: ROUTES.CLASSES, icon: GraduationCap, badge: null },
     { name: 'Students', path: '/students', icon: Users, badge: null },
+    { name: 'Detention', path: '/detention', icon: AlertTriangle, badge: null },
     { name: 'Calendar', path: '/calendar', icon: Calendar, badge: null },
   ];
 

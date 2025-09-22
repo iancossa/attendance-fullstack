@@ -43,13 +43,13 @@ export const EditDetailsModal: React.FC<EditDetailsModalProps> = ({ student, isO
   };
 
   return (
-    <div className="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center z-50 p-2 sm:p-4">
-      <div className="bg-white rounded-lg shadow-lg w-full max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto modal-scrollbar">
-        <div className="sticky top-0 z-10 flex items-center justify-between p-6 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900">Edit Student Details</h2>
+    <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50 p-2 sm:p-4">
+      <div className="bg-white dark:bg-[#282a36] rounded-lg shadow-lg w-full max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto modal-scrollbar border border-gray-200 dark:border-[#6272a4]">
+        <div className="sticky top-0 z-10 flex items-center justify-between p-6 border-b border-gray-200 dark:border-[#6272a4] bg-white dark:bg-[#282a36]">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-[#f8f8f2]">Edit Student Details</h2>
           <button
             onClick={onClose}
-            className="h-8 w-8 rounded-md hover:bg-gray-100 flex items-center justify-center"
+            className="h-8 w-8 rounded-md hover:bg-gray-100 dark:hover:bg-[#44475a] flex items-center justify-center"
           >
             <X className="h-4 w-4" />
           </button>
@@ -58,10 +58,10 @@ export const EditDetailsModal: React.FC<EditDetailsModalProps> = ({ student, isO
         <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-4 sm:space-y-6">
           {/* Personal Information */}
           <div>
-            <h3 className="text-sm font-medium text-gray-900 mb-4">Personal Information</h3>
+            <h3 className="text-sm font-medium text-gray-900 dark:text-[#f8f8f2] mb-4">Personal Information</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#f8f8f2] mb-1">Full Name</label>
                 <Input
                   value={formData.name}
                   onChange={(e) => handleChange('name', e.target.value)}
@@ -69,7 +69,7 @@ export const EditDetailsModal: React.FC<EditDetailsModalProps> = ({ student, isO
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#f8f8f2] mb-1">Email</label>
                 <Input
                   type="email"
                   value={formData.email}
@@ -78,7 +78,7 @@ export const EditDetailsModal: React.FC<EditDetailsModalProps> = ({ student, isO
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#f8f8f2] mb-1">Phone</label>
                 <Input
                   value={formData.phone}
                   onChange={(e) => handleChange('phone', e.target.value)}
@@ -86,11 +86,11 @@ export const EditDetailsModal: React.FC<EditDetailsModalProps> = ({ student, isO
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#f8f8f2] mb-1">Status</label>
                 <select
                   value={formData.status}
                   onChange={(e) => handleChange('status', e.target.value)}
-                  className="h-9 w-full px-3 py-2 border border-gray-200 rounded-md bg-white text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className="h-9 w-full px-3 py-2 border border-gray-200 dark:border-[#6272a4] rounded-md bg-white dark:bg-[#44475a] text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-900 dark:text-[#f8f8f2]"
                 >
                   <option value="Active">Active</option>
                   <option value="Inactive">Inactive</option>
@@ -102,14 +102,14 @@ export const EditDetailsModal: React.FC<EditDetailsModalProps> = ({ student, isO
 
           {/* Academic Information */}
           <div>
-            <h3 className="text-sm font-medium text-gray-900 mb-4">Academic Information</h3>
+            <h3 className="text-sm font-medium text-gray-900 dark:text-[#f8f8f2] mb-4">Academic Information</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Department</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#f8f8f2] mb-1">Department</label>
                 <select
                   value={formData.department}
                   onChange={(e) => handleChange('department', e.target.value)}
-                  className="h-9 w-full px-3 py-2 border border-gray-200 rounded-md bg-white text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className="h-9 w-full px-3 py-2 border border-gray-200 dark:border-[#6272a4] rounded-md bg-white dark:bg-[#44475a] text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-900 dark:text-[#f8f8f2]"
                 >
                   <option value="Computer Science">Computer Science</option>
                   <option value="Information Technology">Information Technology</option>
@@ -119,7 +119,7 @@ export const EditDetailsModal: React.FC<EditDetailsModalProps> = ({ student, isO
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Class</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#f8f8f2] mb-1">Class</label>
                 <Input
                   value={formData.class}
                   onChange={(e) => handleChange('class', e.target.value)}
@@ -127,11 +127,11 @@ export const EditDetailsModal: React.FC<EditDetailsModalProps> = ({ student, isO
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Section</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#f8f8f2] mb-1">Section</label>
                 <select
                   value={formData.section}
                   onChange={(e) => handleChange('section', e.target.value)}
-                  className="h-9 w-full px-3 py-2 border border-gray-200 rounded-md bg-white text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className="h-9 w-full px-3 py-2 border border-gray-200 dark:border-[#6272a4] rounded-md bg-white dark:bg-[#44475a] text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-900 dark:text-[#f8f8f2]"
                 >
                   <option value="A">A</option>
                   <option value="B">B</option>
@@ -140,11 +140,11 @@ export const EditDetailsModal: React.FC<EditDetailsModalProps> = ({ student, isO
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Year</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#f8f8f2] mb-1">Year</label>
                 <select
                   value={formData.year}
                   onChange={(e) => handleChange('year', e.target.value)}
-                  className="h-9 w-full px-3 py-2 border border-gray-200 rounded-md bg-white text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className="h-9 w-full px-3 py-2 border border-gray-200 dark:border-[#6272a4] rounded-md bg-white dark:bg-[#44475a] text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-900 dark:text-[#f8f8f2]"
                 >
                   <option value="1">1st Year</option>
                   <option value="2">2nd Year</option>
@@ -153,7 +153,7 @@ export const EditDetailsModal: React.FC<EditDetailsModalProps> = ({ student, isO
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">GPA</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#f8f8f2] mb-1">GPA</label>
                 <Input
                   type="number"
                   step="0.01"
@@ -167,7 +167,7 @@ export const EditDetailsModal: React.FC<EditDetailsModalProps> = ({ student, isO
             </div>
           </div>
 
-          <div className="flex justify-end gap-2 pt-4 border-t border-gray-200">
+          <div className="flex justify-end gap-2 pt-4 border-t border-gray-200 dark:border-[#6272a4]">
             <Button type="button" variant="outline" onClick={onClose}>
               Cancel
             </Button>

@@ -65,16 +65,16 @@ export const SendMessageModal: React.FC<SendMessageModalProps> = ({ student, isO
   };
 
   return (
-    <div className="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center z-50 p-2 sm:p-4">
-      <div className="bg-white rounded-lg shadow-lg w-full max-w-3xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto modal-scrollbar">
-        <div className="sticky top-0 z-10 flex items-center justify-between p-6 border-b border-gray-200">
+    <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50 p-2 sm:p-4">
+      <div className="bg-white dark:bg-[#282a36] rounded-lg shadow-lg w-full max-w-3xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto modal-scrollbar border border-gray-200 dark:border-[#6272a4]">
+        <div className="sticky top-0 z-10 flex items-center justify-between p-6 border-b border-gray-200 dark:border-[#6272a4] bg-white dark:bg-[#282a36]">
           <div>
-            <h2 className="text-lg font-semibold text-gray-900">Send Message</h2>
-            <p className="text-sm text-gray-600">To: {student.name} ({student.email})</p>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-[#f8f8f2]">Send Message</h2>
+            <p className="text-sm text-gray-600 dark:text-[#6272a4]">To: {student.name} ({student.email})</p>
           </div>
           <button
             onClick={onClose}
-            className="h-8 w-8 rounded-md hover:bg-gray-100 flex items-center justify-center"
+            className="h-8 w-8 rounded-md hover:bg-gray-100 dark:hover:bg-[#44475a] flex items-center justify-center"
           >
             <X className="h-4 w-4" />
           </button>
@@ -83,16 +83,16 @@ export const SendMessageModal: React.FC<SendMessageModalProps> = ({ student, isO
         <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
           {/* Quick Templates */}
           <div>
-            <h3 className="text-sm font-medium text-gray-900 mb-3">Quick Templates</h3>
+            <h3 className="text-sm font-medium text-gray-900 dark:text-[#f8f8f2] mb-3">Quick Templates</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               {quickTemplates.map((template, index) => (
                 <button
                   key={index}
                   onClick={() => handleUseTemplate(template)}
-                  className="p-3 text-left border border-gray-200 rounded-lg hover:border-orange-300 hover:bg-orange-50 transition-colors"
+                  className="p-3 text-left border border-gray-200 dark:border-[#6272a4] rounded-lg hover:border-orange-300 dark:hover:border-orange-400 hover:bg-orange-50 dark:hover:bg-orange-500/10 transition-colors bg-white dark:bg-[#44475a]"
                 >
-                  <div className="font-medium text-sm text-gray-900">{template.title}</div>
-                  <div className="text-xs text-gray-600 mt-1 line-clamp-2">{template.subject}</div>
+                  <div className="font-medium text-sm text-gray-900 dark:text-[#f8f8f2]">{template.title}</div>
+                  <div className="text-xs text-gray-600 dark:text-[#6272a4] mt-1 line-clamp-2">{template.subject}</div>
                 </button>
               ))}
             </div>
@@ -102,11 +102,11 @@ export const SendMessageModal: React.FC<SendMessageModalProps> = ({ student, isO
             {/* Message Details */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Priority</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#f8f8f2] mb-1">Priority</label>
                 <select
                   value={messageData.priority}
                   onChange={(e) => handleChange('priority', e.target.value)}
-                  className="h-9 w-full px-3 py-2 border border-gray-200 rounded-md bg-white text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className="h-9 w-full px-3 py-2 border border-gray-200 dark:border-[#6272a4] rounded-md bg-white dark:bg-[#44475a] text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-900 dark:text-[#f8f8f2]"
                 >
                   <option value="Low">Low</option>
                   <option value="Normal">Normal</option>
@@ -122,14 +122,14 @@ export const SendMessageModal: React.FC<SendMessageModalProps> = ({ student, isO
                   onChange={(e) => handleChange('sendCopy', e.target.checked)}
                   className="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded"
                 />
-                <label htmlFor="sendCopy" className="text-sm text-gray-700">
+                <label htmlFor="sendCopy" className="text-sm text-gray-700 dark:text-[#f8f8f2]">
                   Send copy to my email
                 </label>
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-[#f8f8f2] mb-1">Subject</label>
               <Input
                 value={messageData.subject}
                 onChange={(e) => handleChange('subject', e.target.value)}
@@ -139,20 +139,20 @@ export const SendMessageModal: React.FC<SendMessageModalProps> = ({ student, isO
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-[#f8f8f2] mb-1">Message</label>
               <textarea
                 value={messageData.message}
                 onChange={(e) => handleChange('message', e.target.value)}
                 placeholder="Type your message here..."
                 rows={8}
-                className="w-full px-3 py-2 border border-gray-200 rounded-md bg-white text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 resize-none"
+                className="w-full px-3 py-2 border border-gray-200 dark:border-[#6272a4] rounded-md bg-white dark:bg-[#44475a] text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-900 dark:text-[#f8f8f2] placeholder:text-gray-500 dark:placeholder:text-[#6272a4] resize-none"
                 required
               />
               <div className="flex justify-between items-center mt-2">
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-gray-500 dark:text-[#6272a4]">
                   {messageData.message.length} characters
                 </p>
-                <div className="flex items-center gap-4 text-xs text-gray-500">
+                <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-[#6272a4]">
                   <div className="flex items-center gap-1">
                     <Mail className="h-3 w-3" />
                     Email notification
@@ -165,7 +165,7 @@ export const SendMessageModal: React.FC<SendMessageModalProps> = ({ student, isO
               </div>
             </div>
 
-            <div className="flex justify-end gap-2 pt-4 border-t border-gray-200">
+            <div className="flex justify-end gap-2 pt-4 border-t border-gray-200 dark:border-[#6272a4]">
               <Button type="button" variant="outline" onClick={onClose}>
                 Cancel
               </Button>

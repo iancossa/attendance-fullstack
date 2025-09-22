@@ -35,13 +35,13 @@ export const ClassReportsModal: React.FC<ClassReportsModalProps> = ({ isOpen, on
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto modal-scrollbar">
-        <div className="sticky top-0 z-10 flex items-center justify-between p-6 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900">Class Reports - {classData?.name}</h2>
+    <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50 p-4">
+      <div className="bg-white dark:bg-[#282a36] rounded-lg shadow-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto modal-scrollbar border border-gray-200 dark:border-[#6272a4]">
+        <div className="sticky top-0 z-10 flex items-center justify-between p-6 border-b border-gray-200 dark:border-[#6272a4] bg-white dark:bg-[#282a36]">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-[#f8f8f2]">Class Reports - {classData?.name}</h2>
           <button
             onClick={onClose}
-            className="h-8 w-8 rounded-md hover:bg-gray-100 flex items-center justify-center"
+            className="h-8 w-8 rounded-md hover:bg-gray-100 dark:hover:bg-[#44475a] flex items-center justify-center"
           >
             <X className="h-4 w-4" />
           </button>
@@ -59,7 +59,7 @@ export const ClassReportsModal: React.FC<ClassReportsModalProps> = ({ isOpen, on
 
         {/* Quick Stats */}
         <div className="grid grid-cols-2 gap-4">
-          <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+          <div className="p-4 bg-green-50 dark:bg-green-500/10 rounded-lg border border-green-200 dark:border-green-500/20">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-green-800">Average Attendance</p>
@@ -69,7 +69,7 @@ export const ClassReportsModal: React.FC<ClassReportsModalProps> = ({ isOpen, on
             </div>
           </div>
           
-          <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+          <div className="p-4 bg-blue-50 dark:bg-blue-500/10 rounded-lg border border-blue-200 dark:border-blue-500/20">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-blue-800">Total Sessions</p>
@@ -82,13 +82,13 @@ export const ClassReportsModal: React.FC<ClassReportsModalProps> = ({ isOpen, on
 
         {/* Attendance Breakdown */}
         <div className="space-y-3">
-          <h3 className="font-medium text-gray-900">Attendance Breakdown</h3>
+          <h3 className="font-medium text-gray-900 dark:text-[#f8f8f2]">Attendance Breakdown</h3>
           <div className="space-y-2">
-            <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+            <div className="flex items-center justify-between p-3 bg-green-50 dark:bg-green-500/10 rounded-lg">
               <span className="text-sm font-medium text-green-800">Sessions Attended</span>
               <Badge className="bg-green-100 text-green-700">{mockData.attendedSessions}</Badge>
             </div>
-            <div className="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+            <div className="flex items-center justify-between p-3 bg-red-50 dark:bg-red-500/10 rounded-lg">
               <span className="text-sm font-medium text-red-800">Sessions Missed</span>
               <Badge className="bg-red-100 text-red-700">{mockData.absentSessions}</Badge>
             </div>
@@ -97,14 +97,14 @@ export const ClassReportsModal: React.FC<ClassReportsModalProps> = ({ isOpen, on
 
         {/* Weekly Trend */}
         <div className="space-y-3">
-          <h3 className="font-medium text-gray-900">Weekly Attendance Trend</h3>
+          <h3 className="font-medium text-gray-900 dark:text-[#f8f8f2]">Weekly Attendance Trend</h3>
           <div className="space-y-2">
             {mockData.weeklyTrend.map((week, index) => (
-              <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <span className="text-sm font-medium text-gray-700">{week.week}</span>
+              <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-[#44475a] rounded-lg">
+                <span className="text-sm font-medium text-gray-700 dark:text-[#f8f8f2]">{week.week}</span>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium text-gray-900">{week.attendance}%</span>
-                  <div className="w-20 bg-gray-200 rounded-full h-2">
+                  <span className="text-sm font-medium text-gray-900 dark:text-[#f8f8f2]">{week.attendance}%</span>
+                  <div className="w-20 bg-gray-200 dark:bg-[#6272a4] rounded-full h-2">
                     <div 
                       className="bg-orange-500 h-2 rounded-full" 
                       style={{ width: `${week.attendance}%` }}
@@ -116,7 +116,7 @@ export const ClassReportsModal: React.FC<ClassReportsModalProps> = ({ isOpen, on
           </div>
         </div>
 
-          <div className="flex justify-between pt-4 border-t">
+          <div className="flex justify-between pt-4 border-t border-gray-200 dark:border-[#6272a4]">
             <Button variant="outline" onClick={onClose}>
               <Download className="h-4 w-4 mr-2" />
               Export Report

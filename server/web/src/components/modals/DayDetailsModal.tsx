@@ -26,7 +26,7 @@ export const DayDetailsModal: React.FC<DayDetailsModalProps> = ({ isOpen, onClos
 
   return (
     <>
-      <div className="fixed inset-0 bg-black/50 z-50" onClick={onClose} />
+      <div className="fixed inset-0 bg-black/30 z-50" onClick={onClose} />
       <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4">
         <Card className="w-full max-w-md mx-2 sm:mx-0 bg-white dark:bg-[#282a36] border-gray-200 dark:border-[#6272a4] max-h-[90vh] overflow-y-auto modal-scrollbar">
           <CardHeader className="flex flex-row items-center justify-between">

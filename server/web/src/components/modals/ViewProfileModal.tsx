@@ -35,13 +35,13 @@ export const ViewProfileModal: React.FC<ViewProfileModalProps> = ({ student, isO
   };
 
   return (
-    <div className="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center z-50 p-2 sm:p-4">
-      <div className="bg-white rounded-lg shadow-lg w-full max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto modal-scrollbar">
-        <div className="sticky top-0 z-10 flex items-center justify-between p-6 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900">Student Profile</h2>
+    <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50 p-2 sm:p-4">
+      <div className="bg-white dark:bg-[#282a36] rounded-lg shadow-lg w-full max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto modal-scrollbar border border-gray-200 dark:border-[#6272a4]">
+        <div className="sticky top-0 z-10 flex items-center justify-between p-6 border-b border-gray-200 dark:border-[#6272a4] bg-white dark:bg-[#282a36]">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-[#f8f8f2]">Student Profile</h2>
           <button
             onClick={onClose}
-            className="h-8 w-8 rounded-md hover:bg-gray-100 flex items-center justify-center"
+            className="h-8 w-8 rounded-md hover:bg-gray-100 dark:hover:bg-[#44475a] flex items-center justify-center"
           >
             <X className="h-4 w-4" />
           </button>
@@ -50,12 +50,12 @@ export const ViewProfileModal: React.FC<ViewProfileModalProps> = ({ student, isO
         <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
           {/* Header Info */}
           <div className="flex items-start gap-4">
-            <div className="h-16 w-16 bg-orange-100 rounded-full flex items-center justify-center">
-              <User className="h-8 w-8 text-orange-600" />
+            <div className="h-16 w-16 bg-orange-100 dark:bg-orange-500/20 rounded-full flex items-center justify-center">
+              <User className="h-8 w-8 text-orange-600 dark:text-orange-400" />
             </div>
             <div className="flex-1">
-              <h3 className="text-xl font-semibold text-gray-900">{student.name}</h3>
-              <p className="text-sm text-gray-600 mt-1">{student.email}</p>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-[#f8f8f2]">{student.name}</h3>
+              <p className="text-sm text-gray-600 dark:text-[#6272a4] mt-1">{student.email}</p>
               <div className="flex items-center gap-2 mt-2">
                 <Badge variant="outline">{student.studentId}</Badge>
                 <Badge className={getStatusColor(student.status || 'Active')}>{student.status || 'Active'}</Badge>
@@ -166,7 +166,7 @@ export const ViewProfileModal: React.FC<ViewProfileModalProps> = ({ student, isO
           </Card>
         </div>
 
-        <div className="flex justify-end gap-2 p-4 border-t border-gray-200">
+        <div className="flex justify-end gap-2 p-4 border-t border-gray-200 dark:border-[#6272a4]">
           <Button variant="outline" onClick={onClose}>
             Close
           </Button>

@@ -25,6 +25,7 @@ import { TakeAttendancePage } from './pages/attendance/TakeAttendancePage';
 import { LoginPage } from './pages/auth/LoginPage';
 import { MyJustificationsPage } from './pages/justification/MyJustificationsPage';
 import { ReviewJustificationsPage } from './pages/justification/ReviewJustificationsPage';
+import { DetentionPage } from './pages/detention/DetentionPage';
 import { useAuth } from './hooks/useAuth';
 import { ROUTES } from './constants';
 import { Loading } from './components/ui/loading';
@@ -70,6 +71,7 @@ function AppContent() {
               <Route path={ROUTES.SETTINGS} element={<SettingsPage />} />
               <Route path="/faculty" element={<FacultyPage />} />
               <Route path="/departments" element={<DepartmentsPage />} />
+              <Route path="/detention" element={<DetentionPage />} />
               <Route path="/calendar" element={<CalendarPage />} />
               <Route path="/take-attendance" element={<TakeAttendancePage />} />
               <Route path="/attendance/take" element={<TakeAttendancePage />} />
@@ -87,6 +89,7 @@ function AppContent() {
               <Route path={ROUTES.ATTENDANCE} element={<AttendancePage />} />
               <Route path={ROUTES.CLASSES} element={<ClassesPage />} />
               <Route path="/students" element={<StudentsPage />} />
+              <Route path="/detention" element={<DetentionPage />} />
               <Route path="/calendar" element={<CalendarPage />} />
               <Route path={ROUTES.REPORTS} element={<ReportsPage />} />
               <Route path="/staff-profile" element={<StaffProfilePage />} />
