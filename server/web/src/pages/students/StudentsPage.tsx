@@ -130,19 +130,18 @@ export const StudentsPage: React.FC = () => {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-lg font-semibold text-gray-900">Students</h1>
-            <p className="text-sm text-gray-600 mt-1">Manage student records and track academic progress</p>
+            <h1 className="text-lg font-semibold text-gray-900 dark:text-[#f8f8f2]">Students</h1>
+            <p className="text-sm text-gray-600 dark:text-[#6272a4] mt-1">Manage student records and track academic progress</p>
           </div>
           <div className="flex items-center gap-2">
             <Button 
-              variant="outline" 
               className="gap-2 flex-1 sm:flex-none"
               onClick={() => exportToExcel(filteredStudents, 'students-data')}
             >
               <Download className="h-4 w-4" />
               <span className="hidden sm:inline">Export</span>
             </Button>
-            <Button variant="outline" className="gap-2 flex-1 sm:flex-none">
+            <Button className="gap-2 flex-1 sm:flex-none">
               <Upload className="h-4 w-4" />
               <span className="hidden sm:inline">Import</span>
             </Button>
@@ -151,61 +150,61 @@ export const StudentsPage: React.FC = () => {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="border-l-4 border-l-orange-500">
+          <Card className="border-l-4 border-l-primary bg-orange-50 dark:bg-[#44475a]">
             <CardContent className="p-4 pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Total Students</p>
-                  <div className="text-2xl font-semibold text-gray-900 mt-2">{MOCK_STUDENTS.length}</div>
-                  <p className="text-xs text-gray-500 mt-1">enrolled students</p>
+                  <p className="text-sm font-medium text-gray-600 dark:text-[#f8f8f2]">Total Students</p>
+                  <div className="text-2xl font-semibold text-gray-900 dark:text-[#f8f8f2] mt-2">{MOCK_STUDENTS.length}</div>
+                  <p className="text-xs text-gray-500 dark:text-[#e5e7eb] mt-1">enrolled students</p>
                 </div>
-                <div className="p-2 bg-orange-50 rounded-lg">
-                  <Users className="h-5 w-5 text-orange-600" />
+                <div className="p-2 bg-orange-100 dark:bg-orange-500/20 rounded-lg">
+                  <Users className="h-5 w-5 text-orange-600 dark:text-orange-400" />
                 </div>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="border-l-4 border-l-orange-500 bg-green-200">
+          <Card className="border-l-4 border-l-primary bg-orange-50 dark:bg-[#44475a]">
             <CardContent className="p-4 pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Active Students</p>
-                  <div className="text-2xl font-semibold text-gray-900 mt-2">{MOCK_STUDENTS.filter(s => s.status === 'Active').length}</div>
-                  <p className="text-xs text-gray-500 mt-1">currently enrolled</p>
+                  <p className="text-sm font-medium text-gray-600 dark:text-[#f8f8f2]">Active Students</p>
+                  <div className="text-2xl font-semibold text-gray-900 dark:text-[#f8f8f2] mt-2">{MOCK_STUDENTS.filter(s => s.status === 'Active').length}</div>
+                  <p className="text-xs text-gray-500 dark:text-[#e5e7eb] mt-1">currently enrolled</p>
                 </div>
-                <div className="p-2 bg-green-100 rounded-lg">
-                  <TrendingUp className="h-5 w-5 text-green-600" />
+                <div className="p-2 bg-orange-100 dark:bg-orange-500/20 rounded-lg">
+                  <TrendingUp className="h-5 w-5 text-orange-600 dark:text-orange-400" />
                 </div>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="border-l-4 border-l-orange-500 bg-blue-200">
+          <Card className="border-l-4 border-l-primary bg-orange-50 dark:bg-[#44475a]">
             <CardContent className="p-4 pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Average Attendance</p>
-                  <div className="text-2xl font-semibold text-gray-900 mt-2">{Math.round(MOCK_STUDENTS.reduce((acc, s) => acc + (s.attendance || 0), 0) / MOCK_STUDENTS.length)}%</div>
-                  <p className="text-xs text-gray-500 mt-1">this semester</p>
+                  <p className="text-sm font-medium text-gray-600 dark:text-[#f8f8f2]">Average Attendance</p>
+                  <div className="text-2xl font-semibold text-gray-900 dark:text-[#f8f8f2] mt-2">{Math.round(MOCK_STUDENTS.reduce((acc, s) => acc + (s.attendance || 0), 0) / MOCK_STUDENTS.length)}%</div>
+                  <p className="text-xs text-gray-500 dark:text-[#e5e7eb] mt-1">this semester</p>
                 </div>
-                <div className="p-2 bg-blue-100 rounded-lg">
-                  <BookOpen className="h-5 w-5 text-blue-600" />
+                <div className="p-2 bg-orange-100 dark:bg-orange-500/20 rounded-lg">
+                  <BookOpen className="h-5 w-5 text-orange-600 dark:text-orange-400" />
                 </div>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="border-l-4 border-l-orange-500 bg-red-200">
+          <Card className="border-l-4 border-l-red-500 bg-red-50 dark:bg-red-500/10">
             <CardContent className="p-4 pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">At Risk</p>
-                  <div className="text-2xl font-semibold text-gray-900 mt-2">{MOCK_STUDENTS.filter(s => (s.attendance || 0) < 70).length}</div>
-                  <p className="text-xs text-gray-500 mt-1">below 70% attendance</p>
+                  <p className="text-sm font-medium text-gray-600 dark:text-[#f8f8f2]">At Risk</p>
+                  <div className="text-2xl font-semibold text-gray-900 dark:text-[#f8f8f2] mt-2">{MOCK_STUDENTS.filter(s => (s.attendance || 0) < 70).length}</div>
+                  <p className="text-xs text-gray-500 dark:text-[#e5e7eb] mt-1">below 70% attendance</p>
                 </div>
-                <div className="p-2 bg-red-100 rounded-lg">
-                  <AlertCircle className="h-5 w-5 text-red-600" />
+                <div className="p-2 bg-red-100 dark:bg-red-500/20 rounded-lg">
+                  <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400" />
                 </div>
               </div>
             </CardContent>
@@ -213,26 +212,26 @@ export const StudentsPage: React.FC = () => {
         </div>
 
         {/* Search and Filters */}
-        <Card>
+        <Card className="bg-white dark:bg-[#282a36] border-gray-200 dark:border-[#6272a4]">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-sm font-medium text-gray-900">
+            <CardTitle className="flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-[#f8f8f2]">
               <Filter className="h-4 w-4" />
               Search & Filters
             </CardTitle>
           </CardHeader>
           <CardContent className="p-4 pt-6 space-y-4">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-[#6272a4]" />
               <Input 
                 placeholder="Search by name, ID, email, class, or department..." 
-                className="pl-10"
+                className="pl-10 bg-white dark:bg-[#44475a] border-gray-300 dark:border-[#6272a4] text-gray-900 dark:text-[#f8f8f2] placeholder:text-gray-500 dark:placeholder:text-[#6272a4]"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
               <select 
-                className="h-9 px-3 py-2 border border-gray-200 rounded-md bg-white text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                className="h-9 px-3 py-2 border border-gray-200 dark:border-[#6272a4] rounded-md bg-white dark:bg-[#44475a] text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-900 dark:text-[#f8f8f2]"
                 value={selectedDepartment}
                 onChange={(e) => setSelectedDepartment(e.target.value)}
               >
@@ -242,7 +241,7 @@ export const StudentsPage: React.FC = () => {
                 ))}
               </select>
               <select 
-                className="h-9 px-3 py-2 border border-gray-200 rounded-md bg-white text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                className="h-9 px-3 py-2 border border-gray-200 dark:border-[#6272a4] rounded-md bg-white dark:bg-[#44475a] text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-900 dark:text-[#f8f8f2]"
                 value={selectedYear}
                 onChange={(e) => setSelectedYear(e.target.value)}
               >
@@ -252,7 +251,7 @@ export const StudentsPage: React.FC = () => {
                 ))}
               </select>
               <select 
-                className="h-9 px-3 py-2 border border-gray-200 rounded-md bg-white text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                className="h-9 px-3 py-2 border border-gray-200 dark:border-[#6272a4] rounded-md bg-white dark:bg-[#44475a] text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-900 dark:text-[#f8f8f2]"
                 value={selectedSection}
                 onChange={(e) => setSelectedSection(e.target.value)}
               >
@@ -262,7 +261,7 @@ export const StudentsPage: React.FC = () => {
                 ))}
               </select>
               <select 
-                className="h-9 px-3 py-2 border border-gray-200 rounded-md bg-white text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                className="h-9 px-3 py-2 border border-gray-200 dark:border-[#6272a4] rounded-md bg-white dark:bg-[#44475a] text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-900 dark:text-[#f8f8f2]"
                 value={selectedStatus}
                 onChange={(e) => setSelectedStatus(e.target.value)}
               >
@@ -272,7 +271,7 @@ export const StudentsPage: React.FC = () => {
                 <option value="Suspended">Suspended</option>
               </select>
               <select 
-                className="h-9 px-3 py-2 border border-gray-200 rounded-md bg-white text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                className="h-9 px-3 py-2 border border-gray-200 dark:border-[#6272a4] rounded-md bg-white dark:bg-[#44475a] text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-900 dark:text-[#f8f8f2]"
                 value={attendanceFilter}
                 onChange={(e) => setAttendanceFilter(e.target.value)}
               >
@@ -281,7 +280,7 @@ export const StudentsPage: React.FC = () => {
                 <option value="Medium">Medium (70-84%)</option>
                 <option value="Low">Low (&lt;70%)</option>
               </select>
-              <Button variant="outline" onClick={clearFilters} className="h-9 px-3 text-sm">
+              <Button onClick={clearFilters} className="h-9 px-3 text-sm">
                 Clear All
               </Button>
             </div>
@@ -289,67 +288,71 @@ export const StudentsPage: React.FC = () => {
         </Card>
 
         {/* Students Table */}
-        <Card>
+        <Card className="bg-white dark:bg-[#282a36] border-gray-200 dark:border-[#6272a4]">
           <CardHeader className="pb-4">
             <div className="flex items-center justify-between">
-              <CardTitle className="flex items-center gap-2 text-sm font-medium text-gray-900">
-                <div className="p-2 bg-orange-50 rounded-lg">
-                  <GraduationCap className="h-4 w-4 text-orange-600" />
+              <CardTitle className="flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-[#f8f8f2]">
+                <div className="p-2 bg-orange-50 dark:bg-orange-500/10 rounded-lg">
+                  <GraduationCap className="h-4 w-4 text-orange-600 dark:text-orange-400" />
                 </div>
                 All Students ({filteredStudents.length})
               </CardTitle>
-              <Badge variant="outline" className="text-gray-600">
+              <Badge variant="outline" className="text-gray-600 dark:text-[#6272a4] border-gray-300 dark:border-[#6272a4]">
                 Academic Year 2024-25
               </Badge>
             </div>
           </CardHeader>
           <CardContent>
             {/* Desktop Table */}
-            <div className="hidden md:block rounded-lg border border-gray-200 overflow-hidden">
-              <Table>
-                <TableHeader>
-                  <TableRow className="bg-gray-50">
-                    <TableHead className="text-sm font-medium text-gray-900">Sr No</TableHead>
-                    <TableHead className="text-sm font-medium text-gray-900">Student</TableHead>
-                    <TableHead className="text-sm font-medium text-gray-900">Contact</TableHead>
-                    <TableHead className="text-sm font-medium text-gray-900">Academic Info</TableHead>
-                    <TableHead className="text-sm font-medium text-gray-900">Attendance</TableHead>
-                    <TableHead className="text-sm font-medium text-gray-900">Status</TableHead>
-                    <TableHead className="text-sm font-medium text-gray-900">Last Seen</TableHead>
-                    <TableHead className="text-sm font-medium text-gray-900">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
+            <div className="hidden md:block rounded-lg border border-gray-200 dark:border-[#6272a4] overflow-hidden">
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="bg-gray-50 dark:bg-[#44475a]">
+                      <TableHead className="text-sm font-medium text-gray-900 dark:text-[#f8f8f2]">Sr No</TableHead>
+                      <TableHead className="text-sm font-medium text-gray-900 dark:text-[#f8f8f2] min-w-[150px]">Student</TableHead>
+                      <TableHead className="text-sm font-medium text-gray-900 dark:text-[#f8f8f2] hidden lg:table-cell">Contact</TableHead>
+                      <TableHead className="text-sm font-medium text-gray-900 dark:text-[#f8f8f2] hidden sm:table-cell">Academic Info</TableHead>
+                      <TableHead className="text-sm font-medium text-gray-900 dark:text-[#f8f8f2]">Attendance</TableHead>
+                      <TableHead className="text-sm font-medium text-gray-900 dark:text-[#f8f8f2] hidden md:table-cell">Status</TableHead>
+                      <TableHead className="text-sm font-medium text-gray-900 dark:text-[#f8f8f2] hidden xl:table-cell">Last Seen</TableHead>
+                      <TableHead className="text-sm font-medium text-gray-900 dark:text-[#f8f8f2] w-16">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
                 <TableBody>
                   {filteredStudents.map((student, index) => (
-                    <TableRow key={student.id} className="hover:bg-gray-50 transition-colors">
+                    <TableRow key={student.id} className="hover:bg-gray-50 dark:hover:bg-[#44475a] transition-colors bg-white dark:bg-[#282a36]">
                       <TableCell>
-                        <div className="text-sm font-medium text-gray-600">{index + 1}</div>
+                        <div className="text-sm font-medium text-gray-600 dark:text-[#6272a4]">{index + 1}</div>
                       </TableCell>
                       <TableCell>
                         <div>
-                          <div className="font-medium">{student.name}</div>
-                          <Badge variant="outline" className="text-xs mt-1">
+                          <div className="font-medium text-gray-900 dark:text-[#f8f8f2]">{student.name}</div>
+                          <Badge variant="outline" className="text-xs mt-1 border-gray-300 dark:border-[#6272a4] text-gray-600 dark:text-[#6272a4]">
                             {student.studentId}
                           </Badge>
+                          <div className="lg:hidden text-xs text-gray-500 dark:text-[#6272a4] mt-1">
+                            {student.email} • {student.class}
+                          </div>
                         </div>
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="hidden lg:table-cell">
                         <div className="space-y-1">
-                          <div className="flex items-center gap-1 text-sm text-gray-600">
+                          <div className="flex items-center gap-1 text-sm text-gray-600 dark:text-[#6272a4]">
                             <Mail className="h-3 w-3" />
                             {student.email}
                           </div>
-                          <div className="flex items-center gap-1 text-sm text-gray-600">
+                          <div className="flex items-center gap-1 text-sm text-gray-600 dark:text-[#6272a4]">
                             <Phone className="h-3 w-3" />
                             {student.phone}
                           </div>
                         </div>
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="hidden sm:table-cell">
                         <div>
-                          <div className="font-medium text-sm">{student.class}</div>
-                          <div className="text-xs text-gray-600">{student.department} - Section {student.section}</div>
-                          <div className="text-xs text-gray-600">Year {student.year}</div>
+                          <div className="font-medium text-sm text-gray-900 dark:text-[#f8f8f2]">{student.class}</div>
+                          <div className="text-xs text-gray-600 dark:text-[#6272a4]">{student.department} - Section {student.section}</div>
+                          <div className="text-xs text-gray-600 dark:text-[#6272a4]">Year {student.year}</div>
                         </div>
                       </TableCell>
                       <TableCell>
@@ -357,7 +360,7 @@ export const StudentsPage: React.FC = () => {
                           <span className={`font-medium ${getAttendanceColor(student.attendance || 0)}`}>
                             {student.attendance || 0}%
                           </span>
-                          <div className="w-16 bg-gray-200 rounded-full h-2">
+                          <div className="w-16 bg-gray-200 dark:bg-[#44475a] rounded-full h-2">
                             <div 
                               className={`h-2 rounded-full ${getAttendanceBg(student.attendance || 0)}`}
                               style={{ width: `${student.attendance || 0}%` }}
@@ -365,13 +368,13 @@ export const StudentsPage: React.FC = () => {
                           </div>
                         </div>
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="hidden md:table-cell">
                         <Badge className={getStatusColor(student.status || 'Active')}>
                           {student.status}
                         </Badge>
                       </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-1 text-sm text-gray-600">
+                      <TableCell className="hidden xl:table-cell">
+                        <div className="flex items-center gap-1 text-sm text-gray-600 dark:text-[#6272a4]">
                           <Calendar className="h-3 w-3" />
                           {student.lastSeen}
                         </div>
@@ -379,49 +382,49 @@ export const StudentsPage: React.FC = () => {
                       <TableCell>
                         <div className="relative">
                           <button 
-                            className="h-8 w-8 p-0 hover:bg-gray-100 transition-colors rounded-md flex items-center justify-center border border-transparent hover:border-gray-200"
+                            className="h-8 w-8 p-0 hover:bg-gray-100 dark:hover:bg-[#44475a] transition-colors rounded-md flex items-center justify-center border border-transparent hover:border-gray-200 dark:hover:border-[#6272a4]"
                             onClick={(e) => {
                               e.stopPropagation();
                               setOpenDropdown(openDropdown === student.id ? null : student.id);
                             }}
                           >
-                            <MoreVertical className="h-4 w-4" />
+                            <MoreVertical className="h-4 w-4 text-gray-600 dark:text-[#6272a4]" />
                           </button>
                           {openDropdown === student.id && (
                             <>
                               <div className="fixed inset-0 z-40" onClick={() => setOpenDropdown(null)} />
-                              <div className="absolute right-0 top-8 mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-1">
+                              <div className="absolute right-0 top-8 mt-1 w-48 bg-white dark:bg-[#282a36] border border-gray-200 dark:border-[#6272a4] rounded-lg shadow-lg z-50 py-1">
                                 <button 
                                   onClick={() => handleModalOpen(student, 'viewProfile')} 
-                                  className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left"
+                                  className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
                                 >
                                   <Eye className="h-4 w-4" />
                                   View Profile
                                 </button>
                                 <button 
                                   onClick={() => handleModalOpen(student, 'editDetails')} 
-                                  className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left"
+                                  className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
                                 >
                                   <Edit className="h-4 w-4" />
                                   Edit Details
                                 </button>
                                 <button 
                                   onClick={() => handleModalOpen(student, 'attendanceReport')} 
-                                  className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left"
+                                  className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
                                 >
                                   <BarChart3 className="h-4 w-4" />
                                   Attendance Report
                                 </button>
                                 <button 
                                   onClick={() => handleModalOpen(student, 'attendanceHistory')} 
-                                  className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left"
+                                  className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
                                 >
                                   <History className="h-4 w-4" />
                                   Attendance History
                                 </button>
                                 <button 
                                   onClick={() => handleModalOpen(student, 'sendMessage')} 
-                                  className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left"
+                                  className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
                                 >
                                   <MessageSquare className="h-4 w-4" />
                                   Send Message
@@ -435,52 +438,53 @@ export const StudentsPage: React.FC = () => {
                   ))}
                 </TableBody>
               </Table>
+              </div>
             </div>
             
             {/* Mobile Cards */}
             <div className="md:hidden space-y-4">
               {filteredStudents.map((student, index) => (
-                <div key={student.id} className="border border-gray-200 rounded-lg p-4 bg-white">
+                <div key={student.id} className="border border-gray-200 dark:border-[#6272a4] rounded-lg p-4 bg-white dark:bg-[#282a36]">
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-xs font-medium text-gray-500">#{index + 1}</span>
+                        <span className="text-xs font-medium text-gray-500 dark:text-[#6272a4]">#{index + 1}</span>
                         <Badge className={getStatusColor(student.status || 'Active')}>
                           {student.status}
                         </Badge>
                       </div>
-                      <h3 className="font-medium text-gray-900">{student.name}</h3>
-                      <Badge variant="outline" className="text-xs mt-1">
+                      <h3 className="font-medium text-gray-900 dark:text-[#f8f8f2]">{student.name}</h3>
+                      <Badge variant="outline" className="text-xs mt-1 border-gray-300 dark:border-[#6272a4] text-gray-600 dark:text-[#6272a4]">
                         {student.studentId}
                       </Badge>
                     </div>
                     <div className="relative">
                       <button 
-                        className="h-8 w-8 p-0 hover:bg-gray-100 transition-colors rounded-md flex items-center justify-center"
+                        className="h-8 w-8 p-0 hover:bg-gray-100 dark:hover:bg-[#44475a] transition-colors rounded-md flex items-center justify-center"
                         onClick={(e) => {
                           e.stopPropagation();
                           setOpenDropdown(openDropdown === student.id ? null : student.id);
                         }}
                       >
-                        <MoreVertical className="h-4 w-4" />
+                        <MoreVertical className="h-4 w-4 text-gray-600 dark:text-[#6272a4]" />
                       </button>
                       {openDropdown === student.id && (
                         <>
                           <div className="fixed inset-0 z-40" onClick={() => setOpenDropdown(null)} />
-                          <div className="absolute right-0 top-8 mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-1">
-                            <button onClick={() => handleModalOpen(student, 'viewProfile')} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left">
+                          <div className="absolute right-0 top-8 mt-1 w-48 bg-white dark:bg-[#282a36] border border-gray-200 dark:border-[#6272a4] rounded-lg shadow-lg z-50 py-1">
+                            <button onClick={() => handleModalOpen(student, 'viewProfile')} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
                               <Eye className="h-4 w-4" />View Profile
                             </button>
-                            <button onClick={() => handleModalOpen(student, 'editDetails')} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left">
+                            <button onClick={() => handleModalOpen(student, 'editDetails')} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
                               <Edit className="h-4 w-4" />Edit Details
                             </button>
-                            <button onClick={() => handleModalOpen(student, 'attendanceReport')} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left">
+                            <button onClick={() => handleModalOpen(student, 'attendanceReport')} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
                               <BarChart3 className="h-4 w-4" />Attendance Report
                             </button>
-                            <button onClick={() => handleModalOpen(student, 'attendanceHistory')} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left">
+                            <button onClick={() => handleModalOpen(student, 'attendanceHistory')} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
                               <History className="h-4 w-4" />Attendance History
                             </button>
-                            <button onClick={() => handleModalOpen(student, 'sendMessage')} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left">
+                            <button onClick={() => handleModalOpen(student, 'sendMessage')} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
                               <MessageSquare className="h-4 w-4" />Send Message
                             </button>
                           </div>
@@ -491,13 +495,13 @@ export const StudentsPage: React.FC = () => {
                   
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
-                      <p className="text-gray-500 mb-1">Contact</p>
+                      <p className="text-gray-500 dark:text-[#6272a4] mb-1">Contact</p>
                       <div className="space-y-1">
-                        <div className="flex items-center gap-1 text-gray-600">
+                        <div className="flex items-center gap-1 text-gray-600 dark:text-[#6272a4]">
                           <Mail className="h-3 w-3" />
                           <span className="truncate">{student.email}</span>
                         </div>
-                        <div className="flex items-center gap-1 text-gray-600">
+                        <div className="flex items-center gap-1 text-gray-600 dark:text-[#6272a4]">
                           <Phone className="h-3 w-3" />
                           {student.phone}
                         </div>
@@ -505,22 +509,22 @@ export const StudentsPage: React.FC = () => {
                     </div>
                     
                     <div>
-                      <p className="text-gray-500 mb-1">Academic</p>
-                      <div className="text-gray-600">
-                        <div className="font-medium">{student.class}</div>
+                      <p className="text-gray-500 dark:text-[#6272a4] mb-1">Academic</p>
+                      <div className="text-gray-600 dark:text-[#6272a4]">
+                        <div className="font-medium text-gray-900 dark:text-[#f8f8f2]">{student.class}</div>
                         <div className="text-xs">{student.department}</div>
                         <div className="text-xs">Section {student.section} • Year {student.year}</div>
                       </div>
                     </div>
                   </div>
                   
-                  <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-100">
+                  <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-100 dark:border-[#6272a4]">
                     <div className="flex items-center gap-2">
-                      <span className="text-sm text-gray-500">Attendance:</span>
+                      <span className="text-sm text-gray-500 dark:text-[#6272a4]">Attendance:</span>
                       <span className={`font-medium ${getAttendanceColor(student.attendance || 0)}`}>
                         {student.attendance || 0}%
                       </span>
-                      <div className="w-16 bg-gray-200 rounded-full h-2">
+                      <div className="w-16 bg-gray-200 dark:bg-[#44475a] rounded-full h-2">
                         <div 
                           className={`h-2 rounded-full ${getAttendanceBg(student.attendance || 0)}`}
                           style={{ width: `${student.attendance || 0}%` }}
@@ -528,7 +532,7 @@ export const StudentsPage: React.FC = () => {
                       </div>
                     </div>
                     
-                    <div className="flex items-center gap-1 text-xs text-gray-500">
+                    <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-[#6272a4]">
                       <Calendar className="h-3 w-3" />
                       {student.lastSeen}
                     </div>
@@ -538,7 +542,7 @@ export const StudentsPage: React.FC = () => {
             </div>
             
             {filteredStudents.length === 0 && (
-              <div className="text-center py-8 text-gray-600">
+              <div className="text-center py-8 text-gray-600 dark:text-[#6272a4]">
                 <Users className="h-12 w-12 mx-auto mb-4 opacity-50" />
                 <p>No students found</p>
                 <p className="text-sm">Try adjusting your search criteria or filters</p>
