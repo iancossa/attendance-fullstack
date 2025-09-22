@@ -75,9 +75,9 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
   return (
     <header className="bg-white dark:bg-[#282a36] border-b border-gray-200 dark:border-[#6272a4] sticky top-0 z-50">
       <div className="px-4">
-        <div className="flex justify-between items-center h-12">
-          {/* Breadcrumb Navigation */}
-          <div className="flex items-center gap-3">
+        <div className="flex items-center h-12">
+          {/* Left Section */}
+          <div className="flex items-center gap-3 flex-1">
             <Button 
               variant="ghost" 
               size="sm" 
@@ -89,9 +89,9 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
             <Breadcrumb />
           </div>
           
-          {/* Search Bar */}
-          <div className="hidden md:flex flex-1 max-w-md mx-4 h-full">
-            <div className="relative w-full flex items-center">
+          {/* Center Search Bar */}
+          <div className="hidden md:flex flex-1 max-w-md mx-4 h-full justify-center">
+            <div className="relative w-full max-w-sm flex items-center">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-[#6272a4] z-10" />
               <Input 
                 placeholder="Search students, classes..."
@@ -102,8 +102,8 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
             </div>
           </div>
           
-          {/* Actions */}
-          <div className="flex items-center gap-1">
+          {/* Right Actions */}
+          <div className="flex items-center gap-1 flex-1 justify-end">
             {/* Mobile Search */}
             <Button 
               variant="ghost" 

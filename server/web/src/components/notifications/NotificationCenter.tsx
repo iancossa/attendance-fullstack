@@ -89,7 +89,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
   };
 
   return (
-    <Card className="w-80 max-h-96 shadow-lg">
+    <Card className="w-80 max-h-96 shadow-lg bg-white dark:bg-[#282a36] border-gray-200 dark:border-[#6272a4]">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-base">Notifications</CardTitle>

@@ -49,7 +49,7 @@ export const AttendanceReportModal: React.FC<AttendanceReportModalProps> = ({ st
   return (
     <div className="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center z-50 p-2 sm:p-4">
       <div className="bg-white dark:bg-[#282a36] rounded-lg shadow-lg w-full max-w-4xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto border border-gray-200 dark:border-[#6272a4]">
-        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-[#6272a4]">
+        <div className="sticky top-0 z-10 flex items-center justify-between p-6 border-b border-gray-200 dark:border-[#6272a4] bg-white dark:bg-[#282a36]">
           <div>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-[#f8f8f2]">Attendance Report</h2>
             <p className="text-sm text-gray-600 dark:text-[#6272a4]">{student.name} - {student.studentId}</p>

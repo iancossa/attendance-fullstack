@@ -135,9 +135,9 @@ export const AbsenceRequestModal: React.FC<AbsenceRequestModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4" style={{ zIndex: 9999 }}>
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-white dark:bg-[#282a36] rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto modal-scrollbar">
-        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-[#6272a4]">
+        <div className="sticky top-0 z-10 flex items-center justify-between p-6 border-b border-gray-200 dark:border-[#6272a4] bg-white dark:bg-[#282a36]">
           <h2 className="text-xl font-semibold text-gray-900 dark:text-[#f8f8f2]">Request Absence Approval</h2>
           <Button variant="ghost" size="sm" onClick={onClose}>
             <X className="h-4 w-4" />

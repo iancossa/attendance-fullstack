@@ -66,14 +66,14 @@ code {
     monospace;
 }
 
-/* Custom scrollbar styles */
+/* Styled auto-hide scrollbar for modals */
 .modal-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+  scrollbar-color: rgba(156, 163, 175, 0.3) transparent;
 }
 
 .modal-scrollbar::-webkit-scrollbar {
-  width: 6px;
+  width: 4px;
 }
 
 .modal-scrollbar::-webkit-scrollbar-track {
@@ -81,9 +81,15 @@ code {
 }
 
 .modal-scrollbar::-webkit-scrollbar-thumb {
-  background-color: rgba(156, 163, 175, 0.5);
-  border-radius: 3px;
-  transition: background-color 0.2s ease;
+  background-color: rgba(156, 163, 175, 0.3);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  opacity: 0;
+}
+
+.modal-scrollbar:hover::-webkit-scrollbar-thumb {
+  opacity: 1;
+  background-color: rgba(156, 163, 175, 0.6);
 }
 
 .modal-scrollbar::-webkit-scrollbar-thumb:hover {
@@ -92,11 +98,16 @@ code {
 
 /* Dark mode scrollbar */
 .dark .modal-scrollbar {
-  scrollbar-color: rgba(98, 114, 164, 0.5) transparent;
+  scrollbar-color: rgba(98, 114, 164, 0.3) transparent;
 }
 
 .dark .modal-scrollbar::-webkit-scrollbar-thumb {
-  background-color: rgba(98, 114, 164, 0.5);
+  background-color: rgba(98, 114, 164, 0.3);
+}
+
+.dark .modal-scrollbar:hover::-webkit-scrollbar-thumb {
+  opacity: 1;
+  background-color: rgba(98, 114, 164, 0.6);
 }
 
 .dark .modal-scrollbar::-webkit-scrollbar-thumb:hover {

@@ -105,10 +105,10 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({ isOpen
 
   return (
     <div className="fixed inset-0 z-50 bg-black/30 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-[#282a36] rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden border border-gray-200 dark:border-[#6272a4]">
+      <div className="bg-white dark:bg-[#282a36] rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden border border-gray-200 dark:border-[#6272a4] modal-scrollbar">
         {/* Header with Progress */}
         <div className="relative">
-          <div className="flex items-center justify-between p-4 border-b">
+          <div className="sticky top-0 z-10 flex items-center justify-between p-6 border-b">
             <div className="flex items-center gap-3">
               <Calendar className="h-5 w-5 text-primary" />
               <div>

@@ -20,12 +20,12 @@ export const JustificationModal: React.FC<JustificationModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center" style={{ zIndex: 9999 }}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div 
-        className="absolute inset-0" 
+        className="absolute inset-0 bg-black/50" 
         onClick={onClose}
       />
-      <div className="relative z-10 w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto modal-scrollbar">
+      <div className="relative z-10 w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
         <JustificationForm
           attendanceId={attendanceId}
           onSubmit={onSubmit}
