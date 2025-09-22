@@ -26,8 +26,13 @@ import {
   Save
 } from 'lucide-react';
 import { useAppStore } from '../../store';
+import { AddUserModal } from '../../components/modals/AddUserModal';
+import { ImportUsersModal } from '../../components/modals/ImportUsersModal';
+
 export const SettingsPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState('General');
+  const [showAddUserModal, setShowAddUserModal] = useState(false);
+  const [showImportModal, setShowImportModal] = useState(false);
   const { addNotification } = useAppStore();
 
   const tabs = [
@@ -261,11 +266,11 @@ export const SettingsPage: React.FC = () => {
                     </Card>
                   </div>
                   <div className="flex gap-3">
-                    <Button className="gap-2">
+                    <Button className="gap-2" onClick={() => setShowAddUserModal(true)}>
                       <UserPlus className="h-4 w-4" />
                       Add User
                     </Button>
-                    <Button variant="outline" className="gap-2">
+                    <Button variant="outline" className="gap-2" onClick={() => setShowImportModal(true)}>
                       <Upload className="h-4 w-4" />
                       Import Users
                     </Button>
@@ -331,6 +336,16 @@ export const SettingsPage: React.FC = () => {
           )}
         </div>
       </div>
+      
+      {/* Modals */}
+      <AddUserModal 
+        isOpen={showAddUserModal} 
+        onClose={() => setShowAddUserModal(false)} 
+      />
+      <ImportUsersModal 
+        isOpen={showImportModal} 
+        onClose={() => setShowImportModal(false)} 
+      />
     </Layout>
   );
 };
