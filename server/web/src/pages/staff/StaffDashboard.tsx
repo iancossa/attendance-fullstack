@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Layout } from '../../components/layout/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
@@ -19,6 +19,20 @@ import {
 
 export const StaffDashboard: React.FC = () => {
   const navigate = useNavigate();
+  const [currentStaff, setCurrentStaff] = useState<any>(null);
+
+  useEffect(() => {
+    const staffData = localStorage.getItem('staffInfo');
+    if (staffData) {
+      const staff = JSON.parse(staffData);
+      setCurrentStaff({
+        id: staff.id,
+        name: staff.name,
+        email: staff.email,
+        department: staff.department || 'Computer Science'
+      });
+    }
+  }, []);
   
   return (
     <Layout>
@@ -26,7 +40,9 @@ export const StaffDashboard: React.FC = () => {
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-base font-semibold text-gray-900 dark:text-[#f8f8f2]">Staff Dashboard</h1>
-            <p className="text-sm text-gray-600 dark:text-[#6272a4]">Manage your classes and track attendance</p>
+            <p className="text-sm text-gray-600 dark:text-[#6272a4]">
+              {currentStaff ? `Welcome, ${currentStaff.name}` : 'Manage your classes and track attendance'}
+            </p>
           </div>
           <Button 
             onClick={() => navigate('/attendance/take')}

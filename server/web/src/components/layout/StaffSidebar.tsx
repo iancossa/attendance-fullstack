@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BarChart3, Target, GraduationCap, FileText, Users, Calendar, Settings } from 'lucide-react';
+import { BarChart3, Target, GraduationCap, FileText, Users, Calendar, Settings, User } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import { useAppStore } from '../../store';
 import { ROUTES } from '../../constants';
@@ -26,7 +26,12 @@ export const StaffSidebar: React.FC<StaffSidebarProps> = ({ isMobileOpen = false
     { name: 'Reports', path: ROUTES.REPORTS, icon: FileText, badge: null },
   ];
 
+  const justificationItems = [
+    { name: 'Review Absence Requests', path: '/review-justifications', icon: FileText, badge: null },
+  ];
+
   const systemItems = [
+    { name: 'Profile', path: '/staff-profile', icon: User, badge: null },
     { name: 'Settings', path: ROUTES.SETTINGS, icon: Settings, badge: null },
   ];
 
@@ -111,6 +116,7 @@ export const StaffSidebar: React.FC<StaffSidebarProps> = ({ isMobileOpen = false
           </header>
           <nav className="flex-1 p-3 overflow-y-auto pt-4">
             {renderMenuGroup('Main', mainMenuItems)}
+            {renderMenuGroup('Justifications', justificationItems)}
             {analyticsItems.length > 0 && renderMenuGroup('Analytics', analyticsItems)}
             {renderMenuGroup('System', systemItems)}
           </nav>

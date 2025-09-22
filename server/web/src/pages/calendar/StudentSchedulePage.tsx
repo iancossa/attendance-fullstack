@@ -3,10 +3,13 @@ import { Layout } from '../../components/layout/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { Badge } from '../../components/ui/badge';
 import { Input } from '../../components/ui/input';
+import { UpcomingLectureModal } from '../../components/modals/UpcomingLectureModal';
 import { Calendar, Clock, MapPin, User } from 'lucide-react';
 
 export const StudentSchedulePage: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState('2025-09-01');
+  const [showLectureModal, setShowLectureModal] = useState(false);
+  const [selectedLecture, setSelectedLecture] = useState<any>(null);
 
   const timeSlots = [
     '09:30 - 10:25',
@@ -150,7 +153,22 @@ export const StudentSchedulePage: React.FC = () => {
 
                         return (
                           <td key={day} className="p-1.5 sm:p-2">
-                            <div className="bg-white dark:bg-[#44475a] border border-orange-200 dark:border-[#6272a4] rounded-lg p-2 sm:p-3 hover:shadow-sm hover:border-orange-300 dark:hover:border-orange-400 transition-all">
+                            <div 
+                              className="bg-white dark:bg-[#44475a] border border-orange-200 dark:border-[#6272a4] rounded-lg p-2 sm:p-3 hover:shadow-sm hover:border-orange-300 dark:hover:border-orange-400 transition-all cursor-pointer"
+                              onClick={() => {
+                                setSelectedLecture({
+                                  code: classInfo.code,
+                                  name: classInfo.name,
+                                  instructor: classInfo.instructor,
+                                  room: classInfo.room,
+                                  type: classInfo.type,
+                                  time: time,
+                                  date: new Date().toLocaleDateString(),
+                                  duration: '55 minutes'
+                                });
+                                setShowLectureModal(true);
+                              }}
+                            >
                               <div className="flex items-start justify-between mb-2">
                                 <span className="font-bold text-sm text-orange-700 dark:text-orange-400">{classInfo.code}</span>
                                 <Badge className={`text-xs ${getTypeColor(classInfo.type)}`}>
@@ -226,6 +244,12 @@ export const StudentSchedulePage: React.FC = () => {
           </Card>
         </div>
       </div>
+      
+      <UpcomingLectureModal
+        isOpen={showLectureModal}
+        onClose={() => setShowLectureModal(false)}
+        lecture={selectedLecture}
+      />
     </Layout>
   );
 };

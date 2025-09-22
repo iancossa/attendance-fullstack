@@ -2,11 +2,22 @@ import React, { useState } from 'react';
 import { Layout } from '../../components/layout/Layout';
 import { Card, CardContent } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
-import { Download, XCircle, Users, CheckCircle, TrendingUp } from 'lucide-react';
+import { Download, XCircle, Users, CheckCircle, TrendingUp, Eye, FileText } from 'lucide-react';
+import { DayDetailsModal } from '../../components/modals/DayDetailsModal';
+import { JustificationModal } from '../../components/justification/JustificationModal';
+import { useAppStore } from '../../store';
+import { useJustifications } from '../../hooks/useJustifications';
+import type { JustificationFormData } from '../../types';
 
 export const StudentAttendancePage: React.FC = () => {
   const [activeTab, setActiveTab] = useState('summary');
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [showDayModal, setShowDayModal] = useState(false);
+  const [selectedDay, setSelectedDay] = useState<{date: string, data: any} | null>(null);
+  const [showJustificationModal, setShowJustificationModal] = useState(false);
+  const [selectedAttendanceId, setSelectedAttendanceId] = useState<string>('');
+  const { addNotification } = useAppStore();
+  const { submitJustification, submitting } = useJustifications();
 
   const subjectData = [
     { sr: 1, code: '30310S220', subject: 'Digital Electronics', slotType: 'Theory', conducted: 28, present: 24, absent: 4, percentage: 85.71 },
@@ -153,6 +164,20 @@ export const StudentAttendancePage: React.FC = () => {
   const fullAbsentDays = 7;
   const totalAbsentSlots = 21;
 
+  const handleJustificationSubmit = async (data: JustificationFormData) => {
+    try {
+      await submitJustification(selectedAttendanceId, data);
+      setShowJustificationModal(false);
+      setSelectedAttendanceId('');
+      addNotification({
+        message: 'Justification submitted successfully',
+        type: 'success'
+      });
+    } catch (error) {
+      console.error('Failed to submit justification:', error);
+    }
+  };
+
 
 
   const renderTabContent = () => {
@@ -161,7 +186,7 @@ export const StudentAttendancePage: React.FC = () => {
         return (
           <div className="space-y-4">
             {/* Statistics Cards */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            <div className="grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-4 lg:gap-4">
               <Card className="bg-gradient-to-br from-purple-500 to-purple-600 dark:from-purple-600 dark:to-purple-700 text-white border-gray-200 dark:border-[#6272a4]">
                 <CardContent className="p-4 sm:p-6">
                   <div className="flex items-center justify-between">
@@ -225,37 +250,42 @@ export const StudentAttendancePage: React.FC = () => {
                   <table className="w-full">
                     <thead className="bg-gray-50 dark:bg-[#44475a]">
                       <tr>
-                        <th className="px-2 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-[#f8f8f2] uppercase tracking-wider">Sr.</th>
+                        <th className="hidden sm:table-cell px-2 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-[#f8f8f2] uppercase tracking-wider">Sr.</th>
                         <th className="px-2 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-[#f8f8f2] uppercase tracking-wider">Subject</th>
-                        <th className="hidden sm:table-cell px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-[#f8f8f2] uppercase tracking-wider">Slot Type</th>
-                        <th className="px-2 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-[#f8f8f2] uppercase tracking-wider">Conducted</th>
-                        <th className="px-2 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-[#f8f8f2] uppercase tracking-wider">Present</th>
-                        <th className="px-2 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-[#f8f8f2] uppercase tracking-wider">Absent</th>
+                        <th className="hidden lg:table-cell px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-[#f8f8f2] uppercase tracking-wider">Slot Type</th>
+                        <th className="hidden sm:table-cell px-2 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-[#f8f8f2] uppercase tracking-wider">Conducted</th>
+                        <th className="hidden sm:table-cell px-2 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-[#f8f8f2] uppercase tracking-wider">Present</th>
+                        <th className="hidden sm:table-cell px-2 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-[#f8f8f2] uppercase tracking-wider">Absent</th>
                         <th className="px-2 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-[#f8f8f2] uppercase tracking-wider">%</th>
                       </tr>
                     </thead>
                     <tbody className="bg-white dark:bg-[#282a36] divide-y divide-gray-200 dark:divide-[#6272a4]">
                       {subjectData.map((subject) => (
                         <tr key={subject.sr} className="hover:bg-gray-50 dark:hover:bg-[#44475a]">
-                          <td className="px-2 sm:px-4 py-3 text-sm text-gray-900 dark:text-[#f8f8f2]">{subject.sr}</td>
+                          <td className="hidden sm:table-cell px-2 sm:px-4 py-3 text-sm text-gray-900 dark:text-[#f8f8f2]">{subject.sr}</td>
                           <td className="px-2 sm:px-4 py-3">
                             <div className="text-xs sm:text-sm font-medium text-gray-900 dark:text-[#f8f8f2]">{subject.code}</div>
+                            <div className="text-xs text-gray-500 dark:text-[#6272a4] sm:hidden">{subject.subject}</div>
                             <div className="text-xs text-gray-500 dark:text-[#6272a4] hidden sm:block">{subject.subject}</div>
+                            <div className="sm:hidden text-xs text-gray-500 dark:text-[#6272a4] mt-1">
+                              {subject.conducted}C • {subject.present}P • {subject.absent}A
+                            </div>
                           </td>
-                          <td className="hidden sm:table-cell px-4 py-3 text-sm text-gray-900 dark:text-[#f8f8f2]">{subject.slotType}</td>
-                          <td className="px-2 sm:px-4 py-3 text-sm text-gray-900 dark:text-[#f8f8f2]">{subject.conducted}</td>
-                          <td className="px-2 sm:px-4 py-3 text-sm text-gray-900 dark:text-[#f8f8f2]">{subject.present}</td>
-                          <td className="px-2 sm:px-4 py-3 text-sm text-gray-900 dark:text-[#f8f8f2]">{subject.absent}</td>
+                          <td className="hidden lg:table-cell px-4 py-3 text-sm text-gray-900 dark:text-[#f8f8f2]">{subject.slotType}</td>
+                          <td className="hidden sm:table-cell px-2 sm:px-4 py-3 text-sm text-gray-900 dark:text-[#f8f8f2]">{subject.conducted}</td>
+                          <td className="hidden sm:table-cell px-2 sm:px-4 py-3 text-sm text-gray-900 dark:text-[#f8f8f2]">{subject.present}</td>
+                          <td className="hidden sm:table-cell px-2 sm:px-4 py-3 text-sm text-gray-900 dark:text-[#f8f8f2]">{subject.absent}</td>
                           <td className={`px-2 sm:px-4 py-3 text-sm font-medium ${getPercentageColor(subject.percentage)}`}>
                             {subject.percentage}%
                           </td>
                         </tr>
                       ))}
                       <tr className="bg-gray-50 dark:bg-[#44475a] font-medium">
-                        <td className="px-2 sm:px-4 py-3 text-sm text-gray-900 dark:text-[#f8f8f2]" colSpan={3}>Total</td>
-                        <td className="px-2 sm:px-4 py-3 text-sm text-gray-900 dark:text-[#f8f8f2]">{totalSlots}</td>
-                        <td className="px-2 sm:px-4 py-3 text-sm text-gray-900 dark:text-[#f8f8f2]">{totalPresent}</td>
-                        <td className="px-2 sm:px-4 py-3 text-sm text-gray-900 dark:text-[#f8f8f2]">{totalAbsent}</td>
+                        <td className="px-2 sm:px-4 py-3 text-sm text-gray-900 dark:text-[#f8f8f2]" colSpan={2}>Total</td>
+                        <td className="hidden lg:table-cell px-4 py-3"></td>
+                        <td className="hidden sm:table-cell px-2 sm:px-4 py-3 text-sm text-gray-900 dark:text-[#f8f8f2]">{totalSlots}</td>
+                        <td className="hidden sm:table-cell px-2 sm:px-4 py-3 text-sm text-gray-900 dark:text-[#f8f8f2]">{totalPresent}</td>
+                        <td className="hidden sm:table-cell px-2 sm:px-4 py-3 text-sm text-gray-900 dark:text-[#f8f8f2]">{totalAbsent}</td>
                         <td className="px-2 sm:px-4 py-3 text-sm font-bold text-blue-600 dark:text-blue-400">{overallPercentage}%</td>
                       </tr>
                     </tbody>
@@ -271,21 +301,21 @@ export const StudentAttendancePage: React.FC = () => {
           <div className="space-y-4">
             {/* Absent Statistics Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Card className="bg-gradient-to-br from-red-300 to-red-400 text-white">
+              <Card className="bg-gradient-to-br from-red-300 to-red-400 dark:from-red-600 dark:to-red-700 text-white border-gray-200 dark:border-[#6272a4]">
                 <CardContent className="p-4 sm:p-6 text-center">
                   <div className="text-2xl sm:text-4xl font-bold">{partialAbsentDays}</div>
                   <div className="text-red-100 text-xs sm:text-sm mt-1">Partial Absent Days</div>
                 </CardContent>
               </Card>
               
-              <Card className="bg-gradient-to-br from-red-500 to-red-600 text-white">
+              <Card className="bg-gradient-to-br from-red-500 to-red-600 dark:from-red-700 dark:to-red-800 text-white border-gray-200 dark:border-[#6272a4]">
                 <CardContent className="p-4 sm:p-6 text-center">
                   <div className="text-2xl sm:text-4xl font-bold">{fullAbsentDays}</div>
                   <div className="text-red-100 text-xs sm:text-sm mt-1">Full Absent Days</div>
                 </CardContent>
               </Card>
               
-              <Card className="bg-gradient-to-br from-red-700 to-red-800 text-white">
+              <Card className="bg-gradient-to-br from-red-700 to-red-800 dark:from-red-800 dark:to-red-900 text-white border-gray-200 dark:border-[#6272a4]">
                 <CardContent className="p-4 sm:p-6 text-center">
                   <div className="text-2xl sm:text-4xl font-bold">{totalAbsentSlots}</div>
                   <div className="text-red-100 text-xs sm:text-sm mt-1">Total Absent Slots</div>
@@ -294,43 +324,78 @@ export const StudentAttendancePage: React.FC = () => {
             </div>
 
             {/* Absent Days Table */}
-            <Card>
+            <Card className="bg-white dark:bg-[#282a36] border-gray-200 dark:border-[#6272a4]">
               <CardContent className="p-0">
                 <div className="overflow-x-auto">
                   <table className="w-full">
-                    <thead className="bg-gray-50">
+                    <thead className="bg-gray-50 dark:bg-[#44475a]">
                       <tr>
-                        <th className="px-2 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sr.</th>
-                        <th className="px-2 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Attendance Date</th>
-                        <th className="px-2 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-blue-600">Conducted</th>
-                        <th className="px-2 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-green-600">Present</th>
-                        <th className="px-2 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-red-600">Absent</th>
-                        <th className="px-2 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">View</th>
+                        <th className="hidden sm:table-cell px-2 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-[#f8f8f2] uppercase tracking-wider">Sr.</th>
+                        <th className="px-2 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-[#f8f8f2] uppercase tracking-wider">Date</th>
+                        <th className="hidden sm:table-cell px-2 sm:px-4 py-3 text-left text-xs font-medium text-blue-600 dark:text-blue-400 uppercase tracking-wider">Conducted</th>
+                        <th className="hidden sm:table-cell px-2 sm:px-4 py-3 text-left text-xs font-medium text-green-600 dark:text-green-400 uppercase tracking-wider">Present</th>
+                        <th className="hidden sm:table-cell px-2 sm:px-4 py-3 text-left text-xs font-medium text-red-600 dark:text-red-400 uppercase tracking-wider">Absent</th>
+                        <th className="px-2 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-[#f8f8f2] uppercase tracking-wider">View</th>
                       </tr>
                     </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
+                    <tbody className="bg-white dark:bg-[#282a36] divide-y divide-gray-200 dark:divide-[#6272a4]">
                       {absentDaysData.map((day) => (
-                        <tr key={day.sr} className="hover:bg-gray-50">
-                          <td className="px-2 sm:px-4 py-3 text-sm text-gray-900">{day.sr}</td>
-                          <td className="px-2 sm:px-4 py-3 text-sm text-gray-900">{day.date}</td>
-                          <td className="px-2 sm:px-4 py-3 text-sm font-medium text-blue-600">{day.conducted}</td>
-                          <td className="px-2 sm:px-4 py-3 text-sm font-medium text-green-600">{day.present}</td>
-                          <td className="px-2 sm:px-4 py-3 text-sm font-medium text-red-600">{day.absent}</td>
+                        <tr key={day.sr} className="hover:bg-gray-50 dark:hover:bg-[#44475a]">
+                          <td className="hidden sm:table-cell px-2 sm:px-4 py-3 text-sm text-gray-900 dark:text-[#f8f8f2]">{day.sr}</td>
                           <td className="px-2 sm:px-4 py-3">
-                            <button className="p-1 text-gray-400 hover:text-gray-600">
-                              <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                                <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
-                              </svg>
-                            </button>
+                            <div className="text-sm text-gray-900 dark:text-[#f8f8f2]">{day.date}</div>
+                            <div className="sm:hidden text-xs text-gray-500 dark:text-[#6272a4] mt-1">
+                              {day.conducted}C • {day.present}P • {day.absent}A
+                            </div>
+                          </td>
+                          <td className="hidden sm:table-cell px-2 sm:px-4 py-3 text-sm font-medium text-blue-600 dark:text-blue-400">{day.conducted}</td>
+                          <td className="hidden sm:table-cell px-2 sm:px-4 py-3 text-sm font-medium text-green-600 dark:text-green-400">{day.present}</td>
+                          <td className="hidden sm:table-cell px-2 sm:px-4 py-3 text-sm font-medium text-red-600 dark:text-red-400">{day.absent}</td>
+                          <td className="px-2 sm:px-4 py-3">
+                            <div className="flex items-center gap-2">
+                              <button 
+                                onClick={() => {
+                                  setSelectedDay({
+                                    date: day.date,
+                                    data: {
+                                      conducted: day.conducted,
+                                      present: day.present,
+                                      absent: day.absent,
+                                      subjects: [
+                                        { code: '30310S220', name: 'Digital Electronics', time: '09:00 AM', status: day.present > 0 ? 'present' : 'absent' },
+                                        { code: '30310B201', name: 'Data Structures', time: '11:00 AM', status: 'absent' },
+                                        { code: '30310B203', name: 'Database Systems', time: '02:00 PM', status: 'absent' }
+                                      ]
+                                    }
+                                  });
+                                  setShowDayModal(true);
+                                }}
+                                className="p-1 text-gray-400 dark:text-[#6272a4] hover:text-gray-600 dark:hover:text-[#f8f8f2] transition-colors"
+                                title="View Details"
+                              >
+                                <Eye className="h-4 w-4" />
+                              </button>
+                              {day.absent > 0 && (
+                                <button 
+                                  onClick={() => {
+                                    setSelectedAttendanceId(`attendance_${day.sr}`);
+                                    setShowJustificationModal(true);
+                                  }}
+                                  className="p-1 text-orange-400 dark:text-orange-400 hover:text-orange-600 dark:hover:text-orange-300 transition-colors"
+                                  title="Submit Justification"
+                                >
+                                  <FileText className="h-4 w-4" />
+                                </button>
+                              )}
+                            </div>
                           </td>
                         </tr>
                       ))}
-                      <tr className="bg-gray-50 font-medium">
-                        <td className="px-2 sm:px-4 py-3 text-sm text-gray-900" colSpan={2}>Total</td>
-                        <td className="px-2 sm:px-4 py-3 text-sm font-bold text-blue-600">28</td>
-                        <td className="px-2 sm:px-4 py-3 text-sm font-bold text-green-600">7</td>
-                        <td className="px-2 sm:px-4 py-3 text-sm font-bold text-red-600">21</td>
+                      <tr className="bg-gray-50 dark:bg-[#44475a] font-medium">
+                        <td className="px-2 sm:px-4 py-3 text-sm text-gray-900 dark:text-[#f8f8f2]" colSpan={2}>Total</td>
+                        <td className="hidden sm:table-cell px-2 sm:px-4 py-3 text-sm font-bold text-blue-600 dark:text-blue-400">28</td>
+                        <td className="hidden sm:table-cell px-2 sm:px-4 py-3 text-sm font-bold text-green-600 dark:text-green-400">7</td>
+                        <td className="hidden sm:table-cell px-2 sm:px-4 py-3 text-sm font-bold text-red-600 dark:text-red-400">21</td>
                         <td className="px-2 sm:px-4 py-3"></td>
                       </tr>
                     </tbody>
@@ -364,7 +429,7 @@ export const StudentAttendancePage: React.FC = () => {
           const status = attendanceCalendar[day];
           if (status === 'present') return 'bg-green-500 text-white';
           if (status === 'absent') return 'bg-red-500 text-white';
-          return 'bg-white hover:bg-gray-50';
+          return 'bg-white dark:bg-[#282a36] hover:bg-gray-50 dark:hover:bg-[#44475a] text-gray-900 dark:text-[#f8f8f2]';
         };
         
         const navigateMonth = (direction: 'prev' | 'next') => {
@@ -391,7 +456,26 @@ export const StudentAttendancePage: React.FC = () => {
             days.push(
               <div
                 key={day}
-                className={`h-12 sm:h-16 flex items-center justify-center text-sm font-medium border cursor-pointer transition-colors ${
+                onClick={() => {
+                  const status = attendanceCalendar[day];
+                  setSelectedDay({
+                    date: `${monthNames[month]} ${day}, ${year}`,
+                    data: {
+                      conducted: status ? 5 : 0,
+                      present: status === 'present' ? 5 : 0,
+                      absent: status === 'absent' ? 5 : 0,
+                      subjects: [
+                        { code: '30310S220', name: 'Digital Electronics', time: '09:00 AM', status: status || 'present' },
+                        { code: '30310B201', name: 'Data Structures', time: '11:00 AM', status: status || 'present' },
+                        { code: '30310B203', name: 'Database Systems', time: '02:00 PM', status: status || 'present' },
+                        { code: '30310B205', name: 'OOP', time: '03:00 PM', status: status || 'present' },
+                        { code: '30319L202', name: 'Discrete Math', time: '04:00 PM', status: status || 'present' }
+                      ]
+                    }
+                  });
+                  setShowDayModal(true);
+                }}
+                className={`h-12 sm:h-16 flex items-center justify-center text-sm font-medium border border-gray-200 dark:border-[#6272a4] cursor-pointer transition-colors ${
                   getDayClass(day)
                 }`}
               >
@@ -401,32 +485,32 @@ export const StudentAttendancePage: React.FC = () => {
           }
           
           return (
-            <div className="bg-gray-100 p-4 rounded-lg">
+            <div className="bg-gray-100 dark:bg-[#44475a] p-4 rounded-lg">
               {/* Month Navigation */}
               <div className="flex items-center justify-between mb-4">
                 <button 
                   onClick={() => navigateMonth('prev')}
-                  className="p-2 hover:bg-gray-200 rounded"
+                  className="p-2 hover:bg-gray-200 dark:hover:bg-[#6272a4] rounded text-gray-900 dark:text-[#f8f8f2]"
                 >
                   <span className="text-lg">&lt;</span>
                 </button>
-                <h3 className="text-lg font-semibold text-gray-900">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-[#f8f8f2]">
                   {monthNames[month]} {year}
                 </h3>
                 <button 
                   onClick={() => navigateMonth('next')}
-                  className="p-2 hover:bg-gray-200 rounded"
+                  className="p-2 hover:bg-gray-200 dark:hover:bg-[#6272a4] rounded text-gray-900 dark:text-[#f8f8f2]"
                 >
                   <span className="text-lg">&gt;</span>
                 </button>
               </div>
               
               {/* Calendar Grid */}
-              <div className="bg-white rounded border">
+              <div className="bg-white dark:bg-[#282a36] rounded border border-gray-200 dark:border-[#6272a4]">
                 {/* Week Headers */}
-                <div className="grid grid-cols-7 bg-gray-50">
+                <div className="grid grid-cols-7 bg-gray-50 dark:bg-[#44475a]">
                   {weekDays.map(day => (
-                    <div key={day} className="p-2 sm:p-3 text-center text-xs sm:text-sm font-medium text-gray-700 border-b">
+                    <div key={day} className="p-2 sm:p-3 text-center text-xs sm:text-sm font-medium text-gray-700 dark:text-[#f8f8f2] border-b border-gray-200 dark:border-[#6272a4]">
                       {day}
                     </div>
                   ))}
@@ -442,7 +526,7 @@ export const StudentAttendancePage: React.FC = () => {
         };
         
         return (
-          <Card>
+          <Card className="bg-white dark:bg-[#282a36] border-gray-200 dark:border-[#6272a4]">
             <CardContent className="p-4">
               {renderCalendar()}
             </CardContent>
@@ -463,7 +547,13 @@ export const StudentAttendancePage: React.FC = () => {
             <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-[#f8f8f2]">Student Attendance</h1>
             <p className="text-sm text-gray-600 dark:text-[#6272a4]">Track your attendance performance</p>
           </div>
-          <Button onClick={generatePDF} className="bg-blue-600 dark:bg-[#bd93f9] hover:bg-blue-700 dark:hover:bg-[#bd93f9]/80 text-white dark:text-[#282a36] gap-2 w-fit">
+          <Button 
+            onClick={() => {
+              generatePDF();
+              addNotification({ message: 'Attendance report downloaded successfully', type: 'success' });
+            }} 
+            className="gap-2 w-fit"
+          >
             <Download className="h-4 w-4" />
             <span className="hidden sm:inline">Download Report</span>
             <span className="sm:hidden">Download</span>
@@ -471,7 +561,7 @@ export const StudentAttendancePage: React.FC = () => {
         </div>
 
         {/* Tabs */}
-        <div className="border-b border-gray-200">
+        <div className="border-b border-gray-200 dark:border-[#6272a4]">
           <nav className="flex space-x-2 sm:space-x-8 overflow-x-auto">
             {[
               { id: 'summary', label: 'Attendance Summary', shortLabel: 'Summary' },
@@ -499,6 +589,31 @@ export const StudentAttendancePage: React.FC = () => {
         {/* Tab Content */}
         {renderTabContent()}
       </div>
+      
+      {/* Day Details Modal */}
+      {selectedDay && (
+        <DayDetailsModal
+          isOpen={showDayModal}
+          onClose={() => {
+            setShowDayModal(false);
+            setSelectedDay(null);
+          }}
+          date={selectedDay.date}
+          dayData={selectedDay.data}
+        />
+      )}
+      
+      {/* Justification Modal */}
+      <JustificationModal
+        isOpen={showJustificationModal}
+        attendanceId={selectedAttendanceId}
+        onClose={() => {
+          setShowJustificationModal(false);
+          setSelectedAttendanceId('');
+        }}
+        onSubmit={handleJustificationSubmit}
+        isSubmitting={submitting}
+      />
     </Layout>
   );
 };

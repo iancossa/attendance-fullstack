@@ -17,11 +17,14 @@ import { StudentSchedulePage } from './pages/calendar/StudentSchedulePage';
 import { StudentClassesPage } from './pages/classes/StudentClassesPage';
 import { StudentAttendancePage } from './pages/attendance/StudentAttendancePage';
 import { StudentProfilePage } from './pages/profile/StudentProfilePage';
+import { StaffProfilePage } from './pages/profile/StaffProfilePage';
 import { QRModePage } from './pages/attendance/QRModePage';
 import { ManualModePage } from './pages/attendance/ManualModePage';
 import { HybridModePage } from './pages/attendance/HybridModePage';
 import { TakeAttendancePage } from './pages/attendance/TakeAttendancePage';
 import { LoginPage } from './pages/auth/LoginPage';
+import { MyJustificationsPage } from './pages/justification/MyJustificationsPage';
+import { ReviewJustificationsPage } from './pages/justification/ReviewJustificationsPage';
 import { useAuth } from './hooks/useAuth';
 import { ROUTES } from './constants';
 import { Loading } from './components/ui/loading';
@@ -86,6 +89,8 @@ function AppContent() {
               <Route path="/students" element={<StudentsPage />} />
               <Route path="/calendar" element={<CalendarPage />} />
               <Route path={ROUTES.REPORTS} element={<ReportsPage />} />
+              <Route path="/staff-profile" element={<StaffProfilePage />} />
+              <Route path="/review-justifications" element={<ReviewJustificationsPage />} />
               <Route path={ROUTES.SETTINGS} element={<SettingsPage />} />
               <Route path="/attendance/take" element={<TakeAttendancePage />} />
               <Route path="/attendance/qr-mode" element={<QRModePage />} />
@@ -103,6 +108,7 @@ function AppContent() {
               <Route path="/calendar" element={<StudentSchedulePage />} />
               <Route path={ROUTES.CLASSES} element={<StudentClassesPage />} />
               <Route path="/profile" element={<StudentProfilePage />} />
+              <Route path="/justifications" element={<MyJustificationsPage />} />
               <Route path={ROUTES.LEADERBOARD} element={<LeaderboardPage />} />
             </>
           )}

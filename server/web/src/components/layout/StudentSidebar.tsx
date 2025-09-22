@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BarChart3, Target, Trophy, User, Calendar, BookOpen } from 'lucide-react';
+import { BarChart3, Target, Trophy, User, Calendar, BookOpen, FileText } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import { useAppStore } from '../../store';
 import logo from '../../assets/img/logo.png';
@@ -18,6 +18,10 @@ export const StudentSidebar: React.FC<StudentSidebarProps> = ({ isMobileOpen = f
     { name: 'My Attendance', path: '/attendance', icon: Target, badge: null },
     { name: 'My Classes', path: '/classes', icon: BookOpen, badge: null },
     { name: 'Schedule', path: '/calendar', icon: Calendar, badge: null },
+  ];
+
+  const justificationItems = [
+    { name: 'My Absence Requests', path: '/justifications', icon: FileText, badge: null },
   ];
 
   const academicItems = [
@@ -107,6 +111,7 @@ export const StudentSidebar: React.FC<StudentSidebarProps> = ({ isMobileOpen = f
           </header>
           <nav className="flex-1 p-3 overflow-y-auto pt-4">
             {renderMenuGroup('Main', mainMenuItems)}
+            {renderMenuGroup('Justifications', justificationItems)}
             {renderMenuGroup('Academic', academicItems)}
           </nav>
           <div className="p-3 border-t border-orange-100 dark:border-[#44475a]">

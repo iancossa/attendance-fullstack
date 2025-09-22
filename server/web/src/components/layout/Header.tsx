@@ -5,7 +5,6 @@ import { Badge } from '../ui/badge';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '../ui/dropdown-menu';
 import { 
   Search, 
-  Bell, 
   Plus,
   Calendar,
   Users,
@@ -25,6 +24,7 @@ import { AddStudentModal } from '../modals/AddStudentModal';
 import { AddClassModal } from '../modals/AddClassModal';
 import { ScheduleSessionModal } from '../modals/ScheduleSessionModal';
 import { Breadcrumb } from '../ui/breadcrumb';
+import { NotificationBell } from '../notifications/NotificationBell';
 
 interface HeaderProps {
   onMobileMenuToggle?: () => void;
@@ -147,62 +147,7 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
             )}
 
             {/* Notifications */}
-            <DropdownMenu>
-              <DropdownMenuTrigger 
-                className="relative gap-2 text-foreground"
-                onClick={() => setNotificationsOpen(!notificationsOpen)}
-              >
-                <Bell className={`h-4 w-4 ${notificationCount > 0 ? 'animate-pulse' : ''}`} />
-                <span className="hidden sm:inline">Notifications</span>
-                {notificationCount > 0 && (
-                  <Badge className="absolute -top-1 -right-1 h-5 w-5 p-0 text-xs bg-destructive text-destructive-foreground">
-                    {notificationCount}
-                  </Badge>
-                )}
-              </DropdownMenuTrigger>
-              {notificationsOpen && (
-                <>
-                  <div className="fixed inset-0 z-40" onClick={() => setNotificationsOpen(false)} />
-                  <DropdownMenuContent className="w-80">
-                    <div className="p-3 border-b bg-orange-50 dark:bg-[#282a36] border-orange-100 dark:border-[#6272a4]">
-                      <div className="flex items-center justify-between">
-                        <h4 className="font-medium text-gray-900 dark:text-[#f8f8f2]">Notifications</h4>
-                        <Button variant="ghost" size="sm" className="text-xs h-6 px-2">
-                          Mark all read
-                        </Button>
-                      </div>
-                      <p className="text-sm text-gray-600 dark:text-[#6272a4]">{notificationsList.length} unread</p>
-                    </div>
-                    <div className="max-h-64 overflow-y-auto">
-                      {notificationsList.length === 0 ? (
-                        <div className="p-8 text-center">
-                          <Bell className="h-12 w-12 text-gray-300 dark:text-[#6272a4] mx-auto mb-3" />
-                          <p className="text-sm text-gray-600 dark:text-[#6272a4] mb-1">No notifications</p>
-                          <p className="text-xs text-gray-500 dark:text-[#6272a4]">You're all caught up!</p>
-                        </div>
-                      ) : (
-                        notificationsList.map((notification) => (
-                          <DropdownMenuItem key={notification.id} className="p-3">
-                            <div className="flex-1">
-                              <p className="font-medium text-sm text-gray-900 dark:text-[#f8f8f2]">{notification.type.toUpperCase()}</p>
-                              <p className="text-xs text-gray-600 dark:text-[#6272a4] mb-1">{notification.message}</p>
-                              <p className="text-xs text-gray-500 dark:text-[#6272a4]">Just now</p>
-                            </div>
-                          </DropdownMenuItem>
-                        ))
-                      )}
-                    </div>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem 
-                      className="p-3 text-center text-sm text-orange-600 dark:text-[#bd93f9] font-medium justify-center"
-                      onClick={() => setNotificationsOpen(false)}
-                    >
-                      View all notifications
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </>
-              )}
-            </DropdownMenu>
+            <NotificationBell />
 
 
 

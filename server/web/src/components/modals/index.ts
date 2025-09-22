@@ -13,3 +13,4 @@ export { ScheduleSessionModal } from './ScheduleSessionModal';
 export { SendMessageModal } from './SendMessageModal';
 export { TakeAttendanceModal } from './TakeAttendanceModal';
 export { ViewProfileModal } from './ViewProfileModal';
+export { UpcomingLectureModal } from './UpcomingLectureModal';
