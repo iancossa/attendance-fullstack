@@ -19,9 +19,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           variant === "secondary" && "bg-gray-100 dark:bg-[#44475a] text-gray-900 dark:text-[#f8f8f2] hover:bg-gray-200 dark:hover:bg-[#6272a4]",
           variant === "ghost" && "text-gray-600 dark:text-[#6272a4] hover:bg-gray-100 dark:hover:bg-[#44475a] hover:text-gray-900 dark:hover:text-[#f8f8f2]",
           variant === "link" && "text-orange-500 dark:text-orange-400 underline-offset-4 hover:underline",
-          size === "default" && "h-8 px-3",
-          size === "sm" && "h-7 px-2 text-xs",
-          size === "icon" && "h-8 w-8",
+          size === "default" && "h-9 px-3",
+          size === "sm" && "h-9 px-2 text-xs",
+          size === "icon" && "h-9 w-9",
           className
         )}
         ref={ref}

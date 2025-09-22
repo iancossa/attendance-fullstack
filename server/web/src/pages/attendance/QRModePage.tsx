@@ -256,12 +256,12 @@ export const QRModePage: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <Card>
+          <Card className="bg-white dark:bg-[#282a36] border-gray-200 dark:border-[#6272a4]">
             <CardHeader>
-              <CardTitle>Live QR Code</CardTitle>
+              <CardTitle className="text-gray-900 dark:text-[#f8f8f2]">Live QR Code</CardTitle>
             </CardHeader>
             <CardContent className="text-center space-y-4">
-              <div className="p-6 bg-white rounded-lg inline-block shadow-sm">
+              <div className="p-6 bg-white dark:bg-white rounded-lg inline-block shadow-sm">
                 {qrValue && <QRCode value={qrValue} size={180} />}
               </div>
               
@@ -282,9 +282,9 @@ export const QRModePage: React.FC = () => {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-white dark:bg-[#282a36] border-gray-200 dark:border-[#6272a4]">
             <CardHeader>
-              <CardTitle>Recent Scans</CardTitle>
+              <CardTitle className="text-gray-900 dark:text-[#f8f8f2]">Recent Scans</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-2 max-h-64 overflow-y-auto">
@@ -321,9 +321,9 @@ export const QRModePage: React.FC = () => {
           </Button>
         </div>
 
-        <Card>
+        <Card className="bg-white dark:bg-[#282a36] border-gray-200 dark:border-[#6272a4]">
           <CardHeader className="pb-3">
-            <CardTitle className="text-base">Instructions</CardTitle>
+            <CardTitle className="text-base text-gray-900 dark:text-[#f8f8f2]">Instructions</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">

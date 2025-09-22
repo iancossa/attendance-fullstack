@@ -151,9 +151,9 @@ export const ManualModePage: React.FC = () => {
           </Card>
         </div>
 
-        <Card>
+        <Card className="bg-white dark:bg-[#282a36] border-gray-200 dark:border-[#6272a4]">
           <CardHeader>
-            <CardTitle>Roll Numbers Input</CardTitle>
+            <CardTitle className="text-gray-900 dark:text-[#f8f8f2]">Roll Numbers Input</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex gap-2">
@@ -161,7 +161,7 @@ export const ManualModePage: React.FC = () => {
                 placeholder="Enter roll numbers separated by commas (e.g., 1, 2, 15, 23)"
                 value={rollNumbers}
                 onChange={(e) => handleRollNumbersChange(e.target.value)}
-                className="text-sm flex-1"
+                className="text-sm flex-1 bg-white dark:bg-[#44475a] border-gray-300 dark:border-[#6272a4] text-gray-900 dark:text-[#f8f8f2] placeholder:text-gray-500 dark:placeholder:text-[#6272a4]"
               />
               <Button 
                 size="sm" 
@@ -171,42 +171,43 @@ export const ManualModePage: React.FC = () => {
                 Submit
               </Button>
             </div>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-gray-500 dark:text-[#6272a4] mt-1">
               Enter natural numbers (1, 2, 3...) separated by commas
             </p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-white dark:bg-[#282a36] border-gray-200 dark:border-[#6272a4]">
           <CardHeader>
-            <CardTitle className="flex items-center justify-between">
+            <CardTitle className="flex items-center justify-between text-gray-900 dark:text-[#f8f8f2]">
               <div className="flex items-center gap-2">
                 <Users className="h-4 w-4" />
                 Students ({filteredStudents.length})
               </div>
               <div className="relative w-60">
-                <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-3 w-3 text-gray-400" />
+                <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-3 w-3 text-gray-400 dark:text-[#6272a4]" />
                 <Input
                   placeholder="Search..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-8 h-8 text-sm"
+                  className="pl-8 h-8 text-sm bg-white dark:bg-[#44475a] border-gray-300 dark:border-[#6272a4] text-gray-900 dark:text-[#f8f8f2] placeholder:text-gray-500 dark:placeholder:text-[#6272a4]"
                 />
               </div>
             </CardTitle>
           </CardHeader>
           <CardContent className="p-0">
             <div className="max-h-[400px] overflow-y-auto">
-              <Table>
-                <TableHeader className="sticky top-0 bg-background z-10">
-                  <TableRow className="bg-gray-50 border-b">
-                    <TableHead className="w-12 text-center">Select</TableHead>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Roll No.</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Method</TableHead>
-                  </TableRow>
-                </TableHeader>
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader className="sticky top-0 bg-white dark:bg-[#282a36] z-10">
+                    <TableRow className="bg-gray-50 dark:bg-[#44475a] border-b border-gray-200 dark:border-[#6272a4]">
+                      <TableHead className="w-12 text-center text-gray-900 dark:text-[#f8f8f2]">Select</TableHead>
+                      <TableHead className="text-gray-900 dark:text-[#f8f8f2] min-w-[120px]">Name</TableHead>
+                      <TableHead className="text-gray-900 dark:text-[#f8f8f2] hidden sm:table-cell">Roll No.</TableHead>
+                      <TableHead className="text-gray-900 dark:text-[#f8f8f2]">Status</TableHead>
+                      <TableHead className="text-gray-900 dark:text-[#f8f8f2] hidden md:table-cell">Method</TableHead>
+                    </TableRow>
+                  </TableHeader>
                 <TableBody>
                   {loading ? (
                     <TableRow>
@@ -222,23 +223,30 @@ export const ManualModePage: React.FC = () => {
                     </TableRow>
                   ) : (
                     filteredStudents.map((student) => (
-                      <TableRow key={student.id} className="hover:bg-gray-50">
+                      <TableRow key={student.id} className="hover:bg-gray-50 dark:hover:bg-[#44475a] bg-white dark:bg-[#282a36]">
                         <TableCell className="text-center">
                           <input
                             type="checkbox"
                             checked={student.present}
                             onChange={() => toggleAttendance(student.id)}
-                            className="w-4 h-4 text-orange-600 rounded"
+                            className="w-4 h-4 text-orange-600 dark:text-orange-400 rounded"
                           />
                         </TableCell>
-                        <TableCell className="font-medium text-gray-900 dark:text-[#f8f8f2]">{student.name}</TableCell>
-                        <TableCell className="text-gray-600 dark:text-[#6272a4]">{filteredStudents.indexOf(student) + 1}</TableCell>
+                        <TableCell className="font-medium text-gray-900 dark:text-[#f8f8f2]">
+                          <div>
+                            <div className="font-medium">{student.name}</div>
+                            <div className="text-xs text-gray-500 dark:text-[#6272a4] sm:hidden">
+                              Roll: {filteredStudents.indexOf(student) + 1} • {student.method === 'manual' ? 'Manual' : 'Not Marked'}
+                            </div>
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-gray-600 dark:text-[#6272a4] hidden sm:table-cell">{filteredStudents.indexOf(student) + 1}</TableCell>
                         <TableCell>
                           <Badge className={student.present ? 'bg-green-100 text-green-700 border-green-200' : 'bg-red-100 text-red-700 border-red-200'}>
                             {student.present ? 'Present' : 'Absent'}
                           </Badge>
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="hidden md:table-cell">
                           {student.method === 'manual' && (
                             <Badge className="bg-purple-100 text-purple-700 border-purple-200">
                               Manual
@@ -253,8 +261,9 @@ export const ManualModePage: React.FC = () => {
                       </TableRow>
                     ))
                   )}
-                </TableBody>
-              </Table>
+                  </TableBody>
+                </Table>
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -268,9 +277,9 @@ export const ManualModePage: React.FC = () => {
         {/* Submit Roll Numbers Modal */}
         {showSubmitModal && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-background p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
-              <h3 className="text-lg font-semibold mb-4">Confirm Roll Numbers</h3>
-              <p className="text-sm text-muted-foreground mb-4">
+            <div className="bg-white dark:bg-[#282a36] p-6 rounded-lg shadow-lg max-w-md w-full mx-4 border border-gray-200 dark:border-[#6272a4]">
+              <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-[#f8f8f2]">Confirm Roll Numbers</h3>
+              <p className="text-sm text-gray-600 dark:text-[#6272a4] mb-4">
                 Mark the following student IDs as present: <strong>{rollNumbers}</strong>
               </p>
               <div className="flex gap-2 justify-end">
@@ -295,9 +304,9 @@ export const ManualModePage: React.FC = () => {
         {/* Save Attendance Modal */}
         {showSaveModal && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-background p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
-              <h3 className="text-lg font-semibold mb-4">Save Attendance</h3>
-              <p className="text-sm text-muted-foreground mb-4">
+            <div className="bg-white dark:bg-[#282a36] p-6 rounded-lg shadow-lg max-w-md w-full mx-4 border border-gray-200 dark:border-[#6272a4]">
+              <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-[#f8f8f2]">Save Attendance</h3>
+              <p className="text-sm text-gray-600 dark:text-[#6272a4] mb-4">
                 Save attendance for <strong>{presentCount}</strong> present and <strong>{absentCount}</strong> absent students?
               </p>
               <div className="flex gap-2 justify-end">

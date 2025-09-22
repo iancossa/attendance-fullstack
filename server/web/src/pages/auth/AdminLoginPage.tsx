@@ -8,6 +8,7 @@ import { Lock, User, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { Alert, AlertDescription } from '../../components/ui/alert';
 import { useAuth } from '../../hooks/useAuth';
 import { useAppStore } from '../../store';
+import { useTheme } from '../../hooks/useTheme';
 import logo from '../../assets/img/logo.png';
 
 export const AdminLoginPage: React.FC = () => {
@@ -18,6 +19,7 @@ export const AdminLoginPage: React.FC = () => {
   const [error, setError] = useState('');
   const { login } = useAuth();
   const { addNotification } = useAppStore();
+  const { theme } = useTheme();
 
 
 
@@ -43,64 +45,64 @@ export const AdminLoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-3 md:p-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 dark:from-[#282a36] dark:via-[#44475a] dark:to-[#282a36] flex items-center justify-center p-3 md:p-4">
       <div className="w-full max-w-sm md:max-w-md">
         {/* Header */}
         <div className="text-center mb-6 md:mb-8">
           <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-purple-600 rounded-full mb-3 md:mb-4">
             <img src={logo} alt="Logo" className="h-28 w-28 md:h-32 md:w-32 object-contain filter brightness-0 invert" />
           </div>
-          <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">Admin Portal</h1>
-          <p className="text-sm md:text-base text-purple-200">Secure administrative access</p>
-          <Badge className="mt-2 bg-purple-600/20 text-purple-200 border-purple-400 text-xs">
+          <h1 className="text-2xl md:text-3xl font-bold text-white dark:text-[#f8f8f2] mb-2">Admin Portal</h1>
+          <p className="text-sm md:text-base text-purple-200 dark:text-[#6272a4]">Secure administrative access</p>
+          <Badge className="mt-2 bg-purple-600/20 dark:bg-[#bd93f9]/20 text-purple-200 dark:text-[#bd93f9] border-purple-400 dark:border-[#bd93f9] text-xs">
             Administrator Only
           </Badge>
         </div>
 
         {/* Login Card */}
-        <Card className="bg-white/10 backdrop-blur-md border-white/20">
+        <Card className="bg-white/10 dark:bg-[#44475a]/50 backdrop-blur-md border-white/20 dark:border-[#6272a4]/50">
           <CardHeader className="text-center pb-4 md:pb-6">
-            <CardTitle className="text-white text-lg md:text-xl">Sign In</CardTitle>
+            <CardTitle className="text-white dark:text-[#f8f8f2] text-lg md:text-xl">Sign In</CardTitle>
           </CardHeader>
           <CardContent className="px-4 md:px-6">
             {error && (
-              <Alert variant="destructive" className="mb-4 bg-red-900/20 border-red-500/50">
+              <Alert variant="destructive" className="mb-4 bg-red-900/20 dark:bg-red-900/30 border-red-500/50 dark:border-red-400/50">
                 <AlertCircle className="h-4 w-4" />
-                <AlertDescription className="text-red-200">{error}</AlertDescription>
+                <AlertDescription className="text-red-200 dark:text-red-300">{error}</AlertDescription>
               </Alert>
             )}
             <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4">
               <div className="space-y-1 md:space-y-2">
-                <label className="text-xs md:text-sm font-medium text-white">Admin Email</label>
+                <label className="text-xs md:text-sm font-medium text-white dark:text-[#f8f8f2]">Admin Email</label>
                 <div className="relative">
-                  <User className="absolute left-3 top-3 h-4 w-4 text-purple-300" />
+                  <User className="absolute left-3 top-3 h-4 w-4 text-purple-300 dark:text-[#6272a4]" />
                   <Input
                     type="email"
                     placeholder="Enter admin email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="pl-10 h-10 md:h-11 bg-white/10 border-white/20 text-white placeholder:text-purple-200 text-sm md:text-base"
+                    className="pl-10 h-10 md:h-11 bg-white/10 dark:bg-[#44475a] border-white/20 dark:border-[#6272a4] text-white dark:text-[#f8f8f2] placeholder:text-purple-200 dark:placeholder:text-[#6272a4] text-sm md:text-base"
                     required
                   />
                 </div>
               </div>
 
               <div className="space-y-1 md:space-y-2">
-                <label className="text-xs md:text-sm font-medium text-white">Password</label>
+                <label className="text-xs md:text-sm font-medium text-white dark:text-[#f8f8f2]">Password</label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-3 h-4 w-4 text-purple-300" />
+                  <Lock className="absolute left-3 top-3 h-4 w-4 text-purple-300 dark:text-[#6272a4]" />
                   <Input
                     type={showPassword ? 'text' : 'password'}
                     placeholder="Enter admin password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="pl-10 pr-10 h-10 md:h-11 bg-white/10 border-white/20 text-white placeholder:text-purple-200 text-sm md:text-base"
+                    className="pl-10 pr-10 h-10 md:h-11 bg-white/10 dark:bg-[#44475a] border-white/20 dark:border-[#6272a4] text-white dark:text-[#f8f8f2] placeholder:text-purple-200 dark:placeholder:text-[#6272a4] text-sm md:text-base"
                     required
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-3 text-purple-300 hover:text-white"
+                    className="absolute right-3 top-3 text-purple-300 dark:text-[#6272a4] hover:text-white dark:hover:text-[#f8f8f2]"
                   >
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
@@ -109,7 +111,7 @@ export const AdminLoginPage: React.FC = () => {
 
               <Button
                 type="submit"
-                className="w-full h-10 md:h-11 bg-purple-600 hover:bg-purple-700 text-white disabled:opacity-50 text-sm md:text-base"
+                className="w-full h-10 md:h-11 bg-purple-600 dark:bg-[#bd93f9] hover:bg-purple-700 dark:hover:bg-[#bd93f9]/80 text-white dark:text-[#282a36] disabled:opacity-50 text-sm md:text-base"
                 disabled={loading}
               >
                 {loading ? (
@@ -124,9 +126,9 @@ export const AdminLoginPage: React.FC = () => {
             </form>
 
             <div className="mt-4 md:mt-6 text-center">
-              <p className="text-xs md:text-sm text-purple-200">
+              <p className="text-xs md:text-sm text-purple-200 dark:text-[#6272a4]">
                 Not an admin?{' '}
-                <Link to="/" className="text-purple-400 hover:text-purple-300 underline">
+                <Link to="/" className="text-purple-400 dark:text-[#bd93f9] hover:text-purple-300 dark:hover:text-[#bd93f9]/80 underline">
                   Staff/Student Login
                 </Link>
               </p>
@@ -136,7 +138,7 @@ export const AdminLoginPage: React.FC = () => {
 
         {/* Security Notice */}
         <div className="mt-4 md:mt-6 text-center">
-          <p className="text-xs text-purple-300">
+          <p className="text-xs text-purple-300 dark:text-[#6272a4]">
             This is a secure administrative portal. All access is logged and monitored.
           </p>
         </div>

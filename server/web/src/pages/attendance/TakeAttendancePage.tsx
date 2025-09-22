@@ -122,12 +122,12 @@ const TakeAttendancePage: React.FC = () => {
       {[1, 2, 3, 4].map((stepNum) => (
         <React.Fragment key={stepNum}>
           <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors ${
-            step >= stepNum ? 'bg-orange-500 text-white' : 'bg-gray-200 text-gray-600'
+            step >= stepNum ? 'bg-orange-500 dark:bg-orange-400 text-white dark:text-[#282a36]' : 'bg-gray-200 dark:bg-[#44475a] text-gray-600 dark:text-[#6272a4]'
           }`}>
             {step > stepNum ? <CheckCircle className="w-4 h-4" /> : stepNum}
           </div>
           {stepNum < 4 && (
-            <div className={`w-12 h-0.5 transition-colors ${step > stepNum ? 'bg-orange-500' : 'bg-gray-200'}`} />
+            <div className={`w-12 h-0.5 transition-colors ${step > stepNum ? 'bg-orange-500 dark:bg-orange-400' : 'bg-gray-200 dark:bg-[#44475a]'}`} />
           )}
         </React.Fragment>
       ))}
@@ -150,7 +150,7 @@ const TakeAttendancePage: React.FC = () => {
           {classes.map((classItem) => (
             <Card
               key={classItem.id}
-              className="cursor-pointer hover:shadow-sm transition-all duration-200 border-2 hover:border-orange-200 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-500/10"
+              className="cursor-pointer hover:shadow-sm transition-all duration-200 border-2 border-gray-200 dark:border-[#6272a4] hover:border-orange-200 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-500/10 bg-white dark:bg-[#282a36]"
               onClick={() => handleClassSelect(classItem)}
             >
               <CardContent className="p-6 pt-6">
@@ -345,7 +345,7 @@ const TakeAttendancePage: React.FC = () => {
 
       <div className="grid gap-3">
         <Card 
-          className="cursor-pointer hover:shadow-sm transition-all duration-200 border-2 hover:border-orange-200 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-500/10"
+          className="cursor-pointer hover:shadow-sm transition-all duration-200 border-2 border-gray-200 dark:border-[#6272a4] hover:border-orange-200 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-500/10 bg-white dark:bg-[#282a36]"
           onClick={async () => {
             await handleCreateSession();
             navigate('/attendance/qr-mode');
@@ -363,7 +363,7 @@ const TakeAttendancePage: React.FC = () => {
         </Card>
 
         <Card 
-          className="cursor-pointer hover:shadow-sm transition-all duration-200 border-2 hover:border-orange-200 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-500/10"
+          className="cursor-pointer hover:shadow-sm transition-all duration-200 border-2 border-gray-200 dark:border-[#6272a4] hover:border-orange-200 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-500/10 bg-white dark:bg-[#282a36]"
           onClick={async () => {
             await handleCreateSession();
             navigate('/attendance/manual-mode');
@@ -381,7 +381,7 @@ const TakeAttendancePage: React.FC = () => {
         </Card>
 
         <Card 
-          className="cursor-pointer hover:shadow-sm transition-all duration-200 border-2 hover:border-orange-200 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-500/10"
+          className="cursor-pointer hover:shadow-sm transition-all duration-200 border-2 border-gray-200 dark:border-[#6272a4] hover:border-orange-200 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-500/10 bg-white dark:bg-[#282a36]"
           onClick={async () => {
             await handleCreateSession();
             navigate('/attendance/hybrid-mode');
@@ -422,8 +422,8 @@ const TakeAttendancePage: React.FC = () => {
 
   const renderSuccess = () => (
     <div className="text-center space-y-4">
-      <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-        <CheckCircle className="w-8 h-8 text-green-600" />
+      <div className="w-16 h-16 bg-green-100 dark:bg-green-500/20 rounded-full flex items-center justify-center mx-auto">
+        <CheckCircle className="w-8 h-8 text-green-600 dark:text-green-400" />
       </div>
       <div>
         <h2 className="text-lg font-semibold text-gray-900 dark:text-[#f8f8f2] mb-1">Session Created!</h2>
@@ -456,7 +456,7 @@ const TakeAttendancePage: React.FC = () => {
         
         {step < 4 && renderStepIndicator()}
 
-        <Card>
+        <Card className="bg-white dark:bg-[#282a36] border-gray-200 dark:border-[#6272a4]">
           <CardContent className="p-6 pt-6">
             {loading && step !== 1 ? (
               <div className="text-center py-8">

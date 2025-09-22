@@ -162,7 +162,7 @@ export const StudentAttendancePage: React.FC = () => {
           <div className="space-y-4">
             {/* Statistics Cards */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-              <Card className="bg-gradient-to-br from-purple-500 to-purple-600 text-white">
+              <Card className="bg-gradient-to-br from-purple-500 to-purple-600 dark:from-purple-600 dark:to-purple-700 text-white border-gray-200 dark:border-[#6272a4]">
                 <CardContent className="p-4 sm:p-6">
                   <div className="flex items-center justify-between">
                     <div>
@@ -176,7 +176,7 @@ export const StudentAttendancePage: React.FC = () => {
                 </CardContent>
               </Card>
               
-              <Card className="bg-gradient-to-br from-teal-500 to-teal-600 text-white">
+              <Card className="bg-gradient-to-br from-teal-500 to-teal-600 dark:from-teal-600 dark:to-teal-700 text-white border-gray-200 dark:border-[#6272a4]">
                 <CardContent className="p-4 sm:p-6">
                   <div className="flex items-center justify-between">
                     <div>
@@ -190,7 +190,7 @@ export const StudentAttendancePage: React.FC = () => {
                 </CardContent>
               </Card>
               
-              <Card className="bg-gradient-to-br from-red-500 to-red-600 text-white">
+              <Card className="bg-gradient-to-br from-red-500 to-red-600 dark:from-red-600 dark:to-red-700 text-white border-gray-200 dark:border-[#6272a4]">
                 <CardContent className="p-4 sm:p-6">
                   <div className="flex items-center justify-between">
                     <div>
@@ -204,7 +204,7 @@ export const StudentAttendancePage: React.FC = () => {
                 </CardContent>
               </Card>
               
-              <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white">
+              <Card className="bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 text-white border-gray-200 dark:border-[#6272a4]">
                 <CardContent className="p-4 sm:p-6">
                   <div className="flex items-center justify-between">
                     <div>
@@ -219,44 +219,44 @@ export const StudentAttendancePage: React.FC = () => {
               </Card>
             </div>
 
-            <Card>
+            <Card className="bg-white dark:bg-[#282a36] border-gray-200 dark:border-[#6272a4]">
               <CardContent className="p-0">
                 <div className="overflow-x-auto">
                   <table className="w-full">
-                    <thead className="bg-gray-50">
+                    <thead className="bg-gray-50 dark:bg-[#44475a]">
                       <tr>
-                        <th className="px-2 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sr.</th>
-                        <th className="px-2 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subject</th>
-                        <th className="hidden sm:table-cell px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Slot Type</th>
-                        <th className="px-2 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Conducted</th>
-                        <th className="px-2 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Present</th>
-                        <th className="px-2 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Absent</th>
-                        <th className="px-2 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">%</th>
+                        <th className="px-2 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-[#f8f8f2] uppercase tracking-wider">Sr.</th>
+                        <th className="px-2 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-[#f8f8f2] uppercase tracking-wider">Subject</th>
+                        <th className="hidden sm:table-cell px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-[#f8f8f2] uppercase tracking-wider">Slot Type</th>
+                        <th className="px-2 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-[#f8f8f2] uppercase tracking-wider">Conducted</th>
+                        <th className="px-2 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-[#f8f8f2] uppercase tracking-wider">Present</th>
+                        <th className="px-2 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-[#f8f8f2] uppercase tracking-wider">Absent</th>
+                        <th className="px-2 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-[#f8f8f2] uppercase tracking-wider">%</th>
                       </tr>
                     </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
+                    <tbody className="bg-white dark:bg-[#282a36] divide-y divide-gray-200 dark:divide-[#6272a4]">
                       {subjectData.map((subject) => (
-                        <tr key={subject.sr} className="hover:bg-gray-50">
-                          <td className="px-2 sm:px-4 py-3 text-sm text-gray-900">{subject.sr}</td>
+                        <tr key={subject.sr} className="hover:bg-gray-50 dark:hover:bg-[#44475a]">
+                          <td className="px-2 sm:px-4 py-3 text-sm text-gray-900 dark:text-[#f8f8f2]">{subject.sr}</td>
                           <td className="px-2 sm:px-4 py-3">
-                            <div className="text-xs sm:text-sm font-medium text-gray-900">{subject.code}</div>
-                            <div className="text-xs text-gray-500 hidden sm:block">{subject.subject}</div>
+                            <div className="text-xs sm:text-sm font-medium text-gray-900 dark:text-[#f8f8f2]">{subject.code}</div>
+                            <div className="text-xs text-gray-500 dark:text-[#6272a4] hidden sm:block">{subject.subject}</div>
                           </td>
-                          <td className="hidden sm:table-cell px-4 py-3 text-sm text-gray-900">{subject.slotType}</td>
-                          <td className="px-2 sm:px-4 py-3 text-sm text-gray-900">{subject.conducted}</td>
-                          <td className="px-2 sm:px-4 py-3 text-sm text-gray-900">{subject.present}</td>
-                          <td className="px-2 sm:px-4 py-3 text-sm text-gray-900">{subject.absent}</td>
+                          <td className="hidden sm:table-cell px-4 py-3 text-sm text-gray-900 dark:text-[#f8f8f2]">{subject.slotType}</td>
+                          <td className="px-2 sm:px-4 py-3 text-sm text-gray-900 dark:text-[#f8f8f2]">{subject.conducted}</td>
+                          <td className="px-2 sm:px-4 py-3 text-sm text-gray-900 dark:text-[#f8f8f2]">{subject.present}</td>
+                          <td className="px-2 sm:px-4 py-3 text-sm text-gray-900 dark:text-[#f8f8f2]">{subject.absent}</td>
                           <td className={`px-2 sm:px-4 py-3 text-sm font-medium ${getPercentageColor(subject.percentage)}`}>
                             {subject.percentage}%
                           </td>
                         </tr>
                       ))}
-                      <tr className="bg-gray-50 font-medium">
-                        <td className="px-2 sm:px-4 py-3 text-sm text-gray-900" colSpan={3}>Total</td>
-                        <td className="px-2 sm:px-4 py-3 text-sm text-gray-900">{totalSlots}</td>
-                        <td className="px-2 sm:px-4 py-3 text-sm text-gray-900">{totalPresent}</td>
-                        <td className="px-2 sm:px-4 py-3 text-sm text-gray-900">{totalAbsent}</td>
-                        <td className="px-2 sm:px-4 py-3 text-sm font-bold text-blue-600">{overallPercentage}%</td>
+                      <tr className="bg-gray-50 dark:bg-[#44475a] font-medium">
+                        <td className="px-2 sm:px-4 py-3 text-sm text-gray-900 dark:text-[#f8f8f2]" colSpan={3}>Total</td>
+                        <td className="px-2 sm:px-4 py-3 text-sm text-gray-900 dark:text-[#f8f8f2]">{totalSlots}</td>
+                        <td className="px-2 sm:px-4 py-3 text-sm text-gray-900 dark:text-[#f8f8f2]">{totalPresent}</td>
+                        <td className="px-2 sm:px-4 py-3 text-sm text-gray-900 dark:text-[#f8f8f2]">{totalAbsent}</td>
+                        <td className="px-2 sm:px-4 py-3 text-sm font-bold text-blue-600 dark:text-blue-400">{overallPercentage}%</td>
                       </tr>
                     </tbody>
                   </table>
@@ -460,10 +460,10 @@ export const StudentAttendancePage: React.FC = () => {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Student Attendance</h1>
-            <p className="text-sm text-gray-600">Track your attendance performance</p>
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-[#f8f8f2]">Student Attendance</h1>
+            <p className="text-sm text-gray-600 dark:text-[#6272a4]">Track your attendance performance</p>
           </div>
-          <Button onClick={generatePDF} className="bg-blue-600 hover:bg-blue-700 text-white gap-2 w-fit">
+          <Button onClick={generatePDF} className="bg-blue-600 dark:bg-[#bd93f9] hover:bg-blue-700 dark:hover:bg-[#bd93f9]/80 text-white dark:text-[#282a36] gap-2 w-fit">
             <Download className="h-4 w-4" />
             <span className="hidden sm:inline">Download Report</span>
             <span className="sm:hidden">Download</span>
@@ -483,8 +483,8 @@ export const StudentAttendancePage: React.FC = () => {
                 onClick={() => setActiveTab(tab.id)}
                 className={`py-2 px-2 sm:px-1 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap ${
                   activeTab === tab.id
-                    ? 'border-red-500 text-red-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? 'border-red-500 dark:border-orange-400 text-red-600 dark:text-orange-400'
+                    : 'border-transparent text-gray-500 dark:text-[#6272a4] hover:text-gray-700 dark:hover:text-[#f8f8f2] hover:border-gray-300 dark:hover:border-[#6272a4]'
                 }`}
               >
                 <span className="hidden sm:inline">{tab.label}</span>
