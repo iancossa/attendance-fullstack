@@ -99,7 +99,7 @@ export const StudentSidebar: React.FC<StudentSidebarProps> = ({ isMobileOpen = f
           {/* Sidebar Header */}
           <header className="bg-white dark:bg-[#282a36] border-b border-orange-100 dark:border-[#6272a4]">
             <div className="px-4">
-              <div className="flex items-center h-14">
+              <div className="flex items-center h-12">
                 <img src={logo} alt="Logo" className="h-8 w-8" />
                 <h1 className="ml-3 text-sm font-semibold text-gray-900 dark:text-[#f8f8f2]">Attendance Hunters</h1>
               </div>

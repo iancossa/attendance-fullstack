@@ -75,7 +75,7 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
   return (
     <header className="bg-white dark:bg-[#282a36] border-b border-gray-200 dark:border-[#6272a4] sticky top-0 z-50">
       <div className="px-4">
-        <div className="flex justify-between items-center h-14">
+        <div className="flex justify-between items-center h-12">
           {/* Breadcrumb Navigation */}
           <div className="flex items-center gap-3">
             <Button 
@@ -90,12 +90,12 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
           </div>
           
           {/* Search Bar */}
-          <div className="hidden md:flex flex-1 max-w-md mx-4">
-            <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-[#6272a4]" />
+          <div className="hidden md:flex flex-1 max-w-md mx-4 h-full">
+            <div className="relative w-full flex items-center">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-[#6272a4] z-10" />
               <Input 
                 placeholder="Search students, classes..."
-                className="pl-10 bg-orange-50 dark:bg-[#44475a] border-orange-200 dark:border-[#6272a4] text-sm h-8 text-gray-900 dark:text-[#f8f8f2] placeholder:text-gray-500 dark:placeholder:text-[#6272a4] focus:border-orange-300 dark:focus:border-[#bd93f9]"
+                className="pl-10 bg-orange-50 dark:bg-[#44475a] border-orange-200 dark:border-[#6272a4] text-sm h-full w-full rounded-none border-0 text-gray-900 dark:text-[#f8f8f2] placeholder:text-gray-500 dark:placeholder:text-[#6272a4] focus:border-orange-300 dark:focus:border-[#bd93f9] focus:ring-0"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -320,7 +320,7 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
               <Input 
                 placeholder="Search students, classes..."
-                className="pl-10 bg-orange-50 dark:bg-[#44475a] border-orange-200 dark:border-[#6272a4] text-sm h-8 text-gray-900 dark:text-[#f8f8f2] placeholder:text-gray-500 dark:placeholder:text-[#6272a4]"
+                className="pl-10 bg-orange-50 dark:bg-[#44475a] border-orange-200 dark:border-[#6272a4] text-sm h-10 rounded-none text-gray-900 dark:text-[#f8f8f2] placeholder:text-gray-500 dark:placeholder:text-[#6272a4]"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 autoFocus
