@@ -75,8 +75,8 @@ export const ClassesPage: React.FC = () => {
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
           <div>
-            <h1 className="text-lg font-semibold text-gray-900">Class Management</h1>
-            <p className="text-sm text-gray-600">Manage classes, faculty assignments, and student enrollment</p>
+            <h1 className="text-lg font-semibold text-gray-900 dark:text-[#f8f8f2]">Class Management</h1>
+            <p className="text-sm text-gray-600 dark:text-[#6272a4]">Manage classes, faculty assignments, and student enrollment</p>
           </div>
           <div className="flex gap-2">
             <Button 
@@ -99,61 +99,61 @@ export const ClassesPage: React.FC = () => {
 
         {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="border-l-4 border-l-orange-500">
+          <Card className="border-l-4 border-l-primary bg-orange-50 dark:bg-[#44475a]">
             <CardContent className="p-4 pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Total Classes</p>
-                  <div className="text-2xl font-semibold text-gray-900 mt-2">12</div>
-                  <p className="text-xs text-gray-500 mt-1">across all departments</p>
+                  <p className="text-sm font-medium text-gray-600 dark:text-[#f8f8f2]">Total Classes</p>
+                  <div className="text-2xl font-semibold text-gray-900 dark:text-[#f8f8f2] mt-2">12</div>
+                  <p className="text-xs text-gray-500 dark:text-[#e5e7eb] mt-1">across all departments</p>
                 </div>
-                <div className="p-2 bg-orange-50 rounded-lg">
-                  <GraduationCap className="h-5 w-5 text-orange-600" />
+                <div className="p-2 bg-orange-100 dark:bg-orange-500/20 rounded-lg">
+                  <GraduationCap className="h-5 w-5 text-orange-600 dark:text-orange-400" />
                 </div>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="border-l-4 border-l-orange-500">
+          <Card className="border-l-4 border-l-primary bg-orange-50 dark:bg-[#44475a]">
             <CardContent className="p-4 pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Total Students</p>
-                  <div className="text-2xl font-semibold text-gray-900 mt-2">402</div>
-                  <p className="text-xs text-gray-500 mt-1">enrolled students</p>
+                  <p className="text-sm font-medium text-gray-600 dark:text-[#f8f8f2]">Total Students</p>
+                  <div className="text-2xl font-semibold text-gray-900 dark:text-[#f8f8f2] mt-2">402</div>
+                  <p className="text-xs text-gray-500 dark:text-[#e5e7eb] mt-1">enrolled students</p>
                 </div>
-                <div className="p-2 bg-blue-50 rounded-lg">
-                  <Users className="h-5 w-5 text-blue-600" />
+                <div className="p-2 bg-orange-100 dark:bg-orange-500/20 rounded-lg">
+                  <Users className="h-5 w-5 text-orange-600 dark:text-orange-400" />
                 </div>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="border-l-4 border-l-orange-500">
+          <Card className="border-l-4 border-l-primary bg-orange-50 dark:bg-[#44475a]">
             <CardContent className="p-4 pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Faculty Members</p>
-                  <div className="text-2xl font-semibold text-gray-900 mt-2">8</div>
-                  <p className="text-xs text-gray-500 mt-1">active instructors</p>
+                  <p className="text-sm font-medium text-gray-600 dark:text-[#f8f8f2]">Faculty Members</p>
+                  <div className="text-2xl font-semibold text-gray-900 dark:text-[#f8f8f2] mt-2">8</div>
+                  <p className="text-xs text-gray-500 dark:text-[#e5e7eb] mt-1">active instructors</p>
                 </div>
-                <div className="p-2 bg-purple-50 rounded-lg">
-                  <UserPlus className="h-5 w-5 text-purple-600" />
+                <div className="p-2 bg-orange-100 dark:bg-orange-500/20 rounded-lg">
+                  <UserPlus className="h-5 w-5 text-orange-600 dark:text-orange-400" />
                 </div>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="border-l-4 border-l-orange-500">
+          <Card className="border-l-4 border-l-primary bg-orange-50 dark:bg-[#44475a]">
             <CardContent className="p-4 pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Active Sessions</p>
-                  <div className="text-2xl font-semibold text-gray-900 mt-2">3</div>
-                  <p className="text-xs text-gray-500 mt-1">currently in progress</p>
+                  <p className="text-sm font-medium text-gray-600 dark:text-[#f8f8f2]">Active Sessions</p>
+                  <div className="text-2xl font-semibold text-gray-900 dark:text-[#f8f8f2] mt-2">3</div>
+                  <p className="text-xs text-gray-500 dark:text-[#e5e7eb] mt-1">currently in progress</p>
                 </div>
-                <div className="p-2 bg-green-50 rounded-lg">
-                  <Clock className="h-5 w-5 text-green-600" />
+                <div className="p-2 bg-orange-100 dark:bg-orange-500/20 rounded-lg">
+                  <Clock className="h-5 w-5 text-orange-600 dark:text-orange-400" />
                 </div>
               </div>
             </CardContent>
@@ -161,13 +161,13 @@ export const ClassesPage: React.FC = () => {
         </div>
 
         {/* Search */}
-        <Card>
+        <Card className="bg-white dark:bg-[#282a36] border-gray-200 dark:border-[#6272a4]">
           <CardContent className="p-4 pt-6">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-[#6272a4]" />
               <Input 
                 placeholder="Search classes, codes, or faculty..." 
-                className="pl-10"
+                className="pl-10 bg-white dark:bg-[#44475a] border-gray-300 dark:border-[#6272a4] text-gray-900 dark:text-[#f8f8f2] placeholder:text-gray-500 dark:placeholder:text-[#6272a4]"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -176,102 +176,106 @@ export const ClassesPage: React.FC = () => {
         </Card>
 
         {/* Classes Table */}
-        <Card>
+        <Card className="bg-white dark:bg-[#282a36] border-gray-200 dark:border-[#6272a4]">
           <CardHeader>
             <div className="flex items-center justify-between">
-              <CardTitle className="flex items-center gap-2">
-                <div className="p-2 bg-orange-50 rounded-lg">
-                  <GraduationCap className="h-4 w-4 text-orange-600" />
+              <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-[#f8f8f2]">
+                <div className="p-2 bg-orange-50 dark:bg-orange-500/10 rounded-lg">
+                  <GraduationCap className="h-4 w-4 text-orange-600 dark:text-orange-400" />
                 </div>
                 All Classes ({filteredClasses.length})
               </CardTitle>
-              <Badge variant="outline" className="text-gray-600">
+              <Badge variant="outline" className="text-gray-600 dark:text-[#6272a4] border-gray-300 dark:border-[#6272a4]">
                 Academic Year 2024-25
               </Badge>
             </div>
           </CardHeader>
           <CardContent>
-            <div className="rounded-lg border border-gray-200 overflow-hidden">
-              <Table>
-                <TableHeader>
-                  <TableRow className="bg-gray-50">
-                    <TableHead>Class Details</TableHead>
-                    <TableHead>Faculty</TableHead>
-                    <TableHead>Enrollment</TableHead>
-                    <TableHead>Schedule</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
+            <div className="rounded-lg border border-gray-200 dark:border-[#6272a4] overflow-hidden">
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="bg-gray-50 dark:bg-[#44475a]">
+                      <TableHead className="text-gray-900 dark:text-[#f8f8f2] min-w-[200px]">Class Details</TableHead>
+                      <TableHead className="text-gray-900 dark:text-[#f8f8f2] hidden md:table-cell">Faculty</TableHead>
+                      <TableHead className="text-gray-900 dark:text-[#f8f8f2] hidden sm:table-cell">Enrollment</TableHead>
+                      <TableHead className="text-gray-900 dark:text-[#f8f8f2] hidden lg:table-cell">Schedule</TableHead>
+                      <TableHead className="text-gray-900 dark:text-[#f8f8f2]">Status</TableHead>
+                      <TableHead className="text-gray-900 dark:text-[#f8f8f2] w-16">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
                 <TableBody>
                   {filteredClasses.map((classItem) => (
-                    <TableRow key={classItem.id} className="hover:bg-gray-50">
+                    <TableRow key={classItem.id} className="hover:bg-gray-50 dark:hover:bg-[#44475a] bg-white dark:bg-[#282a36]">
                       <TableCell>
                         <div>
-                          <div className="font-medium text-gray-900">{classItem.name}</div>
-                          <div className="flex items-center gap-2 mt-1">
-                            <Badge variant="outline" className="text-xs">
+                          <div className="font-medium text-gray-900 dark:text-[#f8f8f2]">{classItem.name}</div>
+                          <div className="flex flex-wrap items-center gap-2 mt-1">
+                            <Badge variant="outline" className="text-xs border-gray-300 dark:border-[#6272a4] text-gray-600 dark:text-[#6272a4]">
                               {classItem.code}
                             </Badge>
-                            <span className="text-xs text-gray-500">{classItem.room}</span>
+                            <span className="text-xs text-gray-500 dark:text-[#6272a4]">{classItem.room}</span>
+                            <div className="md:hidden text-xs text-gray-500 dark:text-[#6272a4]">
+                              {classItem.faculty} • {classItem.schedule}
+                            </div>
                           </div>
                         </div>
                       </TableCell>
-                      <TableCell className="text-gray-600">{classItem.faculty}</TableCell>
-                      <TableCell>
+                      <TableCell className="text-gray-600 dark:text-[#6272a4] hidden md:table-cell">{classItem.faculty}</TableCell>
+                      <TableCell className="hidden sm:table-cell">
                         <div className="flex items-center gap-2">
-                          <span className="font-medium text-gray-900">{classItem.students}/{classItem.enrolled}</span>
-                          <div className="w-16 bg-gray-200 rounded-full h-2">
+                          <span className="font-medium text-gray-900 dark:text-[#f8f8f2]">{classItem.students}/{classItem.enrolled}</span>
+                          <div className="w-16 bg-gray-200 dark:bg-[#44475a] rounded-full h-2">
                             <div 
-                              className="bg-orange-500 h-2 rounded-full" 
+                              className="bg-orange-500 dark:bg-orange-400 h-2 rounded-full" 
                               style={{ width: `${(classItem.students / (classItem.enrolled || 1)) * 100}%` }}
                             ></div>
                           </div>
                         </div>
                       </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-1 text-sm text-gray-600">
+                      <TableCell className="hidden lg:table-cell">
+                        <div className="flex items-center gap-1 text-sm text-gray-600 dark:text-[#6272a4]">
                           <Calendar className="h-3 w-3" />
                           {classItem.schedule}
                         </div>
                       </TableCell>
                       <TableCell>
-                        <Badge className="bg-green-100 text-green-700 border-green-200">
+                        <Badge className="bg-green-100 dark:bg-green-500/10 text-green-700 dark:text-green-400 border-green-200 dark:border-green-500/20">
                           {classItem.status}
                         </Badge>
                       </TableCell>
                       <TableCell>
                         <div className="relative">
                           <button 
-                            className="h-8 w-8 p-0 hover:bg-gray-100 transition-colors rounded-md flex items-center justify-center"
+                            className="h-8 w-8 p-0 hover:bg-gray-100 dark:hover:bg-[#44475a] transition-colors rounded-md flex items-center justify-center"
                             onClick={(e) => {
                               e.stopPropagation();
                               setOpenDropdown(openDropdown === classItem.id ? null : classItem.id);
                             }}
                           >
-                            <MoreVertical className="h-4 w-4" />
+                            <MoreVertical className="h-4 w-4 text-gray-600 dark:text-[#6272a4]" />
                           </button>
                           {openDropdown === classItem.id && (
                             <>
                               <div className="fixed inset-0 z-40" onClick={() => setOpenDropdown(null)} />
-                              <div className="absolute right-0 top-8 mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-1">
+                              <div className="absolute right-0 top-8 mt-1 w-48 bg-white dark:bg-[#282a36] border border-gray-200 dark:border-[#6272a4] rounded-lg shadow-lg z-50 py-1">
                                 <button 
                                   onClick={() => handleModalOpen(classItem, 'editClass')} 
-                                  className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left"
+                                  className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
                                 >
                                   <Edit className="h-4 w-4" />
                                   Edit Class
                                 </button>
                                 <button 
                                   onClick={() => handleModalOpen(classItem, 'manageStudents')} 
-                                  className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left"
+                                  className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
                                 >
                                   <Users className="h-4 w-4" />
                                   Manage Students
                                 </button>
                                 <button 
                                   onClick={() => handleModalOpen(classItem, 'viewReports')} 
-                                  className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 hover:text-orange-600 transition-colors text-left"
+                                  className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
                                 >
                                   <BarChart3 className="h-4 w-4" />
                                   View Reports
@@ -285,10 +289,11 @@ export const ClassesPage: React.FC = () => {
                   ))}
                 </TableBody>
               </Table>
+              </div>
             </div>
             
             {filteredClasses.length === 0 && (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-gray-500 dark:text-[#6272a4]">
                 <GraduationCap className="h-12 w-12 mx-auto mb-4 opacity-50" />
                 <p>No classes found</p>
                 <p className="text-sm">Try adjusting your search criteria</p>
