@@ -17,7 +17,8 @@ import {
   Crown,
   Flame,
   Star,
-  Users
+  Users,
+  Download
 } from 'lucide-react';
 import { exportToExcel } from '../../utils/exportUtils';
 import { useAppStore } from '../../store';
@@ -109,19 +110,18 @@ export const LeaderboardPage: React.FC = () => {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-lg font-semibold text-gray-900">Leaderboard</h1>
-            <p className="text-sm text-gray-600 mt-1">Top performing students and achievements</p>
+            <h1 className="text-lg font-semibold text-gray-900 dark:text-[#f8f8f2]">Leaderboard</h1>
+            <p className="text-sm text-gray-600 dark:text-[#6272a4] mt-1">Top performing students and achievements</p>
           </div>
           <div className="flex items-center gap-2">
             <Button 
-              variant="outline" 
               className="gap-2 flex-1 sm:flex-none"
               onClick={() => {
                 exportToExcel(filteredStudents, 'leaderboard-rankings');
                 addNotification({ message: 'Leaderboard exported successfully', type: 'success' });
               }}
             >
-              <Filter className="h-4 w-4" />
+              <Download className="h-4 w-4" />
               <span className="hidden sm:inline">Export</span>
             </Button>
           </div>
@@ -129,61 +129,61 @@ export const LeaderboardPage: React.FC = () => {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="border-l-4 border-l-orange-500">
+          <Card className="border-l-4 border-l-orange-500 bg-orange-50 dark:bg-[#44475a]">
             <CardContent className="p-4 pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Total Participants</p>
-                  <div className="text-2xl font-semibold text-gray-900 mt-2">{MOCK_STUDENTS.filter(s => s.status === 'Active').length}</div>
-                  <p className="text-xs text-gray-500 mt-1">active students</p>
+                  <p className="text-sm font-medium text-gray-600 dark:text-[#f8f8f2]">Total Participants</p>
+                  <div className="text-2xl font-semibold text-gray-900 dark:text-[#f8f8f2] mt-2">{MOCK_STUDENTS.filter(s => s.status === 'Active').length}</div>
+                  <p className="text-xs text-gray-500 dark:text-[#e5e7eb] mt-1">active students</p>
                 </div>
-                <div className="p-2 bg-orange-50 rounded-lg">
-                  <Users className="h-5 w-5 text-orange-600" />
+                <div className="p-2 bg-orange-100 dark:bg-orange-500/20 rounded-lg">
+                  <Users className="h-5 w-5 text-orange-600 dark:text-orange-400" />
                 </div>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="border-l-4 border-l-orange-500 bg-yellow-200">
+          <Card className="border-l-4 border-l-yellow-500 bg-yellow-50 dark:bg-yellow-500/10">
             <CardContent className="p-4 pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Top Performer</p>
-                  <div className="text-2xl font-semibold text-gray-900 mt-2">{topStudents[0]?.attendance}%</div>
-                  <p className="text-xs text-gray-500 mt-1">highest score</p>
+                  <p className="text-sm font-medium text-gray-600 dark:text-[#f8f8f2]">Top Performer</p>
+                  <div className="text-2xl font-semibold text-gray-900 dark:text-[#f8f8f2] mt-2">{topStudents[0]?.attendance}%</div>
+                  <p className="text-xs text-gray-500 dark:text-[#e5e7eb] mt-1">highest score</p>
                 </div>
-                <div className="p-2 bg-yellow-100 rounded-lg">
-                  <Crown className="h-5 w-5 text-yellow-600" />
+                <div className="p-2 bg-yellow-100 dark:bg-yellow-500/20 rounded-lg">
+                  <Crown className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
                 </div>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="border-l-4 border-l-orange-500 bg-green-200">
+          <Card className="border-l-4 border-l-green-500 bg-green-50 dark:bg-green-500/10">
             <CardContent className="p-4 pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Average Score</p>
-                  <div className="text-2xl font-semibold text-gray-900 mt-2">{Math.round(MOCK_STUDENTS.reduce((acc, s) => acc + (s.attendance || 0), 0) / MOCK_STUDENTS.length)}%</div>
-                  <p className="text-xs text-gray-500 mt-1">class average</p>
+                  <p className="text-sm font-medium text-gray-600 dark:text-[#f8f8f2]">Average Score</p>
+                  <div className="text-2xl font-semibold text-gray-900 dark:text-[#f8f8f2] mt-2">{Math.round(MOCK_STUDENTS.reduce((acc, s) => acc + (s.attendance || 0), 0) / MOCK_STUDENTS.length)}%</div>
+                  <p className="text-xs text-gray-500 dark:text-[#e5e7eb] mt-1">class average</p>
                 </div>
-                <div className="p-2 bg-green-100 rounded-lg">
-                  <TrendingUp className="h-5 w-5 text-green-600" />
+                <div className="p-2 bg-green-100 dark:bg-green-500/20 rounded-lg">
+                  <TrendingUp className="h-5 w-5 text-green-600 dark:text-green-400" />
                 </div>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="border-l-4 border-l-orange-500 bg-blue-200">
+          <Card className="border-l-4 border-l-blue-500 bg-blue-50 dark:bg-blue-500/10">
             <CardContent className="p-4 pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Achievements</p>
-                  <div className="text-2xl font-semibold text-gray-900 mt-2">{topStudents.reduce((acc, s) => acc + s.badges, 0)}</div>
-                  <p className="text-xs text-gray-500 mt-1">total badges</p>
+                  <p className="text-sm font-medium text-gray-600 dark:text-[#f8f8f2]">Achievements</p>
+                  <div className="text-2xl font-semibold text-gray-900 dark:text-[#f8f8f2] mt-2">{topStudents.reduce((acc, s) => acc + s.badges, 0)}</div>
+                  <p className="text-xs text-gray-500 dark:text-[#e5e7eb] mt-1">total badges</p>
                 </div>
-                <div className="p-2 bg-blue-100 rounded-lg">
-                  <Award className="h-5 w-5 text-blue-600" />
+                <div className="p-2 bg-blue-100 dark:bg-blue-500/20 rounded-lg">
+                  <Award className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                 </div>
               </div>
             </CardContent>
@@ -191,27 +191,27 @@ export const LeaderboardPage: React.FC = () => {
         </div>
 
         {/* Search and Filters */}
-        <Card>
+        <Card className="bg-white dark:bg-[#282a36] border-gray-200 dark:border-[#6272a4]">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-sm font-medium text-gray-900">
+            <CardTitle className="flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-[#f8f8f2]">
               <Search className="h-4 w-4" />
               Search & Filters
             </CardTitle>
           </CardHeader>
           <CardContent className="p-4 pt-6 space-y-4">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-[#6272a4]" />
               <input 
                 type="text"
                 placeholder="Search students by name, ID, or class..."
-                className="w-full h-9 pl-10 pr-3 border border-gray-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                className="w-full h-9 pl-10 pr-3 border border-gray-200 dark:border-[#6272a4] bg-white dark:bg-[#44475a] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-900 dark:text-[#f8f8f2] placeholder:text-gray-500 dark:placeholder:text-[#6272a4]"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <select 
-                className="h-9 px-3 py-2 border border-gray-200 bg-white rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                className="h-9 px-3 py-2 border border-gray-200 dark:border-[#6272a4] bg-white dark:bg-[#44475a] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-900 dark:text-[#f8f8f2]"
                 value={selectedClass}
                 onChange={(e) => setSelectedClass(e.target.value)}
               >
@@ -221,7 +221,7 @@ export const LeaderboardPage: React.FC = () => {
                 ))}
               </select>
               <select 
-                className="h-9 px-3 py-2 border border-gray-200 bg-white rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                className="h-9 px-3 py-2 border border-gray-200 dark:border-[#6272a4] bg-white dark:bg-[#44475a] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-900 dark:text-[#f8f8f2]"
                 value={selectedPeriod}
                 onChange={(e) => setSelectedPeriod(e.target.value)}
               >
@@ -235,13 +235,13 @@ export const LeaderboardPage: React.FC = () => {
         </Card>
 
         {/* Top 3 Podium */}
-        <Card className="mb-8 bg-gradient-to-br from-yellow-50 to-orange-50 border-yellow-200">
+        <Card className="mb-8 bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-950/30 dark:to-orange-950/30 border-yellow-200 dark:border-yellow-800">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-sm font-medium text-gray-900">
+            <CardTitle className="flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-[#f8f8f2]">
               <Trophy className="h-4 w-4" />
               Top Performers
             </CardTitle>
-            <p className="text-sm text-gray-600">Celebrating our attendance champions</p>
+            <p className="text-sm text-gray-600 dark:text-[#6272a4]">Celebrating our attendance champions</p>
           </CardHeader>
           <CardContent className="pt-2">
             <div className="flex items-end justify-center gap-8 mb-8">
@@ -256,8 +256,8 @@ export const LeaderboardPage: React.FC = () => {
                     </Avatar>
                     <Medal className="h-8 w-8 mx-auto text-gray-600" />
                   </div>
-                  <h3 className="font-bold text-lg">{topStudents[1].name}</h3>
-                  <p className="text-base text-muted-foreground font-semibold">{topStudents[1].attendance}%</p>
+                  <h3 className="font-bold text-lg text-gray-900 dark:text-[#f8f8f2]">{topStudents[1].name}</h3>
+                  <p className="text-base text-gray-600 dark:text-[#6272a4] font-semibold">{topStudents[1].attendance}%</p>
                   <Badge variant="secondary" className="text-sm mt-2 px-3 py-1">Silver Medal</Badge>
                 </div>
               )}
@@ -278,8 +278,8 @@ export const LeaderboardPage: React.FC = () => {
                     </Avatar>
                     <Crown className="h-10 w-10 mx-auto text-yellow-700" />
                   </div>
-                  <h3 className="font-bold text-xl">{topStudents[0].name}</h3>
-                  <p className="text-lg text-muted-foreground font-bold">{topStudents[0].attendance}%</p>
+                  <h3 className="font-bold text-xl text-gray-900 dark:text-[#f8f8f2]">{topStudents[0].name}</h3>
+                  <p className="text-lg text-gray-600 dark:text-[#6272a4] font-bold">{topStudents[0].attendance}%</p>
                   <Badge className="bg-yellow-500 text-yellow-900 mt-2 px-4 py-1 text-sm font-bold">🏆 Champion</Badge>
                 </div>
               )}
@@ -295,8 +295,8 @@ export const LeaderboardPage: React.FC = () => {
                     </Avatar>
                     <Award className="h-7 w-7 mx-auto text-amber-700" />
                   </div>
-                  <h3 className="font-bold text-base">{topStudents[2].name}</h3>
-                  <p className="text-sm text-muted-foreground font-semibold">{topStudents[2].attendance}%</p>
+                  <h3 className="font-bold text-base text-gray-900 dark:text-[#f8f8f2]">{topStudents[2].name}</h3>
+                  <p className="text-sm text-gray-600 dark:text-[#6272a4] font-semibold">{topStudents[2].attendance}%</p>
                   <Badge variant="outline" className="text-sm mt-2 border-amber-500 text-amber-600 px-3 py-1">Bronze Medal</Badge>
                 </div>
               )}
@@ -308,11 +308,11 @@ export const LeaderboardPage: React.FC = () => {
                 <div key={student.id} className="text-center">
                   <div className="flex items-center justify-center gap-2 mb-1">
                     <Flame className="h-4 w-4 text-orange-500" />
-                    <span className="font-semibold">{student.streak} days</span>
+                    <span className="font-semibold text-gray-900 dark:text-[#f8f8f2]">{student.streak} days</span>
                   </div>
                   <div className="flex items-center justify-center gap-2">
                     <Star className="h-4 w-4 text-yellow-500" />
-                    <span className="font-semibold">{student.points.toLocaleString()} pts</span>
+                    <span className="font-semibold text-gray-900 dark:text-[#f8f8f2]">{student.points.toLocaleString()} pts</span>
                   </div>
                 </div>
               ))}
@@ -323,28 +323,28 @@ export const LeaderboardPage: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Rankings Table */}
           <div className="lg:col-span-2">
-            <Card>
+            <Card className="bg-white dark:bg-[#282a36] border-gray-200 dark:border-[#6272a4]">
               <CardHeader>
-                <CardTitle className="flex items-center justify-between text-sm font-medium text-gray-900">
+                <CardTitle className="flex items-center justify-between text-sm font-medium text-gray-900 dark:text-[#f8f8f2]">
                   <span>Full Rankings</span>
-                  <Badge variant="outline">{filteredStudents.length} students</Badge>
+                  <Badge variant="outline" className="border-gray-300 dark:border-[#6272a4] text-gray-600 dark:text-[#6272a4]">{filteredStudents.length} students</Badge>
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-4 pt-6">
-                <div className="rounded-lg border border-gray-200 overflow-hidden">
+                <div className="rounded-lg border border-gray-200 dark:border-[#6272a4] overflow-hidden">
                   <Table>
                     <TableHeader>
-                      <TableRow className="bg-gray-50">
-                        <TableHead className="h-8 px-3 text-xs font-medium text-gray-600 w-16">Rank</TableHead>
-                        <TableHead className="h-8 px-3 text-xs font-medium text-gray-600">Student</TableHead>
-                        <TableHead className="h-8 px-3 text-xs font-medium text-gray-600 text-center">Attendance</TableHead>
-                        <TableHead className="h-8 px-3 text-xs font-medium text-gray-600 text-center">Streak</TableHead>
-                        <TableHead className="h-8 px-3 text-xs font-medium text-gray-600 text-center">Points</TableHead>
+                      <TableRow className="bg-gray-50 dark:bg-[#44475a]">
+                        <TableHead className="h-8 px-3 text-xs font-medium text-gray-600 dark:text-[#f8f8f2] w-16">Rank</TableHead>
+                        <TableHead className="h-8 px-3 text-xs font-medium text-gray-600 dark:text-[#f8f8f2]">Student</TableHead>
+                        <TableHead className="h-8 px-3 text-xs font-medium text-gray-600 dark:text-[#f8f8f2] text-center">Attendance</TableHead>
+                        <TableHead className="h-8 px-3 text-xs font-medium text-gray-600 dark:text-[#f8f8f2] text-center">Streak</TableHead>
+                        <TableHead className="h-8 px-3 text-xs font-medium text-gray-600 dark:text-[#f8f8f2] text-center">Points</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {filteredStudents.map((student) => (
-                        <TableRow key={student.id} className="hover:bg-gray-50 transition-colors">
+                        <TableRow key={student.id} className="hover:bg-gray-50 dark:hover:bg-[#44475a] transition-colors bg-white dark:bg-[#282a36]">
                           <TableCell className="px-3 py-2 font-medium">
                             <div className="flex items-center justify-center">
                               {getRankIcon(student.rank)}
@@ -353,13 +353,13 @@ export const LeaderboardPage: React.FC = () => {
                           <TableCell className="px-3 py-2">
                             <div className="flex items-center gap-3">
                               <Avatar className="h-8 w-8">
-                                <AvatarFallback className="text-xs">
+                                <AvatarFallback className="text-xs bg-gray-100 dark:bg-[#44475a] text-gray-700 dark:text-[#f8f8f2]">
                                   {student.name.split(' ').map(n => n[0]).join('')}
                                 </AvatarFallback>
                               </Avatar>
                               <div>
-                                <p className="font-medium text-sm text-gray-900">{student.name}</p>
-                                <p className="text-xs text-gray-500">{student.studentId} • {student.class}</p>
+                                <p className="font-medium text-sm text-gray-900 dark:text-[#f8f8f2]">{student.name}</p>
+                                <p className="text-xs text-gray-500 dark:text-[#6272a4]">{student.studentId} • {student.class}</p>
                               </div>
                             </div>
                           </TableCell>
@@ -374,13 +374,13 @@ export const LeaderboardPage: React.FC = () => {
                           <TableCell className="px-3 py-2 text-center">
                             <div className="flex items-center justify-center gap-1">
                               <Flame className="h-3 w-3 text-orange-500" />
-                              <span className="font-medium text-gray-900">{student.streak}</span>
+                              <span className="font-medium text-gray-900 dark:text-[#f8f8f2]">{student.streak}</span>
                             </div>
                           </TableCell>
                           <TableCell className="px-3 py-2 text-center">
                             <div className="flex items-center justify-center gap-1">
                               <Star className="h-3 w-3 text-yellow-500" />
-                              <span className="font-medium text-gray-900">{student.points.toLocaleString()}</span>
+                              <span className="font-medium text-gray-900 dark:text-[#f8f8f2]">{student.points.toLocaleString()}</span>
                             </div>
                           </TableCell>
                         </TableRow>
@@ -394,9 +394,9 @@ export const LeaderboardPage: React.FC = () => {
 
           {/* Achievements Panel */}
           <div>
-            <Card>
+            <Card className="bg-white dark:bg-[#282a36] border-gray-200 dark:border-[#6272a4]">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-sm font-medium text-gray-900">
+                <CardTitle className="flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-[#f8f8f2]">
                   <Award className="h-4 w-4" />
                   Achievements
                 </CardTitle>
@@ -404,22 +404,22 @@ export const LeaderboardPage: React.FC = () => {
               <CardContent className="space-y-3">
                 {achievements.map((achievement) => (
                   <div key={achievement.id} className={`p-3 rounded-lg border ${
-                    achievement.earned ? 'bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-800' : 'bg-muted/30'
+                    achievement.earned ? 'bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-800' : 'bg-gray-50 dark:bg-[#44475a] border-gray-200 dark:border-[#6272a4]'
                   }`}>
                     <div className="flex items-start gap-3">
                       <div className={`p-2 rounded-full ${
-                        achievement.earned ? 'bg-green-100 text-green-600 dark:bg-green-800 dark:text-green-400' : 'bg-muted text-muted-foreground'
+                        achievement.earned ? 'bg-green-100 text-green-600 dark:bg-green-800 dark:text-green-400' : 'bg-gray-100 dark:bg-[#6272a4] text-gray-600 dark:text-[#f8f8f2]'
                       }`}>
                         {achievement.icon}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h4 className="font-medium text-sm">{achievement.name}</h4>
-                        <p className="text-xs text-muted-foreground mb-1">{achievement.description}</p>
-                        <p className="text-xs text-muted-foreground">{achievement.requirement}</p>
+                        <h4 className="font-medium text-sm text-gray-900 dark:text-[#f8f8f2]">{achievement.name}</h4>
+                        <p className="text-xs text-gray-600 dark:text-[#6272a4] mb-1">{achievement.description}</p>
+                        <p className="text-xs text-gray-600 dark:text-[#6272a4]">{achievement.requirement}</p>
                         {achievement.progress && !achievement.earned && (
                           <div className="mt-2">
                             <Progress value={achievement.progress} className="h-1" />
-                            <p className="text-xs text-muted-foreground mt-1">{achievement.progress}% complete</p>
+                            <p className="text-xs text-gray-600 dark:text-[#6272a4] mt-1">{achievement.progress}% complete</p>
                           </div>
                         )}
                       </div>

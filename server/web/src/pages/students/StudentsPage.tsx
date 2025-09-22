@@ -195,7 +195,7 @@ export const StudentsPage: React.FC = () => {
             </CardContent>
           </Card>
           
-          <Card className="border-l-4 border-l-red-500 bg-red-50 dark:bg-red-500/10">
+          <Card className="border-l-4 border-l-red-500 bg-red-50 dark:bg-red-500">
             <CardContent className="p-4 pt-6">
               <div className="flex items-center justify-between">
                 <div>

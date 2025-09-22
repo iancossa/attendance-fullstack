@@ -2,6 +2,7 @@ export { AddClassModal } from './AddClassModal';
 export { AddStudentModal } from './AddStudentModal';
 export { AddFacultyModal } from './AddFacultyModal';
 export { AddDepartmentModal } from './AddDepartmentModal';
+export { AddEventModal } from './AddEventModal';
 export { AttendanceHistoryModal } from './AttendanceHistoryModal';
 export { AttendanceReportModal } from './AttendanceReportModal';
 export { ClassReportsModal } from './ClassReportsModal';
