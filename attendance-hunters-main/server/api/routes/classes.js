@@ -60,7 +60,13 @@ router.post('/', verifyToken, (req, res, next) => {
 });
 
 // Update class
-router.put('/:id', verifyToken, async (req, res) => {
+router.put('/:id', verifyToken, (req, res, next) => {
+    // CSRF protection
+    if (!req.headers['x-requested-with'] && !req.headers['x-csrf-token']) {
+        return res.status(403).json({ error: 'CSRF token required' });
+    }
+    next();
+}, async (req, res) => {
     try {
         const { id } = req.params;
         const updates = req.body;

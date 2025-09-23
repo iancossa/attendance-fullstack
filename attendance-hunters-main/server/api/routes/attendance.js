@@ -6,7 +6,13 @@ const router = express.Router();
 const prisma = new PrismaClient();
 
 // Record attendance
-router.post('/', attendanceLimiter, verifyToken, validateAttendance, async (req, res) => {
+router.post('/', attendanceLimiter, verifyToken, (req, res, next) => {
+    // CSRF protection
+    if (!req.headers['x-requested-with'] && !req.headers['x-csrf-token']) {
+        return res.status(403).json({ error: 'CSRF token required' });
+    }
+    next();
+}, validateAttendance, async (req, res) => {
     try {
         const { employeeId, type } = req.body;
         
