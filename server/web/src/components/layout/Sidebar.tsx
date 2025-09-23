@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { ROUTES } from '../../constants';
-import { BarChart3, GraduationCap, FileText, Trophy, Settings, Users, Target, UserCheck, Building2, Calendar, AlertTriangle } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import { useAppStore } from '../../store';
 import { useAuth } from '../../hooks/useAuth';
+import { Icon } from '../ui/Icon';
 import logo from '../../assets/img/logo.png';
 
 interface SidebarProps {
@@ -19,27 +19,27 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen = false, setIsMob
   const getMenuItems = () => {
     if (user?.role === 'admin') {
       return [
-        { name: 'Dashboard', path: ROUTES.DASHBOARD, icon: BarChart3, badge: null },
-        { name: 'Attendance', path: ROUTES.ATTENDANCE, icon: Target, badge: null },
-        { name: 'Classes', path: ROUTES.CLASSES, icon: GraduationCap, badge: null },
-        { name: 'Students', path: '/students', icon: Users, badge: null },
-        { name: 'Detention', path: '/detention', icon: AlertTriangle, badge: null },
-        { name: 'Faculty', path: '/faculty', icon: UserCheck, badge: null },
-        { name: 'Departments', path: '/departments', icon: Building2, badge: null },
-        { name: 'Calendar', path: '/calendar', icon: Calendar, badge: null },
+        { name: 'Dashboard', path: ROUTES.DASHBOARD, icon: 'chart-histogram', badge: null },
+        { name: 'Attendance', path: ROUTES.ATTENDANCE, icon: 'checkbox', badge: null },
+        { name: 'Classes', path: ROUTES.CLASSES, icon: 'graduation-cap', badge: null },
+        { name: 'Students', path: '/students', icon: 'users', badge: null },
+        { name: 'Detention', path: '/detention', icon: 'triangle-warning', badge: null },
+        { name: 'Faculty', path: '/faculty', icon: 'users-alt', badge: null },
+        { name: 'Departments', path: '/departments', icon: 'building', badge: null },
+        { name: 'Calendar', path: '/calendar', icon: 'calendar', badge: null },
       ];
     } else if (user?.role === 'staff') {
       return [
-        { name: 'Dashboard', path: '/staff-dashboard', icon: BarChart3, badge: null },
-        { name: 'Attendance', path: ROUTES.ATTENDANCE, icon: Target, badge: null },
-        { name: 'Classes', path: ROUTES.CLASSES, icon: GraduationCap, badge: null },
-        { name: 'Reports', path: ROUTES.REPORTS, icon: FileText, badge: null },
+        { name: 'Dashboard', path: '/staff-dashboard', icon: 'chart-histogram', badge: null },
+        { name: 'Attendance', path: ROUTES.ATTENDANCE, icon: 'checkbox', badge: null },
+        { name: 'Classes', path: ROUTES.CLASSES, icon: 'graduation-cap', badge: null },
+        { name: 'Reports', path: ROUTES.REPORTS, icon: 'newspaper', badge: null },
       ];
     } else if (user?.role === 'student') {
       return [
-        { name: 'Dashboard', path: '/student-dashboard', icon: BarChart3, badge: null },
-        { name: 'Attendance', path: ROUTES.ATTENDANCE, icon: Target, badge: null },
-        { name: 'Leaderboard', path: ROUTES.LEADERBOARD, icon: Trophy, badge: null },
+        { name: 'Dashboard', path: '/student-dashboard', icon: 'chart-histogram', badge: null },
+        { name: 'Attendance', path: ROUTES.ATTENDANCE, icon: 'checkbox', badge: null },
+        { name: 'Leaderboard', path: ROUTES.LEADERBOARD, icon: 'troph-cap', badge: null },
       ];
     }
     return [];
@@ -48,12 +48,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen = false, setIsMob
   const mainMenuItems = getMenuItems();
 
   const analyticsItems = user?.role === 'admin' ? [
-    { name: 'Reports', path: ROUTES.REPORTS, icon: FileText, badge: null },
-    { name: 'Leaderboard', path: ROUTES.LEADERBOARD, icon: Trophy, badge: null },
+    { name: 'Reports', path: ROUTES.REPORTS, icon: 'newspaper', badge: null },
+    { name: 'Leaderboard', path: ROUTES.LEADERBOARD, icon: 'troph-cap', badge: null },
   ] : [];
 
   const systemItems = [
-    { name: 'Settings', path: ROUTES.SETTINGS, icon: Settings, badge: null },
+    { name: 'Settings', path: ROUTES.SETTINGS, icon: 'settings', badge: null },
   ];
 
   const handleItemClick = (path: string) => {
@@ -69,7 +69,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen = false, setIsMob
       </h3>
       <div className="space-y-1">
         {items.map((item) => {
-          const Icon = item.icon;
           const isActive = activeItem === item.path;
           return (
             <a
@@ -83,7 +82,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen = false, setIsMob
               }`}
             >
               <div className="flex items-center gap-3">
-                <Icon className={`h-4 w-4 transition-colors ${
+                <Icon name={item.icon} className={`h-4 w-4 transition-colors ${
                   isActive ? 'text-orange-600 dark:text-[#bd93f9]' : 'group-hover:text-orange-700 dark:group-hover:text-[#f8f8f2]'
                 }`} />
                 <span className="truncate">{item.name}</span>

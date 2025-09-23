@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { BarChart3, Target, GraduationCap, FileText, Users, Calendar, Settings, User, AlertTriangle } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import { useAppStore } from '../../store';
 import { ROUTES } from '../../constants';
+import { Icon } from '../ui/Icon';
 import logo from '../../assets/img/logo.png';
 
 interface StaffSidebarProps {
@@ -15,25 +15,25 @@ export const StaffSidebar: React.FC<StaffSidebarProps> = ({ isMobileOpen = false
   const { addNotification } = useAppStore();
 
   const mainMenuItems = [
-    { name: 'Dashboard', path: '/staff-dashboard', icon: BarChart3, badge: null },
-    { name: 'Attendance', path: ROUTES.ATTENDANCE, icon: Target, badge: null },
-    { name: 'Classes', path: ROUTES.CLASSES, icon: GraduationCap, badge: null },
-    { name: 'Students', path: '/students', icon: Users, badge: null },
-    { name: 'Detention', path: '/detention', icon: AlertTriangle, badge: null },
-    { name: 'Calendar', path: '/calendar', icon: Calendar, badge: null },
+    { name: 'Dashboard', path: '/staff-dashboard', icon: 'chart-histogram', badge: null },
+    { name: 'Attendance', path: ROUTES.ATTENDANCE, icon: 'checkbox', badge: null },
+    { name: 'Classes', path: ROUTES.CLASSES, icon: 'graduation-cap', badge: null },
+    { name: 'Students', path: '/students', icon: 'users', badge: null },
+    { name: 'Detention', path: '/detention', icon: 'triangle-warning', badge: null },
+    { name: 'Calendar', path: '/calendar', icon: 'calendar', badge: null },
   ];
 
   const analyticsItems = [
-    { name: 'Reports', path: ROUTES.REPORTS, icon: FileText, badge: null },
+    { name: 'Reports', path: ROUTES.REPORTS, icon: 'newspaper', badge: null },
   ];
 
   const justificationItems = [
-    { name: 'Review Absence Requests', path: '/review-justifications', icon: FileText, badge: null },
+    { name: 'Review Absence Requests', path: '/review-justifications', icon: 'newspaper', badge: null },
   ];
 
   const systemItems = [
-    { name: 'Profile', path: '/staff-profile', icon: User, badge: null },
-    { name: 'Settings', path: ROUTES.SETTINGS, icon: Settings, badge: null },
+    { name: 'Profile', path: '/staff-profile', icon: 'user-add', badge: null },
+    { name: 'Settings', path: ROUTES.SETTINGS, icon: 'settings', badge: null },
   ];
 
   const handleItemClick = (path: string) => {
@@ -49,7 +49,6 @@ export const StaffSidebar: React.FC<StaffSidebarProps> = ({ isMobileOpen = false
       </h3>
       <div className="space-y-1">
         {items.map((item) => {
-          const Icon = item.icon;
           const isActive = activeItem === item.path;
           return (
             <a
@@ -63,7 +62,7 @@ export const StaffSidebar: React.FC<StaffSidebarProps> = ({ isMobileOpen = false
               }`}
             >
               <div className="flex items-center gap-3">
-                <Icon className={`h-4 w-4 transition-colors stroke-1.5 ${
+                <Icon name={item.icon} className={`h-4 w-4 transition-colors ${
                   isActive ? 'text-orange-600 dark:text-[#bd93f9]' : 'group-hover:text-orange-700 dark:group-hover:text-[#f8f8f2]'
                 }`} />
                 <span className="truncate">{item.name}</span>

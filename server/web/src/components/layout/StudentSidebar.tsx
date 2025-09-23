@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { BarChart3, Target, Trophy, User, Calendar, BookOpen, FileText } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import { useAppStore } from '../../store';
+import { Icon } from '../ui/Icon';
 import logo from '../../assets/img/logo.png';
 
 interface StudentSidebarProps {
@@ -14,19 +14,19 @@ export const StudentSidebar: React.FC<StudentSidebarProps> = ({ isMobileOpen = f
   const { addNotification } = useAppStore();
 
   const mainMenuItems = [
-    { name: 'Dashboard', path: '/student-dashboard', icon: BarChart3, badge: null },
-    { name: 'My Attendance', path: '/attendance', icon: Target, badge: null },
-    { name: 'My Classes', path: '/classes', icon: BookOpen, badge: null },
-    { name: 'Schedule', path: '/calendar', icon: Calendar, badge: null },
+    { name: 'Dashboard', path: '/student-dashboard', icon: 'chart-histogram', badge: null },
+    { name: 'My Attendance', path: '/attendance', icon: 'checkbox', badge: null },
+    { name: 'My Classes', path: '/classes', icon: 'graduation-cap', badge: null },
+    { name: 'Schedule', path: '/calendar', icon: 'calendar', badge: null },
   ];
 
   const justificationItems = [
-    { name: 'My Absence Requests', path: '/justifications', icon: FileText, badge: null },
+    { name: 'My Absence Requests', path: '/justifications', icon: 'newspaper', badge: null },
   ];
 
   const academicItems = [
-    { name: 'Leaderboard', path: '/leaderboard', icon: Trophy, badge: null },
-    { name: 'Profile', path: '/profile', icon: User, badge: null },
+    { name: 'Leaderboard', path: '/leaderboard', icon: 'troph-cap', badge: null },
+    { name: 'Profile', path: '/profile', icon: 'user-add', badge: null },
   ];
 
   const handleItemClick = (path: string) => {
@@ -42,7 +42,6 @@ export const StudentSidebar: React.FC<StudentSidebarProps> = ({ isMobileOpen = f
       </h3>
       <div className="space-y-1">
         {items.map((item) => {
-          const Icon = item.icon;
           const isActive = activeItem === item.path;
           return (
             <a
@@ -56,7 +55,7 @@ export const StudentSidebar: React.FC<StudentSidebarProps> = ({ isMobileOpen = f
               }`}
             >
               <div className="flex items-center gap-3">
-                <Icon className={`h-4 w-4 transition-colors ${
+                <Icon name={item.icon} className={`h-4 w-4 transition-colors ${
                   isActive ? 'text-orange-600 dark:text-[#bd93f9]' : 'group-hover:text-orange-700 dark:group-hover:text-[#f8f8f2]'
                 }`} />
                 <span className="truncate">{item.name}</span>

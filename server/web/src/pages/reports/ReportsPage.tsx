@@ -370,25 +370,40 @@ export const ReportsPage: React.FC = () => {
                                 <div className="fixed inset-0 z-40" onClick={() => setOpenDropdown(null)} />
                                 <div className="absolute right-0 top-8 mt-1 w-48 bg-white dark:bg-[#282a36] border border-gray-200 dark:border-[#6272a4] rounded-lg shadow-lg z-50 py-1">
                                   <button 
-                                    onClick={() => setOpenDropdown(null)} 
+                                    onClick={() => {
+                                      addNotification({ message: `Viewing ${report.type} for ${report.class}`, type: 'info' });
+                                      setOpenDropdown(null);
+                                    }} 
                                     className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
                                   >
                                     View Report
                                   </button>
                                   <button 
-                                    onClick={() => setOpenDropdown(null)} 
+                                    onClick={() => {
+                                      exportToPDF([report], `${report.type}-${report.id}`);
+                                      addNotification({ message: 'PDF downloaded successfully', type: 'success' });
+                                      setOpenDropdown(null);
+                                    }} 
                                     className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
                                   >
                                     Download PDF
                                   </button>
                                   <button 
-                                    onClick={() => setOpenDropdown(null)} 
+                                    onClick={() => {
+                                      exportToExcel([report], `${report.type}-${report.id}`);
+                                      addNotification({ message: 'Data exported successfully', type: 'success' });
+                                      setOpenDropdown(null);
+                                    }} 
                                     className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
                                   >
                                     Export Data
                                   </button>
                                   <button 
-                                    onClick={() => setOpenDropdown(null)} 
+                                    onClick={() => {
+                                      navigator.clipboard.writeText(`Report: ${report.type} - ${report.class} (${report.attendance}% attendance)`);
+                                      addNotification({ message: 'Report link copied to clipboard', type: 'success' });
+                                      setOpenDropdown(null);
+                                    }} 
                                     className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
                                   >
                                     Share Report
@@ -435,16 +450,31 @@ export const ReportsPage: React.FC = () => {
                         <>
                           <div className="fixed inset-0 z-40" onClick={() => setOpenDropdown(null)} />
                           <div className="absolute right-0 top-8 mt-1 w-48 bg-white dark:bg-[#282a36] border border-gray-200 dark:border-[#6272a4] rounded-lg shadow-lg z-50 py-1">
-                            <button onClick={() => setOpenDropdown(null)} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
+                            <button onClick={() => {
+                              addNotification({ message: `Viewing ${report.type} for ${report.class}`, type: 'info' });
+                              setOpenDropdown(null);
+                            }} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
                               View Report
                             </button>
-                            <button onClick={() => setOpenDropdown(null)} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
+                            <button onClick={() => {
+                              exportToPDF([report], `${report.type}-${report.id}`);
+                              addNotification({ message: 'PDF downloaded successfully', type: 'success' });
+                              setOpenDropdown(null);
+                            }} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
                               Download PDF
                             </button>
-                            <button onClick={() => setOpenDropdown(null)} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
+                            <button onClick={() => {
+                              exportToExcel([report], `${report.type}-${report.id}`);
+                              addNotification({ message: 'Data exported successfully', type: 'success' });
+                              setOpenDropdown(null);
+                            }} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
                               Export Data
                             </button>
-                            <button onClick={() => setOpenDropdown(null)} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
+                            <button onClick={() => {
+                              navigator.clipboard.writeText(`Report: ${report.type} - ${report.class} (${report.attendance}% attendance)`);
+                              addNotification({ message: 'Report link copied to clipboard', type: 'success' });
+                              setOpenDropdown(null);
+                            }} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
                               Share Report
                             </button>
                           </div>
