@@ -103,6 +103,27 @@ export const LoginPage: React.FC = () => {
               </Alert>
             )}
 
+            {/* Demo Credentials */}
+            {activeRole === 'staff' && (
+              <div className="mb-4 p-3 bg-blue-50 dark:bg-[#44475a]/50 rounded-lg border border-blue-200 dark:border-[#6272a4]/50">
+                <p className="text-xs font-medium text-blue-800 dark:text-[#8be9fd] mb-2">Demo Staff Credentials:</p>
+                <div className="text-xs text-blue-700 dark:text-[#6272a4] space-y-1">
+                  <div>Email: <span className="font-mono bg-white dark:bg-[#282a36] px-1 rounded">staff@university.edu</span></div>
+                  <div>Password: <span className="font-mono bg-white dark:bg-[#282a36] px-1 rounded">staff123</span></div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEmail('staff@university.edu');
+                    setPassword('staff123');
+                  }}
+                  className="mt-2 text-xs text-blue-600 dark:text-[#8be9fd] hover:underline"
+                >
+                  Click to fill credentials
+                </button>
+              </div>
+            )}
+
             <form onSubmit={handleLogin} className="space-y-3 md:space-y-4">
               <div className="space-y-1 md:space-y-2">
                 <label className="text-xs md:text-sm font-medium text-gray-900 dark:text-[#f8f8f2]">

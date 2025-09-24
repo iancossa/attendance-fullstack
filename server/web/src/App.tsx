@@ -5,6 +5,7 @@ import { AttendancePage } from './pages/attendance/AttendancePage';
 import { ClassesPage } from './pages/classes/ClassesPage';
 import { StudentsPage } from './pages/students/StudentsPage';
 import { ReportsPage } from './pages/reports/ReportsPage';
+import { StaffReportsPage } from './pages/reports/StaffReportsPage';
 import { LeaderboardPage } from './pages/leaderboard/LeaderboardPage';
 import { SettingsPage } from './pages/settings/SettingsPage';
 import { FacultyPage } from './pages/faculty/FacultyPage';
@@ -92,6 +93,7 @@ function AppContent() {
               <Route path="/detention" element={<DetentionPage />} />
               <Route path="/calendar" element={<CalendarPage />} />
               <Route path={ROUTES.REPORTS} element={<ReportsPage />} />
+              <Route path="/staff-reports" element={<StaffReportsPage />} />
               <Route path="/staff-profile" element={<StaffProfilePage />} />
               <Route path="/review-justifications" element={<ReviewJustificationsPage />} />
               <Route path={ROUTES.SETTINGS} element={<SettingsPage />} />

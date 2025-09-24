@@ -24,11 +24,11 @@ export const StaffSidebar: React.FC<StaffSidebarProps> = ({ isMobileOpen = false
   ];
 
   const analyticsItems = [
-    { name: 'Reports', path: ROUTES.REPORTS, icon: 'newspaper', badge: null },
+    { name: 'My Reports', path: '/staff-reports', icon: 'newspaper', badge: null },
   ];
 
   const justificationItems = [
-    { name: 'Review Absence Requests', path: '/review-justifications', icon: 'newspaper', badge: null },
+    { name: 'Absence Requests', path: '/review-justifications', icon: 'envelope-dot', badge: null },
   ];
 
   const systemItems = [

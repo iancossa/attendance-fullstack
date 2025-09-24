@@ -13,6 +13,7 @@ import TrophCapIcon from '../../assets/icon/troph-cap.svg';
 import UserAddIcon from '../../assets/icon/user-add.svg';
 import UsersAltIcon from '../../assets/icon/users-alt.svg';
 import UsersIcon from '../../assets/icon/users.svg';
+import Notification  from '../../assets/icon/envelope-dot.svg';
 
 interface IconProps {
   name: string;
@@ -32,6 +33,7 @@ const iconMap: Record<string, string> = {
   'newspaper': NewspaperIcon,
   'settings': SettingsIcon,
   'troph-cap': TrophCapIcon,
+  'envelope-dot': Notification,
 };
 
 export const Icon: React.FC<IconProps> = ({ name, className = 'h-4 w-4' }) => {
