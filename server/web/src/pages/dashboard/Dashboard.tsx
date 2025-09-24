@@ -12,7 +12,15 @@ import { useAttendance } from '../../hooks/useAttendance';
 
 export const Dashboard: React.FC = () => {
   const navigate = useNavigate();
-  const { summary } = useAttendance();
+  const { sessions } = useAttendance();
+  
+  // Mock summary data until backend provides dashboard endpoint
+  const summary = {
+    todayAttendance: 85,
+    presentStudents: 342,
+    totalStudents: 402,
+    alerts: 5
+  };
   return (
     <Layout>
       <div className="space-y-4">
