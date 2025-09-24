@@ -8,13 +8,14 @@ const prisma = new PrismaClient();
 // Get all students
 router.get('/', verifyToken, async (req, res) => {
     try {
-        const { department, year, section, status } = req.query;
+        const { department, year, section, status, class: className } = req.query;
         
         let where = {};
         if (department) where.department = department;
         if (year) where.year = year;
         if (section) where.section = section;
         if (status) where.status = status;
+        if (className) where.class = { contains: className, mode: 'insensitive' };
 
         const students = await prisma.student.findMany({
             where,
@@ -186,6 +187,50 @@ router.get('/:id/attendance', verifyToken, async (req, res) => {
                 lateClasses,
                 attendancePercentage
             }
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Get students by class
+router.get('/by-class/:className', verifyToken, async (req, res) => {
+    try {
+        const { className } = req.params;
+        
+        const students = await prisma.student.findMany({
+            where: {
+                class: { contains: className, mode: 'insensitive' }
+            },
+            include: {
+                attendance: {
+                    select: {
+                        status: true,
+                        date: true
+                    }
+                }
+            },
+            orderBy: { name: 'asc' }
+        });
+
+        // Calculate attendance percentage for each student
+        const studentsWithAttendance = students.map(student => {
+            const totalClasses = student.attendance.length;
+            const presentClasses = student.attendance.filter(a => a.status === 'present').length;
+            const attendancePercentage = totalClasses > 0 ? Math.round((presentClasses / totalClasses) * 100) : 0;
+            
+            return {
+                ...student,
+                attendancePercentage,
+                totalClasses,
+                presentClasses
+            };
+        });
+
+        res.json({ 
+            students: studentsWithAttendance,
+            className,
+            totalStudents: studentsWithAttendance.length
         });
     } catch (error) {
         res.status(500).json({ error: error.message });

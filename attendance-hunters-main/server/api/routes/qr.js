@@ -222,11 +222,19 @@ router.post('/mark/:sessionId', async (req, res) => {
             attendanceData.locationVerified = false;
         }
         
-        const attendanceRecord = await prisma.studentAttendance.create({
-            data: attendanceData
-        });
-        
-        console.log('✅ Attendance record created:', attendanceRecord.id);
+        let attendanceRecord;
+        try {
+            attendanceRecord = await prisma.studentAttendance.create({
+                data: attendanceData
+            });
+            console.log('✅ Attendance record created:', attendanceRecord.id);
+        } catch (dbError) {
+            console.error('❌ Database error creating attendance:', dbError);
+            return res.status(500).json({ 
+                error: 'Failed to save attendance record',
+                details: 'Database validation error'
+            });
+        }
         
         const response = {
             message: 'Attendance marked successfully',
