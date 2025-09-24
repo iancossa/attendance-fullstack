@@ -9,7 +9,6 @@ import {
   Users, 
   Calendar, 
   Clock, 
-  QrCode,
   BookOpen,
   TrendingUp,
   CheckCircle,

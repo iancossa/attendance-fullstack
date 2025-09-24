@@ -4,7 +4,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/ca
 import { Button } from '../../components/ui/button';
 import { Badge } from '../../components/ui/badge';
 import QRCode from 'react-qr-code';
-import { RefreshCw, Smartphone, QrCode, CheckCircle } from 'lucide-react';
+import { Smartphone, QrCode, CheckCircle } from 'lucide-react';
 import { QRScanner } from '../../components/QRScanner';
 import { useAttendance, useQRSession } from '../../hooks/useAttendance';
 import { useEnhancedAppStore } from '../../store/enhancedAppStore';

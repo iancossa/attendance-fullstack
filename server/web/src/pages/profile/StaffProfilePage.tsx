@@ -3,7 +3,7 @@ import { Layout } from '../../components/layout/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { Badge } from '../../components/ui/badge';
 import { Avatar, AvatarFallback } from '../../components/ui/avatar';
-import { User, Mail, Phone, MapPin, Calendar, Award, Users, BookOpen, CheckCircle, Star, GraduationCap, Clock, Building, FileText, TrendingUp } from 'lucide-react';
+import { User, Mail, Phone, MapPin, Calendar, Users, BookOpen, CheckCircle, GraduationCap, Clock, Building, TrendingUp } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 
 export const StaffProfilePage: React.FC = () => {

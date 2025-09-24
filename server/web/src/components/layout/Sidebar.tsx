@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { ROUTES } from '../../constants';
 import { Badge } from '../ui/badge';
-import { useAppStore } from '../../store';
 import { useAuth } from '../../hooks/useAuth';
 import { Icon } from '../ui/Icon';
 import logo from '../../assets/img/logo.png';
@@ -13,7 +12,6 @@ interface SidebarProps {
 
 export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen = false, setIsMobileOpen }) => {
   const [activeItem, setActiveItem] = useState(window.location.pathname);
-  const { addNotification } = useAppStore();
   const { user } = useAuth();
 
   const getMenuItems = () => {

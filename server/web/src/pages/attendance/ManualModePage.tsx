@@ -5,7 +5,7 @@ import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Badge } from '../../components/ui/badge';
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '../../components/ui/table';
-import { Users, Search, Send, Save } from 'lucide-react';
+import { Users, Search } from 'lucide-react';
 import { studentService } from '../../services/backendService';
 
 interface Student {

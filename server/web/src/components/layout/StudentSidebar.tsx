@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Badge } from '../ui/badge';
-import { useAppStore } from '../../store';
 import { Icon } from '../ui/Icon';
 import logo from '../../assets/img/logo.png';
 
@@ -11,7 +10,6 @@ interface StudentSidebarProps {
 
 export const StudentSidebar: React.FC<StudentSidebarProps> = ({ isMobileOpen = false, setIsMobileOpen }) => {
   const [activeItem, setActiveItem] = useState(window.location.pathname);
-  const { addNotification } = useAppStore();
 
   const mainMenuItems = [
     { name: 'Dashboard', path: '/student-dashboard', icon: 'chart-histogram', badge: null },

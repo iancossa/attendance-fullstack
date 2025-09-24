@@ -32,18 +32,14 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [notificationCount] = useState(0);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [quickActionsOpen, setQuickActionsOpen] = useState(false);
-  const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [themeSubmenuOpen, setThemeSubmenuOpen] = useState(false);
   const [activeModal, setActiveModal] = useState<string | null>(null);
   const { theme, setTheme } = useTheme();
   const { logout, user } = useAuth();
-  const { notifications, addNotification } = useAppStore();
-
-  const notificationsList = notifications || [];
+  const { addNotification } = useAppStore();
 
   const themeOptions = [
     { id: 'light', name: 'Light', icon: <Sun className="h-4 w-4" /> },

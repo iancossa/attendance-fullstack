@@ -7,7 +7,6 @@ import { Badge } from '../../components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs';
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '../../components/ui/table';
 import QRCode from 'react-qr-code';
-import { RefreshCw, ArrowRight, Smartphone } from 'lucide-react';
 import { QRScanner } from '../../components/QRScanner';
 import { studentService } from '../../services/backendService';
 

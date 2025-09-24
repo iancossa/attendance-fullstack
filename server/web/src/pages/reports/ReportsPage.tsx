@@ -4,14 +4,12 @@ import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/ca
 import { Button } from '../../components/ui/button';
 import { Progress } from '../../components/ui/progress';
 import { Badge } from '../../components/ui/badge';
-import { Input } from '../../components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components/ui/table';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../../components/ui/dropdown-menu';
 import { FileText, Download, TrendingUp, Users, AlertTriangle, Calendar, Search, BarChart3, MoreVertical, X, Plus } from 'lucide-react';
 import { AttendanceChart, ClassPerformanceChart } from '../../components/charts';
 import { exportToExcel, exportToPDF } from '../../utils/exportUtils';
 import { useAppStore } from '../../store';
-import { COURSES, MOCK_STUDENTS } from '../../data/mockStudents';
+import { MOCK_STUDENTS } from '../../data/mockStudents';
 
 interface ReportData {
   id: string;

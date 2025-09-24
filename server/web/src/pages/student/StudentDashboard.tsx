@@ -9,7 +9,6 @@ import {
   QrCode, 
   Calendar, 
   TrendingUp, 
-  Award,
   Clock,
   Target,
   Trophy,

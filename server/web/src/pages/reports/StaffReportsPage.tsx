@@ -4,7 +4,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/ca
 import { Button } from '../../components/ui/button';
 import { Badge } from '../../components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components/ui/table';
-import { FileText, Download, TrendingUp, Users, Calendar, Search, BarChart3, MoreVertical } from 'lucide-react';
+import { FileText, Download, TrendingUp, Users, Calendar, Search, MoreVertical } from 'lucide-react';
 import { exportToExcel, exportToPDF } from '../../utils/exportUtils';
 import { useAppStore } from '../../store';
 import { useAuth } from '../../hooks/useAuth';

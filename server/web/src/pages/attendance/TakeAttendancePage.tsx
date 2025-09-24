@@ -6,8 +6,7 @@ import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Badge } from '../../components/ui/badge';
 import { Loading } from '../../components/ui/loading';
-import { ArrowLeft, Users, Clock, CheckCircle, QrCode, Zap, X } from 'lucide-react';
-import { apiService } from '../../services/api';
+import { ArrowLeft, Users, CheckCircle, QrCode, Zap, X } from 'lucide-react';
 
 interface Class {
   id: string;
