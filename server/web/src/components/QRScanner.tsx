@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button } from './ui/button';
-import { Camera, X, RotateCcw, CheckCircle } from 'lucide-react';
+import { Camera, X, RotateCcw } from 'lucide-react';
 import { BrowserQRCodeReader } from '@zxing/library';
 import { useQRSession } from '../hooks/useAttendance';
 import { authService } from '../services/authService';

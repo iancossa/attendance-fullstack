@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Badge } from '../ui/badge';
+import { User } from 'lucide-react';
 import { ROUTES } from '../../constants';
 import { Icon } from '../ui/Icon';
 import logo from '../../assets/img/logo.png';
@@ -30,7 +31,7 @@ export const StaffSidebar: React.FC<StaffSidebarProps> = ({ isMobileOpen = false
   ];
 
   const systemItems = [
-    { name: 'Profile', path: '/staff-profile', icon: 'user-add', badge: null },
+    { name: 'Profile', path: '/staff-profile', icon: User, badge: null },
     { name: 'Settings', path: ROUTES.SETTINGS, icon: 'settings', badge: null },
   ];
 

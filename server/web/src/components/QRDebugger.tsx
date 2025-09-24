@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Button } from './ui/button';
 import { BrowserQRCodeReader } from '@zxing/library';
 

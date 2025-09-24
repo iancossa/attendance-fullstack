@@ -12,7 +12,6 @@ import {
   Award, 
   TrendingUp,
   Search, 
-  Filter,
   Crown,
   Flame,
   Star,
