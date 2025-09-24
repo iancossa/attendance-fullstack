@@ -22,7 +22,9 @@ import {
 } from 'lucide-react';
 import { exportToExcel } from '../../utils/exportUtils';
 import { useAppStore } from '../../store';
+import { useApi } from '../../hooks/useApi';
 import { MOCK_STUDENTS, COURSES } from '../../data/mockStudents';
+import type { LeaderboardEntry, Achievement as ApiAchievement } from '../../types/api';
 
 interface Student {
   id: string;
@@ -37,7 +39,7 @@ interface Student {
   lastActive: string;
 }
 
-interface Achievement {
+interface LocalAchievement {
   id: string;
   name: string;
   description: string;
@@ -50,8 +52,15 @@ interface Achievement {
 export const LeaderboardPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedClass, setSelectedClass] = useState('All');
-  const [selectedPeriod, setSelectedPeriod] = useState('Current Semester');
+  const [selectedPeriod, setSelectedPeriod] = useState('weekly');
   const { addNotification } = useAppStore();
+  
+  // Use new API for leaderboard data
+  const { data: apiLeaderboard, loading: leaderboardLoading } = useApi<LeaderboardEntry[]>(
+    `/gamification/leaderboard?scope=global&period=${selectedPeriod}&limit=50`
+  );
+  
+  const { data: apiAchievements } = useApi<ApiAchievement[]>('/gamification/achievements');
 
   const topStudents: Student[] = MOCK_STUDENTS
     .filter(s => s.status === 'Active' && s.attendance)
@@ -70,7 +79,7 @@ export const LeaderboardPage: React.FC = () => {
       lastActive: student.lastSeen || '2024-01-15'
     }));
 
-  const achievements: Achievement[] = [
+  const achievements: LocalAchievement[] = [
     { id: '1', name: 'Perfect Week', description: '100% attendance for a week', icon: <Trophy className="h-4 w-4" />, earned: true, requirement: '7 consecutive days' },
     { id: '2', name: 'Early Bird', description: 'Never late for 30 days', icon: <Award className="h-4 w-4" />, earned: true, requirement: '30 days punctuality' },
     { id: '3', name: 'Consistency King', description: '90%+ attendance for 3 months', icon: <Crown className="h-4 w-4" />, earned: false, progress: 65, requirement: '90 days at 90%+' },

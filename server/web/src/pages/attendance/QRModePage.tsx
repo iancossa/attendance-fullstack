@@ -6,7 +6,8 @@ import { Badge } from '../../components/ui/badge';
 import QRCode from 'react-qr-code';
 import { RefreshCw, Smartphone, QrCode, CheckCircle } from 'lucide-react';
 import { QRScanner } from '../../components/QRScanner';
-import { qrService } from '../../services/backendService';
+import { useAttendance, useQRSession } from '../../hooks/useAttendance';
+import { useEnhancedAppStore } from '../../store/enhancedAppStore';
 
 interface Attendee {
   studentId: string;
@@ -31,18 +32,21 @@ interface SessionStatus {
 
 export const QRModePage: React.FC = () => {
   const [qrValue, setQrValue] = useState('');
-  const [timeLeft, setTimeLeft] = useState(300);
-  const [sessionActive, setSessionActive] = useState(false);
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [sessionData, setSessionData] = useState<any>(null);
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [attendees, setAttendees] = useState<Attendee[]>([]);
-  const [pollingInterval, setPollingInterval] = useState<NodeJS.Timeout | null>(null);
-  const [recentScans, setRecentScans] = useState<Attendee[]>([]);
   const [showScanner, setShowScanner] = useState(false);
+  const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
+  const [recentScans, setRecentScans] = useState<Attendee[]>([]);
   
-  const presentCount = attendees.length;
-  const totalStudents = 50; // This could come from class data
+  // Use new API hooks
+  const { sessions, createSession, loading } = useAttendance();
+  const { qrStatus, generateQR, loading: qrLoading } = useQRSession(activeSessionId || undefined);
+  const { addNotification } = useEnhancedAppStore();
+  
+  const presentCount = qrStatus?.scan_count || recentScans.length;
+  const totalStudents = 50;
+  const timeLeft = qrStatus ? Math.max(0, Math.floor((new Date(qrStatus.expires_at).getTime() - Date.now()) / 1000)) : 300;
+  const sessionActive = qrStatus?.status === 'active' && timeLeft > 0;
 
   useEffect(() => {
     // Load session data from localStorage
@@ -56,8 +60,6 @@ export const QRModePage: React.FC = () => {
     const loadRecentScans = () => {
       const scans = JSON.parse(localStorage.getItem('recentScans') || '[]');
       setRecentScans(scans);
-      // Also update attendees count
-      setAttendees(scans);
     };
     
     loadRecentScans();
@@ -68,122 +70,40 @@ export const QRModePage: React.FC = () => {
     return () => clearInterval(scanInterval);
   }, []);
 
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (sessionActive && timeLeft > 0) {
-      interval = setInterval(() => {
-        setTimeLeft(prev => prev - 1);
-      }, 1000);
-    }
-    return () => clearInterval(interval);
-  }, [sessionActive, timeLeft]);
+  // Timer is now handled by the API hook, no need for local timer
 
   const generateQRCode = async () => {
-    console.log('🔵 Starting QR generation...');
-    setIsGenerating(true);
     try {
-      const storedSession = localStorage.getItem('attendanceSession');
-      const sessionInfo = storedSession ? JSON.parse(storedSession) : {};
+      // First create a session if none exists
+      if (!activeSessionId) {
+        const newSession = await createSession({
+          class_id: 1, // This should come from props or context
+          session_date: new Date().toISOString().split('T')[0],
+          session_time: new Date().toTimeString().slice(0, 5),
+          session_type: 'lecture',
+          location: 'Classroom',
+          planned_topic: 'QR Attendance Session'
+        });
+        setActiveSessionId(newSession.session_id);
+      }
       
-      console.log('📋 Session info:', sessionInfo);
-      console.log('🚀 Calling qrService.generateQRSession...');
-      
-      const response = await qrService.generateQRSession(
-        sessionInfo.courseId || 'CS101',
-        sessionInfo.courseName || 'Demo Class'
-      );
-      
-      console.log('📥 QR Service response:', response);
-      
-      if (response.data) {
-        const data = response.data as QRResponse;
-        console.log('📝 Setting QR data:', data);
-        setQrValue(data.qrData);
-        setSessionActive(true);
-        setTimeLeft(data.expiresIn);
-        
-        // Store session info for polling
-        localStorage.setItem('currentQRSession', JSON.stringify({
-          sessionId: data.sessionId,
-          className: data.className,
-          expiresAt: data.expiresAt
-        }));
-        
-        console.log('🔄 Starting polling for session:', data.sessionId);
-        // Start polling for attendees
-        startPolling(data.sessionId);
-      } else {
-        console.error('❌ No data in response:', response);
+      // Generate QR for the session
+      if (activeSessionId) {
+        const qrSession = await generateQR(activeSessionId);
+        setQrValue(qrSession.qr_data);
+        addNotification({ message: 'QR Code generated successfully', type: 'success' });
       }
     } catch (error) {
-      console.error('❌ Failed to generate QR code:', error);
-      console.error('❌ Error details:', {
-        message: error instanceof Error ? error.message : 'Unknown error',
-        stack: error instanceof Error ? error.stack : undefined,
-        response: (error as any)?.response?.data
-      });
+      console.error('Failed to generate QR:', error);
+      addNotification({ message: 'Failed to generate QR code', type: 'error' });
       
-      // Fallback to local generation
-      console.log('🔄 Using fallback QR generation...');
+      // Fallback
       const qrData = `attendance://demo?class=CS101&time=${Date.now()}`;
       setQrValue(qrData);
-      setSessionActive(true);
-      setTimeLeft(300);
-    } finally {
-      console.log('✅ QR generation completed');
-      setIsGenerating(false);
     }
   };
 
-  const startPolling = (sessionId: string) => {
-    // Clear existing interval
-    if (pollingInterval) {
-      clearInterval(pollingInterval);
-    }
-    
-    let pollCount = 0;
-    const maxPolls = 150; // Stop after 5 minutes (150 * 2s = 300s)
-    
-    // Poll every 5 seconds to reduce server load
-    const interval = setInterval(async () => {
-      try {
-        pollCount++;
-        
-        if (pollCount > maxPolls) {
-          console.log('⏰ Max polling reached, stopping');
-          setSessionActive(false);
-          clearInterval(interval);
-          return;
-        }
-        
-        console.log(`🔍 Polling session (${pollCount}/${maxPolls}):`, sessionId);
-        const response = await qrService.getSessionStatus(sessionId);
-        
-        if (response.data) {
-          const data = response.data as SessionStatus & { pollInterval?: number };
-          setAttendees(data.attendees || []);
-          setTimeLeft(data.timeLeft || 0);
-          
-          if (data.timeLeft <= 0 || !data.isActive) {
-            console.log('⏰ Session expired, stopping polling');
-            setSessionActive(false);
-            clearInterval(interval);
-          }
-        }
-      } catch (error) {
-        console.error('❌ Polling error:', error);
-        // Stop polling on repeated errors
-        if (error instanceof Error && error.message.includes('429')) {
-          console.log('🚫 Rate limited, reducing polling frequency');
-          clearInterval(interval);
-          // Restart with longer interval
-          setTimeout(() => startPolling(sessionId), 10000);
-        }
-      }
-    }, 5000); // Increased from 2s to 5s
-    
-    setPollingInterval(interval);
-  };
+  // Polling is now handled by the useQRSession hook automatically
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -191,21 +111,13 @@ export const QRModePage: React.FC = () => {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
-  // Cleanup polling on unmount
-  useEffect(() => {
-    return () => {
-      if (pollingInterval) {
-        clearInterval(pollingInterval);
-      }
-    };
-  }, [pollingInterval]);
+  // Cleanup is handled by the API hooks
 
   const handleAttendanceMarked = (studentData: any) => {
     console.log('🔄 New attendance marked:', studentData);
     // Refresh recent scans immediately
     const scans = JSON.parse(localStorage.getItem('recentScans') || '[]');
     setRecentScans(scans);
-    setAttendees(scans);
   };
 
   return (
@@ -275,8 +187,8 @@ export const QRModePage: React.FC = () => {
               </div>
 
               <div className="space-y-2">
-                <Button onClick={generateQRCode} disabled={isGenerating} size="sm" className="w-full">
-                  {isGenerating ? 'Generating...' : (qrValue ? 'Regenerate QR' : 'Generate QR Code')}
+                <Button onClick={generateQRCode} disabled={qrLoading} size="sm" className="w-full">
+                  {qrLoading ? 'Generating...' : (qrValue ? 'Regenerate QR' : 'Generate QR Code')}
                 </Button>
               </div>
             </CardContent>
