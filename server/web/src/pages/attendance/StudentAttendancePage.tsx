@@ -542,9 +542,9 @@ export const StudentAttendancePage: React.FC = () => {
     <Layout>
       <div className="space-y-4">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-[#f8f8f2]">Student Attendance</h1>
+            <h1 className="text-base font-semibold text-gray-900 dark:text-[#f8f8f2]">Student Attendance</h1>
             <p className="text-sm text-gray-600 dark:text-[#6272a4]">Track your attendance performance</p>
           </div>
           <Button 
@@ -552,11 +552,20 @@ export const StudentAttendancePage: React.FC = () => {
               generatePDF();
               addNotification({ message: 'Attendance report downloaded successfully', type: 'success' });
             }} 
-            className="gap-2 w-fit"
+            className="hidden sm:flex"
+          >
+            <Download className="h-4 w-4 mr-2" />
+            Download Report
+          </Button>
+          <Button 
+            onClick={() => {
+              generatePDF();
+              addNotification({ message: 'Attendance report downloaded successfully', type: 'success' });
+            }}
+            size="sm"
+            className="sm:hidden"
           >
             <Download className="h-4 w-4" />
-            <span className="hidden sm:inline">Download Report</span>
-            <span className="sm:hidden">Download</span>
           </Button>
         </div>
 
@@ -573,7 +582,7 @@ export const StudentAttendancePage: React.FC = () => {
                 onClick={() => setActiveTab(tab.id)}
                 className={`py-2 px-2 sm:px-1 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap ${
                   activeTab === tab.id
-                    ? 'border-red-500 dark:border-orange-400 text-red-600 dark:text-orange-400'
+                    ? 'border-orange-500 dark:border-orange-400 text-orange-600 dark:text-orange-400'
                     : 'border-transparent text-gray-500 dark:text-[#6272a4] hover:text-gray-700 dark:hover:text-[#f8f8f2] hover:border-gray-300 dark:hover:border-[#6272a4]'
                 }`}
               >
