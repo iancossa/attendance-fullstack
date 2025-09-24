@@ -31,7 +31,7 @@ export const StaffSidebar: React.FC<StaffSidebarProps> = ({ isMobileOpen = false
   ];
 
   const systemItems = [
-    { name: 'Profile', path: '/staff-profile', icon: User, badge: null },
+    { name: 'Profile', path: '/staff-profile', icon: 'user-add', badge: null },
     { name: 'Settings', path: ROUTES.SETTINGS, icon: 'settings', badge: null },
   ];
 
