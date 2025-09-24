@@ -199,17 +199,37 @@ router.post('/mark/:sessionId', async (req, res) => {
             status: 'present'
         });
         
-        const attendanceRecord = await prisma.studentAttendance.create({
-            data: {
-                studentId: student.id,
-                classId: session.classId,
-                status: 'present',
-                timestamp: new Date().toISOString(),
-                studentLatitude: latitude || null,
-                studentLongitude: longitude || null,
-                distanceFromClass: geofenceResult?.distance || null,
-                locationVerified: !!geofenceResult?.isValid
+        // Create attendance record with geofencing data
+        const attendanceData = {
+            studentId: student.id,
+            classId: session.classId,
+            status: 'present',
+            timestamp: new Date().toISOString()
+        };
+        
+        // Add geofencing fields if they exist in schema
+        if (latitude && longitude) {
+            try {
+                attendanceData.studentLatitude = latitude;
+                attendanceData.studentLongitude = longitude;
+                console.log('📍 Location data added to record');
+            } catch (e) {
+                console.log('⚠️ studentLatitude/studentLongitude columns not in schema');
             }
+        }
+        
+        if (geofenceResult) {
+            try {
+                attendanceData.distanceFromClass = geofenceResult.distance;
+                attendanceData.locationVerified = geofenceResult.isValid;
+                console.log(`📍 Geofence data: ${geofenceResult.distance}m, verified: ${geofenceResult.isValid}`);
+            } catch (e) {
+                console.log('⚠️ distanceFromClass/locationVerified columns not in schema');
+            }
+        }
+        
+        const attendanceRecord = await prisma.studentAttendance.create({
+            data: attendanceData
         });
         
         console.log('✅ Attendance record created:', attendanceRecord.id);

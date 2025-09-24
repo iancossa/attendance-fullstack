@@ -158,6 +158,10 @@ exports.Prisma.StudentAttendanceScalarFieldEnum = {
   date: 'date',
   status: 'status',
   timestamp: 'timestamp',
+  studentLatitude: 'studentLatitude',
+  studentLongitude: 'studentLongitude',
+  distanceFromClass: 'distanceFromClass',
+  locationVerified: 'locationVerified',
   createdAt: 'createdAt'
 };
 
@@ -168,6 +172,46 @@ exports.Prisma.AttendanceScalarFieldEnum = {
   timestamp: 'timestamp',
   userId: 'userId',
   createdAt: 'createdAt'
+};
+
+exports.Prisma.ClassScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  code: 'code',
+  faculty: 'faculty',
+  maxStudents: 'maxStudents',
+  schedule: 'schedule',
+  room: 'room',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  geofenceRadius: 'geofenceRadius',
+  geofenceEnabled: 'geofenceEnabled',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.QRSessionScalarFieldEnum = {
+  id: 'id',
+  classId: 'classId',
+  className: 'className',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  radius: 'radius',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  expiresAt: 'expiresAt',
+  isActive: 'isActive'
+};
+
+exports.Prisma.GeofenceSettingsScalarFieldEnum = {
+  id: 'id',
+  defaultRadius: 'defaultRadius',
+  enabled: 'enabled',
+  allowOverride: 'allowOverride',
+  accuracyThreshold: 'accuracyThreshold',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -190,7 +234,10 @@ exports.Prisma.ModelName = {
   User: 'User',
   Student: 'Student',
   StudentAttendance: 'StudentAttendance',
-  Attendance: 'Attendance'
+  Attendance: 'Attendance',
+  Class: 'Class',
+  QRSession: 'QRSession',
+  GeofenceSettings: 'GeofenceSettings'
 };
 
 /**

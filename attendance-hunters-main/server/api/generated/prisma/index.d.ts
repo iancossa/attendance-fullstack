@@ -33,6 +33,21 @@ export type StudentAttendance = $Result.DefaultSelection<Prisma.$StudentAttendan
  * 
  */
 export type Attendance = $Result.DefaultSelection<Prisma.$AttendancePayload>
+/**
+ * Model Class
+ * 
+ */
+export type Class = $Result.DefaultSelection<Prisma.$ClassPayload>
+/**
+ * Model QRSession
+ * 
+ */
+export type QRSession = $Result.DefaultSelection<Prisma.$QRSessionPayload>
+/**
+ * Model GeofenceSettings
+ * 
+ */
+export type GeofenceSettings = $Result.DefaultSelection<Prisma.$GeofenceSettingsPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -196,6 +211,36 @@ export class PrismaClient<
     * ```
     */
   get attendance(): Prisma.AttendanceDelegate<ExtArgs>;
+
+  /**
+   * `prisma.class`: Exposes CRUD operations for the **Class** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Classes
+    * const classes = await prisma.class.findMany()
+    * ```
+    */
+  get class(): Prisma.ClassDelegate<ExtArgs>;
+
+  /**
+   * `prisma.qRSession`: Exposes CRUD operations for the **QRSession** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more QRSessions
+    * const qRSessions = await prisma.qRSession.findMany()
+    * ```
+    */
+  get qRSession(): Prisma.QRSessionDelegate<ExtArgs>;
+
+  /**
+   * `prisma.geofenceSettings`: Exposes CRUD operations for the **GeofenceSettings** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more GeofenceSettings
+    * const geofenceSettings = await prisma.geofenceSettings.findMany()
+    * ```
+    */
+  get geofenceSettings(): Prisma.GeofenceSettingsDelegate<ExtArgs>;
 }
 
 export namespace Prisma {
@@ -640,7 +685,10 @@ export namespace Prisma {
     User: 'User',
     Student: 'Student',
     StudentAttendance: 'StudentAttendance',
-    Attendance: 'Attendance'
+    Attendance: 'Attendance',
+    Class: 'Class',
+    QRSession: 'QRSession',
+    GeofenceSettings: 'GeofenceSettings'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -656,7 +704,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "user" | "student" | "studentAttendance" | "attendance"
+      modelProps: "user" | "student" | "studentAttendance" | "attendance" | "class" | "qRSession" | "geofenceSettings"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -937,6 +985,216 @@ export namespace Prisma {
           count: {
             args: Prisma.AttendanceCountArgs<ExtArgs>
             result: $Utils.Optional<AttendanceCountAggregateOutputType> | number
+          }
+        }
+      }
+      Class: {
+        payload: Prisma.$ClassPayload<ExtArgs>
+        fields: Prisma.ClassFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ClassFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClassPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ClassFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClassPayload>
+          }
+          findFirst: {
+            args: Prisma.ClassFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClassPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ClassFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClassPayload>
+          }
+          findMany: {
+            args: Prisma.ClassFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClassPayload>[]
+          }
+          create: {
+            args: Prisma.ClassCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClassPayload>
+          }
+          createMany: {
+            args: Prisma.ClassCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ClassCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClassPayload>[]
+          }
+          delete: {
+            args: Prisma.ClassDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClassPayload>
+          }
+          update: {
+            args: Prisma.ClassUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClassPayload>
+          }
+          deleteMany: {
+            args: Prisma.ClassDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ClassUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.ClassUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClassPayload>
+          }
+          aggregate: {
+            args: Prisma.ClassAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateClass>
+          }
+          groupBy: {
+            args: Prisma.ClassGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ClassGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ClassCountArgs<ExtArgs>
+            result: $Utils.Optional<ClassCountAggregateOutputType> | number
+          }
+        }
+      }
+      QRSession: {
+        payload: Prisma.$QRSessionPayload<ExtArgs>
+        fields: Prisma.QRSessionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.QRSessionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QRSessionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.QRSessionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QRSessionPayload>
+          }
+          findFirst: {
+            args: Prisma.QRSessionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QRSessionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.QRSessionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QRSessionPayload>
+          }
+          findMany: {
+            args: Prisma.QRSessionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QRSessionPayload>[]
+          }
+          create: {
+            args: Prisma.QRSessionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QRSessionPayload>
+          }
+          createMany: {
+            args: Prisma.QRSessionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.QRSessionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QRSessionPayload>[]
+          }
+          delete: {
+            args: Prisma.QRSessionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QRSessionPayload>
+          }
+          update: {
+            args: Prisma.QRSessionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QRSessionPayload>
+          }
+          deleteMany: {
+            args: Prisma.QRSessionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.QRSessionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.QRSessionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QRSessionPayload>
+          }
+          aggregate: {
+            args: Prisma.QRSessionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateQRSession>
+          }
+          groupBy: {
+            args: Prisma.QRSessionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<QRSessionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.QRSessionCountArgs<ExtArgs>
+            result: $Utils.Optional<QRSessionCountAggregateOutputType> | number
+          }
+        }
+      }
+      GeofenceSettings: {
+        payload: Prisma.$GeofenceSettingsPayload<ExtArgs>
+        fields: Prisma.GeofenceSettingsFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.GeofenceSettingsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GeofenceSettingsPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.GeofenceSettingsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GeofenceSettingsPayload>
+          }
+          findFirst: {
+            args: Prisma.GeofenceSettingsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GeofenceSettingsPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.GeofenceSettingsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GeofenceSettingsPayload>
+          }
+          findMany: {
+            args: Prisma.GeofenceSettingsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GeofenceSettingsPayload>[]
+          }
+          create: {
+            args: Prisma.GeofenceSettingsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GeofenceSettingsPayload>
+          }
+          createMany: {
+            args: Prisma.GeofenceSettingsCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.GeofenceSettingsCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GeofenceSettingsPayload>[]
+          }
+          delete: {
+            args: Prisma.GeofenceSettingsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GeofenceSettingsPayload>
+          }
+          update: {
+            args: Prisma.GeofenceSettingsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GeofenceSettingsPayload>
+          }
+          deleteMany: {
+            args: Prisma.GeofenceSettingsDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.GeofenceSettingsUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.GeofenceSettingsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GeofenceSettingsPayload>
+          }
+          aggregate: {
+            args: Prisma.GeofenceSettingsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateGeofenceSettings>
+          }
+          groupBy: {
+            args: Prisma.GeofenceSettingsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<GeofenceSettingsGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.GeofenceSettingsCountArgs<ExtArgs>
+            result: $Utils.Optional<GeofenceSettingsCountAggregateOutputType> | number
           }
         }
       }
@@ -3301,11 +3559,17 @@ export namespace Prisma {
   export type StudentAttendanceAvgAggregateOutputType = {
     id: number | null
     studentId: number | null
+    studentLatitude: number | null
+    studentLongitude: number | null
+    distanceFromClass: number | null
   }
 
   export type StudentAttendanceSumAggregateOutputType = {
     id: number | null
     studentId: number | null
+    studentLatitude: number | null
+    studentLongitude: number | null
+    distanceFromClass: number | null
   }
 
   export type StudentAttendanceMinAggregateOutputType = {
@@ -3315,6 +3579,10 @@ export namespace Prisma {
     date: Date | null
     status: string | null
     timestamp: string | null
+    studentLatitude: number | null
+    studentLongitude: number | null
+    distanceFromClass: number | null
+    locationVerified: boolean | null
     createdAt: Date | null
   }
 
@@ -3325,6 +3593,10 @@ export namespace Prisma {
     date: Date | null
     status: string | null
     timestamp: string | null
+    studentLatitude: number | null
+    studentLongitude: number | null
+    distanceFromClass: number | null
+    locationVerified: boolean | null
     createdAt: Date | null
   }
 
@@ -3335,6 +3607,10 @@ export namespace Prisma {
     date: number
     status: number
     timestamp: number
+    studentLatitude: number
+    studentLongitude: number
+    distanceFromClass: number
+    locationVerified: number
     createdAt: number
     _all: number
   }
@@ -3343,11 +3619,17 @@ export namespace Prisma {
   export type StudentAttendanceAvgAggregateInputType = {
     id?: true
     studentId?: true
+    studentLatitude?: true
+    studentLongitude?: true
+    distanceFromClass?: true
   }
 
   export type StudentAttendanceSumAggregateInputType = {
     id?: true
     studentId?: true
+    studentLatitude?: true
+    studentLongitude?: true
+    distanceFromClass?: true
   }
 
   export type StudentAttendanceMinAggregateInputType = {
@@ -3357,6 +3639,10 @@ export namespace Prisma {
     date?: true
     status?: true
     timestamp?: true
+    studentLatitude?: true
+    studentLongitude?: true
+    distanceFromClass?: true
+    locationVerified?: true
     createdAt?: true
   }
 
@@ -3367,6 +3653,10 @@ export namespace Prisma {
     date?: true
     status?: true
     timestamp?: true
+    studentLatitude?: true
+    studentLongitude?: true
+    distanceFromClass?: true
+    locationVerified?: true
     createdAt?: true
   }
 
@@ -3377,6 +3667,10 @@ export namespace Prisma {
     date?: true
     status?: true
     timestamp?: true
+    studentLatitude?: true
+    studentLongitude?: true
+    distanceFromClass?: true
+    locationVerified?: true
     createdAt?: true
     _all?: true
   }
@@ -3474,6 +3768,10 @@ export namespace Prisma {
     date: Date
     status: string
     timestamp: string | null
+    studentLatitude: number | null
+    studentLongitude: number | null
+    distanceFromClass: number | null
+    locationVerified: boolean
     createdAt: Date
     _count: StudentAttendanceCountAggregateOutputType | null
     _avg: StudentAttendanceAvgAggregateOutputType | null
@@ -3503,6 +3801,10 @@ export namespace Prisma {
     date?: boolean
     status?: boolean
     timestamp?: boolean
+    studentLatitude?: boolean
+    studentLongitude?: boolean
+    distanceFromClass?: boolean
+    locationVerified?: boolean
     createdAt?: boolean
     student?: boolean | StudentDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["studentAttendance"]>
@@ -3514,6 +3816,10 @@ export namespace Prisma {
     date?: boolean
     status?: boolean
     timestamp?: boolean
+    studentLatitude?: boolean
+    studentLongitude?: boolean
+    distanceFromClass?: boolean
+    locationVerified?: boolean
     createdAt?: boolean
     student?: boolean | StudentDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["studentAttendance"]>
@@ -3525,6 +3831,10 @@ export namespace Prisma {
     date?: boolean
     status?: boolean
     timestamp?: boolean
+    studentLatitude?: boolean
+    studentLongitude?: boolean
+    distanceFromClass?: boolean
+    locationVerified?: boolean
     createdAt?: boolean
   }
 
@@ -3547,6 +3857,10 @@ export namespace Prisma {
       date: Date
       status: string
       timestamp: string | null
+      studentLatitude: number | null
+      studentLongitude: number | null
+      distanceFromClass: number | null
+      locationVerified: boolean
       createdAt: Date
     }, ExtArgs["result"]["studentAttendance"]>
     composites: {}
@@ -3948,6 +4262,10 @@ export namespace Prisma {
     readonly date: FieldRef<"StudentAttendance", 'DateTime'>
     readonly status: FieldRef<"StudentAttendance", 'String'>
     readonly timestamp: FieldRef<"StudentAttendance", 'String'>
+    readonly studentLatitude: FieldRef<"StudentAttendance", 'Float'>
+    readonly studentLongitude: FieldRef<"StudentAttendance", 'Float'>
+    readonly distanceFromClass: FieldRef<"StudentAttendance", 'Float'>
+    readonly locationVerified: FieldRef<"StudentAttendance", 'Boolean'>
     readonly createdAt: FieldRef<"StudentAttendance", 'DateTime'>
   }
     
@@ -5265,6 +5583,2970 @@ export namespace Prisma {
 
 
   /**
+   * Model Class
+   */
+
+  export type AggregateClass = {
+    _count: ClassCountAggregateOutputType | null
+    _avg: ClassAvgAggregateOutputType | null
+    _sum: ClassSumAggregateOutputType | null
+    _min: ClassMinAggregateOutputType | null
+    _max: ClassMaxAggregateOutputType | null
+  }
+
+  export type ClassAvgAggregateOutputType = {
+    id: number | null
+    maxStudents: number | null
+    latitude: number | null
+    longitude: number | null
+    geofenceRadius: number | null
+    createdBy: number | null
+  }
+
+  export type ClassSumAggregateOutputType = {
+    id: number | null
+    maxStudents: number | null
+    latitude: number | null
+    longitude: number | null
+    geofenceRadius: number | null
+    createdBy: number | null
+  }
+
+  export type ClassMinAggregateOutputType = {
+    id: number | null
+    name: string | null
+    code: string | null
+    faculty: string | null
+    maxStudents: number | null
+    schedule: string | null
+    room: string | null
+    latitude: number | null
+    longitude: number | null
+    geofenceRadius: number | null
+    geofenceEnabled: boolean | null
+    createdBy: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ClassMaxAggregateOutputType = {
+    id: number | null
+    name: string | null
+    code: string | null
+    faculty: string | null
+    maxStudents: number | null
+    schedule: string | null
+    room: string | null
+    latitude: number | null
+    longitude: number | null
+    geofenceRadius: number | null
+    geofenceEnabled: boolean | null
+    createdBy: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ClassCountAggregateOutputType = {
+    id: number
+    name: number
+    code: number
+    faculty: number
+    maxStudents: number
+    schedule: number
+    room: number
+    latitude: number
+    longitude: number
+    geofenceRadius: number
+    geofenceEnabled: number
+    createdBy: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ClassAvgAggregateInputType = {
+    id?: true
+    maxStudents?: true
+    latitude?: true
+    longitude?: true
+    geofenceRadius?: true
+    createdBy?: true
+  }
+
+  export type ClassSumAggregateInputType = {
+    id?: true
+    maxStudents?: true
+    latitude?: true
+    longitude?: true
+    geofenceRadius?: true
+    createdBy?: true
+  }
+
+  export type ClassMinAggregateInputType = {
+    id?: true
+    name?: true
+    code?: true
+    faculty?: true
+    maxStudents?: true
+    schedule?: true
+    room?: true
+    latitude?: true
+    longitude?: true
+    geofenceRadius?: true
+    geofenceEnabled?: true
+    createdBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ClassMaxAggregateInputType = {
+    id?: true
+    name?: true
+    code?: true
+    faculty?: true
+    maxStudents?: true
+    schedule?: true
+    room?: true
+    latitude?: true
+    longitude?: true
+    geofenceRadius?: true
+    geofenceEnabled?: true
+    createdBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ClassCountAggregateInputType = {
+    id?: true
+    name?: true
+    code?: true
+    faculty?: true
+    maxStudents?: true
+    schedule?: true
+    room?: true
+    latitude?: true
+    longitude?: true
+    geofenceRadius?: true
+    geofenceEnabled?: true
+    createdBy?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ClassAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Class to aggregate.
+     */
+    where?: ClassWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Classes to fetch.
+     */
+    orderBy?: ClassOrderByWithRelationInput | ClassOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ClassWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Classes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Classes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Classes
+    **/
+    _count?: true | ClassCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ClassAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ClassSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ClassMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ClassMaxAggregateInputType
+  }
+
+  export type GetClassAggregateType<T extends ClassAggregateArgs> = {
+        [P in keyof T & keyof AggregateClass]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateClass[P]>
+      : GetScalarType<T[P], AggregateClass[P]>
+  }
+
+
+
+
+  export type ClassGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ClassWhereInput
+    orderBy?: ClassOrderByWithAggregationInput | ClassOrderByWithAggregationInput[]
+    by: ClassScalarFieldEnum[] | ClassScalarFieldEnum
+    having?: ClassScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ClassCountAggregateInputType | true
+    _avg?: ClassAvgAggregateInputType
+    _sum?: ClassSumAggregateInputType
+    _min?: ClassMinAggregateInputType
+    _max?: ClassMaxAggregateInputType
+  }
+
+  export type ClassGroupByOutputType = {
+    id: number
+    name: string
+    code: string
+    faculty: string
+    maxStudents: number | null
+    schedule: string | null
+    room: string | null
+    latitude: number | null
+    longitude: number | null
+    geofenceRadius: number
+    geofenceEnabled: boolean
+    createdBy: number | null
+    createdAt: Date
+    updatedAt: Date
+    _count: ClassCountAggregateOutputType | null
+    _avg: ClassAvgAggregateOutputType | null
+    _sum: ClassSumAggregateOutputType | null
+    _min: ClassMinAggregateOutputType | null
+    _max: ClassMaxAggregateOutputType | null
+  }
+
+  type GetClassGroupByPayload<T extends ClassGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ClassGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ClassGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ClassGroupByOutputType[P]>
+            : GetScalarType<T[P], ClassGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ClassSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    code?: boolean
+    faculty?: boolean
+    maxStudents?: boolean
+    schedule?: boolean
+    room?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    geofenceRadius?: boolean
+    geofenceEnabled?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["class"]>
+
+  export type ClassSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    code?: boolean
+    faculty?: boolean
+    maxStudents?: boolean
+    schedule?: boolean
+    room?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    geofenceRadius?: boolean
+    geofenceEnabled?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["class"]>
+
+  export type ClassSelectScalar = {
+    id?: boolean
+    name?: boolean
+    code?: boolean
+    faculty?: boolean
+    maxStudents?: boolean
+    schedule?: boolean
+    room?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    geofenceRadius?: boolean
+    geofenceEnabled?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+
+  export type $ClassPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Class"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      name: string
+      code: string
+      faculty: string
+      maxStudents: number | null
+      schedule: string | null
+      room: string | null
+      latitude: number | null
+      longitude: number | null
+      geofenceRadius: number
+      geofenceEnabled: boolean
+      createdBy: number | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["class"]>
+    composites: {}
+  }
+
+  type ClassGetPayload<S extends boolean | null | undefined | ClassDefaultArgs> = $Result.GetResult<Prisma.$ClassPayload, S>
+
+  type ClassCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<ClassFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: ClassCountAggregateInputType | true
+    }
+
+  export interface ClassDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Class'], meta: { name: 'Class' } }
+    /**
+     * Find zero or one Class that matches the filter.
+     * @param {ClassFindUniqueArgs} args - Arguments to find a Class
+     * @example
+     * // Get one Class
+     * const class = await prisma.class.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ClassFindUniqueArgs>(args: SelectSubset<T, ClassFindUniqueArgs<ExtArgs>>): Prisma__ClassClient<$Result.GetResult<Prisma.$ClassPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one Class that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {ClassFindUniqueOrThrowArgs} args - Arguments to find a Class
+     * @example
+     * // Get one Class
+     * const class = await prisma.class.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ClassFindUniqueOrThrowArgs>(args: SelectSubset<T, ClassFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ClassClient<$Result.GetResult<Prisma.$ClassPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first Class that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClassFindFirstArgs} args - Arguments to find a Class
+     * @example
+     * // Get one Class
+     * const class = await prisma.class.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ClassFindFirstArgs>(args?: SelectSubset<T, ClassFindFirstArgs<ExtArgs>>): Prisma__ClassClient<$Result.GetResult<Prisma.$ClassPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first Class that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClassFindFirstOrThrowArgs} args - Arguments to find a Class
+     * @example
+     * // Get one Class
+     * const class = await prisma.class.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ClassFindFirstOrThrowArgs>(args?: SelectSubset<T, ClassFindFirstOrThrowArgs<ExtArgs>>): Prisma__ClassClient<$Result.GetResult<Prisma.$ClassPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more Classes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClassFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Classes
+     * const classes = await prisma.class.findMany()
+     * 
+     * // Get first 10 Classes
+     * const classes = await prisma.class.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const classWithIdOnly = await prisma.class.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ClassFindManyArgs>(args?: SelectSubset<T, ClassFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClassPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a Class.
+     * @param {ClassCreateArgs} args - Arguments to create a Class.
+     * @example
+     * // Create one Class
+     * const Class = await prisma.class.create({
+     *   data: {
+     *     // ... data to create a Class
+     *   }
+     * })
+     * 
+     */
+    create<T extends ClassCreateArgs>(args: SelectSubset<T, ClassCreateArgs<ExtArgs>>): Prisma__ClassClient<$Result.GetResult<Prisma.$ClassPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many Classes.
+     * @param {ClassCreateManyArgs} args - Arguments to create many Classes.
+     * @example
+     * // Create many Classes
+     * const class = await prisma.class.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ClassCreateManyArgs>(args?: SelectSubset<T, ClassCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Classes and returns the data saved in the database.
+     * @param {ClassCreateManyAndReturnArgs} args - Arguments to create many Classes.
+     * @example
+     * // Create many Classes
+     * const class = await prisma.class.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Classes and only return the `id`
+     * const classWithIdOnly = await prisma.class.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ClassCreateManyAndReturnArgs>(args?: SelectSubset<T, ClassCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClassPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a Class.
+     * @param {ClassDeleteArgs} args - Arguments to delete one Class.
+     * @example
+     * // Delete one Class
+     * const Class = await prisma.class.delete({
+     *   where: {
+     *     // ... filter to delete one Class
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ClassDeleteArgs>(args: SelectSubset<T, ClassDeleteArgs<ExtArgs>>): Prisma__ClassClient<$Result.GetResult<Prisma.$ClassPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one Class.
+     * @param {ClassUpdateArgs} args - Arguments to update one Class.
+     * @example
+     * // Update one Class
+     * const class = await prisma.class.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ClassUpdateArgs>(args: SelectSubset<T, ClassUpdateArgs<ExtArgs>>): Prisma__ClassClient<$Result.GetResult<Prisma.$ClassPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more Classes.
+     * @param {ClassDeleteManyArgs} args - Arguments to filter Classes to delete.
+     * @example
+     * // Delete a few Classes
+     * const { count } = await prisma.class.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ClassDeleteManyArgs>(args?: SelectSubset<T, ClassDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Classes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClassUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Classes
+     * const class = await prisma.class.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ClassUpdateManyArgs>(args: SelectSubset<T, ClassUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Class.
+     * @param {ClassUpsertArgs} args - Arguments to update or create a Class.
+     * @example
+     * // Update or create a Class
+     * const class = await prisma.class.upsert({
+     *   create: {
+     *     // ... data to create a Class
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Class we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ClassUpsertArgs>(args: SelectSubset<T, ClassUpsertArgs<ExtArgs>>): Prisma__ClassClient<$Result.GetResult<Prisma.$ClassPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of Classes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClassCountArgs} args - Arguments to filter Classes to count.
+     * @example
+     * // Count the number of Classes
+     * const count = await prisma.class.count({
+     *   where: {
+     *     // ... the filter for the Classes we want to count
+     *   }
+     * })
+    **/
+    count<T extends ClassCountArgs>(
+      args?: Subset<T, ClassCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ClassCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Class.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClassAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ClassAggregateArgs>(args: Subset<T, ClassAggregateArgs>): Prisma.PrismaPromise<GetClassAggregateType<T>>
+
+    /**
+     * Group by Class.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClassGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ClassGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ClassGroupByArgs['orderBy'] }
+        : { orderBy?: ClassGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ClassGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetClassGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Class model
+   */
+  readonly fields: ClassFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Class.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ClassClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Class model
+   */ 
+  interface ClassFieldRefs {
+    readonly id: FieldRef<"Class", 'Int'>
+    readonly name: FieldRef<"Class", 'String'>
+    readonly code: FieldRef<"Class", 'String'>
+    readonly faculty: FieldRef<"Class", 'String'>
+    readonly maxStudents: FieldRef<"Class", 'Int'>
+    readonly schedule: FieldRef<"Class", 'String'>
+    readonly room: FieldRef<"Class", 'String'>
+    readonly latitude: FieldRef<"Class", 'Float'>
+    readonly longitude: FieldRef<"Class", 'Float'>
+    readonly geofenceRadius: FieldRef<"Class", 'Int'>
+    readonly geofenceEnabled: FieldRef<"Class", 'Boolean'>
+    readonly createdBy: FieldRef<"Class", 'Int'>
+    readonly createdAt: FieldRef<"Class", 'DateTime'>
+    readonly updatedAt: FieldRef<"Class", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Class findUnique
+   */
+  export type ClassFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Class
+     */
+    select?: ClassSelect<ExtArgs> | null
+    /**
+     * Filter, which Class to fetch.
+     */
+    where: ClassWhereUniqueInput
+  }
+
+  /**
+   * Class findUniqueOrThrow
+   */
+  export type ClassFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Class
+     */
+    select?: ClassSelect<ExtArgs> | null
+    /**
+     * Filter, which Class to fetch.
+     */
+    where: ClassWhereUniqueInput
+  }
+
+  /**
+   * Class findFirst
+   */
+  export type ClassFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Class
+     */
+    select?: ClassSelect<ExtArgs> | null
+    /**
+     * Filter, which Class to fetch.
+     */
+    where?: ClassWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Classes to fetch.
+     */
+    orderBy?: ClassOrderByWithRelationInput | ClassOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Classes.
+     */
+    cursor?: ClassWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Classes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Classes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Classes.
+     */
+    distinct?: ClassScalarFieldEnum | ClassScalarFieldEnum[]
+  }
+
+  /**
+   * Class findFirstOrThrow
+   */
+  export type ClassFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Class
+     */
+    select?: ClassSelect<ExtArgs> | null
+    /**
+     * Filter, which Class to fetch.
+     */
+    where?: ClassWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Classes to fetch.
+     */
+    orderBy?: ClassOrderByWithRelationInput | ClassOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Classes.
+     */
+    cursor?: ClassWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Classes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Classes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Classes.
+     */
+    distinct?: ClassScalarFieldEnum | ClassScalarFieldEnum[]
+  }
+
+  /**
+   * Class findMany
+   */
+  export type ClassFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Class
+     */
+    select?: ClassSelect<ExtArgs> | null
+    /**
+     * Filter, which Classes to fetch.
+     */
+    where?: ClassWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Classes to fetch.
+     */
+    orderBy?: ClassOrderByWithRelationInput | ClassOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Classes.
+     */
+    cursor?: ClassWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Classes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Classes.
+     */
+    skip?: number
+    distinct?: ClassScalarFieldEnum | ClassScalarFieldEnum[]
+  }
+
+  /**
+   * Class create
+   */
+  export type ClassCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Class
+     */
+    select?: ClassSelect<ExtArgs> | null
+    /**
+     * The data needed to create a Class.
+     */
+    data: XOR<ClassCreateInput, ClassUncheckedCreateInput>
+  }
+
+  /**
+   * Class createMany
+   */
+  export type ClassCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Classes.
+     */
+    data: ClassCreateManyInput | ClassCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Class createManyAndReturn
+   */
+  export type ClassCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Class
+     */
+    select?: ClassSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many Classes.
+     */
+    data: ClassCreateManyInput | ClassCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Class update
+   */
+  export type ClassUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Class
+     */
+    select?: ClassSelect<ExtArgs> | null
+    /**
+     * The data needed to update a Class.
+     */
+    data: XOR<ClassUpdateInput, ClassUncheckedUpdateInput>
+    /**
+     * Choose, which Class to update.
+     */
+    where: ClassWhereUniqueInput
+  }
+
+  /**
+   * Class updateMany
+   */
+  export type ClassUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Classes.
+     */
+    data: XOR<ClassUpdateManyMutationInput, ClassUncheckedUpdateManyInput>
+    /**
+     * Filter which Classes to update
+     */
+    where?: ClassWhereInput
+  }
+
+  /**
+   * Class upsert
+   */
+  export type ClassUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Class
+     */
+    select?: ClassSelect<ExtArgs> | null
+    /**
+     * The filter to search for the Class to update in case it exists.
+     */
+    where: ClassWhereUniqueInput
+    /**
+     * In case the Class found by the `where` argument doesn't exist, create a new Class with this data.
+     */
+    create: XOR<ClassCreateInput, ClassUncheckedCreateInput>
+    /**
+     * In case the Class was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ClassUpdateInput, ClassUncheckedUpdateInput>
+  }
+
+  /**
+   * Class delete
+   */
+  export type ClassDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Class
+     */
+    select?: ClassSelect<ExtArgs> | null
+    /**
+     * Filter which Class to delete.
+     */
+    where: ClassWhereUniqueInput
+  }
+
+  /**
+   * Class deleteMany
+   */
+  export type ClassDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Classes to delete
+     */
+    where?: ClassWhereInput
+  }
+
+  /**
+   * Class without action
+   */
+  export type ClassDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Class
+     */
+    select?: ClassSelect<ExtArgs> | null
+  }
+
+
+  /**
+   * Model QRSession
+   */
+
+  export type AggregateQRSession = {
+    _count: QRSessionCountAggregateOutputType | null
+    _avg: QRSessionAvgAggregateOutputType | null
+    _sum: QRSessionSumAggregateOutputType | null
+    _min: QRSessionMinAggregateOutputType | null
+    _max: QRSessionMaxAggregateOutputType | null
+  }
+
+  export type QRSessionAvgAggregateOutputType = {
+    latitude: number | null
+    longitude: number | null
+    radius: number | null
+  }
+
+  export type QRSessionSumAggregateOutputType = {
+    latitude: number | null
+    longitude: number | null
+    radius: number | null
+  }
+
+  export type QRSessionMinAggregateOutputType = {
+    id: string | null
+    classId: string | null
+    className: string | null
+    latitude: number | null
+    longitude: number | null
+    radius: number | null
+    createdBy: string | null
+    createdAt: Date | null
+    expiresAt: Date | null
+    isActive: boolean | null
+  }
+
+  export type QRSessionMaxAggregateOutputType = {
+    id: string | null
+    classId: string | null
+    className: string | null
+    latitude: number | null
+    longitude: number | null
+    radius: number | null
+    createdBy: string | null
+    createdAt: Date | null
+    expiresAt: Date | null
+    isActive: boolean | null
+  }
+
+  export type QRSessionCountAggregateOutputType = {
+    id: number
+    classId: number
+    className: number
+    latitude: number
+    longitude: number
+    radius: number
+    createdBy: number
+    createdAt: number
+    expiresAt: number
+    isActive: number
+    _all: number
+  }
+
+
+  export type QRSessionAvgAggregateInputType = {
+    latitude?: true
+    longitude?: true
+    radius?: true
+  }
+
+  export type QRSessionSumAggregateInputType = {
+    latitude?: true
+    longitude?: true
+    radius?: true
+  }
+
+  export type QRSessionMinAggregateInputType = {
+    id?: true
+    classId?: true
+    className?: true
+    latitude?: true
+    longitude?: true
+    radius?: true
+    createdBy?: true
+    createdAt?: true
+    expiresAt?: true
+    isActive?: true
+  }
+
+  export type QRSessionMaxAggregateInputType = {
+    id?: true
+    classId?: true
+    className?: true
+    latitude?: true
+    longitude?: true
+    radius?: true
+    createdBy?: true
+    createdAt?: true
+    expiresAt?: true
+    isActive?: true
+  }
+
+  export type QRSessionCountAggregateInputType = {
+    id?: true
+    classId?: true
+    className?: true
+    latitude?: true
+    longitude?: true
+    radius?: true
+    createdBy?: true
+    createdAt?: true
+    expiresAt?: true
+    isActive?: true
+    _all?: true
+  }
+
+  export type QRSessionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which QRSession to aggregate.
+     */
+    where?: QRSessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of QRSessions to fetch.
+     */
+    orderBy?: QRSessionOrderByWithRelationInput | QRSessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: QRSessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` QRSessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` QRSessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned QRSessions
+    **/
+    _count?: true | QRSessionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: QRSessionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: QRSessionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: QRSessionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: QRSessionMaxAggregateInputType
+  }
+
+  export type GetQRSessionAggregateType<T extends QRSessionAggregateArgs> = {
+        [P in keyof T & keyof AggregateQRSession]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateQRSession[P]>
+      : GetScalarType<T[P], AggregateQRSession[P]>
+  }
+
+
+
+
+  export type QRSessionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: QRSessionWhereInput
+    orderBy?: QRSessionOrderByWithAggregationInput | QRSessionOrderByWithAggregationInput[]
+    by: QRSessionScalarFieldEnum[] | QRSessionScalarFieldEnum
+    having?: QRSessionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: QRSessionCountAggregateInputType | true
+    _avg?: QRSessionAvgAggregateInputType
+    _sum?: QRSessionSumAggregateInputType
+    _min?: QRSessionMinAggregateInputType
+    _max?: QRSessionMaxAggregateInputType
+  }
+
+  export type QRSessionGroupByOutputType = {
+    id: string
+    classId: string
+    className: string
+    latitude: number | null
+    longitude: number | null
+    radius: number
+    createdBy: string | null
+    createdAt: Date
+    expiresAt: Date
+    isActive: boolean
+    _count: QRSessionCountAggregateOutputType | null
+    _avg: QRSessionAvgAggregateOutputType | null
+    _sum: QRSessionSumAggregateOutputType | null
+    _min: QRSessionMinAggregateOutputType | null
+    _max: QRSessionMaxAggregateOutputType | null
+  }
+
+  type GetQRSessionGroupByPayload<T extends QRSessionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<QRSessionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof QRSessionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], QRSessionGroupByOutputType[P]>
+            : GetScalarType<T[P], QRSessionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type QRSessionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    classId?: boolean
+    className?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    radius?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    expiresAt?: boolean
+    isActive?: boolean
+  }, ExtArgs["result"]["qRSession"]>
+
+  export type QRSessionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    classId?: boolean
+    className?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    radius?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    expiresAt?: boolean
+    isActive?: boolean
+  }, ExtArgs["result"]["qRSession"]>
+
+  export type QRSessionSelectScalar = {
+    id?: boolean
+    classId?: boolean
+    className?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    radius?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    expiresAt?: boolean
+    isActive?: boolean
+  }
+
+
+  export type $QRSessionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "QRSession"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      classId: string
+      className: string
+      latitude: number | null
+      longitude: number | null
+      radius: number
+      createdBy: string | null
+      createdAt: Date
+      expiresAt: Date
+      isActive: boolean
+    }, ExtArgs["result"]["qRSession"]>
+    composites: {}
+  }
+
+  type QRSessionGetPayload<S extends boolean | null | undefined | QRSessionDefaultArgs> = $Result.GetResult<Prisma.$QRSessionPayload, S>
+
+  type QRSessionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<QRSessionFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: QRSessionCountAggregateInputType | true
+    }
+
+  export interface QRSessionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['QRSession'], meta: { name: 'QRSession' } }
+    /**
+     * Find zero or one QRSession that matches the filter.
+     * @param {QRSessionFindUniqueArgs} args - Arguments to find a QRSession
+     * @example
+     * // Get one QRSession
+     * const qRSession = await prisma.qRSession.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends QRSessionFindUniqueArgs>(args: SelectSubset<T, QRSessionFindUniqueArgs<ExtArgs>>): Prisma__QRSessionClient<$Result.GetResult<Prisma.$QRSessionPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one QRSession that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {QRSessionFindUniqueOrThrowArgs} args - Arguments to find a QRSession
+     * @example
+     * // Get one QRSession
+     * const qRSession = await prisma.qRSession.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends QRSessionFindUniqueOrThrowArgs>(args: SelectSubset<T, QRSessionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__QRSessionClient<$Result.GetResult<Prisma.$QRSessionPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first QRSession that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QRSessionFindFirstArgs} args - Arguments to find a QRSession
+     * @example
+     * // Get one QRSession
+     * const qRSession = await prisma.qRSession.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends QRSessionFindFirstArgs>(args?: SelectSubset<T, QRSessionFindFirstArgs<ExtArgs>>): Prisma__QRSessionClient<$Result.GetResult<Prisma.$QRSessionPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first QRSession that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QRSessionFindFirstOrThrowArgs} args - Arguments to find a QRSession
+     * @example
+     * // Get one QRSession
+     * const qRSession = await prisma.qRSession.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends QRSessionFindFirstOrThrowArgs>(args?: SelectSubset<T, QRSessionFindFirstOrThrowArgs<ExtArgs>>): Prisma__QRSessionClient<$Result.GetResult<Prisma.$QRSessionPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more QRSessions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QRSessionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all QRSessions
+     * const qRSessions = await prisma.qRSession.findMany()
+     * 
+     * // Get first 10 QRSessions
+     * const qRSessions = await prisma.qRSession.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const qRSessionWithIdOnly = await prisma.qRSession.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends QRSessionFindManyArgs>(args?: SelectSubset<T, QRSessionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QRSessionPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a QRSession.
+     * @param {QRSessionCreateArgs} args - Arguments to create a QRSession.
+     * @example
+     * // Create one QRSession
+     * const QRSession = await prisma.qRSession.create({
+     *   data: {
+     *     // ... data to create a QRSession
+     *   }
+     * })
+     * 
+     */
+    create<T extends QRSessionCreateArgs>(args: SelectSubset<T, QRSessionCreateArgs<ExtArgs>>): Prisma__QRSessionClient<$Result.GetResult<Prisma.$QRSessionPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many QRSessions.
+     * @param {QRSessionCreateManyArgs} args - Arguments to create many QRSessions.
+     * @example
+     * // Create many QRSessions
+     * const qRSession = await prisma.qRSession.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends QRSessionCreateManyArgs>(args?: SelectSubset<T, QRSessionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many QRSessions and returns the data saved in the database.
+     * @param {QRSessionCreateManyAndReturnArgs} args - Arguments to create many QRSessions.
+     * @example
+     * // Create many QRSessions
+     * const qRSession = await prisma.qRSession.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many QRSessions and only return the `id`
+     * const qRSessionWithIdOnly = await prisma.qRSession.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends QRSessionCreateManyAndReturnArgs>(args?: SelectSubset<T, QRSessionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QRSessionPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a QRSession.
+     * @param {QRSessionDeleteArgs} args - Arguments to delete one QRSession.
+     * @example
+     * // Delete one QRSession
+     * const QRSession = await prisma.qRSession.delete({
+     *   where: {
+     *     // ... filter to delete one QRSession
+     *   }
+     * })
+     * 
+     */
+    delete<T extends QRSessionDeleteArgs>(args: SelectSubset<T, QRSessionDeleteArgs<ExtArgs>>): Prisma__QRSessionClient<$Result.GetResult<Prisma.$QRSessionPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one QRSession.
+     * @param {QRSessionUpdateArgs} args - Arguments to update one QRSession.
+     * @example
+     * // Update one QRSession
+     * const qRSession = await prisma.qRSession.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends QRSessionUpdateArgs>(args: SelectSubset<T, QRSessionUpdateArgs<ExtArgs>>): Prisma__QRSessionClient<$Result.GetResult<Prisma.$QRSessionPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more QRSessions.
+     * @param {QRSessionDeleteManyArgs} args - Arguments to filter QRSessions to delete.
+     * @example
+     * // Delete a few QRSessions
+     * const { count } = await prisma.qRSession.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends QRSessionDeleteManyArgs>(args?: SelectSubset<T, QRSessionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more QRSessions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QRSessionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many QRSessions
+     * const qRSession = await prisma.qRSession.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends QRSessionUpdateManyArgs>(args: SelectSubset<T, QRSessionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one QRSession.
+     * @param {QRSessionUpsertArgs} args - Arguments to update or create a QRSession.
+     * @example
+     * // Update or create a QRSession
+     * const qRSession = await prisma.qRSession.upsert({
+     *   create: {
+     *     // ... data to create a QRSession
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the QRSession we want to update
+     *   }
+     * })
+     */
+    upsert<T extends QRSessionUpsertArgs>(args: SelectSubset<T, QRSessionUpsertArgs<ExtArgs>>): Prisma__QRSessionClient<$Result.GetResult<Prisma.$QRSessionPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of QRSessions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QRSessionCountArgs} args - Arguments to filter QRSessions to count.
+     * @example
+     * // Count the number of QRSessions
+     * const count = await prisma.qRSession.count({
+     *   where: {
+     *     // ... the filter for the QRSessions we want to count
+     *   }
+     * })
+    **/
+    count<T extends QRSessionCountArgs>(
+      args?: Subset<T, QRSessionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], QRSessionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a QRSession.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QRSessionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends QRSessionAggregateArgs>(args: Subset<T, QRSessionAggregateArgs>): Prisma.PrismaPromise<GetQRSessionAggregateType<T>>
+
+    /**
+     * Group by QRSession.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QRSessionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends QRSessionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: QRSessionGroupByArgs['orderBy'] }
+        : { orderBy?: QRSessionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, QRSessionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetQRSessionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the QRSession model
+   */
+  readonly fields: QRSessionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for QRSession.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__QRSessionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the QRSession model
+   */ 
+  interface QRSessionFieldRefs {
+    readonly id: FieldRef<"QRSession", 'String'>
+    readonly classId: FieldRef<"QRSession", 'String'>
+    readonly className: FieldRef<"QRSession", 'String'>
+    readonly latitude: FieldRef<"QRSession", 'Float'>
+    readonly longitude: FieldRef<"QRSession", 'Float'>
+    readonly radius: FieldRef<"QRSession", 'Int'>
+    readonly createdBy: FieldRef<"QRSession", 'String'>
+    readonly createdAt: FieldRef<"QRSession", 'DateTime'>
+    readonly expiresAt: FieldRef<"QRSession", 'DateTime'>
+    readonly isActive: FieldRef<"QRSession", 'Boolean'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * QRSession findUnique
+   */
+  export type QRSessionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QRSession
+     */
+    select?: QRSessionSelect<ExtArgs> | null
+    /**
+     * Filter, which QRSession to fetch.
+     */
+    where: QRSessionWhereUniqueInput
+  }
+
+  /**
+   * QRSession findUniqueOrThrow
+   */
+  export type QRSessionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QRSession
+     */
+    select?: QRSessionSelect<ExtArgs> | null
+    /**
+     * Filter, which QRSession to fetch.
+     */
+    where: QRSessionWhereUniqueInput
+  }
+
+  /**
+   * QRSession findFirst
+   */
+  export type QRSessionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QRSession
+     */
+    select?: QRSessionSelect<ExtArgs> | null
+    /**
+     * Filter, which QRSession to fetch.
+     */
+    where?: QRSessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of QRSessions to fetch.
+     */
+    orderBy?: QRSessionOrderByWithRelationInput | QRSessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for QRSessions.
+     */
+    cursor?: QRSessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` QRSessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` QRSessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of QRSessions.
+     */
+    distinct?: QRSessionScalarFieldEnum | QRSessionScalarFieldEnum[]
+  }
+
+  /**
+   * QRSession findFirstOrThrow
+   */
+  export type QRSessionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QRSession
+     */
+    select?: QRSessionSelect<ExtArgs> | null
+    /**
+     * Filter, which QRSession to fetch.
+     */
+    where?: QRSessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of QRSessions to fetch.
+     */
+    orderBy?: QRSessionOrderByWithRelationInput | QRSessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for QRSessions.
+     */
+    cursor?: QRSessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` QRSessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` QRSessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of QRSessions.
+     */
+    distinct?: QRSessionScalarFieldEnum | QRSessionScalarFieldEnum[]
+  }
+
+  /**
+   * QRSession findMany
+   */
+  export type QRSessionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QRSession
+     */
+    select?: QRSessionSelect<ExtArgs> | null
+    /**
+     * Filter, which QRSessions to fetch.
+     */
+    where?: QRSessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of QRSessions to fetch.
+     */
+    orderBy?: QRSessionOrderByWithRelationInput | QRSessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing QRSessions.
+     */
+    cursor?: QRSessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` QRSessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` QRSessions.
+     */
+    skip?: number
+    distinct?: QRSessionScalarFieldEnum | QRSessionScalarFieldEnum[]
+  }
+
+  /**
+   * QRSession create
+   */
+  export type QRSessionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QRSession
+     */
+    select?: QRSessionSelect<ExtArgs> | null
+    /**
+     * The data needed to create a QRSession.
+     */
+    data: XOR<QRSessionCreateInput, QRSessionUncheckedCreateInput>
+  }
+
+  /**
+   * QRSession createMany
+   */
+  export type QRSessionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many QRSessions.
+     */
+    data: QRSessionCreateManyInput | QRSessionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * QRSession createManyAndReturn
+   */
+  export type QRSessionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QRSession
+     */
+    select?: QRSessionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many QRSessions.
+     */
+    data: QRSessionCreateManyInput | QRSessionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * QRSession update
+   */
+  export type QRSessionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QRSession
+     */
+    select?: QRSessionSelect<ExtArgs> | null
+    /**
+     * The data needed to update a QRSession.
+     */
+    data: XOR<QRSessionUpdateInput, QRSessionUncheckedUpdateInput>
+    /**
+     * Choose, which QRSession to update.
+     */
+    where: QRSessionWhereUniqueInput
+  }
+
+  /**
+   * QRSession updateMany
+   */
+  export type QRSessionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update QRSessions.
+     */
+    data: XOR<QRSessionUpdateManyMutationInput, QRSessionUncheckedUpdateManyInput>
+    /**
+     * Filter which QRSessions to update
+     */
+    where?: QRSessionWhereInput
+  }
+
+  /**
+   * QRSession upsert
+   */
+  export type QRSessionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QRSession
+     */
+    select?: QRSessionSelect<ExtArgs> | null
+    /**
+     * The filter to search for the QRSession to update in case it exists.
+     */
+    where: QRSessionWhereUniqueInput
+    /**
+     * In case the QRSession found by the `where` argument doesn't exist, create a new QRSession with this data.
+     */
+    create: XOR<QRSessionCreateInput, QRSessionUncheckedCreateInput>
+    /**
+     * In case the QRSession was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<QRSessionUpdateInput, QRSessionUncheckedUpdateInput>
+  }
+
+  /**
+   * QRSession delete
+   */
+  export type QRSessionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QRSession
+     */
+    select?: QRSessionSelect<ExtArgs> | null
+    /**
+     * Filter which QRSession to delete.
+     */
+    where: QRSessionWhereUniqueInput
+  }
+
+  /**
+   * QRSession deleteMany
+   */
+  export type QRSessionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which QRSessions to delete
+     */
+    where?: QRSessionWhereInput
+  }
+
+  /**
+   * QRSession without action
+   */
+  export type QRSessionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QRSession
+     */
+    select?: QRSessionSelect<ExtArgs> | null
+  }
+
+
+  /**
+   * Model GeofenceSettings
+   */
+
+  export type AggregateGeofenceSettings = {
+    _count: GeofenceSettingsCountAggregateOutputType | null
+    _avg: GeofenceSettingsAvgAggregateOutputType | null
+    _sum: GeofenceSettingsSumAggregateOutputType | null
+    _min: GeofenceSettingsMinAggregateOutputType | null
+    _max: GeofenceSettingsMaxAggregateOutputType | null
+  }
+
+  export type GeofenceSettingsAvgAggregateOutputType = {
+    id: number | null
+    defaultRadius: number | null
+    accuracyThreshold: number | null
+  }
+
+  export type GeofenceSettingsSumAggregateOutputType = {
+    id: number | null
+    defaultRadius: number | null
+    accuracyThreshold: number | null
+  }
+
+  export type GeofenceSettingsMinAggregateOutputType = {
+    id: number | null
+    defaultRadius: number | null
+    enabled: boolean | null
+    allowOverride: boolean | null
+    accuracyThreshold: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type GeofenceSettingsMaxAggregateOutputType = {
+    id: number | null
+    defaultRadius: number | null
+    enabled: boolean | null
+    allowOverride: boolean | null
+    accuracyThreshold: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type GeofenceSettingsCountAggregateOutputType = {
+    id: number
+    defaultRadius: number
+    enabled: number
+    allowOverride: number
+    accuracyThreshold: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type GeofenceSettingsAvgAggregateInputType = {
+    id?: true
+    defaultRadius?: true
+    accuracyThreshold?: true
+  }
+
+  export type GeofenceSettingsSumAggregateInputType = {
+    id?: true
+    defaultRadius?: true
+    accuracyThreshold?: true
+  }
+
+  export type GeofenceSettingsMinAggregateInputType = {
+    id?: true
+    defaultRadius?: true
+    enabled?: true
+    allowOverride?: true
+    accuracyThreshold?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type GeofenceSettingsMaxAggregateInputType = {
+    id?: true
+    defaultRadius?: true
+    enabled?: true
+    allowOverride?: true
+    accuracyThreshold?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type GeofenceSettingsCountAggregateInputType = {
+    id?: true
+    defaultRadius?: true
+    enabled?: true
+    allowOverride?: true
+    accuracyThreshold?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type GeofenceSettingsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GeofenceSettings to aggregate.
+     */
+    where?: GeofenceSettingsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GeofenceSettings to fetch.
+     */
+    orderBy?: GeofenceSettingsOrderByWithRelationInput | GeofenceSettingsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: GeofenceSettingsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GeofenceSettings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GeofenceSettings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned GeofenceSettings
+    **/
+    _count?: true | GeofenceSettingsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: GeofenceSettingsAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: GeofenceSettingsSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: GeofenceSettingsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: GeofenceSettingsMaxAggregateInputType
+  }
+
+  export type GetGeofenceSettingsAggregateType<T extends GeofenceSettingsAggregateArgs> = {
+        [P in keyof T & keyof AggregateGeofenceSettings]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateGeofenceSettings[P]>
+      : GetScalarType<T[P], AggregateGeofenceSettings[P]>
+  }
+
+
+
+
+  export type GeofenceSettingsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GeofenceSettingsWhereInput
+    orderBy?: GeofenceSettingsOrderByWithAggregationInput | GeofenceSettingsOrderByWithAggregationInput[]
+    by: GeofenceSettingsScalarFieldEnum[] | GeofenceSettingsScalarFieldEnum
+    having?: GeofenceSettingsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: GeofenceSettingsCountAggregateInputType | true
+    _avg?: GeofenceSettingsAvgAggregateInputType
+    _sum?: GeofenceSettingsSumAggregateInputType
+    _min?: GeofenceSettingsMinAggregateInputType
+    _max?: GeofenceSettingsMaxAggregateInputType
+  }
+
+  export type GeofenceSettingsGroupByOutputType = {
+    id: number
+    defaultRadius: number
+    enabled: boolean
+    allowOverride: boolean
+    accuracyThreshold: number
+    createdAt: Date
+    updatedAt: Date
+    _count: GeofenceSettingsCountAggregateOutputType | null
+    _avg: GeofenceSettingsAvgAggregateOutputType | null
+    _sum: GeofenceSettingsSumAggregateOutputType | null
+    _min: GeofenceSettingsMinAggregateOutputType | null
+    _max: GeofenceSettingsMaxAggregateOutputType | null
+  }
+
+  type GetGeofenceSettingsGroupByPayload<T extends GeofenceSettingsGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<GeofenceSettingsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof GeofenceSettingsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], GeofenceSettingsGroupByOutputType[P]>
+            : GetScalarType<T[P], GeofenceSettingsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type GeofenceSettingsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    defaultRadius?: boolean
+    enabled?: boolean
+    allowOverride?: boolean
+    accuracyThreshold?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["geofenceSettings"]>
+
+  export type GeofenceSettingsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    defaultRadius?: boolean
+    enabled?: boolean
+    allowOverride?: boolean
+    accuracyThreshold?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["geofenceSettings"]>
+
+  export type GeofenceSettingsSelectScalar = {
+    id?: boolean
+    defaultRadius?: boolean
+    enabled?: boolean
+    allowOverride?: boolean
+    accuracyThreshold?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+
+  export type $GeofenceSettingsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "GeofenceSettings"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      defaultRadius: number
+      enabled: boolean
+      allowOverride: boolean
+      accuracyThreshold: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["geofenceSettings"]>
+    composites: {}
+  }
+
+  type GeofenceSettingsGetPayload<S extends boolean | null | undefined | GeofenceSettingsDefaultArgs> = $Result.GetResult<Prisma.$GeofenceSettingsPayload, S>
+
+  type GeofenceSettingsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<GeofenceSettingsFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: GeofenceSettingsCountAggregateInputType | true
+    }
+
+  export interface GeofenceSettingsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['GeofenceSettings'], meta: { name: 'GeofenceSettings' } }
+    /**
+     * Find zero or one GeofenceSettings that matches the filter.
+     * @param {GeofenceSettingsFindUniqueArgs} args - Arguments to find a GeofenceSettings
+     * @example
+     * // Get one GeofenceSettings
+     * const geofenceSettings = await prisma.geofenceSettings.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends GeofenceSettingsFindUniqueArgs>(args: SelectSubset<T, GeofenceSettingsFindUniqueArgs<ExtArgs>>): Prisma__GeofenceSettingsClient<$Result.GetResult<Prisma.$GeofenceSettingsPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one GeofenceSettings that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {GeofenceSettingsFindUniqueOrThrowArgs} args - Arguments to find a GeofenceSettings
+     * @example
+     * // Get one GeofenceSettings
+     * const geofenceSettings = await prisma.geofenceSettings.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends GeofenceSettingsFindUniqueOrThrowArgs>(args: SelectSubset<T, GeofenceSettingsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__GeofenceSettingsClient<$Result.GetResult<Prisma.$GeofenceSettingsPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first GeofenceSettings that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GeofenceSettingsFindFirstArgs} args - Arguments to find a GeofenceSettings
+     * @example
+     * // Get one GeofenceSettings
+     * const geofenceSettings = await prisma.geofenceSettings.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends GeofenceSettingsFindFirstArgs>(args?: SelectSubset<T, GeofenceSettingsFindFirstArgs<ExtArgs>>): Prisma__GeofenceSettingsClient<$Result.GetResult<Prisma.$GeofenceSettingsPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first GeofenceSettings that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GeofenceSettingsFindFirstOrThrowArgs} args - Arguments to find a GeofenceSettings
+     * @example
+     * // Get one GeofenceSettings
+     * const geofenceSettings = await prisma.geofenceSettings.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends GeofenceSettingsFindFirstOrThrowArgs>(args?: SelectSubset<T, GeofenceSettingsFindFirstOrThrowArgs<ExtArgs>>): Prisma__GeofenceSettingsClient<$Result.GetResult<Prisma.$GeofenceSettingsPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more GeofenceSettings that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GeofenceSettingsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all GeofenceSettings
+     * const geofenceSettings = await prisma.geofenceSettings.findMany()
+     * 
+     * // Get first 10 GeofenceSettings
+     * const geofenceSettings = await prisma.geofenceSettings.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const geofenceSettingsWithIdOnly = await prisma.geofenceSettings.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends GeofenceSettingsFindManyArgs>(args?: SelectSubset<T, GeofenceSettingsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GeofenceSettingsPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a GeofenceSettings.
+     * @param {GeofenceSettingsCreateArgs} args - Arguments to create a GeofenceSettings.
+     * @example
+     * // Create one GeofenceSettings
+     * const GeofenceSettings = await prisma.geofenceSettings.create({
+     *   data: {
+     *     // ... data to create a GeofenceSettings
+     *   }
+     * })
+     * 
+     */
+    create<T extends GeofenceSettingsCreateArgs>(args: SelectSubset<T, GeofenceSettingsCreateArgs<ExtArgs>>): Prisma__GeofenceSettingsClient<$Result.GetResult<Prisma.$GeofenceSettingsPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many GeofenceSettings.
+     * @param {GeofenceSettingsCreateManyArgs} args - Arguments to create many GeofenceSettings.
+     * @example
+     * // Create many GeofenceSettings
+     * const geofenceSettings = await prisma.geofenceSettings.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends GeofenceSettingsCreateManyArgs>(args?: SelectSubset<T, GeofenceSettingsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many GeofenceSettings and returns the data saved in the database.
+     * @param {GeofenceSettingsCreateManyAndReturnArgs} args - Arguments to create many GeofenceSettings.
+     * @example
+     * // Create many GeofenceSettings
+     * const geofenceSettings = await prisma.geofenceSettings.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many GeofenceSettings and only return the `id`
+     * const geofenceSettingsWithIdOnly = await prisma.geofenceSettings.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends GeofenceSettingsCreateManyAndReturnArgs>(args?: SelectSubset<T, GeofenceSettingsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GeofenceSettingsPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a GeofenceSettings.
+     * @param {GeofenceSettingsDeleteArgs} args - Arguments to delete one GeofenceSettings.
+     * @example
+     * // Delete one GeofenceSettings
+     * const GeofenceSettings = await prisma.geofenceSettings.delete({
+     *   where: {
+     *     // ... filter to delete one GeofenceSettings
+     *   }
+     * })
+     * 
+     */
+    delete<T extends GeofenceSettingsDeleteArgs>(args: SelectSubset<T, GeofenceSettingsDeleteArgs<ExtArgs>>): Prisma__GeofenceSettingsClient<$Result.GetResult<Prisma.$GeofenceSettingsPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one GeofenceSettings.
+     * @param {GeofenceSettingsUpdateArgs} args - Arguments to update one GeofenceSettings.
+     * @example
+     * // Update one GeofenceSettings
+     * const geofenceSettings = await prisma.geofenceSettings.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends GeofenceSettingsUpdateArgs>(args: SelectSubset<T, GeofenceSettingsUpdateArgs<ExtArgs>>): Prisma__GeofenceSettingsClient<$Result.GetResult<Prisma.$GeofenceSettingsPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more GeofenceSettings.
+     * @param {GeofenceSettingsDeleteManyArgs} args - Arguments to filter GeofenceSettings to delete.
+     * @example
+     * // Delete a few GeofenceSettings
+     * const { count } = await prisma.geofenceSettings.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends GeofenceSettingsDeleteManyArgs>(args?: SelectSubset<T, GeofenceSettingsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more GeofenceSettings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GeofenceSettingsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many GeofenceSettings
+     * const geofenceSettings = await prisma.geofenceSettings.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends GeofenceSettingsUpdateManyArgs>(args: SelectSubset<T, GeofenceSettingsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one GeofenceSettings.
+     * @param {GeofenceSettingsUpsertArgs} args - Arguments to update or create a GeofenceSettings.
+     * @example
+     * // Update or create a GeofenceSettings
+     * const geofenceSettings = await prisma.geofenceSettings.upsert({
+     *   create: {
+     *     // ... data to create a GeofenceSettings
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the GeofenceSettings we want to update
+     *   }
+     * })
+     */
+    upsert<T extends GeofenceSettingsUpsertArgs>(args: SelectSubset<T, GeofenceSettingsUpsertArgs<ExtArgs>>): Prisma__GeofenceSettingsClient<$Result.GetResult<Prisma.$GeofenceSettingsPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of GeofenceSettings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GeofenceSettingsCountArgs} args - Arguments to filter GeofenceSettings to count.
+     * @example
+     * // Count the number of GeofenceSettings
+     * const count = await prisma.geofenceSettings.count({
+     *   where: {
+     *     // ... the filter for the GeofenceSettings we want to count
+     *   }
+     * })
+    **/
+    count<T extends GeofenceSettingsCountArgs>(
+      args?: Subset<T, GeofenceSettingsCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], GeofenceSettingsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a GeofenceSettings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GeofenceSettingsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends GeofenceSettingsAggregateArgs>(args: Subset<T, GeofenceSettingsAggregateArgs>): Prisma.PrismaPromise<GetGeofenceSettingsAggregateType<T>>
+
+    /**
+     * Group by GeofenceSettings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GeofenceSettingsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends GeofenceSettingsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: GeofenceSettingsGroupByArgs['orderBy'] }
+        : { orderBy?: GeofenceSettingsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, GeofenceSettingsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetGeofenceSettingsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the GeofenceSettings model
+   */
+  readonly fields: GeofenceSettingsFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for GeofenceSettings.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__GeofenceSettingsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the GeofenceSettings model
+   */ 
+  interface GeofenceSettingsFieldRefs {
+    readonly id: FieldRef<"GeofenceSettings", 'Int'>
+    readonly defaultRadius: FieldRef<"GeofenceSettings", 'Int'>
+    readonly enabled: FieldRef<"GeofenceSettings", 'Boolean'>
+    readonly allowOverride: FieldRef<"GeofenceSettings", 'Boolean'>
+    readonly accuracyThreshold: FieldRef<"GeofenceSettings", 'Float'>
+    readonly createdAt: FieldRef<"GeofenceSettings", 'DateTime'>
+    readonly updatedAt: FieldRef<"GeofenceSettings", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * GeofenceSettings findUnique
+   */
+  export type GeofenceSettingsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GeofenceSettings
+     */
+    select?: GeofenceSettingsSelect<ExtArgs> | null
+    /**
+     * Filter, which GeofenceSettings to fetch.
+     */
+    where: GeofenceSettingsWhereUniqueInput
+  }
+
+  /**
+   * GeofenceSettings findUniqueOrThrow
+   */
+  export type GeofenceSettingsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GeofenceSettings
+     */
+    select?: GeofenceSettingsSelect<ExtArgs> | null
+    /**
+     * Filter, which GeofenceSettings to fetch.
+     */
+    where: GeofenceSettingsWhereUniqueInput
+  }
+
+  /**
+   * GeofenceSettings findFirst
+   */
+  export type GeofenceSettingsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GeofenceSettings
+     */
+    select?: GeofenceSettingsSelect<ExtArgs> | null
+    /**
+     * Filter, which GeofenceSettings to fetch.
+     */
+    where?: GeofenceSettingsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GeofenceSettings to fetch.
+     */
+    orderBy?: GeofenceSettingsOrderByWithRelationInput | GeofenceSettingsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GeofenceSettings.
+     */
+    cursor?: GeofenceSettingsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GeofenceSettings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GeofenceSettings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GeofenceSettings.
+     */
+    distinct?: GeofenceSettingsScalarFieldEnum | GeofenceSettingsScalarFieldEnum[]
+  }
+
+  /**
+   * GeofenceSettings findFirstOrThrow
+   */
+  export type GeofenceSettingsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GeofenceSettings
+     */
+    select?: GeofenceSettingsSelect<ExtArgs> | null
+    /**
+     * Filter, which GeofenceSettings to fetch.
+     */
+    where?: GeofenceSettingsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GeofenceSettings to fetch.
+     */
+    orderBy?: GeofenceSettingsOrderByWithRelationInput | GeofenceSettingsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GeofenceSettings.
+     */
+    cursor?: GeofenceSettingsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GeofenceSettings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GeofenceSettings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GeofenceSettings.
+     */
+    distinct?: GeofenceSettingsScalarFieldEnum | GeofenceSettingsScalarFieldEnum[]
+  }
+
+  /**
+   * GeofenceSettings findMany
+   */
+  export type GeofenceSettingsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GeofenceSettings
+     */
+    select?: GeofenceSettingsSelect<ExtArgs> | null
+    /**
+     * Filter, which GeofenceSettings to fetch.
+     */
+    where?: GeofenceSettingsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GeofenceSettings to fetch.
+     */
+    orderBy?: GeofenceSettingsOrderByWithRelationInput | GeofenceSettingsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing GeofenceSettings.
+     */
+    cursor?: GeofenceSettingsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GeofenceSettings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GeofenceSettings.
+     */
+    skip?: number
+    distinct?: GeofenceSettingsScalarFieldEnum | GeofenceSettingsScalarFieldEnum[]
+  }
+
+  /**
+   * GeofenceSettings create
+   */
+  export type GeofenceSettingsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GeofenceSettings
+     */
+    select?: GeofenceSettingsSelect<ExtArgs> | null
+    /**
+     * The data needed to create a GeofenceSettings.
+     */
+    data: XOR<GeofenceSettingsCreateInput, GeofenceSettingsUncheckedCreateInput>
+  }
+
+  /**
+   * GeofenceSettings createMany
+   */
+  export type GeofenceSettingsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many GeofenceSettings.
+     */
+    data: GeofenceSettingsCreateManyInput | GeofenceSettingsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * GeofenceSettings createManyAndReturn
+   */
+  export type GeofenceSettingsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GeofenceSettings
+     */
+    select?: GeofenceSettingsSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many GeofenceSettings.
+     */
+    data: GeofenceSettingsCreateManyInput | GeofenceSettingsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * GeofenceSettings update
+   */
+  export type GeofenceSettingsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GeofenceSettings
+     */
+    select?: GeofenceSettingsSelect<ExtArgs> | null
+    /**
+     * The data needed to update a GeofenceSettings.
+     */
+    data: XOR<GeofenceSettingsUpdateInput, GeofenceSettingsUncheckedUpdateInput>
+    /**
+     * Choose, which GeofenceSettings to update.
+     */
+    where: GeofenceSettingsWhereUniqueInput
+  }
+
+  /**
+   * GeofenceSettings updateMany
+   */
+  export type GeofenceSettingsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update GeofenceSettings.
+     */
+    data: XOR<GeofenceSettingsUpdateManyMutationInput, GeofenceSettingsUncheckedUpdateManyInput>
+    /**
+     * Filter which GeofenceSettings to update
+     */
+    where?: GeofenceSettingsWhereInput
+  }
+
+  /**
+   * GeofenceSettings upsert
+   */
+  export type GeofenceSettingsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GeofenceSettings
+     */
+    select?: GeofenceSettingsSelect<ExtArgs> | null
+    /**
+     * The filter to search for the GeofenceSettings to update in case it exists.
+     */
+    where: GeofenceSettingsWhereUniqueInput
+    /**
+     * In case the GeofenceSettings found by the `where` argument doesn't exist, create a new GeofenceSettings with this data.
+     */
+    create: XOR<GeofenceSettingsCreateInput, GeofenceSettingsUncheckedCreateInput>
+    /**
+     * In case the GeofenceSettings was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<GeofenceSettingsUpdateInput, GeofenceSettingsUncheckedUpdateInput>
+  }
+
+  /**
+   * GeofenceSettings delete
+   */
+  export type GeofenceSettingsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GeofenceSettings
+     */
+    select?: GeofenceSettingsSelect<ExtArgs> | null
+    /**
+     * Filter which GeofenceSettings to delete.
+     */
+    where: GeofenceSettingsWhereUniqueInput
+  }
+
+  /**
+   * GeofenceSettings deleteMany
+   */
+  export type GeofenceSettingsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GeofenceSettings to delete
+     */
+    where?: GeofenceSettingsWhereInput
+  }
+
+  /**
+   * GeofenceSettings without action
+   */
+  export type GeofenceSettingsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GeofenceSettings
+     */
+    select?: GeofenceSettingsSelect<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -5320,6 +8602,10 @@ export namespace Prisma {
     date: 'date',
     status: 'status',
     timestamp: 'timestamp',
+    studentLatitude: 'studentLatitude',
+    studentLongitude: 'studentLongitude',
+    distanceFromClass: 'distanceFromClass',
+    locationVerified: 'locationVerified',
     createdAt: 'createdAt'
   };
 
@@ -5336,6 +8622,55 @@ export namespace Prisma {
   };
 
   export type AttendanceScalarFieldEnum = (typeof AttendanceScalarFieldEnum)[keyof typeof AttendanceScalarFieldEnum]
+
+
+  export const ClassScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    code: 'code',
+    faculty: 'faculty',
+    maxStudents: 'maxStudents',
+    schedule: 'schedule',
+    room: 'room',
+    latitude: 'latitude',
+    longitude: 'longitude',
+    geofenceRadius: 'geofenceRadius',
+    geofenceEnabled: 'geofenceEnabled',
+    createdBy: 'createdBy',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ClassScalarFieldEnum = (typeof ClassScalarFieldEnum)[keyof typeof ClassScalarFieldEnum]
+
+
+  export const QRSessionScalarFieldEnum: {
+    id: 'id',
+    classId: 'classId',
+    className: 'className',
+    latitude: 'latitude',
+    longitude: 'longitude',
+    radius: 'radius',
+    createdBy: 'createdBy',
+    createdAt: 'createdAt',
+    expiresAt: 'expiresAt',
+    isActive: 'isActive'
+  };
+
+  export type QRSessionScalarFieldEnum = (typeof QRSessionScalarFieldEnum)[keyof typeof QRSessionScalarFieldEnum]
+
+
+  export const GeofenceSettingsScalarFieldEnum: {
+    id: 'id',
+    defaultRadius: 'defaultRadius',
+    enabled: 'enabled',
+    allowOverride: 'allowOverride',
+    accuracyThreshold: 'accuracyThreshold',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type GeofenceSettingsScalarFieldEnum = (typeof GeofenceSettingsScalarFieldEnum)[keyof typeof GeofenceSettingsScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -5420,6 +8755,13 @@ export namespace Prisma {
    * Reference to a field of type 'Float[]'
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
   /**
    * Deep Input Types
@@ -5615,6 +8957,10 @@ export namespace Prisma {
     date?: DateTimeFilter<"StudentAttendance"> | Date | string
     status?: StringFilter<"StudentAttendance"> | string
     timestamp?: StringNullableFilter<"StudentAttendance"> | string | null
+    studentLatitude?: FloatNullableFilter<"StudentAttendance"> | number | null
+    studentLongitude?: FloatNullableFilter<"StudentAttendance"> | number | null
+    distanceFromClass?: FloatNullableFilter<"StudentAttendance"> | number | null
+    locationVerified?: BoolFilter<"StudentAttendance"> | boolean
     createdAt?: DateTimeFilter<"StudentAttendance"> | Date | string
     student?: XOR<StudentRelationFilter, StudentWhereInput>
   }
@@ -5626,6 +8972,10 @@ export namespace Prisma {
     date?: SortOrder
     status?: SortOrder
     timestamp?: SortOrderInput | SortOrder
+    studentLatitude?: SortOrderInput | SortOrder
+    studentLongitude?: SortOrderInput | SortOrder
+    distanceFromClass?: SortOrderInput | SortOrder
+    locationVerified?: SortOrder
     createdAt?: SortOrder
     student?: StudentOrderByWithRelationInput
   }
@@ -5640,6 +8990,10 @@ export namespace Prisma {
     date?: DateTimeFilter<"StudentAttendance"> | Date | string
     status?: StringFilter<"StudentAttendance"> | string
     timestamp?: StringNullableFilter<"StudentAttendance"> | string | null
+    studentLatitude?: FloatNullableFilter<"StudentAttendance"> | number | null
+    studentLongitude?: FloatNullableFilter<"StudentAttendance"> | number | null
+    distanceFromClass?: FloatNullableFilter<"StudentAttendance"> | number | null
+    locationVerified?: BoolFilter<"StudentAttendance"> | boolean
     createdAt?: DateTimeFilter<"StudentAttendance"> | Date | string
     student?: XOR<StudentRelationFilter, StudentWhereInput>
   }, "id">
@@ -5651,6 +9005,10 @@ export namespace Prisma {
     date?: SortOrder
     status?: SortOrder
     timestamp?: SortOrderInput | SortOrder
+    studentLatitude?: SortOrderInput | SortOrder
+    studentLongitude?: SortOrderInput | SortOrder
+    distanceFromClass?: SortOrderInput | SortOrder
+    locationVerified?: SortOrder
     createdAt?: SortOrder
     _count?: StudentAttendanceCountOrderByAggregateInput
     _avg?: StudentAttendanceAvgOrderByAggregateInput
@@ -5669,6 +9027,10 @@ export namespace Prisma {
     date?: DateTimeWithAggregatesFilter<"StudentAttendance"> | Date | string
     status?: StringWithAggregatesFilter<"StudentAttendance"> | string
     timestamp?: StringNullableWithAggregatesFilter<"StudentAttendance"> | string | null
+    studentLatitude?: FloatNullableWithAggregatesFilter<"StudentAttendance"> | number | null
+    studentLongitude?: FloatNullableWithAggregatesFilter<"StudentAttendance"> | number | null
+    distanceFromClass?: FloatNullableWithAggregatesFilter<"StudentAttendance"> | number | null
+    locationVerified?: BoolWithAggregatesFilter<"StudentAttendance"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"StudentAttendance"> | Date | string
   }
 
@@ -5732,6 +9094,248 @@ export namespace Prisma {
     timestamp?: DateTimeWithAggregatesFilter<"Attendance"> | Date | string
     userId?: IntWithAggregatesFilter<"Attendance"> | number
     createdAt?: DateTimeWithAggregatesFilter<"Attendance"> | Date | string
+  }
+
+  export type ClassWhereInput = {
+    AND?: ClassWhereInput | ClassWhereInput[]
+    OR?: ClassWhereInput[]
+    NOT?: ClassWhereInput | ClassWhereInput[]
+    id?: IntFilter<"Class"> | number
+    name?: StringFilter<"Class"> | string
+    code?: StringFilter<"Class"> | string
+    faculty?: StringFilter<"Class"> | string
+    maxStudents?: IntNullableFilter<"Class"> | number | null
+    schedule?: StringNullableFilter<"Class"> | string | null
+    room?: StringNullableFilter<"Class"> | string | null
+    latitude?: FloatNullableFilter<"Class"> | number | null
+    longitude?: FloatNullableFilter<"Class"> | number | null
+    geofenceRadius?: IntFilter<"Class"> | number
+    geofenceEnabled?: BoolFilter<"Class"> | boolean
+    createdBy?: IntNullableFilter<"Class"> | number | null
+    createdAt?: DateTimeFilter<"Class"> | Date | string
+    updatedAt?: DateTimeFilter<"Class"> | Date | string
+  }
+
+  export type ClassOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    code?: SortOrder
+    faculty?: SortOrder
+    maxStudents?: SortOrderInput | SortOrder
+    schedule?: SortOrderInput | SortOrder
+    room?: SortOrderInput | SortOrder
+    latitude?: SortOrderInput | SortOrder
+    longitude?: SortOrderInput | SortOrder
+    geofenceRadius?: SortOrder
+    geofenceEnabled?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ClassWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    code?: string
+    AND?: ClassWhereInput | ClassWhereInput[]
+    OR?: ClassWhereInput[]
+    NOT?: ClassWhereInput | ClassWhereInput[]
+    name?: StringFilter<"Class"> | string
+    faculty?: StringFilter<"Class"> | string
+    maxStudents?: IntNullableFilter<"Class"> | number | null
+    schedule?: StringNullableFilter<"Class"> | string | null
+    room?: StringNullableFilter<"Class"> | string | null
+    latitude?: FloatNullableFilter<"Class"> | number | null
+    longitude?: FloatNullableFilter<"Class"> | number | null
+    geofenceRadius?: IntFilter<"Class"> | number
+    geofenceEnabled?: BoolFilter<"Class"> | boolean
+    createdBy?: IntNullableFilter<"Class"> | number | null
+    createdAt?: DateTimeFilter<"Class"> | Date | string
+    updatedAt?: DateTimeFilter<"Class"> | Date | string
+  }, "id" | "code">
+
+  export type ClassOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    code?: SortOrder
+    faculty?: SortOrder
+    maxStudents?: SortOrderInput | SortOrder
+    schedule?: SortOrderInput | SortOrder
+    room?: SortOrderInput | SortOrder
+    latitude?: SortOrderInput | SortOrder
+    longitude?: SortOrderInput | SortOrder
+    geofenceRadius?: SortOrder
+    geofenceEnabled?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ClassCountOrderByAggregateInput
+    _avg?: ClassAvgOrderByAggregateInput
+    _max?: ClassMaxOrderByAggregateInput
+    _min?: ClassMinOrderByAggregateInput
+    _sum?: ClassSumOrderByAggregateInput
+  }
+
+  export type ClassScalarWhereWithAggregatesInput = {
+    AND?: ClassScalarWhereWithAggregatesInput | ClassScalarWhereWithAggregatesInput[]
+    OR?: ClassScalarWhereWithAggregatesInput[]
+    NOT?: ClassScalarWhereWithAggregatesInput | ClassScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Class"> | number
+    name?: StringWithAggregatesFilter<"Class"> | string
+    code?: StringWithAggregatesFilter<"Class"> | string
+    faculty?: StringWithAggregatesFilter<"Class"> | string
+    maxStudents?: IntNullableWithAggregatesFilter<"Class"> | number | null
+    schedule?: StringNullableWithAggregatesFilter<"Class"> | string | null
+    room?: StringNullableWithAggregatesFilter<"Class"> | string | null
+    latitude?: FloatNullableWithAggregatesFilter<"Class"> | number | null
+    longitude?: FloatNullableWithAggregatesFilter<"Class"> | number | null
+    geofenceRadius?: IntWithAggregatesFilter<"Class"> | number
+    geofenceEnabled?: BoolWithAggregatesFilter<"Class"> | boolean
+    createdBy?: IntNullableWithAggregatesFilter<"Class"> | number | null
+    createdAt?: DateTimeWithAggregatesFilter<"Class"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Class"> | Date | string
+  }
+
+  export type QRSessionWhereInput = {
+    AND?: QRSessionWhereInput | QRSessionWhereInput[]
+    OR?: QRSessionWhereInput[]
+    NOT?: QRSessionWhereInput | QRSessionWhereInput[]
+    id?: StringFilter<"QRSession"> | string
+    classId?: StringFilter<"QRSession"> | string
+    className?: StringFilter<"QRSession"> | string
+    latitude?: FloatNullableFilter<"QRSession"> | number | null
+    longitude?: FloatNullableFilter<"QRSession"> | number | null
+    radius?: IntFilter<"QRSession"> | number
+    createdBy?: StringNullableFilter<"QRSession"> | string | null
+    createdAt?: DateTimeFilter<"QRSession"> | Date | string
+    expiresAt?: DateTimeFilter<"QRSession"> | Date | string
+    isActive?: BoolFilter<"QRSession"> | boolean
+  }
+
+  export type QRSessionOrderByWithRelationInput = {
+    id?: SortOrder
+    classId?: SortOrder
+    className?: SortOrder
+    latitude?: SortOrderInput | SortOrder
+    longitude?: SortOrderInput | SortOrder
+    radius?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    expiresAt?: SortOrder
+    isActive?: SortOrder
+  }
+
+  export type QRSessionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: QRSessionWhereInput | QRSessionWhereInput[]
+    OR?: QRSessionWhereInput[]
+    NOT?: QRSessionWhereInput | QRSessionWhereInput[]
+    classId?: StringFilter<"QRSession"> | string
+    className?: StringFilter<"QRSession"> | string
+    latitude?: FloatNullableFilter<"QRSession"> | number | null
+    longitude?: FloatNullableFilter<"QRSession"> | number | null
+    radius?: IntFilter<"QRSession"> | number
+    createdBy?: StringNullableFilter<"QRSession"> | string | null
+    createdAt?: DateTimeFilter<"QRSession"> | Date | string
+    expiresAt?: DateTimeFilter<"QRSession"> | Date | string
+    isActive?: BoolFilter<"QRSession"> | boolean
+  }, "id">
+
+  export type QRSessionOrderByWithAggregationInput = {
+    id?: SortOrder
+    classId?: SortOrder
+    className?: SortOrder
+    latitude?: SortOrderInput | SortOrder
+    longitude?: SortOrderInput | SortOrder
+    radius?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    expiresAt?: SortOrder
+    isActive?: SortOrder
+    _count?: QRSessionCountOrderByAggregateInput
+    _avg?: QRSessionAvgOrderByAggregateInput
+    _max?: QRSessionMaxOrderByAggregateInput
+    _min?: QRSessionMinOrderByAggregateInput
+    _sum?: QRSessionSumOrderByAggregateInput
+  }
+
+  export type QRSessionScalarWhereWithAggregatesInput = {
+    AND?: QRSessionScalarWhereWithAggregatesInput | QRSessionScalarWhereWithAggregatesInput[]
+    OR?: QRSessionScalarWhereWithAggregatesInput[]
+    NOT?: QRSessionScalarWhereWithAggregatesInput | QRSessionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"QRSession"> | string
+    classId?: StringWithAggregatesFilter<"QRSession"> | string
+    className?: StringWithAggregatesFilter<"QRSession"> | string
+    latitude?: FloatNullableWithAggregatesFilter<"QRSession"> | number | null
+    longitude?: FloatNullableWithAggregatesFilter<"QRSession"> | number | null
+    radius?: IntWithAggregatesFilter<"QRSession"> | number
+    createdBy?: StringNullableWithAggregatesFilter<"QRSession"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"QRSession"> | Date | string
+    expiresAt?: DateTimeWithAggregatesFilter<"QRSession"> | Date | string
+    isActive?: BoolWithAggregatesFilter<"QRSession"> | boolean
+  }
+
+  export type GeofenceSettingsWhereInput = {
+    AND?: GeofenceSettingsWhereInput | GeofenceSettingsWhereInput[]
+    OR?: GeofenceSettingsWhereInput[]
+    NOT?: GeofenceSettingsWhereInput | GeofenceSettingsWhereInput[]
+    id?: IntFilter<"GeofenceSettings"> | number
+    defaultRadius?: IntFilter<"GeofenceSettings"> | number
+    enabled?: BoolFilter<"GeofenceSettings"> | boolean
+    allowOverride?: BoolFilter<"GeofenceSettings"> | boolean
+    accuracyThreshold?: FloatFilter<"GeofenceSettings"> | number
+    createdAt?: DateTimeFilter<"GeofenceSettings"> | Date | string
+    updatedAt?: DateTimeFilter<"GeofenceSettings"> | Date | string
+  }
+
+  export type GeofenceSettingsOrderByWithRelationInput = {
+    id?: SortOrder
+    defaultRadius?: SortOrder
+    enabled?: SortOrder
+    allowOverride?: SortOrder
+    accuracyThreshold?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GeofenceSettingsWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: GeofenceSettingsWhereInput | GeofenceSettingsWhereInput[]
+    OR?: GeofenceSettingsWhereInput[]
+    NOT?: GeofenceSettingsWhereInput | GeofenceSettingsWhereInput[]
+    defaultRadius?: IntFilter<"GeofenceSettings"> | number
+    enabled?: BoolFilter<"GeofenceSettings"> | boolean
+    allowOverride?: BoolFilter<"GeofenceSettings"> | boolean
+    accuracyThreshold?: FloatFilter<"GeofenceSettings"> | number
+    createdAt?: DateTimeFilter<"GeofenceSettings"> | Date | string
+    updatedAt?: DateTimeFilter<"GeofenceSettings"> | Date | string
+  }, "id">
+
+  export type GeofenceSettingsOrderByWithAggregationInput = {
+    id?: SortOrder
+    defaultRadius?: SortOrder
+    enabled?: SortOrder
+    allowOverride?: SortOrder
+    accuracyThreshold?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: GeofenceSettingsCountOrderByAggregateInput
+    _avg?: GeofenceSettingsAvgOrderByAggregateInput
+    _max?: GeofenceSettingsMaxOrderByAggregateInput
+    _min?: GeofenceSettingsMinOrderByAggregateInput
+    _sum?: GeofenceSettingsSumOrderByAggregateInput
+  }
+
+  export type GeofenceSettingsScalarWhereWithAggregatesInput = {
+    AND?: GeofenceSettingsScalarWhereWithAggregatesInput | GeofenceSettingsScalarWhereWithAggregatesInput[]
+    OR?: GeofenceSettingsScalarWhereWithAggregatesInput[]
+    NOT?: GeofenceSettingsScalarWhereWithAggregatesInput | GeofenceSettingsScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"GeofenceSettings"> | number
+    defaultRadius?: IntWithAggregatesFilter<"GeofenceSettings"> | number
+    enabled?: BoolWithAggregatesFilter<"GeofenceSettings"> | boolean
+    allowOverride?: BoolWithAggregatesFilter<"GeofenceSettings"> | boolean
+    accuracyThreshold?: FloatWithAggregatesFilter<"GeofenceSettings"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"GeofenceSettings"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"GeofenceSettings"> | Date | string
   }
 
   export type UserCreateInput = {
@@ -5944,6 +9548,10 @@ export namespace Prisma {
     date?: Date | string
     status: string
     timestamp?: string | null
+    studentLatitude?: number | null
+    studentLongitude?: number | null
+    distanceFromClass?: number | null
+    locationVerified?: boolean
     createdAt?: Date | string
     student: StudentCreateNestedOneWithoutAttendanceInput
   }
@@ -5955,6 +9563,10 @@ export namespace Prisma {
     date?: Date | string
     status: string
     timestamp?: string | null
+    studentLatitude?: number | null
+    studentLongitude?: number | null
+    distanceFromClass?: number | null
+    locationVerified?: boolean
     createdAt?: Date | string
   }
 
@@ -5963,6 +9575,10 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     timestamp?: NullableStringFieldUpdateOperationsInput | string | null
+    studentLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    studentLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    distanceFromClass?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     student?: StudentUpdateOneRequiredWithoutAttendanceNestedInput
   }
@@ -5974,6 +9590,10 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     timestamp?: NullableStringFieldUpdateOperationsInput | string | null
+    studentLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    studentLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    distanceFromClass?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -5984,6 +9604,10 @@ export namespace Prisma {
     date?: Date | string
     status: string
     timestamp?: string | null
+    studentLatitude?: number | null
+    studentLongitude?: number | null
+    distanceFromClass?: number | null
+    locationVerified?: boolean
     createdAt?: Date | string
   }
 
@@ -5992,6 +9616,10 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     timestamp?: NullableStringFieldUpdateOperationsInput | string | null
+    studentLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    studentLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    distanceFromClass?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -6002,6 +9630,10 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     timestamp?: NullableStringFieldUpdateOperationsInput | string | null
+    studentLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    studentLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    distanceFromClass?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -6062,6 +9694,280 @@ export namespace Prisma {
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ClassCreateInput = {
+    name: string
+    code: string
+    faculty: string
+    maxStudents?: number | null
+    schedule?: string | null
+    room?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    geofenceRadius?: number
+    geofenceEnabled?: boolean
+    createdBy?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ClassUncheckedCreateInput = {
+    id?: number
+    name: string
+    code: string
+    faculty: string
+    maxStudents?: number | null
+    schedule?: string | null
+    room?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    geofenceRadius?: number
+    geofenceEnabled?: boolean
+    createdBy?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ClassUpdateInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    faculty?: StringFieldUpdateOperationsInput | string
+    maxStudents?: NullableIntFieldUpdateOperationsInput | number | null
+    schedule?: NullableStringFieldUpdateOperationsInput | string | null
+    room?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    geofenceRadius?: IntFieldUpdateOperationsInput | number
+    geofenceEnabled?: BoolFieldUpdateOperationsInput | boolean
+    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ClassUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    faculty?: StringFieldUpdateOperationsInput | string
+    maxStudents?: NullableIntFieldUpdateOperationsInput | number | null
+    schedule?: NullableStringFieldUpdateOperationsInput | string | null
+    room?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    geofenceRadius?: IntFieldUpdateOperationsInput | number
+    geofenceEnabled?: BoolFieldUpdateOperationsInput | boolean
+    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ClassCreateManyInput = {
+    id?: number
+    name: string
+    code: string
+    faculty: string
+    maxStudents?: number | null
+    schedule?: string | null
+    room?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    geofenceRadius?: number
+    geofenceEnabled?: boolean
+    createdBy?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ClassUpdateManyMutationInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    faculty?: StringFieldUpdateOperationsInput | string
+    maxStudents?: NullableIntFieldUpdateOperationsInput | number | null
+    schedule?: NullableStringFieldUpdateOperationsInput | string | null
+    room?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    geofenceRadius?: IntFieldUpdateOperationsInput | number
+    geofenceEnabled?: BoolFieldUpdateOperationsInput | boolean
+    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ClassUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    faculty?: StringFieldUpdateOperationsInput | string
+    maxStudents?: NullableIntFieldUpdateOperationsInput | number | null
+    schedule?: NullableStringFieldUpdateOperationsInput | string | null
+    room?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    geofenceRadius?: IntFieldUpdateOperationsInput | number
+    geofenceEnabled?: BoolFieldUpdateOperationsInput | boolean
+    createdBy?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type QRSessionCreateInput = {
+    id: string
+    classId: string
+    className: string
+    latitude?: number | null
+    longitude?: number | null
+    radius?: number
+    createdBy?: string | null
+    createdAt?: Date | string
+    expiresAt: Date | string
+    isActive?: boolean
+  }
+
+  export type QRSessionUncheckedCreateInput = {
+    id: string
+    classId: string
+    className: string
+    latitude?: number | null
+    longitude?: number | null
+    radius?: number
+    createdBy?: string | null
+    createdAt?: Date | string
+    expiresAt: Date | string
+    isActive?: boolean
+  }
+
+  export type QRSessionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    classId?: StringFieldUpdateOperationsInput | string
+    className?: StringFieldUpdateOperationsInput | string
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    radius?: IntFieldUpdateOperationsInput | number
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type QRSessionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    classId?: StringFieldUpdateOperationsInput | string
+    className?: StringFieldUpdateOperationsInput | string
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    radius?: IntFieldUpdateOperationsInput | number
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type QRSessionCreateManyInput = {
+    id: string
+    classId: string
+    className: string
+    latitude?: number | null
+    longitude?: number | null
+    radius?: number
+    createdBy?: string | null
+    createdAt?: Date | string
+    expiresAt: Date | string
+    isActive?: boolean
+  }
+
+  export type QRSessionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    classId?: StringFieldUpdateOperationsInput | string
+    className?: StringFieldUpdateOperationsInput | string
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    radius?: IntFieldUpdateOperationsInput | number
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type QRSessionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    classId?: StringFieldUpdateOperationsInput | string
+    className?: StringFieldUpdateOperationsInput | string
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    radius?: IntFieldUpdateOperationsInput | number
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type GeofenceSettingsCreateInput = {
+    defaultRadius?: number
+    enabled?: boolean
+    allowOverride?: boolean
+    accuracyThreshold?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GeofenceSettingsUncheckedCreateInput = {
+    id?: number
+    defaultRadius?: number
+    enabled?: boolean
+    allowOverride?: boolean
+    accuracyThreshold?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GeofenceSettingsUpdateInput = {
+    defaultRadius?: IntFieldUpdateOperationsInput | number
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    allowOverride?: BoolFieldUpdateOperationsInput | boolean
+    accuracyThreshold?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GeofenceSettingsUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    defaultRadius?: IntFieldUpdateOperationsInput | number
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    allowOverride?: BoolFieldUpdateOperationsInput | boolean
+    accuracyThreshold?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GeofenceSettingsCreateManyInput = {
+    id?: number
+    defaultRadius?: number
+    enabled?: boolean
+    allowOverride?: boolean
+    accuracyThreshold?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GeofenceSettingsUpdateManyMutationInput = {
+    defaultRadius?: IntFieldUpdateOperationsInput | number
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    allowOverride?: BoolFieldUpdateOperationsInput | boolean
+    accuracyThreshold?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GeofenceSettingsUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    defaultRadius?: IntFieldUpdateOperationsInput | number
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    allowOverride?: BoolFieldUpdateOperationsInput | boolean
+    accuracyThreshold?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -6339,6 +10245,11 @@ export namespace Prisma {
     _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type StudentRelationFilter = {
     is?: StudentWhereInput
     isNot?: StudentWhereInput
@@ -6351,12 +10262,19 @@ export namespace Prisma {
     date?: SortOrder
     status?: SortOrder
     timestamp?: SortOrder
+    studentLatitude?: SortOrder
+    studentLongitude?: SortOrder
+    distanceFromClass?: SortOrder
+    locationVerified?: SortOrder
     createdAt?: SortOrder
   }
 
   export type StudentAttendanceAvgOrderByAggregateInput = {
     id?: SortOrder
     studentId?: SortOrder
+    studentLatitude?: SortOrder
+    studentLongitude?: SortOrder
+    distanceFromClass?: SortOrder
   }
 
   export type StudentAttendanceMaxOrderByAggregateInput = {
@@ -6366,6 +10284,10 @@ export namespace Prisma {
     date?: SortOrder
     status?: SortOrder
     timestamp?: SortOrder
+    studentLatitude?: SortOrder
+    studentLongitude?: SortOrder
+    distanceFromClass?: SortOrder
+    locationVerified?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -6376,12 +10298,27 @@ export namespace Prisma {
     date?: SortOrder
     status?: SortOrder
     timestamp?: SortOrder
+    studentLatitude?: SortOrder
+    studentLongitude?: SortOrder
+    distanceFromClass?: SortOrder
+    locationVerified?: SortOrder
     createdAt?: SortOrder
   }
 
   export type StudentAttendanceSumOrderByAggregateInput = {
     id?: SortOrder
     studentId?: SortOrder
+    studentLatitude?: SortOrder
+    studentLongitude?: SortOrder
+    distanceFromClass?: SortOrder
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type UserRelationFilter = {
@@ -6424,6 +10361,222 @@ export namespace Prisma {
   export type AttendanceSumOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
+  }
+
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type ClassCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    code?: SortOrder
+    faculty?: SortOrder
+    maxStudents?: SortOrder
+    schedule?: SortOrder
+    room?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    geofenceRadius?: SortOrder
+    geofenceEnabled?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ClassAvgOrderByAggregateInput = {
+    id?: SortOrder
+    maxStudents?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    geofenceRadius?: SortOrder
+    createdBy?: SortOrder
+  }
+
+  export type ClassMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    code?: SortOrder
+    faculty?: SortOrder
+    maxStudents?: SortOrder
+    schedule?: SortOrder
+    room?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    geofenceRadius?: SortOrder
+    geofenceEnabled?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ClassMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    code?: SortOrder
+    faculty?: SortOrder
+    maxStudents?: SortOrder
+    schedule?: SortOrder
+    room?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    geofenceRadius?: SortOrder
+    geofenceEnabled?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ClassSumOrderByAggregateInput = {
+    id?: SortOrder
+    maxStudents?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    geofenceRadius?: SortOrder
+    createdBy?: SortOrder
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type QRSessionCountOrderByAggregateInput = {
+    id?: SortOrder
+    classId?: SortOrder
+    className?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    radius?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    expiresAt?: SortOrder
+    isActive?: SortOrder
+  }
+
+  export type QRSessionAvgOrderByAggregateInput = {
+    latitude?: SortOrder
+    longitude?: SortOrder
+    radius?: SortOrder
+  }
+
+  export type QRSessionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    classId?: SortOrder
+    className?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    radius?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    expiresAt?: SortOrder
+    isActive?: SortOrder
+  }
+
+  export type QRSessionMinOrderByAggregateInput = {
+    id?: SortOrder
+    classId?: SortOrder
+    className?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    radius?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    expiresAt?: SortOrder
+    isActive?: SortOrder
+  }
+
+  export type QRSessionSumOrderByAggregateInput = {
+    latitude?: SortOrder
+    longitude?: SortOrder
+    radius?: SortOrder
+  }
+
+  export type FloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type GeofenceSettingsCountOrderByAggregateInput = {
+    id?: SortOrder
+    defaultRadius?: SortOrder
+    enabled?: SortOrder
+    allowOverride?: SortOrder
+    accuracyThreshold?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GeofenceSettingsAvgOrderByAggregateInput = {
+    id?: SortOrder
+    defaultRadius?: SortOrder
+    accuracyThreshold?: SortOrder
+  }
+
+  export type GeofenceSettingsMaxOrderByAggregateInput = {
+    id?: SortOrder
+    defaultRadius?: SortOrder
+    enabled?: SortOrder
+    allowOverride?: SortOrder
+    accuracyThreshold?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GeofenceSettingsMinOrderByAggregateInput = {
+    id?: SortOrder
+    defaultRadius?: SortOrder
+    enabled?: SortOrder
+    allowOverride?: SortOrder
+    accuracyThreshold?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GeofenceSettingsSumOrderByAggregateInput = {
+    id?: SortOrder
+    defaultRadius?: SortOrder
+    accuracyThreshold?: SortOrder
+  }
+
+  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
   }
 
   export type AttendanceCreateNestedManyWithoutUserInput = {
@@ -6544,6 +10697,10 @@ export namespace Prisma {
     connect?: StudentWhereUniqueInput
   }
 
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
   export type StudentUpdateOneRequiredWithoutAttendanceNestedInput = {
     create?: XOR<StudentCreateWithoutAttendanceInput, StudentUncheckedCreateWithoutAttendanceInput>
     connectOrCreate?: StudentCreateOrConnectWithoutAttendanceInput
@@ -6564,6 +10721,22 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutAttendanceInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAttendanceInput, UserUpdateWithoutAttendanceInput>, UserUncheckedUpdateWithoutAttendanceInput>
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type FloatFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -6729,6 +10902,51 @@ export namespace Prisma {
     _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
   export type AttendanceCreateWithoutUserInput = {
     employeeId: string
     type: string
@@ -6787,6 +11005,10 @@ export namespace Prisma {
     date?: Date | string
     status: string
     timestamp?: string | null
+    studentLatitude?: number | null
+    studentLongitude?: number | null
+    distanceFromClass?: number | null
+    locationVerified?: boolean
     createdAt?: Date | string
   }
 
@@ -6796,6 +11018,10 @@ export namespace Prisma {
     date?: Date | string
     status: string
     timestamp?: string | null
+    studentLatitude?: number | null
+    studentLongitude?: number | null
+    distanceFromClass?: number | null
+    locationVerified?: boolean
     createdAt?: Date | string
   }
 
@@ -6835,6 +11061,10 @@ export namespace Prisma {
     date?: DateTimeFilter<"StudentAttendance"> | Date | string
     status?: StringFilter<"StudentAttendance"> | string
     timestamp?: StringNullableFilter<"StudentAttendance"> | string | null
+    studentLatitude?: FloatNullableFilter<"StudentAttendance"> | number | null
+    studentLongitude?: FloatNullableFilter<"StudentAttendance"> | number | null
+    distanceFromClass?: FloatNullableFilter<"StudentAttendance"> | number | null
+    locationVerified?: BoolFilter<"StudentAttendance"> | boolean
     createdAt?: DateTimeFilter<"StudentAttendance"> | Date | string
   }
 
@@ -7019,6 +11249,10 @@ export namespace Prisma {
     date?: Date | string
     status: string
     timestamp?: string | null
+    studentLatitude?: number | null
+    studentLongitude?: number | null
+    distanceFromClass?: number | null
+    locationVerified?: boolean
     createdAt?: Date | string
   }
 
@@ -7027,6 +11261,10 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     timestamp?: NullableStringFieldUpdateOperationsInput | string | null
+    studentLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    studentLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    distanceFromClass?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -7036,6 +11274,10 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     timestamp?: NullableStringFieldUpdateOperationsInput | string | null
+    studentLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    studentLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    distanceFromClass?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -7045,6 +11287,10 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: StringFieldUpdateOperationsInput | string
     timestamp?: NullableStringFieldUpdateOperationsInput | string | null
+    studentLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    studentLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    distanceFromClass?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -7077,6 +11323,18 @@ export namespace Prisma {
      * @deprecated Use AttendanceDefaultArgs instead
      */
     export type AttendanceArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = AttendanceDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use ClassDefaultArgs instead
+     */
+    export type ClassArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = ClassDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use QRSessionDefaultArgs instead
+     */
+    export type QRSessionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = QRSessionDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use GeofenceSettingsDefaultArgs instead
+     */
+    export type GeofenceSettingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = GeofenceSettingsDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany
