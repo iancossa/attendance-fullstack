@@ -59,7 +59,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen = false, setIsMob
   const handleItemClick = (path: string) => {
     setActiveItem(path);
     setIsMobileOpen?.(false);
-    addNotification({ message: `Navigated to ${path.replace('/', '').replace('-', ' ')}`, type: 'info' });
   };
 
   const renderMenuGroup = (title: string, items: any[]) => (
