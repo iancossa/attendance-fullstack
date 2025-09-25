@@ -6,7 +6,7 @@ import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Badge } from '../../components/ui/badge';
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '../../components/ui/table';
-import { QrCode, UserCheck, Users, UserX, Clock, Search, Filter, Download, Edit, MoreVertical, Eye, History, MessageSquare, BarChart3 } from 'lucide-react';
+import { UserCheck, Users, UserX, Clock, Search, Filter, Download, Edit, MoreVertical, Eye, History, MessageSquare, BarChart3 } from 'lucide-react';
 import { exportToExcel } from '../../utils/exportUtils';
 import { useAppStore } from '../../store';
 import { ATTENDANCE_RECORDS, MOCK_STUDENTS, Student } from '../../data/mockStudents';
@@ -56,14 +56,6 @@ export const AttendancePage: React.FC = () => {
             <p className="text-sm text-gray-600 dark:text-[#6272a4]">Track and manage student attendance</p>
           </div>
           <div className="flex gap-2">
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={() => navigate('/attendance/take')}
-            >
-              <QrCode className="h-4 w-4 mr-2" />
-              QR Scanner
-            </Button>
             <Button 
               size="sm"
               onClick={() => navigate('/attendance/take')}

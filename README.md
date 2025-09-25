@@ -103,9 +103,14 @@ A modern, gamified attendance management system that revolutionizes classroom at
 
 ## 👥 Demo Credentials
 
-### Staff Login
+### Admin Login
 - Email: `admin@university.edu`
 - Password: `admin123`
+
+### Staff Login
+- Email: `staff@university.edu`
+- Password: `staff123`
+
 
 ### Student Login (31 available accounts)
 - Email: `alice.johnson@university.edu` | Password: `student123`

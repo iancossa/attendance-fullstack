@@ -14,7 +14,8 @@ import {
   Monitor,
   Circle,
   User,
-  Menu
+  Menu,
+  Bell
 } from 'lucide-react';
 import { Avatar, AvatarFallback } from '../ui/avatar';
 import { useTheme } from '../../hooks/useTheme';
@@ -24,7 +25,7 @@ import { AddStudentModal } from '../modals/AddStudentModal';
 import { AddClassModal } from '../modals/AddClassModal';
 import { ScheduleSessionModal } from '../modals/ScheduleSessionModal';
 import { Breadcrumb } from '../ui/breadcrumb';
-import { NotificationBell } from '../notifications/NotificationBell';
+
 
 interface HeaderProps {
   onMobileMenuToggle?: () => void;
@@ -35,6 +36,7 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [quickActionsOpen, setQuickActionsOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [notificationMenuOpen, setNotificationMenuOpen] = useState(false);
   const [themeSubmenuOpen, setThemeSubmenuOpen] = useState(false);
   const [activeModal, setActiveModal] = useState<string | null>(null);
   const { theme, setTheme } = useTheme();
@@ -99,7 +101,7 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
           </div>
           
           {/* Right Actions */}
-          <div className="flex items-center gap-1 flex-1 justify-end">
+          <div className="flex items-center gap-4 flex-1 justify-end">
             {/* Mobile Search */}
             <Button 
               variant="ghost" 
@@ -142,10 +144,48 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
               </DropdownMenu>
             )}
 
+
+
+
+
             {/* Notifications */}
-            <NotificationBell />
-
-
+            <DropdownMenu>
+              <DropdownMenuTrigger 
+                className="flex items-center gap-2 text-sm text-gray-700 dark:text-[#f8f8f2] hover:text-orange-600 dark:hover:text-orange-400 px-3 py-2"
+                onClick={() => setNotificationMenuOpen(!notificationMenuOpen)}
+              >
+                <Bell className="h-4 w-4" />
+                Notifications
+              </DropdownMenuTrigger>
+              {notificationMenuOpen && (
+                <>
+                  <div className="fixed inset-0 z-40" onClick={() => setNotificationMenuOpen(false)} />
+                  <DropdownMenuContent className="w-80">
+                    <div className="p-3 border-b bg-gradient-to-r from-orange-50 to-transparent dark:from-[#282a36] dark:to-transparent border-orange-100 dark:border-[#6272a4]">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="font-medium text-gray-900 dark:text-[#f8f8f2]">Notifications</h3>
+                          <p className="text-sm text-gray-600 dark:text-[#6272a4]">0 unread</p>
+                        </div>
+                        <button className="text-sm text-orange-600 hover:text-orange-700">
+                          Mark all read
+                        </button>
+                      </div>
+                    </div>
+                    <div className="p-8 text-center">
+                      <div className="w-12 h-12 mx-auto mb-3 bg-orange-100 dark:bg-orange-500/20 rounded-full flex items-center justify-center">
+                        <Bell className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+                      </div>
+                      <p className="font-medium text-gray-900 dark:text-[#f8f8f2] mb-1">No notifications</p>
+                      <p className="text-sm text-gray-600 dark:text-[#6272a4]">You're all caught up!</p>
+                    </div>
+                    <DropdownMenuItem onClick={() => setNotificationMenuOpen(false)}>
+                      <span className="text-orange-600 dark:text-orange-400 font-medium">View all notifications</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </>
+              )}
+            </DropdownMenu>
 
             {/* User Menu */}
             <DropdownMenu>
