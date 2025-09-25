@@ -8,6 +8,7 @@ import { Smartphone, QrCode, CheckCircle } from 'lucide-react';
 import { QRScanner } from '../../components/QRScanner';
 import { useAttendance, useQRSession } from '../../hooks/useAttendance';
 import { useEnhancedAppStore } from '../../store/enhancedAppStore';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 
 interface Attendee {
   studentId: string;
@@ -31,6 +32,7 @@ interface SessionStatus {
 }
 
 export const QRModePage: React.FC = () => {
+  useDocumentTitle('QR Mode Attendance');
   const [qrValue, setQrValue] = useState('');
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [sessionData, setSessionData] = useState<any>(null);

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Layout } from '../../components/layout/Layout';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
 import { JustificationList } from '../../components/justification/JustificationList';
@@ -11,6 +12,7 @@ import { useAppStore } from '../../store';
 import type { AbsenceJustification, JustificationFormData } from '../../types';
 
 export const MyJustificationsPage: React.FC = () => {
+  useDocumentTitle('My Absence Requests');
   const navigate = useNavigate();
   const [justifications, setJustifications] = useState<AbsenceJustification[]>([]);
   const [loading, setLoading] = useState(true);

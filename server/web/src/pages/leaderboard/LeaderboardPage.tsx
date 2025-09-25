@@ -23,6 +23,7 @@ import { useAppStore } from '../../store';
 import { useApi } from '../../hooks/useApi';
 import { MOCK_STUDENTS, COURSES } from '../../data/mockStudents';
 import type { LeaderboardEntry, Achievement as ApiAchievement } from '../../types/api';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 
 interface Student {
   id: string;
@@ -48,6 +49,7 @@ interface LocalAchievement {
 }
 
 export const LeaderboardPage: React.FC = () => {
+  useDocumentTitle('Leaderboard');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedClass, setSelectedClass] = useState('All');
   const [selectedPeriod, setSelectedPeriod] = useState('weekly');

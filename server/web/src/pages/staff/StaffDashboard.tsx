@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/ca
 import { Button } from '../../components/ui/button';
 import { Badge } from '../../components/ui/badge';
 import { Progress } from '../../components/ui/progress';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 import { 
   Users, 
   Calendar, 
@@ -17,6 +18,7 @@ import {
 } from 'lucide-react';
 
 export const StaffDashboard: React.FC = () => {
+  useDocumentTitle('Staff Dashboard');
   const navigate = useNavigate();
   const [currentStaff, setCurrentStaff] = useState<any>(null);
 

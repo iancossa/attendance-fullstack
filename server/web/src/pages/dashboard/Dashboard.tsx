@@ -8,9 +8,11 @@ import { Progress } from '../../components/ui/progress';
 import { TrendingUp, Users, Calendar, AlertTriangle, Plus } from 'lucide-react';
 import { AttendanceChart, ClassPerformanceChart } from '../../components/charts';
 import { useAttendance } from '../../hooks/useAttendance';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 
 
 export const Dashboard: React.FC = () => {
+  useDocumentTitle('Dashboard');
   const navigate = useNavigate();
   const { sessions } = useAttendance();
   

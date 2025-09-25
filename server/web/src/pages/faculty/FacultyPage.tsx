@@ -26,6 +26,7 @@ import {
 import { exportToExcel } from '../../utils/exportUtils';
 import { useAppStore } from '../../store';
 import { AddFacultyModal } from '../../components/modals/AddFacultyModal';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 
 interface Faculty {
   id: string;
@@ -116,6 +117,7 @@ const mockFaculty: Faculty[] = [
 ];
 
 export const FacultyPage: React.FC = () => {
+  useDocumentTitle('Faculty');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDepartment, setSelectedDepartment] = useState('All');
   const [selectedStatus, setSelectedStatus] = useState('All');

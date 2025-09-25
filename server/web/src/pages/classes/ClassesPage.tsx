@@ -13,8 +13,10 @@ import { AddClassModal } from '../../components/modals/AddClassModal';
 import { EditClassModal } from '../../components/modals/EditClassModal';
 import { ManageStudentsModal } from '../../components/modals/ManageStudentsModal';
 import { ClassReportsModal } from '../../components/modals/ClassReportsModal';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 
 export const ClassesPage: React.FC = () => {
+  useDocumentTitle('Classes');
   const [searchTerm, setSearchTerm] = useState('');
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
   const [selectedClass, setSelectedClass] = useState<any>(null);

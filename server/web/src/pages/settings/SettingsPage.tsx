@@ -28,8 +28,10 @@ import {
 import { useAppStore } from '../../store';
 import { AddUserModal } from '../../components/modals/AddUserModal';
 import { ImportUsersModal } from '../../components/modals/ImportUsersModal';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 
 export const SettingsPage: React.FC = () => {
+  useDocumentTitle('Settings');
   const [activeTab, setActiveTab] = useState('General');
   const [showAddUserModal, setShowAddUserModal] = useState(false);
   const [showImportModal, setShowImportModal] = useState(false);

@@ -20,8 +20,10 @@ import { MOCK_CALENDAR_EVENTS, CalendarEvent } from '../../data/mockCalendar';
 import { useAppStore } from '../../store/useAppStore';
 import { exportToExcel } from '../../utils/exportUtils';
 import { AddEventModal } from '../../components/modals/AddEventModal';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 
 export const CalendarPage: React.FC = () => {
+  useDocumentTitle('Calendar');
   const [selectedFilter, setSelectedFilter] = useState('All');
   const [activeTab, setActiveTab] = useState('events');
   const [currentDate, setCurrentDate] = useState(new Date());

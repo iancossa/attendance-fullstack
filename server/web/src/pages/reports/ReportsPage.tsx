@@ -10,6 +10,7 @@ import { AttendanceChart, ClassPerformanceChart } from '../../components/charts'
 import { exportToExcel, exportToPDF } from '../../utils/exportUtils';
 import { useAppStore } from '../../store';
 import { MOCK_STUDENTS } from '../../data/mockStudents';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 
 interface ReportData {
   id: string;
@@ -96,6 +97,7 @@ const mockReports: ReportData[] = [
 ];
 
 export const ReportsPage: React.FC = () => {
+  useDocumentTitle('Reports');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedType, setSelectedType] = useState('All');
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);

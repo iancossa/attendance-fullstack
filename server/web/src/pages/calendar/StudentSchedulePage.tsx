@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Layout } from '../../components/layout/Layout';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { Badge } from '../../components/ui/badge';
 import { Input } from '../../components/ui/input';
@@ -7,6 +8,7 @@ import { UpcomingLectureModal } from '../../components/modals/UpcomingLectureMod
 import { Calendar, Clock, MapPin, User } from 'lucide-react';
 
 export const StudentSchedulePage: React.FC = () => {
+  useDocumentTitle('Class Schedule');
   const [selectedDate, setSelectedDate] = useState('2025-09-01');
   const [showLectureModal, setShowLectureModal] = useState(false);
   const [selectedLecture, setSelectedLecture] = useState<any>(null);

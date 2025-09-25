@@ -7,6 +7,7 @@ import { Input } from '../../components/ui/input';
 import { Badge } from '../../components/ui/badge';
 import { Loading } from '../../components/ui/loading';
 import { ArrowLeft, Users, CheckCircle, QrCode, Zap, X } from 'lucide-react';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 
 interface Class {
   id: string;
@@ -30,6 +31,7 @@ interface AttendanceData {
 }
 
 const TakeAttendancePage: React.FC = () => {
+  useDocumentTitle('Take Attendance');
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);

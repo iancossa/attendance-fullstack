@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Layout } from '../../components/layout/Layout';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
 import { Badge } from '../../components/ui/badge';
@@ -65,6 +66,7 @@ const staffReports: StaffReportData[] = [
 ];
 
 export const StaffReportsPage: React.FC = () => {
+  useDocumentTitle('My Class Reports');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedType, setSelectedType] = useState('All');
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);

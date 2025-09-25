@@ -9,6 +9,7 @@ import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '.
 import QRCode from 'react-qr-code';
 import { QRScanner } from '../../components/QRScanner';
 import { studentService } from '../../services/backendService';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 
 interface Student {
   id: number;
@@ -23,6 +24,7 @@ interface Student {
 }
 
 export const HybridModePage: React.FC = () => {
+  useDocumentTitle('Hybrid Mode Attendance');
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
   const [qrValue, setQrValue] = useState('');

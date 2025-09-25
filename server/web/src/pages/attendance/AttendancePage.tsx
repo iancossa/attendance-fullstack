@@ -15,8 +15,10 @@ import { EditDetailsModal } from '../../components/modals/EditDetailsModal';
 import { AttendanceReportModal } from '../../components/modals/AttendanceReportModal';
 import { AttendanceHistoryModal } from '../../components/modals/AttendanceHistoryModal';
 import { SendMessageModal } from '../../components/modals/SendMessageModal';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 
 export const AttendancePage: React.FC = () => {
+  useDocumentTitle('Attendance Records');
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDate, setSelectedDate] = useState('');

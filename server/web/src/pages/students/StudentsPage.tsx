@@ -32,10 +32,12 @@ import { EditDetailsModal } from '../../components/modals/EditDetailsModal';
 import { AttendanceReportModal } from '../../components/modals/AttendanceReportModal';
 import { AttendanceHistoryModal } from '../../components/modals/AttendanceHistoryModal';
 import { SendMessageModal } from '../../components/modals/SendMessageModal';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 
 
 
 export const StudentsPage: React.FC = () => {
+  useDocumentTitle('Students');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedYear, setSelectedYear] = useState('All');
   const [selectedStatus, setSelectedStatus] = useState('All');

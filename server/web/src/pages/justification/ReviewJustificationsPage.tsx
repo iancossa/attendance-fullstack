@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Layout } from '../../components/layout/Layout';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
 import { JustificationList } from '../../components/justification/JustificationList';
@@ -10,6 +11,7 @@ import { useAppStore } from '../../store';
 import type { AbsenceJustification } from '../../types';
 
 export const ReviewJustificationsPage: React.FC = () => {
+  useDocumentTitle('Review Absence Requests');
   const [justifications, setJustifications] = useState<AbsenceJustification[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'pending' | 'approved' | 'rejected'>('pending');

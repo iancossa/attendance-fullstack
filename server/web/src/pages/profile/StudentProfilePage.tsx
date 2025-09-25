@@ -1,11 +1,13 @@
 import React from 'react';
 import { Layout } from '../../components/layout/Layout';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { Badge } from '../../components/ui/badge';
 import { Avatar, AvatarFallback } from '../../components/ui/avatar';
 import { User, Mail, Phone, MapPin, Calendar, Award, Users, BookOpen, CheckCircle, Star } from 'lucide-react';
 
 export const StudentProfilePage: React.FC = () => {
+  useDocumentTitle('My Profile');
   const certifications = [
     { name: 'AWS Cloud Practitioner', issuer: 'Amazon Web Services', date: '2024', verified: true },
     { name: 'Google Analytics Certified', issuer: 'Google', date: '2024', verified: true },

@@ -8,11 +8,13 @@ import { Mail, Lock, Eye, EyeOff, AlertCircle, Users, UserCheck } from 'lucide-r
 import { useAppStore } from '../../store';
 import { useAuth } from '../../hooks/useAuth';
 import { useTheme } from '../../hooks/useTheme';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 import logo from '../../assets/img/logo.png';
 
 type UserRole = 'staff' | 'student';
 
 export const LoginPage: React.FC = () => {
+  useDocumentTitle('Login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);

@@ -8,8 +8,10 @@ import { JustificationModal } from '../../components/justification/Justification
 import { useAppStore } from '../../store';
 import { useJustifications } from '../../hooks/useJustifications';
 import type { JustificationFormData } from '../../types';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 
 export const StudentAttendancePage: React.FC = () => {
+  useDocumentTitle('My Attendance');
   const [activeTab, setActiveTab] = useState('summary');
   const [currentDate, setCurrentDate] = useState(new Date());
   const [showDayModal, setShowDayModal] = useState(false);

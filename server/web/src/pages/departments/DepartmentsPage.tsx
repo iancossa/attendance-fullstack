@@ -22,8 +22,10 @@ import { exportToExcel } from '../../utils/exportUtils';
 import { useAppStore } from '../../store';
 import { MOCK_DEPARTMENTS } from '../../data/mockDepartments';
 import { AddDepartmentModal } from '../../components/modals/AddDepartmentModal';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 
 export const DepartmentsPage: React.FC = () => {
+  useDocumentTitle('Departments');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedType, setSelectedType] = useState('All');
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);

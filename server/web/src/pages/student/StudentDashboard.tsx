@@ -5,6 +5,7 @@ import { Button } from '../../components/ui/button';
 import { Badge } from '../../components/ui/badge';
 import { Progress } from '../../components/ui/progress';
 import { QRScanner } from '../../components/QRScanner';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 import { 
   QrCode, 
   Calendar, 
@@ -17,6 +18,7 @@ import {
 } from 'lucide-react';
 
 export const StudentDashboard: React.FC = () => {
+  useDocumentTitle('Student Dashboard');
   const [showQRScanner, setShowQRScanner] = useState(false);
   const [scanResult, setScanResult] = useState<string | null>(null);
   const [currentStudent, setCurrentStudent] = useState<any>(null);

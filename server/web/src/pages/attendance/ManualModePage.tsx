@@ -5,6 +5,7 @@ import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Badge } from '../../components/ui/badge';
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '../../components/ui/table';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 import { Users, Search } from 'lucide-react';
 import { studentService } from '../../services/backendService';
 
@@ -21,6 +22,7 @@ interface Student {
 }
 
 export const ManualModePage: React.FC = () => {
+  useDocumentTitle('Manual Mode Attendance');
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');

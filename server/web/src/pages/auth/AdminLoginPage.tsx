@@ -7,11 +7,13 @@ import { Badge } from '../../components/ui/badge';
 import { Lock, User, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { Alert, AlertDescription } from '../../components/ui/alert';
 import { useAuth } from '../../hooks/useAuth';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 import { useAppStore } from '../../store';
 import { useTheme } from '../../hooks/useTheme';
 import logo from '../../assets/img/logo.png';
 
 export const AdminLoginPage: React.FC = () => {
+  useDocumentTitle('Admin Login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);

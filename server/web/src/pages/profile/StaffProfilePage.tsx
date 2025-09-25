@@ -1,5 +1,6 @@
 import React from 'react';
 import { Layout } from '../../components/layout/Layout';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { Badge } from '../../components/ui/badge';
 import { Avatar, AvatarFallback } from '../../components/ui/avatar';
@@ -7,6 +8,7 @@ import { User, Mail, Phone, MapPin, Calendar, Users, BookOpen, CheckCircle, Grad
 import { useAuth } from '../../hooks/useAuth';
 
 export const StaffProfilePage: React.FC = () => {
+  useDocumentTitle('Staff Profile');
   const { user } = useAuth();
   
   const qualifications = [
