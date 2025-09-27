@@ -9,7 +9,7 @@ async function testDatabase() {
 
     try {
         // Import Prisma client
-        const { PrismaClient } = require('./server/api/generated/prisma');
+        const { PrismaClient } = require('../server/api/generated/prisma');
         const prisma = new PrismaClient();
 
         console.log('1️⃣ Connecting to database...');
