@@ -8,7 +8,7 @@ async function checkStudentData() {
     console.log('🔍 Checking Student Data for QR Issue\n');
 
     try {
-        const { PrismaClient } = require('./server/api/generated/prisma');
+        const { PrismaClient } = require('../server/api/generated/prisma');
         const prisma = new PrismaClient();
         await prisma.$connect();
 
