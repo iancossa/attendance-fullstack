@@ -1,0 +1,16 @@
+export { AddClassModal } from './AddClassModal';
+export { AddStudentModal } from './AddStudentModal';
+export { AddFacultyModal } from './AddFacultyModal';
+export { AddDepartmentModal } from './AddDepartmentModal';
+export { AddEventModal } from './AddEventModal';
+export { AttendanceHistoryModal } from './AttendanceHistoryModal';
+export { AttendanceReportModal } from './AttendanceReportModal';
+export { ClassReportsModal } from './ClassReportsModal';
+export { EditClassModal } from './EditClassModal';
+export { EditDetailsModal } from './EditDetailsModal';
+export { ManageStudentsModal } from './ManageStudentsModal';
+export { ScheduleSessionModal } from './ScheduleSessionModal';
+export { SendMessageModal } from './SendMessageModal';
+export { TakeAttendanceModal } from './TakeAttendanceModal';
+export { ViewProfileModal } from './ViewProfileModal';
+export { UpcomingLectureModal } from './UpcomingLectureModal';

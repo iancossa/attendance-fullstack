@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Sidebar } from './Sidebar';
 import { StudentSidebar } from './StudentSidebar';
 import { StaffSidebar } from './StaffSidebar';
@@ -14,30 +14,36 @@ interface LayoutProps {
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { isLoading } = useAppStore();
   const { user } = useAuth();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
   const renderSidebar = () => {
+    const sidebarProps = {
+      isMobileOpen: isMobileMenuOpen,
+      setIsMobileOpen: setIsMobileMenuOpen
+    };
+    
     switch (user?.role) {
       case 'student':
-        return <StudentSidebar />;
+        return <StudentSidebar {...sidebarProps} />;
       case 'staff':
-        return <StaffSidebar />;
+        return <StaffSidebar {...sidebarProps} />;
       case 'admin':
       default:
-        return <Sidebar />;
+        return <Sidebar {...sidebarProps} />;
     }
   };
   
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      <div className="flex h-[calc(100vh-4rem)]">
-        {renderSidebar()}
-        <main className="flex-1 overflow-y-auto bg-gradient-to-br from-background via-background to-muted/20">
-          <div className="p-6 lg:p-8">
-            <div className="space-y-6">
+    <div className="h-screen bg-gray-50 dark:bg-[#282a36] flex">
+      {renderSidebar()}
+      <div className="flex-1 flex flex-col">
+        <Header onMobileMenuToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)} />
+        <main className="flex-1 overflow-y-auto">
+          <div className="p-4 md:p-6 max-w-full mx-auto">
+            <div className="space-y-4">
               {isLoading ? (
-                <div className="space-y-6">
-                  <div className="h-8 bg-muted rounded animate-pulse" />
+                <div className="space-y-4">
+                  <div className="h-6 bg-gray-200 rounded animate-pulse" />
                   <TableSkeleton rows={8} columns={6} />
                 </div>
               ) : (

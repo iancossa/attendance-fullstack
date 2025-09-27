@@ -105,14 +105,14 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({ isOpen
 
   return (
     <div className="fixed inset-0 z-50 bg-black/30 flex items-center justify-center p-4">
-      <div className="bg-background rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden border">
+      <div className="bg-white dark:bg-[#282a36] rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden border border-gray-200 dark:border-[#6272a4] modal-scrollbar">
         {/* Header with Progress */}
         <div className="relative">
-          <div className="flex items-center justify-between p-4 border-b">
+          <div className="sticky top-0 z-10 flex items-center justify-between p-6 border-b">
             <div className="flex items-center gap-3">
               <Calendar className="h-5 w-5 text-primary" />
               <div>
-                <h2 className="text-lg font-semibold">Setup Attendance Session</h2>
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-[#f8f8f2]">Setup Attendance Session</h2>
                 <p className="text-xs text-muted-foreground">
                   {new Date().toLocaleDateString()} • {new Date().toLocaleTimeString()}
                 </p>
@@ -124,7 +124,7 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({ isOpen
           </div>
           
           {/* Progress Steps */}
-          <div className="px-4 py-3 bg-muted/20">
+          <div className="px-4 py-3 bg-gray-50 dark:bg-[#44475a]">
             <div className="flex items-center justify-between mb-2">
               {stepTitles.map((title, index) => (
                 <div key={index} className="flex items-center gap-2">
@@ -157,7 +157,7 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({ isOpen
           {currentStep === 1 && (
             <div className="space-y-4">
               <div className="text-center mb-4">
-                <h3 className="text-lg font-semibold mb-1">Select Course & Session Details</h3>
+                <h3 className="text-lg font-semibold mb-1 text-gray-900 dark:text-[#f8f8f2]">Select Course & Session Details</h3>
                 <p className="text-muted-foreground text-sm">Choose the course and configure your attendance session</p>
               </div>
               
@@ -247,7 +247,7 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({ isOpen
           {currentStep === 2 && selectedCourseData && (
             <div className="space-y-4">
               <div className="text-center mb-4">
-                <h3 className="text-lg font-semibold mb-1">Session Overview</h3>
+                <h3 className="text-lg font-semibold mb-1 text-gray-900 dark:text-[#f8f8f2]">Session Overview</h3>
                 <p className="text-muted-foreground text-sm">Review your session details before proceeding</p>
               </div>
               
@@ -289,7 +289,7 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({ isOpen
           {currentStep === 3 && (
             <div className="space-y-4">
               <div className="text-center mb-4">
-                <h3 className="text-lg font-semibold mb-1">Choose Attendance Mode</h3>
+                <h3 className="text-lg font-semibold mb-1 text-gray-900 dark:text-[#f8f8f2]">Choose Attendance Mode</h3>
                 <p className="text-muted-foreground text-sm">Select how you want to take attendance for this session</p>
               </div>
               

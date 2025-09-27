@@ -4,7 +4,7 @@ import { cn } from "../../lib/utils"
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link"
-  size?: "default" | "sm" | "lg" | "icon"
+  size?: "default" | "sm" | "icon"
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -12,17 +12,16 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <button
         className={cn(
-          "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-95",
-          variant === "default" && "bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary dark:text-primary-foreground dark:hover:bg-primary/90 shadow-sm hover:shadow-md",
-          variant === "destructive" && "bg-destructive text-destructive-foreground hover:bg-destructive/90 dark:bg-destructive dark:text-destructive-foreground dark:hover:bg-destructive/90 shadow-sm hover:shadow-md",
-          variant === "outline" && "border border-input bg-background hover:bg-accent hover:text-accent-foreground dark:border-border dark:bg-background dark:hover:bg-accent dark:hover:text-accent-foreground",
-          variant === "secondary" && "bg-secondary text-secondary-foreground hover:bg-secondary/80 dark:bg-secondary dark:text-secondary-foreground dark:hover:bg-secondary/80",
-          variant === "ghost" && "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent dark:hover:text-accent-foreground",
-          variant === "link" && "text-primary underline-offset-4 hover:underline dark:text-primary",
-          size === "default" && "h-9 sm:h-10 px-3 sm:px-4 py-2 text-xs sm:text-sm",
-          size === "sm" && "h-8 sm:h-9 rounded-md px-2 sm:px-3 text-xs",
-          size === "lg" && "h-10 sm:h-11 rounded-md px-6 sm:px-8 text-sm sm:text-base",
-          size === "icon" && "h-9 w-9 sm:h-10 sm:w-10",
+          "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+          variant === "default" && "bg-orange-500 text-white hover:bg-orange-600 dark:bg-orange-600 dark:hover:bg-orange-700",
+          variant === "destructive" && "bg-red-500 text-white hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700",
+          variant === "outline" && "border border-gray-200 dark:border-[#6272a4] bg-white dark:bg-[#44475a] hover:bg-gray-50 dark:hover:bg-[#6272a4] text-gray-900 dark:text-[#f8f8f2]",
+          variant === "secondary" && "bg-gray-100 dark:bg-[#44475a] text-gray-900 dark:text-[#f8f8f2] hover:bg-gray-200 dark:hover:bg-[#6272a4]",
+          variant === "ghost" && "text-gray-600 dark:text-[#6272a4] hover:bg-gray-100 dark:hover:bg-[#44475a] hover:text-gray-900 dark:hover:text-[#f8f8f2]",
+          variant === "link" && "text-orange-500 dark:text-orange-400 underline-offset-4 hover:underline",
+          size === "default" && "h-9 px-3",
+          size === "sm" && "h-9 px-2 text-xs",
+          size === "icon" && "h-9 w-9",
           className
         )}
         ref={ref}

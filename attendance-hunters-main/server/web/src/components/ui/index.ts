@@ -12,3 +12,5 @@ export { Skeleton } from './skeleton';
 export { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from './dropdown-menu';
 export { NotificationContainer } from './notification';
 export { QRScanner } from './qr-scanner';
+export { FileUpload } from './file-upload';
+export { StatusBadge } from './status-badge';

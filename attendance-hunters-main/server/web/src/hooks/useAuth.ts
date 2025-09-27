@@ -10,12 +10,36 @@ export const useAuth = () => {
     const role = localStorage.getItem('user_role');
     
     if (token && role) {
-      setUser({
-        id: '1',
-        email: 'admin@attendance.com',
-        name: 'Admin User',
-        role: role as 'student' | 'staff' | 'admin'
-      });
+      if (role === 'student') {
+        const studentInfo = localStorage.getItem('studentInfo');
+        if (studentInfo) {
+          const student = JSON.parse(studentInfo);
+          setUser({
+            id: student.id?.toString() || '1',
+            email: student.email,
+            name: student.name,
+            role: 'student'
+          });
+        }
+      } else if (role === 'staff') {
+        const staffInfo = localStorage.getItem('staffInfo');
+        if (staffInfo) {
+          const staff = JSON.parse(staffInfo);
+          setUser({
+            id: staff.id?.toString() || '1',
+            email: staff.email,
+            name: staff.name,
+            role: 'staff'
+          });
+        }
+      } else {
+        setUser({
+          id: '1',
+          email: 'admin@attendance.com',
+          name: 'Admin User',
+          role: 'admin'
+        });
+      }
     }
     setLoading(false);
   }, []);
@@ -53,12 +77,42 @@ export const useAuth = () => {
           setUser(newUser);
           setTimeout(() => resolve(newUser), 50);
         });
+      } else if (role === 'staff') {
+        // Demo staff login
+        const isValidStaffLogin = (email === 'staff@university.edu' && password === 'staff123');
+        
+        if (isValidStaffLogin) {
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          
+          const token = `staff_token_${Date.now()}`;
+          localStorage.setItem('auth_token', token);
+          localStorage.setItem('user_role', 'staff');
+          
+          const staffData = {
+            id: '2',
+            email: email,
+            name: 'Staff User',
+            department: 'Computer Science'
+          };
+          localStorage.setItem('staffInfo', JSON.stringify(staffData));
+          
+          const newUser = {
+            id: '2',
+            email: email,
+            name: 'Staff User',
+            role: 'staff' as const
+          };
+          
+          return new Promise<typeof newUser>((resolve) => {
+            setUser(newUser);
+            setTimeout(() => resolve(newUser), 50);
+          });
+        } else {
+          throw new Error('Invalid staff credentials');
+        }
       } else {
-        // Demo login logic for admin/staff
-        const isValidLogin = (
-          (role === 'admin' && email === 'admin@attendance.com' && password === 'admin123') ||
-          (role === 'staff' && email === 'staff@university.edu' && password === 'staff123')
-        );
+        // Demo login logic for admin only
+        const isValidLogin = (role === 'admin' && email === 'admin@university.edu' && password === 'admin123');
 
         if (isValidLogin && role) {
           await new Promise(resolve => setTimeout(resolve, 1000));
@@ -70,7 +124,7 @@ export const useAuth = () => {
           const newUser = {
             id: '1',
             email: email,
-            name: role === 'admin' ? 'Admin User' : 'Staff User',
+            name: 'Admin User',
             role: role
           };
           
@@ -90,6 +144,8 @@ export const useAuth = () => {
   const logout = () => {
     localStorage.removeItem('auth_token');
     localStorage.removeItem('user_role');
+    localStorage.removeItem('studentInfo');
+    localStorage.removeItem('staffInfo');
     setUser(null);
     window.location.href = '/';
   };
