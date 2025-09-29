@@ -8,13 +8,14 @@
     "seed": "node scripts/seed.js"
   },
   "dependencies": {
-    "pg": "^8.11.3",
+    "@prisma/client": "^6.16.2",
+    "bcrypt": "^6.0.0",
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.2",
-    "@prisma/client": "^5.7.1"
+    "pg": "^8.11.3"
   },
   "devDependencies": {
     "dotenv": "^16.3.1",
-    "prisma": "^5.7.1"
+    "prisma": "^6.16.2"
   }
 }
