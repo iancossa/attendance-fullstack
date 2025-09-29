@@ -1,0 +1,20 @@
+{
+  "name": "attendance-database",
+  "version": "1.0.0",
+  "description": "Database layer for attendance management system",
+  "main": "index.js",
+  "scripts": {
+    "migrate": "node scripts/migrate.js",
+    "seed": "node scripts/seed.js"
+  },
+  "dependencies": {
+    "pg": "^8.11.3",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "@prisma/client": "^5.7.1"
+  },
+  "devDependencies": {
+    "dotenv": "^16.3.1",
+    "prisma": "^5.7.1"
+  }
+}

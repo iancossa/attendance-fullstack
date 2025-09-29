@@ -18,7 +18,7 @@
 
 ## Complete SQL Schema
 
-### 1. Users Table (Unified)
+### 1. Main Users Table (Common Fields)
 ```sql
 CREATE TYPE user_role AS ENUM ('admin', 'staff', 'student');
 CREATE TYPE user_status AS ENUM ('active', 'inactive', 'suspended');
@@ -28,37 +28,65 @@ CREATE TABLE users (
   email VARCHAR(255) UNIQUE NOT NULL,
   password VARCHAR(255) NOT NULL,
   name VARCHAR(255) NOT NULL,
-  role user_role NOT NULL DEFAULT 'student',
+  role user_role NOT NULL,
   status user_status NOT NULL DEFAULT 'active',
   phone VARCHAR(20),
   avatar_url VARCHAR(500),
   last_seen TIMESTAMP,
-  created_at TIMESTAMP DEFAULT NOW(),
-  updated_at TIMESTAMP DEFAULT NOW(),
   last_login TIMESTAMP,
-  
-  -- Staff fields
-  employee_id VARCHAR(50) UNIQUE,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+```
+
+### 2. Admins Table
+```sql
+CREATE TABLE admins (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+  admin_level VARCHAR(50) DEFAULT 'system',
+  permissions JSONB,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+```
+
+### 3. Staff Table
+```sql
+CREATE TABLE staff (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+  employee_id VARCHAR(50) UNIQUE NOT NULL,
   department VARCHAR(100),
   position VARCHAR(100),
   join_date DATE,
-  
-  -- Student fields
-  student_id VARCHAR(50) UNIQUE,
+  salary DECIMAL(10,2),
+  office_location VARCHAR(100),
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+```
+
+### 4. Students Table
+```sql
+CREATE TABLE students (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+  student_id VARCHAR(50) UNIQUE NOT NULL,
   class VARCHAR(50),
   section VARCHAR(10),
   year VARCHAR(20),
   enrollment_date DATE,
   gpa DECIMAL(3,2) DEFAULT 0.00,
-  
-  CONSTRAINT check_role_fields CHECK (
-    (role IN ('admin', 'staff') AND employee_id IS NOT NULL) OR
-    (role = 'student' AND student_id IS NOT NULL)
-  )
+  parent_email VARCHAR(255),
+  parent_phone VARCHAR(20),
+  address TEXT,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
 );
 ```
 
-### 2. Classes Table
+### 5. Classes Table
 ```sql
 CREATE TABLE classes (
   id SERIAL PRIMARY KEY,
@@ -66,7 +94,7 @@ CREATE TABLE classes (
   code VARCHAR(50) UNIQUE NOT NULL,
   subject VARCHAR(255) NOT NULL,
   description TEXT,
-  faculty_id INTEGER REFERENCES users(id),
+  faculty_id INTEGER REFERENCES staff(id),
   room VARCHAR(100),
   capacity INTEGER DEFAULT 50,
   schedule VARCHAR(255), -- "Mon,Wed,Fri 09:00-10:30"
@@ -81,11 +109,11 @@ CREATE TABLE classes (
 );
 ```
 
-### 3. Class Enrollments Table
+### 6. Class Enrollments Table
 ```sql
 CREATE TABLE class_enrollments (
   id SERIAL PRIMARY KEY,
-  student_id INTEGER REFERENCES users(id),
+  student_id INTEGER REFERENCES students(id),
   class_id INTEGER REFERENCES classes(id),
   enrollment_date DATE DEFAULT CURRENT_DATE,
   status VARCHAR(20) DEFAULT 'enrolled',
@@ -95,14 +123,14 @@ CREATE TABLE class_enrollments (
 );
 ```
 
-### 4. Attendance Records Table
+### 7. Attendance Records Table
 ```sql
 CREATE TYPE attendance_status AS ENUM ('present', 'absent', 'late', 'excused');
 CREATE TYPE attendance_method AS ENUM ('qr', 'manual', 'hybrid');
 
 CREATE TABLE attendance_records (
   id SERIAL PRIMARY KEY,
-  student_id INTEGER REFERENCES users(id),
+  student_id INTEGER REFERENCES students(id),
   class_id INTEGER REFERENCES classes(id),
   session_date DATE NOT NULL,
   session_time TIME,
@@ -115,12 +143,12 @@ CREATE TABLE attendance_records (
   justification_id INTEGER,
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW(),
-  recorded_by INTEGER REFERENCES users(id),
+  recorded_by INTEGER REFERENCES staff(id),
   UNIQUE(student_id, class_id, session_date)
 );
 ```
 
-### 5. Attendance Sessions Table
+### 8. Attendance Sessions Table
 ```sql
 CREATE TYPE session_type AS ENUM ('lecture', 'lab', 'tutorial', 'exam');
 CREATE TYPE planning_status AS ENUM ('planned', 'in_progress', 'completed');
@@ -129,7 +157,7 @@ CREATE TABLE attendance_sessions (
   id SERIAL PRIMARY KEY,
   session_id VARCHAR(255) UNIQUE NOT NULL,
   class_id INTEGER REFERENCES classes(id),
-  created_by INTEGER REFERENCES users(id),
+  created_by INTEGER REFERENCES staff(id),
   session_date DATE NOT NULL,
   session_time TIME NOT NULL,
   session_type session_type DEFAULT 'lecture',
@@ -146,7 +174,7 @@ CREATE TABLE attendance_sessions (
 );
 ```
 
-### 6. QR Sessions Table
+### 9. QR Sessions Table
 ```sql
 CREATE TABLE qr_sessions (
   id SERIAL PRIMARY KEY,
@@ -161,14 +189,14 @@ CREATE TABLE qr_sessions (
 );
 ```
 
-### 7. Absence Justifications Table
+### 10. Absence Justifications Table
 ```sql
 CREATE TYPE justification_reason AS ENUM ('medical', 'family', 'emergency', 'academic', 'other');
 CREATE TYPE justification_status AS ENUM ('pending', 'approved', 'rejected');
 
 CREATE TABLE absence_justifications (
   id SERIAL PRIMARY KEY,
-  student_id INTEGER REFERENCES users(id),
+  student_id INTEGER REFERENCES students(id),
   class_id INTEGER REFERENCES classes(id),
   attendance_record_id INTEGER REFERENCES attendance_records(id),
   absence_date DATE NOT NULL,
@@ -178,14 +206,14 @@ CREATE TABLE absence_justifications (
   status justification_status DEFAULT 'pending',
   submitted_at TIMESTAMP DEFAULT NOW(),
   reviewed_at TIMESTAMP,
-  reviewed_by INTEGER REFERENCES users(id),
+  reviewed_by INTEGER REFERENCES staff(id),
   review_note TEXT,
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
 );
 ```
 
-### 8. Departments Table
+### 11. Departments Table
 ```sql
 CREATE TYPE department_type AS ENUM ('Technology', 'Engineering', 'Science', 'Arts', 'Business', 'Other');
 CREATE TYPE department_status AS ENUM ('Active', 'Inactive');
@@ -194,7 +222,7 @@ CREATE TABLE departments (
   id SERIAL PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
   code VARCHAR(50) UNIQUE NOT NULL,
-  head_id INTEGER REFERENCES users(id),
+  head_id INTEGER REFERENCES staff(id),
   type department_type DEFAULT 'Other',
   status department_status DEFAULT 'Active',
   programs_count INTEGER DEFAULT 0,
@@ -204,7 +232,7 @@ CREATE TABLE departments (
 );
 ```
 
-### 9. Notifications Table
+### 12. Notifications Table
 ```sql
 CREATE TYPE notification_type AS ENUM ('absence_reminder', 'justification_status', 'attendance_alert', 'class_reminder');
 CREATE TYPE notification_priority AS ENUM ('low', 'normal', 'high', 'urgent');
@@ -223,13 +251,13 @@ CREATE TABLE notifications (
 );
 ```
 
-### 10. Student Risk Tracking Table
+### 13. Student Risk Tracking Table
 ```sql
 CREATE TYPE risk_level AS ENUM ('low', 'medium', 'high', 'critical');
 
 CREATE TABLE student_risk_tracking (
   id SERIAL PRIMARY KEY,
-  student_id INTEGER REFERENCES users(id),
+  student_id INTEGER REFERENCES students(id),
   risk_level risk_level NOT NULL,
   attendance_rate DECIMAL(5,2) NOT NULL,
   consecutive_absences INTEGER DEFAULT 0,
@@ -243,25 +271,25 @@ CREATE TABLE student_risk_tracking (
 );
 ```
 
-### 11. Student Alerts Table
+### 14. Student Alerts Table
 ```sql
 CREATE TYPE alert_type AS ENUM ('notification', 'email', 'parent-email', 'parent-sms');
 CREATE TYPE alert_status AS ENUM ('pending', 'sent', 'failed');
 
 CREATE TABLE student_alerts (
   id SERIAL PRIMARY KEY,
-  student_id INTEGER REFERENCES users(id),
+  student_id INTEGER REFERENCES students(id),
   alert_type alert_type NOT NULL,
   message TEXT NOT NULL,
   recipient VARCHAR(255),
   status alert_status DEFAULT 'pending',
-  sent_by INTEGER REFERENCES users(id),
+  sent_by INTEGER REFERENCES staff(id),
   sent_at TIMESTAMP,
   created_at TIMESTAMP DEFAULT NOW()
 );
 ```
 
-### 12. Reports Table
+### 15. Reports Table
 ```sql
 CREATE TYPE report_type AS ENUM ('weekly', 'monthly', 'semester', 'custom', 'attendance', 'performance', 'analytics');
 CREATE TYPE report_category AS ENUM ('student', 'class', 'department', 'faculty', 'system');
