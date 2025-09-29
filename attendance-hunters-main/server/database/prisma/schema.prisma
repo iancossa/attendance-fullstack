@@ -196,23 +196,27 @@ model Student {
 }
 
 model Class {
-  id           Int      @id @default(autoincrement())
-  name         String
-  code         String   @unique
-  subject      String
-  description  String?
-  facultyId    Int?     @map("faculty_id")
-  room         String?
-  capacity     Int?     @default(50)
-  schedule     String?
-  department   String?
-  semester     String?
-  academicYear String?  @map("academic_year")
-  credits      Int?     @default(3)
-  classType    String?  @map("class_type")
-  status       String?  @default("active")
-  createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @updatedAt @map("updated_at")
+  id              Int      @id @default(autoincrement())
+  name            String
+  code            String   @unique
+  subject         String
+  description     String?
+  facultyId       Int?     @map("faculty_id")
+  room            String?
+  capacity        Int?     @default(50)
+  schedule        String?
+  department      String?
+  semester        String?
+  academicYear    String?  @map("academic_year")
+  credits         Int?     @default(3)
+  classType       String?  @map("class_type")
+  latitude        Float?   @map("latitude")
+  longitude       Float?   @map("longitude")
+  geofenceRadius  Int?     @default(100) @map("geofence_radius")
+  geofenceEnabled Boolean? @default(true) @map("geofence_enabled")
+  status          String?  @default("active")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
 
   faculty               Staff?                 @relation(fields: [facultyId], references: [id])
   classEnrollments      ClassEnrollment[]
@@ -222,6 +226,7 @@ model Class {
   studentPoints         StudentPoint[]
   studentStreaks        StudentStreak[]
   leaderboardRankings   LeaderboardRanking[]
+  classLocations        ClassLocation[]
 
   @@map("classes")
 }
@@ -243,21 +248,25 @@ model ClassEnrollment {
 }
 
 model AttendanceRecord {
-  id               Int               @id @default(autoincrement())
-  studentId        Int               @map("student_id")
-  classId          Int               @map("class_id")
-  sessionDate      DateTime          @map("session_date") @db.Date
-  sessionTime      DateTime?         @map("session_time") @db.Time
-  status           AttendanceStatus
-  checkInTime      DateTime?         @map("check_in_time")
-  method           AttendanceMethod  @default(manual)
-  qrSessionId      String?           @map("qr_session_id")
-  scanTimestamp    DateTime?         @map("scan_timestamp")
-  isJustified      Boolean           @default(false) @map("is_justified")
-  justificationId  Int?              @map("justification_id")
-  createdAt        DateTime          @default(now()) @map("created_at")
-  updatedAt        DateTime          @updatedAt @map("updated_at")
-  recordedBy       Int?              @map("recorded_by")
+  id                 Int               @id @default(autoincrement())
+  studentId          Int               @map("student_id")
+  classId            Int               @map("class_id")
+  sessionDate        DateTime          @map("session_date") @db.Date
+  sessionTime        DateTime?         @map("session_time") @db.Time
+  status             AttendanceStatus
+  checkInTime        DateTime?         @map("check_in_time")
+  method             AttendanceMethod  @default(manual)
+  qrSessionId        String?           @map("qr_session_id")
+  scanTimestamp      DateTime?         @map("scan_timestamp")
+  isJustified        Boolean           @default(false) @map("is_justified")
+  justificationId    Int?              @map("justification_id")
+  studentLatitude    Float?            @map("student_latitude")
+  studentLongitude   Float?            @map("student_longitude")
+  distanceFromClass  Float?            @map("distance_from_class")
+  locationVerified   Boolean?          @default(false) @map("location_verified")
+  createdAt          DateTime          @default(now()) @map("created_at")
+  updatedAt          DateTime          @updatedAt @map("updated_at")
+  recordedBy         Int?              @map("recorded_by")
 
   student               Student                @relation(fields: [studentId], references: [id])
   class                 Class                  @relation(fields: [classId], references: [id])
@@ -282,6 +291,9 @@ model AttendanceSession {
   targetLevel     String?         @map("target_level")
   planningStatus  PlanningStatus  @default(planned) @map("planning_status")
   notes           String?
+  latitude        Float?          @map("latitude")
+  longitude       Float?          @map("longitude")
+  geofenceRadius  Int?            @default(100) @map("geofence_radius")
   expiresAt       DateTime        @map("expires_at")
   status          String?         @default("active")
   createdAt       DateTime        @default(now()) @map("created_at")
@@ -497,4 +509,32 @@ model LeaderboardRanking {
 
   @@unique([studentId, period, scope, periodStart])
   @@map("leaderboard_rankings")
+}
+
+model GeofenceSettings {
+  id                 Int      @id @default(autoincrement())
+  defaultRadius      Int      @default(100) @map("default_radius")
+  enabled            Boolean  @default(true)
+  allowOverride      Boolean  @default(true) @map("allow_override")
+  accuracyThreshold  Float    @default(50.0) @map("accuracy_threshold")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  @@map("geofence_settings")
+}
+
+model ClassLocation {
+  id        Int      @id @default(autoincrement())
+  classId   Int      @map("class_id")
+  name      String
+  latitude  Float
+  longitude Float
+  radius    Int      @default(100)
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  class Class @relation(fields: [classId], references: [id], onDelete: Cascade)
+
+  @@map("class_locations")
 }
