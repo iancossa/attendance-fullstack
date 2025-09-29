@@ -265,21 +265,18 @@ export const ClassesPage: React.FC = () => {
                                   onClick={() => handleModalOpen(classItem, 'editClass')} 
                                   className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
                                 >
-                                  <Edit className="h-4 w-4" />
                                   Edit Class
                                 </button>
                                 <button 
                                   onClick={() => handleModalOpen(classItem, 'manageStudents')} 
                                   className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
                                 >
-                                  <Users className="h-4 w-4" />
                                   Manage Students
                                 </button>
                                 <button 
                                   onClick={() => handleModalOpen(classItem, 'viewReports')} 
                                   className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
                                 >
-                                  <BarChart3 className="h-4 w-4" />
                                   View Reports
                                 </button>
                               </div>

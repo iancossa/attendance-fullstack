@@ -26,6 +26,10 @@ import {
 import { exportToExcel } from '../../utils/exportUtils';
 import { useAppStore } from '../../store';
 import { AddFacultyModal } from '../../components/modals/AddFacultyModal';
+import { ViewFacultyProfileModal } from '../../components/modals/ViewFacultyProfileModal';
+import { EditFacultyDetailsModal } from '../../components/modals/EditFacultyDetailsModal';
+import { ManageStudentsModal } from '../../components/modals/ManageStudentsModal';
+import { ScheduleSessionModal } from '../../components/modals/ScheduleSessionModal';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 
 interface Faculty {
@@ -123,6 +127,11 @@ export const FacultyPage: React.FC = () => {
   const [selectedStatus, setSelectedStatus] = useState('All');
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isViewProfileOpen, setIsViewProfileOpen] = useState(false);
+  const [isEditDetailsOpen, setIsEditDetailsOpen] = useState(false);
+  const [isManageClassesOpen, setIsManageClassesOpen] = useState(false);
+  const [isViewScheduleOpen, setIsViewScheduleOpen] = useState(false);
+  const [selectedFaculty, setSelectedFaculty] = useState<Faculty | null>(null);
   const [facultyList, setFacultyList] = useState(mockFaculty);
   const { addNotification } = useAppStore();
 
@@ -431,8 +440,9 @@ export const FacultyPage: React.FC = () => {
                               <div className="absolute right-0 top-8 mt-1 w-48 bg-white dark:bg-[#282a36] border border-gray-200 dark:border-[#6272a4] rounded-lg shadow-lg z-50 py-1">
                                 <button 
                                   onClick={() => {
+                                    setSelectedFaculty(faculty);
+                                    setIsViewProfileOpen(true);
                                     setOpenDropdown(null);
-                                    addNotification({ message: 'View Profile feature coming soon!', type: 'info' });
                                   }} 
                                   className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
                                 >
@@ -440,8 +450,9 @@ export const FacultyPage: React.FC = () => {
                                 </button>
                                 <button 
                                   onClick={() => {
+                                    setSelectedFaculty(faculty);
+                                    setIsEditDetailsOpen(true);
                                     setOpenDropdown(null);
-                                    addNotification({ message: 'Edit Details feature coming soon!', type: 'info' });
                                   }} 
                                   className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
                                 >
@@ -449,8 +460,9 @@ export const FacultyPage: React.FC = () => {
                                 </button>
                                 <button 
                                   onClick={() => {
+                                    setSelectedFaculty(faculty);
+                                    setIsManageClassesOpen(true);
                                     setOpenDropdown(null);
-                                    addNotification({ message: 'Manage Classes feature coming soon!', type: 'info' });
                                   }} 
                                   className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
                                 >
@@ -458,8 +470,9 @@ export const FacultyPage: React.FC = () => {
                                 </button>
                                 <button 
                                   onClick={() => {
+                                    setSelectedFaculty(faculty);
+                                    setIsViewScheduleOpen(true);
                                     setOpenDropdown(null);
-                                    addNotification({ message: 'View Schedule feature coming soon!', type: 'info' });
                                   }} 
                                   className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
                                 >
@@ -508,16 +521,16 @@ export const FacultyPage: React.FC = () => {
                         <>
                           <div className="fixed inset-0 z-40" onClick={() => setOpenDropdown(null)} />
                           <div className="absolute right-0 top-8 mt-1 w-48 bg-white dark:bg-[#282a36] border border-gray-200 dark:border-[#6272a4] rounded-lg shadow-lg z-50 py-1">
-                            <button onClick={() => { setOpenDropdown(null); addNotification({ message: 'View Profile feature coming soon!', type: 'info' }); }} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
+                            <button onClick={() => { setSelectedFaculty(faculty); setIsViewProfileOpen(true); setOpenDropdown(null); }} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
                               View Profile
                             </button>
-                            <button onClick={() => { setOpenDropdown(null); addNotification({ message: 'Edit Details feature coming soon!', type: 'info' }); }} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
+                            <button onClick={() => { setSelectedFaculty(faculty); setIsEditDetailsOpen(true); setOpenDropdown(null); }} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
                               Edit Details
                             </button>
-                            <button onClick={() => { setOpenDropdown(null); addNotification({ message: 'Manage Classes feature coming soon!', type: 'info' }); }} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
+                            <button onClick={() => { setSelectedFaculty(faculty); setIsManageClassesOpen(true); setOpenDropdown(null); }} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
                               Manage Classes
                             </button>
-                            <button onClick={() => { setOpenDropdown(null); addNotification({ message: 'View Schedule feature coming soon!', type: 'info' }); }} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
+                            <button onClick={() => { setSelectedFaculty(faculty); setIsViewScheduleOpen(true); setOpenDropdown(null); }} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
                               View Schedule
                             </button>
                           </div>
@@ -592,6 +605,60 @@ export const FacultyPage: React.FC = () => {
           addNotification({ message: 'Faculty member added successfully!', type: 'success' });
         }}
       />
+      
+      {selectedFaculty && (
+        <>
+          <ViewFacultyProfileModal
+            faculty={selectedFaculty}
+            isOpen={isViewProfileOpen}
+            onClose={() => {
+              setIsViewProfileOpen(false);
+              setSelectedFaculty(null);
+            }}
+          />
+          
+          <EditFacultyDetailsModal
+            faculty={selectedFaculty}
+            isOpen={isEditDetailsOpen}
+            onClose={() => {
+              setIsEditDetailsOpen(false);
+              setSelectedFaculty(null);
+            }}
+            onSave={(updatedFaculty) => {
+              setFacultyList(prev => prev.map(f => 
+                f.id === selectedFaculty.id ? updatedFaculty : f
+              ));
+              addNotification({ message: 'Faculty details updated successfully!', type: 'success' });
+            }}
+          />
+          
+          <ManageStudentsModal
+            classData={{
+              id: parseInt(selectedFaculty.id),
+              name: `${selectedFaculty.name}'s Classes`,
+              code: selectedFaculty.employeeId,
+              students: selectedFaculty.students,
+              enrolled: selectedFaculty.students
+            }}
+            isOpen={isManageClassesOpen}
+            onClose={() => {
+              setIsManageClassesOpen(false);
+              setSelectedFaculty(null);
+            }}
+          />
+          
+          <ScheduleSessionModal
+            isOpen={isViewScheduleOpen}
+            onClose={() => {
+              setIsViewScheduleOpen(false);
+              setSelectedFaculty(null);
+            }}
+            onSave={() => {
+              addNotification({ message: 'Schedule viewed successfully!', type: 'success' });
+            }}
+          />
+        </>
+      )}
     </Layout>
   );
 };

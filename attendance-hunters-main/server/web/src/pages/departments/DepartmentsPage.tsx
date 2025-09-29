@@ -22,6 +22,10 @@ import { exportToExcel } from '../../utils/exportUtils';
 import { useAppStore } from '../../store';
 import { MOCK_DEPARTMENTS } from '../../data/mockDepartments';
 import { AddDepartmentModal } from '../../components/modals/AddDepartmentModal';
+import { ViewDepartmentDetailsModal } from '../../components/modals/ViewDepartmentDetailsModal';
+import { EditDepartmentModal } from '../../components/modals/EditDepartmentModal';
+import { DepartmentSettingsModal } from '../../components/modals/DepartmentSettingsModal';
+import { ManageStudentsModal } from '../../components/modals/ManageStudentsModal';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 
 export const DepartmentsPage: React.FC = () => {
@@ -30,6 +34,11 @@ export const DepartmentsPage: React.FC = () => {
   const [selectedType, setSelectedType] = useState('All');
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isViewDetailsOpen, setIsViewDetailsOpen] = useState(false);
+  const [isEditDepartmentOpen, setIsEditDepartmentOpen] = useState(false);
+  const [isManageFacultyOpen, setIsManageFacultyOpen] = useState(false);
+  const [isDepartmentSettingsOpen, setIsDepartmentSettingsOpen] = useState(false);
+  const [selectedDepartment, setSelectedDepartment] = useState<any>(null);
   const [departmentsList, setDepartmentsList] = useState(MOCK_DEPARTMENTS);
   const { addNotification } = useAppStore();
 
@@ -311,42 +320,42 @@ export const DepartmentsPage: React.FC = () => {
                               <div className="absolute right-0 top-8 mt-1 w-48 bg-white dark:bg-[#282a36] border border-gray-200 dark:border-[#6272a4] rounded-lg shadow-lg z-50 py-1">
                                 <button 
                                   onClick={() => {
+                                    setSelectedDepartment(department);
+                                    setIsViewDetailsOpen(true);
                                     setOpenDropdown(null);
-                                    addNotification({ message: 'View Details feature coming soon!', type: 'info' });
                                   }} 
-                                  className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
+                                  className="w-full px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
                                 >
-                                  <Eye className="h-4 w-4" />
                                   View Details
                                 </button>
                                 <button 
                                   onClick={() => {
+                                    setSelectedDepartment(department);
+                                    setIsEditDepartmentOpen(true);
                                     setOpenDropdown(null);
-                                    addNotification({ message: 'Edit Department feature coming soon!', type: 'info' });
                                   }} 
-                                  className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
+                                  className="w-full px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
                                 >
-                                  <Edit className="h-4 w-4" />
                                   Edit Department
                                 </button>
                                 <button 
                                   onClick={() => {
+                                    setSelectedDepartment(department);
+                                    setIsManageFacultyOpen(true);
                                     setOpenDropdown(null);
-                                    addNotification({ message: 'Manage Faculty feature coming soon!', type: 'info' });
                                   }} 
-                                  className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
+                                  className="w-full px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
                                 >
-                                  <Users className="h-4 w-4" />
                                   Manage Faculty
                                 </button>
                                 <button 
                                   onClick={() => {
+                                    setSelectedDepartment(department);
+                                    setIsDepartmentSettingsOpen(true);
                                     setOpenDropdown(null);
-                                    addNotification({ message: 'Department Settings feature coming soon!', type: 'info' });
                                   }} 
-                                  className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
+                                  className="w-full px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
                                 >
-                                  <Settings className="h-4 w-4" />
                                   Department Settings
                                 </button>
                               </div>
@@ -392,18 +401,18 @@ export const DepartmentsPage: React.FC = () => {
                         <>
                           <div className="fixed inset-0 z-40" onClick={() => setOpenDropdown(null)} />
                           <div className="absolute right-0 top-8 mt-1 w-48 bg-white dark:bg-[#282a36] border border-gray-200 dark:border-[#6272a4] rounded-lg shadow-lg z-50 py-1">
-                            <button onClick={() => { setOpenDropdown(null); addNotification({ message: 'View Details feature coming soon!', type: 'info' }); }} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
-                              <Eye className="h-4 w-4" />View Details
+                            <button onClick={() => { setSelectedDepartment(department); setIsViewDetailsOpen(true); setOpenDropdown(null); }} className="w-full px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
+                              View Details
                             </button>
-                            <button onClick={() => { setOpenDropdown(null); addNotification({ message: 'Edit Department feature coming soon!', type: 'info' }); }} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
-                              <Edit className="h-4 w-4" />Edit Department
+                            <button onClick={() => { setSelectedDepartment(department); setIsEditDepartmentOpen(true); setOpenDropdown(null); }} className="w-full px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
+                              Edit Department
                             </button>
-                            <button onClick={() => { setOpenDropdown(null); addNotification({ message: 'Manage Faculty feature coming soon!', type: 'info' }); }} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
-                              <Users className="h-4 w-4" />Manage Faculty
+                            <button onClick={() => { setSelectedDepartment(department); setIsManageFacultyOpen(true); setOpenDropdown(null); }} className="w-full px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
+                              Manage Faculty
                             </button>
-                            <button onClick={() => { setOpenDropdown(null); addNotification({ message: 'Department Settings feature coming soon!', type: 'info' }); }} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
-                              <Settings className="h-4 w-4" />Department Settings
-                            </button>
+                            <button onClick={() => { setSelectedDepartment(department); setIsDepartmentSettingsOpen(true); setOpenDropdown(null); }} className="w-full px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
+                              Department Settings
+            </button>
                           </div>
                         </>
                       )}
@@ -466,6 +475,61 @@ export const DepartmentsPage: React.FC = () => {
           addNotification({ message: 'Department added successfully!', type: 'success' });
         }}
       />
+      
+      {selectedDepartment && (
+        <>
+          <ViewDepartmentDetailsModal
+            department={selectedDepartment}
+            isOpen={isViewDetailsOpen}
+            onClose={() => {
+              setIsViewDetailsOpen(false);
+              setSelectedDepartment(null);
+            }}
+          />
+          
+          <EditDepartmentModal
+            department={selectedDepartment}
+            isOpen={isEditDepartmentOpen}
+            onClose={() => {
+              setIsEditDepartmentOpen(false);
+              setSelectedDepartment(null);
+            }}
+            onSave={(updatedDepartment) => {
+              setDepartmentsList(prev => prev.map(d => 
+                d.id === selectedDepartment.id ? updatedDepartment : d
+              ));
+              addNotification({ message: 'Department updated successfully!', type: 'success' });
+            }}
+          />
+          
+          <ManageStudentsModal
+            classData={{
+              id: parseInt(selectedDepartment.id),
+              name: `${selectedDepartment.name} Faculty`,
+              code: selectedDepartment.code,
+              students: selectedDepartment.faculty,
+              enrolled: selectedDepartment.faculty
+            }}
+            isOpen={isManageFacultyOpen}
+            onClose={() => {
+              setIsManageFacultyOpen(false);
+              setSelectedDepartment(null);
+            }}
+          />
+          
+          <DepartmentSettingsModal
+            department={selectedDepartment}
+            isOpen={isDepartmentSettingsOpen}
+            onClose={() => {
+              setIsDepartmentSettingsOpen(false);
+              setSelectedDepartment(null);
+            }}
+            onSave={(settings) => {
+              addNotification({ message: 'Department settings updated successfully!', type: 'success' });
+            }}
+          />
+        </>
+      )}
     </Layout>
   );
 };

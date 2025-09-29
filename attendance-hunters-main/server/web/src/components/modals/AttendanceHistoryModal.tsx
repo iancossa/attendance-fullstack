@@ -88,7 +88,7 @@ export const AttendanceHistoryModal: React.FC<AttendanceHistoryModalProps> = ({ 
             onClick={onClose}
             className="h-8 w-8 rounded-md hover:bg-gray-100 dark:hover:bg-[#44475a] flex items-center justify-center"
           >
-            <X className="h-4 w-4" />
+            <X className="h-4 w-4 text-gray-600 dark:text-[#6272a4]" />
           </button>
         </div>
 
@@ -143,13 +143,13 @@ export const AttendanceHistoryModal: React.FC<AttendanceHistoryModalProps> = ({ 
             <CardContent className="p-4 pt-6">
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">
-                  <Filter className="h-4 w-4 text-gray-600" />
+                  <Filter className="h-4 w-4 text-gray-600 dark:text-[#6272a4]" />
                   <span className="text-sm font-medium text-gray-700 dark:text-[#f8f8f2]">Filters:</span>
                 </div>
                 <select
                   value={filterStatus}
                   onChange={(e) => setFilterStatus(e.target.value)}
-                  className="h-8 px-3 py-1 border border-gray-200 rounded-md bg-white text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className="h-8 px-3 py-1 border border-gray-200 dark:border-[#6272a4] rounded-md bg-white dark:bg-[#44475a] text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-900 dark:text-[#f8f8f2]"
                 >
                   <option value="All">All Status</option>
                   <option value="Present">Present</option>
@@ -159,7 +159,7 @@ export const AttendanceHistoryModal: React.FC<AttendanceHistoryModalProps> = ({ 
                 <select
                   value={filterSubject}
                   onChange={(e) => setFilterSubject(e.target.value)}
-                  className="h-8 px-3 py-1 border border-gray-200 rounded-md bg-white text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className="h-8 px-3 py-1 border border-gray-200 dark:border-[#6272a4] rounded-md bg-white dark:bg-[#44475a] text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-900 dark:text-[#f8f8f2]"
                 >
                   <option value="All">All Subjects</option>
                   {subjects.map(subject => (
@@ -183,24 +183,24 @@ export const AttendanceHistoryModal: React.FC<AttendanceHistoryModalProps> = ({ 
           {/* Attendance History Table */}
           <Card>
             <CardContent className="p-4 pt-6">
-              <div className="rounded-lg border border-gray-200 overflow-hidden">
+              <div className="rounded-lg border border-gray-200 dark:border-[#6272a4] overflow-hidden">
                 <Table>
                   <TableHeader>
-                    <TableRow className="bg-gray-50">
-                      <TableHead className="text-sm font-medium text-gray-900">Date</TableHead>
-                      <TableHead className="text-sm font-medium text-gray-900">Subject</TableHead>
-                      <TableHead className="text-sm font-medium text-gray-900">Status</TableHead>
-                      <TableHead className="text-sm font-medium text-gray-900">Time</TableHead>
-                      <TableHead className="text-sm font-medium text-gray-900">Remarks</TableHead>
+                    <TableRow className="bg-gray-50 dark:bg-[#44475a]">
+                      <TableHead className="text-sm font-medium text-gray-900 dark:text-[#f8f8f2]">Date</TableHead>
+                      <TableHead className="text-sm font-medium text-gray-900 dark:text-[#f8f8f2]">Subject</TableHead>
+                      <TableHead className="text-sm font-medium text-gray-900 dark:text-[#f8f8f2]">Status</TableHead>
+                      <TableHead className="text-sm font-medium text-gray-900 dark:text-[#f8f8f2]">Time</TableHead>
+                      <TableHead className="text-sm font-medium text-gray-900 dark:text-[#f8f8f2]">Remarks</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {filteredHistory.map((record) => (
-                      <TableRow key={record.id} className="hover:bg-gray-50 transition-colors">
+                      <TableRow key={record.id} className="hover:bg-gray-50 dark:hover:bg-[#44475a] transition-colors">
                         <TableCell>
                           <div className="flex items-center gap-2">
-                            <Calendar className="h-4 w-4 text-gray-400" />
-                            <span className="font-medium text-sm">
+                            <Calendar className="h-4 w-4 text-gray-400 dark:text-[#6272a4]" />
+                            <span className="font-medium text-sm text-gray-900 dark:text-[#f8f8f2]">
                               {new Date(record.date).toLocaleDateString('en-US', {
                                 month: 'short',
                                 day: 'numeric',
@@ -210,7 +210,7 @@ export const AttendanceHistoryModal: React.FC<AttendanceHistoryModalProps> = ({ 
                           </div>
                         </TableCell>
                         <TableCell>
-                          <span className="font-medium text-sm">{record.subject}</span>
+                          <span className="font-medium text-sm text-gray-900 dark:text-[#f8f8f2]">{record.subject}</span>
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
@@ -222,12 +222,12 @@ export const AttendanceHistoryModal: React.FC<AttendanceHistoryModalProps> = ({ 
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
-                            <Clock className="h-4 w-4 text-gray-400" />
-                            <span className="text-sm">{record.time}</span>
+                            <Clock className="h-4 w-4 text-gray-400 dark:text-[#6272a4]" />
+                            <span className="text-sm text-gray-900 dark:text-[#f8f8f2]">{record.time}</span>
                           </div>
                         </TableCell>
                         <TableCell>
-                          <span className="text-sm text-gray-600">{record.remarks || '-'}</span>
+                          <span className="text-sm text-gray-600 dark:text-[#6272a4]">{record.remarks || '-'}</span>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -236,7 +236,7 @@ export const AttendanceHistoryModal: React.FC<AttendanceHistoryModalProps> = ({ 
               </div>
 
               {filteredHistory.length === 0 && (
-                <div className="text-center py-8 text-gray-600">
+                <div className="text-center py-8 text-gray-600 dark:text-[#6272a4]">
                   <Calendar className="h-12 w-12 mx-auto mb-4 opacity-50" />
                   <p>No attendance records found</p>
                   <p className="text-sm">Try adjusting your filters</p>

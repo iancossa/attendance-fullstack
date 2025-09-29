@@ -245,35 +245,30 @@ export const AttendancePage: React.FC = () => {
                                   onClick={() => handleModalOpen(record.student, 'viewProfile')} 
                                   className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-[#f8f8f2] hover:bg-orange-50 dark:hover:bg-orange-500/20 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left"
                                 >
-                                  <Eye className="h-4 w-4" />
                                   View Profile
                                 </button>
                                 <button 
                                   onClick={() => handleModalOpen(record.student, 'editDetails')} 
                                   className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-[#f8f8f2] hover:bg-orange-50 dark:hover:bg-orange-500/20 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left"
                                 >
-                                  <Edit className="h-4 w-4" />
                                   Edit Details
                                 </button>
                                 <button 
                                   onClick={() => handleModalOpen(record.student, 'attendanceHistory')} 
                                   className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-[#f8f8f2] hover:bg-orange-50 dark:hover:bg-orange-500/20 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left"
                                 >
-                                  <History className="h-4 w-4" />
                                   Attendance History
                                 </button>
                                 <button 
                                   onClick={() => handleModalOpen(record.student, 'sendMessage')} 
                                   className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-[#f8f8f2] hover:bg-orange-50 dark:hover:bg-orange-500/20 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left"
                                 >
-                                  <MessageSquare className="h-4 w-4" />
                                   Send Message
                                 </button>
                                 <button 
                                   onClick={() => handleModalOpen(record.student, 'attendanceReport')} 
                                   className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-[#f8f8f2] hover:bg-orange-50 dark:hover:bg-orange-500/20 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left"
                                 >
-                                  <BarChart3 className="h-4 w-4" />
                                   Attendance Report
                                 </button>
                               </div>

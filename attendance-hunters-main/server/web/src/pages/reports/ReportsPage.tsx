@@ -11,6 +11,7 @@ import { exportToExcel, exportToPDF } from '../../utils/exportUtils';
 import { useAppStore } from '../../store';
 import { MOCK_STUDENTS } from '../../data/mockStudents';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle';
+import { ViewReportModal } from '../../components/modals';
 
 interface ReportData {
   id: string;
@@ -102,6 +103,8 @@ export const ReportsPage: React.FC = () => {
   const [selectedType, setSelectedType] = useState('All');
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [showGenerateModal, setShowGenerateModal] = useState(false);
+  const [showViewModal, setShowViewModal] = useState(false);
+  const [selectedReport, setSelectedReport] = useState<ReportData | null>(null);
   const [reportForm, setReportForm] = useState({
     type: 'Weekly Report',
     class: '',
@@ -371,7 +374,8 @@ export const ReportsPage: React.FC = () => {
                                 <div className="absolute right-0 top-8 mt-1 w-48 bg-white dark:bg-[#282a36] border border-gray-200 dark:border-[#6272a4] rounded-lg shadow-lg z-50 py-1">
                                   <button 
                                     onClick={() => {
-                                      addNotification({ message: `Viewing ${report.type} for ${report.class}`, type: 'info' });
+                                      setSelectedReport(report);
+                                      setShowViewModal(true);
                                       setOpenDropdown(null);
                                     }} 
                                     className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
@@ -451,7 +455,8 @@ export const ReportsPage: React.FC = () => {
                           <div className="fixed inset-0 z-40" onClick={() => setOpenDropdown(null)} />
                           <div className="absolute right-0 top-8 mt-1 w-48 bg-white dark:bg-[#282a36] border border-gray-200 dark:border-[#6272a4] rounded-lg shadow-lg z-50 py-1">
                             <button onClick={() => {
-                              addNotification({ message: `Viewing ${report.type} for ${report.class}`, type: 'info' });
+                              setSelectedReport(report);
+                              setShowViewModal(true);
                               setOpenDropdown(null);
                             }} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
                               View Report
@@ -759,6 +764,28 @@ export const ReportsPage: React.FC = () => {
             </div>
           </>
         )}
+
+        {/* View Report Modal */}
+        <ViewReportModal
+          isOpen={showViewModal}
+          onClose={() => {
+            setShowViewModal(false);
+            setSelectedReport(null);
+          }}
+          report={selectedReport}
+          onDownloadPDF={() => {
+            if (selectedReport) {
+              exportToPDF([selectedReport], `${selectedReport.type}-${selectedReport.id}`);
+              addNotification({ message: 'PDF downloaded successfully', type: 'success' });
+            }
+          }}
+          onExportData={() => {
+            if (selectedReport) {
+              exportToExcel([selectedReport], `${selectedReport.type}-${selectedReport.id}`);
+              addNotification({ message: 'Data exported successfully', type: 'success' });
+            }
+          }}
+        />
       </div>
     </Layout>
   );

@@ -397,37 +397,32 @@ export const StudentsPage: React.FC = () => {
                               <div className="absolute right-0 top-8 mt-1 w-48 bg-white dark:bg-[#282a36] border border-gray-200 dark:border-[#6272a4] rounded-lg shadow-lg z-50 py-1">
                                 <button 
                                   onClick={() => handleModalOpen(student, 'viewProfile')} 
-                                  className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
+                                  className="w-full px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
                                 >
-                                  <Eye className="h-4 w-4" />
                                   View Profile
                                 </button>
                                 <button 
                                   onClick={() => handleModalOpen(student, 'editDetails')} 
-                                  className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
+                                  className="w-full px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
                                 >
-                                  <Edit className="h-4 w-4" />
                                   Edit Details
                                 </button>
                                 <button 
                                   onClick={() => handleModalOpen(student, 'attendanceReport')} 
-                                  className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
+                                  className="w-full px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
                                 >
-                                  <BarChart3 className="h-4 w-4" />
                                   Attendance Report
                                 </button>
                                 <button 
                                   onClick={() => handleModalOpen(student, 'attendanceHistory')} 
-                                  className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
+                                  className="w-full px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
                                 >
-                                  <History className="h-4 w-4" />
                                   Attendance History
                                 </button>
                                 <button 
                                   onClick={() => handleModalOpen(student, 'sendMessage')} 
-                                  className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
+                                  className="w-full px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]"
                                 >
-                                  <MessageSquare className="h-4 w-4" />
                                   Send Message
                                 </button>
                               </div>
@@ -473,20 +468,20 @@ export const StudentsPage: React.FC = () => {
                         <>
                           <div className="fixed inset-0 z-40" onClick={() => setOpenDropdown(null)} />
                           <div className="absolute right-0 top-8 mt-1 w-48 bg-white dark:bg-[#282a36] border border-gray-200 dark:border-[#6272a4] rounded-lg shadow-lg z-50 py-1">
-                            <button onClick={() => handleModalOpen(student, 'viewProfile')} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
-                              <Eye className="h-4 w-4" />View Profile
+                            <button onClick={() => handleModalOpen(student, 'viewProfile')} className="w-full px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
+                              View Profile
                             </button>
-                            <button onClick={() => handleModalOpen(student, 'editDetails')} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
-                              <Edit className="h-4 w-4" />Edit Details
+                            <button onClick={() => handleModalOpen(student, 'editDetails')} className="w-full px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
+                              Edit Details
                             </button>
-                            <button onClick={() => handleModalOpen(student, 'attendanceReport')} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
-                              <BarChart3 className="h-4 w-4" />Attendance Report
+                            <button onClick={() => handleModalOpen(student, 'attendanceReport')} className="w-full px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
+                              Attendance Report
                             </button>
-                            <button onClick={() => handleModalOpen(student, 'attendanceHistory')} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
-                              <History className="h-4 w-4" />Attendance History
+                            <button onClick={() => handleModalOpen(student, 'attendanceHistory')} className="w-full px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
+                              Attendance History
                             </button>
-                            <button onClick={() => handleModalOpen(student, 'sendMessage')} className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
-                              <MessageSquare className="h-4 w-4" />Send Message
+                            <button onClick={() => handleModalOpen(student, 'sendMessage')} className="w-full px-3 py-2 text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-600 dark:hover:text-orange-400 transition-colors text-left text-gray-700 dark:text-[#f8f8f2]">
+                              Send Message
                             </button>
                           </div>
                         </>

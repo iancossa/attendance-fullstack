@@ -48,7 +48,7 @@ export const AttendanceReportModal: React.FC<AttendanceReportModalProps> = ({ st
 
   return (
     <div className="fixed inset-0 bg-gray-900 bg-opacity-25 flex items-center justify-center z-50 p-2 sm:p-4">
-      <div className="bg-white dark:bg-[#282a36] rounded-lg shadow-lg w-full max-w-4xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto border border-gray-200 dark:border-[#6272a4]">
+      <div className="bg-white dark:bg-[#282a36] rounded-lg shadow-lg w-full max-w-4xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto modal-scrollbar border border-gray-200 dark:border-[#6272a4]">
         <div className="sticky top-0 z-10 flex items-center justify-between p-6 border-b border-gray-200 dark:border-[#6272a4] bg-white dark:bg-[#282a36]">
           <div>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-[#f8f8f2]">Attendance Report</h2>
@@ -63,7 +63,7 @@ export const AttendanceReportModal: React.FC<AttendanceReportModalProps> = ({ st
               onClick={onClose}
               className="h-8 w-8 rounded-md hover:bg-gray-100 dark:hover:bg-[#44475a] flex items-center justify-center"
             >
-              <X className="h-4 w-4" />
+              <X className="h-4 w-4 text-gray-600 dark:text-[#6272a4]" />
             </button>
           </div>
         </div>
@@ -104,13 +104,13 @@ export const AttendanceReportModal: React.FC<AttendanceReportModalProps> = ({ st
               <CardContent className="p-4 pt-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-red-600">Classes Missed</p>
-                    <div className="text-2xl font-semibold text-red-600 mt-2">
+                    <p className="text-sm font-medium text-red-600 dark:text-red-400">Classes Missed</p>
+                    <div className="text-2xl font-semibold text-red-600 dark:text-red-400 mt-2">
                       {attendanceData.absentClasses}
                     </div>
-                    <p className="text-xs text-red-500">total absences</p>
+                    <p className="text-xs text-red-500 dark:text-red-300">total absences</p>
                   </div>
-                  <TrendingDown className="h-8 w-8 text-red-600" />
+                  <TrendingDown className="h-8 w-8 text-red-600 dark:text-red-400" />
                 </div>
               </CardContent>
             </Card>
@@ -119,13 +119,13 @@ export const AttendanceReportModal: React.FC<AttendanceReportModalProps> = ({ st
               <CardContent className="p-4 pt-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-yellow-600">Late Arrivals</p>
-                    <div className="text-2xl font-semibold text-yellow-600 mt-2">
+                    <p className="text-sm font-medium text-yellow-600 dark:text-yellow-400">Late Arrivals</p>
+                    <div className="text-2xl font-semibold text-yellow-600 dark:text-yellow-400 mt-2">
                       {attendanceData.lateArrivals}
                     </div>
-                    <p className="text-xs text-yellow-500">this semester</p>
+                    <p className="text-xs text-yellow-500 dark:text-yellow-300">this semester</p>
                   </div>
-                  <Clock className="h-8 w-8 text-yellow-600" />
+                  <Clock className="h-8 w-8 text-yellow-600 dark:text-yellow-400" />
                 </div>
               </CardContent>
             </Card>
@@ -202,19 +202,19 @@ export const AttendanceReportModal: React.FC<AttendanceReportModalProps> = ({ st
                     </div>
                   </div>
                 ) : (student.attendance || 0) >= 75 ? (
-                  <div className="flex items-start gap-2 p-3 bg-yellow-50 rounded-lg">
-                    <Clock className="h-4 w-4 text-yellow-600 mt-0.5" />
+                  <div className="flex items-start gap-2 p-3 bg-yellow-50 dark:bg-yellow-500/10 rounded-lg">
+                    <Clock className="h-4 w-4 text-yellow-600 dark:text-yellow-400 mt-0.5" />
                     <div>
-                      <p className="text-sm font-medium text-yellow-800">Good Attendance</p>
-                      <p className="text-xs text-yellow-600">Try to improve attendance to reach 90% for better academic standing.</p>
+                      <p className="text-sm font-medium text-yellow-800 dark:text-yellow-400">Good Attendance</p>
+                      <p className="text-xs text-yellow-600 dark:text-yellow-300">Try to improve attendance to reach 90% for better academic standing.</p>
                     </div>
                   </div>
                 ) : (
-                  <div className="flex items-start gap-2 p-3 bg-red-50 rounded-lg">
-                    <TrendingDown className="h-4 w-4 text-red-600 mt-0.5" />
+                  <div className="flex items-start gap-2 p-3 bg-red-50 dark:bg-red-500/10 rounded-lg">
+                    <TrendingDown className="h-4 w-4 text-red-600 dark:text-red-400 mt-0.5" />
                     <div>
-                      <p className="text-sm font-medium text-red-800">Attendance Below Requirement</p>
-                      <p className="text-xs text-red-600">Immediate attention required. Please meet with academic advisor.</p>
+                      <p className="text-sm font-medium text-red-800 dark:text-red-400">Attendance Below Requirement</p>
+                      <p className="text-xs text-red-600 dark:text-red-300">Immediate attention required. Please meet with academic advisor.</p>
                     </div>
                   </div>
                 )}
