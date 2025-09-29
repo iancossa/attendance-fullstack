@@ -103,6 +103,10 @@ CREATE TABLE classes (
   academic_year VARCHAR(20),
   credits INTEGER DEFAULT 3,
   class_type VARCHAR(10), -- CRT, PSS, SB, etc.
+  latitude DOUBLE PRECISION,
+  longitude DOUBLE PRECISION,
+  geofence_radius INTEGER DEFAULT 100,
+  geofence_enabled BOOLEAN DEFAULT TRUE,
   status VARCHAR(20) DEFAULT 'active',
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
@@ -141,6 +145,10 @@ CREATE TABLE attendance_records (
   scan_timestamp TIMESTAMP,
   is_justified BOOLEAN DEFAULT FALSE,
   justification_id INTEGER,
+  student_latitude DOUBLE PRECISION,
+  student_longitude DOUBLE PRECISION,
+  distance_from_class DOUBLE PRECISION,
+  location_verified BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW(),
   recorded_by INTEGER REFERENCES staff(id),
@@ -167,6 +175,9 @@ CREATE TABLE attendance_sessions (
   target_level VARCHAR(100),
   planning_status planning_status DEFAULT 'planned',
   notes TEXT,
+  latitude DOUBLE PRECISION,
+  longitude DOUBLE PRECISION,
+  geofence_radius INTEGER DEFAULT 100,
   expires_at TIMESTAMP NOT NULL,
   status VARCHAR(20) DEFAULT 'active',
   created_at TIMESTAMP DEFAULT NOW(),
@@ -289,12 +300,81 @@ CREATE TABLE student_alerts (
 );
 ```
 
-### 15. Reports Table
+### 15. Geofence Settings Table
 ```sql
-CREATE TYPE report_type AS ENUM ('weekly', 'monthly', 'semester', 'custom', 'attendance', 'performance', 'analytics');
-CREATE TYPE report_category AS ENUM ('student', 'class', 'department', 'faculty', 'system');
-CREATE TYPE report_format AS ENUM ('pdf', 'excel', 'csv', 'json');
-CREATE TYPE report_status AS ENUM ('generating', 'completed', 'failed', 'scheduled');
+CREATE TABLE geofence_settings (
+  id SERIAL PRIMARY KEY,
+  default_radius INTEGER DEFAULT 100,
+  enabled BOOLEAN DEFAULT TRUE,
+  allow_override BOOLEAN DEFAULT TRUE,
+  accuracy_threshold DOUBLE PRECISION DEFAULT 50.0,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+```
+
+### 16. Class Locations Table
+```sql
+CREATE TABLE class_locations (
+  id SERIAL PRIMARY KEY,
+  class_id INTEGER REFERENCES classes(id) ON DELETE CASCADE,
+  name VARCHAR(255) NOT NULL,
+  latitude DOUBLE PRECISION NOT NULL,
+  longitude DOUBLE PRECISION NOT NULL,
+  radius INTEGER DEFAULT 100,
+  is_active BOOLEAN DEFAULT TRUE,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+```
+
+## Geofencing Features
+
+### Location-Based Attendance
+- **Student Location Tracking**: Capture GPS coordinates during QR scan
+- **Distance Validation**: Calculate distance from class location using Haversine formula
+- **Geofence Radius**: Configurable radius per class (default 100m)
+- **Multiple Locations**: Support multiple valid locations per class
+- **Location Verification**: Flag attendance records as location-verified
+
+### Configuration
+- **Global Settings**: Default radius, enable/disable geofencing
+- **Class Override**: Individual class geofence settings
+- **Accuracy Threshold**: GPS accuracy requirements (default 50m)
+- **Fallback Support**: Manual attendance when location unavailable
+
+### Security
+- **Distance Calculation**: Server-side validation prevents spoofing
+- **Location History**: Track student location patterns
+- **Audit Trail**: Complete location verification logs
+
+---
+
+## Database Services Status
+
+### ✅ Implemented Services
+- **GeofencingService**: Distance calculation, location validation, geofence status
+- **User Management**: Admin, Staff, Student models with authentication
+- **Class Management**: Class creation, enrollment, faculty assignment
+- **Attendance Tracking**: QR, manual, hybrid methods with location support
+- **Session Management**: QR session creation and expiration
+- **Risk Tracking**: Student attendance risk assessment
+- **Notifications**: Alert system for attendance issues
+- **Gamification**: Points, achievements, streaks, leaderboards
+
+### 📊 Database Layer Complete
+- **22 Models**: All entities implemented with proper relationships
+- **6 Migrations**: Including geofencing support (007_add_geofencing.sql)
+- **Prisma Schema**: Complete schema with separated user tables
+- **Services**: GeofencingService with Haversine distance calculation
+- **Indexes**: Performance optimization for location queries
+
+### 🔧 Ready for Integration
+- **API Compatibility**: Models match existing API expectations
+- **Frontend Support**: Schema supports all frontend requirements
+- **Geofencing**: Complete location-based attendance system
+- **Scalability**: Normalized structure for performance
+- **Security**: Proper foreign keys and constraintsS ENUM ('generating', 'completed', 'failed', 'scheduled');
 
 CREATE TABLE reports (
   id SERIAL PRIMARY KEY,

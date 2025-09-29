@@ -22,6 +22,28 @@ class Student {
     return result.rows[0];
   }
 
+  static async findByEmail(email) {
+    const result = await pool.query(
+      `SELECT s.*, u.name, u.email, u.phone, u.status 
+       FROM students s 
+       JOIN users u ON s.user_id = u.id 
+       WHERE u.email = $1`,
+      [email]
+    );
+    return result.rows[0];
+  }
+
+  static async findById(id) {
+    const result = await pool.query(
+      `SELECT s.*, u.name, u.email, u.phone, u.status 
+       FROM students s 
+       JOIN users u ON s.user_id = u.id 
+       WHERE s.id = $1`,
+      [id]
+    );
+    return result.rows[0];
+  }
+
   static async findByStudentId(student_id) {
     const result = await pool.query(
       `SELECT s.*, u.name, u.email, u.phone 

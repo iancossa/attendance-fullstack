@@ -1,6 +1,7 @@
 const AttendanceRecord = require('../models/AttendanceRecord');
 const QRSession = require('../models/QRSession');
-const User = require('../models/User');
+const Student = require('../models/Student');
+const GeofencingService = require('./GeofencingService');
 
 class AttendanceService {
   static async markAttendance(sessionId, studentData) {
@@ -13,9 +14,9 @@ class AttendanceService {
       throw new Error('QR session has expired');
     }
 
-    const student = await User.findByEmail(studentData.email) || 
-                   await User.findById(studentData.studentId);
-    if (!student || student.role !== 'student') {
+    const student = await Student.findByEmail(studentData.email) || 
+                   await Student.findById(studentData.studentId);
+    if (!student) {
       throw new Error('Student not found');
     }
 
@@ -28,13 +29,33 @@ class AttendanceService {
       throw new Error('Attendance already marked');
     }
 
+    // Validate location if provided
+    let locationData = {};
+    if (studentData.latitude && studentData.longitude) {
+      const validation = await GeofencingService.validateLocation(
+        studentData.latitude, 
+        studentData.longitude, 
+        session.class_id,
+        session.latitude,
+        session.longitude,
+        session.geofence_radius
+      );
+      locationData = {
+        student_latitude: studentData.latitude,
+        student_longitude: studentData.longitude,
+        distance_from_class: validation.distance,
+        location_verified: validation.valid
+      };
+    }
+
     const attendanceRecord = await AttendanceRecord.create({
       student_id: student.id,
       class_id: session.class_id,
       session_date: session.session_date,
       status: 'present',
       method: 'qr',
-      qr_session_id: sessionId
+      qr_session_id: sessionId,
+      ...locationData
     });
 
     await QRSession.incrementScanCount(sessionId);

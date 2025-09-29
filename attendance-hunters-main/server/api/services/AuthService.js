@@ -1,6 +1,9 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const Admin = require('../models/Admin');
+const Staff = require('../models/Staff');
+const Student = require('../models/Student');
 
 class AuthService {
   static async login(email, password) {
@@ -14,14 +17,29 @@ class AuthService {
       throw new Error('Invalid credentials');
     }
 
+    // Get role-specific data
+    let roleData = null;
+    if (user.role === 'admin') {
+      roleData = await Admin.findByUserId(user.id);
+    } else if (user.role === 'staff') {
+      roleData = await Staff.findByUserId(user.id);
+    } else if (user.role === 'student') {
+      roleData = await Student.findByUserId(user.id);
+    }
+
     const token = jwt.sign(
-      { id: user.id, email: user.email, role: user.role },
+      { id: user.id, email: user.email, role: user.role, roleId: roleData?.id },
       process.env.JWT_SECRET,
       { expiresIn: '24h' }
     );
 
+    await User.updateLastLogin(user.id);
+
     const { password: _, ...userWithoutPassword } = user;
-    return { token, user: userWithoutPassword };
+    return { 
+      token, 
+      user: { ...userWithoutPassword, roleData }
+    };
   }
 
   static async register(userData) {
