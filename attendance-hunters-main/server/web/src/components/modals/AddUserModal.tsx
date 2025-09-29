@@ -3,6 +3,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '../ui/card';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { X, UserPlus, Save } from 'lucide-react';
+import { ModalPortal } from '../ui/modal-portal';
 import { useAppStore } from '../../store';
 
 interface AddUserModalProps {
@@ -46,8 +47,8 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, onClose }) =
 
   return (
     <>
-      <div className="fixed inset-0 bg-black/30 z-50" onClick={onClose} />
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="fixed inset-0 bg-black/50 style={{ zIndex: 9999 }}" onClick={onClose} />
+      <div className="fixed inset-0 style={{ zIndex: 9999 }} flex items-center justify-center p-4">
         <Card className="w-full max-w-md bg-white dark:bg-[#282a36] border-gray-200 dark:border-[#6272a4]">
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-[#f8f8f2]">

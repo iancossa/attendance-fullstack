@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { X, Save } from 'lucide-react';
+import { ModalPortal } from '../ui/modal-portal';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 
@@ -43,7 +44,8 @@ export const EditDetailsModal: React.FC<EditDetailsModalProps> = ({ student, isO
   };
 
   return (
-    <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50 p-2 sm:p-4">
+    <ModalPortal>
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center style={{ zIndex: 9999 }} p-2 sm:p-4">
       <div className="bg-white dark:bg-[#282a36] rounded-lg shadow-lg w-full max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto modal-scrollbar border border-gray-200 dark:border-[#6272a4]">
         <div className="sticky top-0 z-10 flex items-center justify-between p-6 border-b border-gray-200 dark:border-[#6272a4] bg-white dark:bg-[#282a36]">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-[#f8f8f2]">Edit Student Details</h2>
@@ -178,6 +180,7 @@ export const EditDetailsModal: React.FC<EditDetailsModalProps> = ({ student, isO
           </div>
         </form>
       </div>
-    </div>
+      </div>
+    </ModalPortal>
   );
 };

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { X, UserPlus } from 'lucide-react';
+import { ModalPortal } from '../ui/modal-portal';
 
 interface AddStudentModalProps {
   isOpen: boolean;
@@ -49,7 +50,8 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({ isOpen, onClos
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50 p-4">
+    <ModalPortal>
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center style={{ zIndex: 9999 }} p-4">
       <div className="bg-white dark:bg-[#282a36] rounded-lg shadow-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-gray-200 dark:border-[#6272a4] modal-scrollbar">
         <div className="sticky top-0 z-10 flex items-center justify-between p-6 border-b border-gray-200 dark:border-[#6272a4] bg-white dark:bg-[#282a36]">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-[#f8f8f2]">Add New Student</h2>
@@ -180,6 +182,7 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({ isOpen, onClos
           </form>
         </div>
       </div>
-    </div>
+      </div>
+    </ModalPortal>
   );
 };

@@ -5,6 +5,7 @@ import { Badge } from '../ui/badge';
 import { Card, CardContent } from '../ui/card';
 import { Progress } from '../ui/progress';
 import { X, QrCode, UserCheck, Zap, Calendar, Clock, Users, BookOpen, ArrowRight, CheckCircle } from 'lucide-react';
+import { ModalPortal } from '../ui/modal-portal';
 import { COURSES } from '../../data/mockStudents';
 
 interface TakeAttendanceModalProps {
@@ -104,7 +105,8 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({ isOpen
   ];
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/30 flex items-center justify-center p-4">
+    <ModalPortal>
+      <div className="fixed inset-0 style={{ zIndex: 9999 }} bg-black/50 flex items-center justify-center p-4">
       <div className="bg-white dark:bg-[#282a36] rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden border border-gray-200 dark:border-[#6272a4] modal-scrollbar">
         {/* Header with Progress */}
         <div className="relative">
@@ -376,6 +378,7 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({ isOpen
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </ModalPortal>
   );
 };

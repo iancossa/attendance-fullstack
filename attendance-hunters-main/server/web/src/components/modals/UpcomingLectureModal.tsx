@@ -4,6 +4,7 @@ import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 import { JustificationModal } from '../justification/JustificationModal';
 import { Clock, MapPin, User, Calendar, X, Bell, FileText } from 'lucide-react';
+import { ModalPortal } from '../ui/modal-portal';
 import { useJustifications } from '../../hooks/useJustifications';
 import { useAppStore } from '../../store';
 import type { JustificationFormData } from '../../types';
@@ -60,9 +61,10 @@ export const UpcomingLectureModal: React.FC<UpcomingLectureModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <ModalPortal>
+      <div className="fixed inset-0 style={{ zIndex: 9999 }} flex items-center justify-center">
       <div 
-        className="absolute inset-0 bg-black/30" 
+        className="absolute inset-0 bg-black/50" 
         onClick={onClose}
       />
       <div className="relative z-10 w-full max-w-md mx-4">
@@ -186,6 +188,7 @@ export const UpcomingLectureModal: React.FC<UpcomingLectureModalProps> = ({
           </CardContent>
         </Card>
       </div>
-    </div>
+      </div>
+    </ModalPortal>
   );
 };

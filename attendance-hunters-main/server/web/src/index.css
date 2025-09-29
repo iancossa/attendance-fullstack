@@ -113,3 +113,17 @@ code {
 .dark .modal-scrollbar::-webkit-scrollbar-thumb:hover {
   background-color: rgba(98, 114, 164, 0.8);
 }
+
+/* Modal z-index utilities */
+.modal-overlay {
+  z-index: 60;
+}
+
+.header-sticky {
+  z-index: 50;
+}
+
+/* Ensure modals always appear above header */
+.modal-container {
+  z-index: 60;
+}

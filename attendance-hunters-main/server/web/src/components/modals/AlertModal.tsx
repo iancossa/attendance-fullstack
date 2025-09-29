@@ -3,6 +3,7 @@ import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { X, Mail, Phone, Bell, Eye, Send, AlertTriangle } from 'lucide-react';
+import { ModalPortal } from '../ui/modal-portal';
 
 interface AlertModalProps {
   isOpen: boolean;
@@ -104,7 +105,8 @@ export const AlertModal: React.FC<AlertModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4" style={{ zIndex: 9999 }}>
+    <ModalPortal>
+      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 style={{ zIndex: 9999 }}">
       <div className="bg-white dark:bg-[#282a36] rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto modal-scrollbar">
         <div className="sticky top-0 z-10 flex items-center justify-between p-6 border-b border-gray-200 dark:border-[#6272a4] bg-white dark:bg-[#282a36]">
           <div className="flex items-center gap-3">
@@ -218,6 +220,7 @@ export const AlertModal: React.FC<AlertModalProps> = ({
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </ModalPortal>
   );
 };

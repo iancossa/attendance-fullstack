@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { X, Send, Mail, MessageSquare } from 'lucide-react';
+import { ModalPortal } from '../ui/modal-portal';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 
@@ -65,7 +66,8 @@ export const SendMessageModal: React.FC<SendMessageModalProps> = ({ student, isO
   };
 
   return (
-    <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50 p-2 sm:p-4">
+    <ModalPortal>
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center style={{ zIndex: 9999 }} p-2 sm:p-4">
       <div className="bg-white dark:bg-[#282a36] rounded-lg shadow-lg w-full max-w-3xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto modal-scrollbar border border-gray-200 dark:border-[#6272a4]">
         <div className="sticky top-0 z-10 flex items-center justify-between p-6 border-b border-gray-200 dark:border-[#6272a4] bg-white dark:bg-[#282a36]">
           <div>
@@ -177,6 +179,7 @@ export const SendMessageModal: React.FC<SendMessageModalProps> = ({ student, isO
           </form>
         </div>
       </div>
-    </div>
+      </div>
+    </ModalPortal>
   );
 };

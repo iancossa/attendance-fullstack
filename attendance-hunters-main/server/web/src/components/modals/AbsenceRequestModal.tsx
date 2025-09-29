@@ -3,6 +3,7 @@ import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { FileUpload } from '../ui/file-upload';
 import { X, Calendar, Clock, MapPin, User, AlertCircle } from 'lucide-react';
+import { ModalPortal } from '../ui/modal-portal';
 import type { JustificationFormData } from '../../types';
 
 interface AbsenceRequestModalProps {
@@ -135,7 +136,8 @@ export const AbsenceRequestModal: React.FC<AbsenceRequestModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-50">
+    <ModalPortal>
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 style={{ zIndex: 9999 }}">
       <div className="bg-white dark:bg-[#282a36] rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto modal-scrollbar border border-gray-200 dark:border-[#6272a4]">
         <div className="sticky top-0 z-10 flex items-center justify-between p-6 border-b border-gray-200 dark:border-[#6272a4] bg-white dark:bg-[#282a36]">
           <h2 className="text-xl font-semibold text-gray-900 dark:text-[#f8f8f2]">Request Absence Approval</h2>
@@ -334,6 +336,7 @@ export const AbsenceRequestModal: React.FC<AbsenceRequestModalProps> = ({
           )}
         </div>
       </div>
-    </div>
+      </div>
+    </ModalPortal>
   );
 };
