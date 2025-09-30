@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const path = require('path');
-const { PrismaClient } = require('../../database/generated/prisma');
+const prisma = require('../db');
 const { validateLogin, validateRegistration, authLimiter } = require('../src/middlewares');
 
 // Configure multer for avatar uploads
@@ -39,7 +39,6 @@ const authenticateToken = (req, res, next) => {
 };
 
 const router = express.Router();
-const prisma = new PrismaClient();
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
 // Register

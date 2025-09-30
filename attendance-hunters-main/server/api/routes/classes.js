@@ -1,9 +1,8 @@
 const express = require('express');
-const { PrismaClient } = require('../generated/prisma');
+const prisma = require('../db');
 const { verifyToken } = require('../src/middlewares');
 
 const router = express.Router();
-const prisma = new PrismaClient();
 
 // Get all classes
 router.get('/', verifyToken, async (req, res) => {

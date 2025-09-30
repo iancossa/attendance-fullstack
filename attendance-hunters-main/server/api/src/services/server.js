@@ -3,11 +3,10 @@ dotenv.config();
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
-const { PrismaClient } = require('../../../database/generated/prisma');
+const prisma = require('../../db');
 const { apiLimiter, errorHandler, notFound } = require('../middlewares');
 
 const app = express();
-const prisma = new PrismaClient();
 const PORT = process.env.PORT || 5000;
 
 // Database connection test

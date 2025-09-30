@@ -1,9 +1,8 @@
 const express = require('express');
-const { PrismaClient } = require('../generated/prisma');
+const prisma = require('../db');
 const { verifyToken, adminOnly, validateUserUpdate } = require('../src/middlewares');
 
 const router = express.Router();
-const prisma = new PrismaClient();
 
 // Get all users (admin only)
 router.get('/', verifyToken, adminOnly, async (req, res) => {
