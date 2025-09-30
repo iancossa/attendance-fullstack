@@ -19,6 +19,7 @@ import { StudentClassesPage } from './pages/classes/StudentClassesPage';
 import { StudentAttendancePage } from './pages/attendance/StudentAttendancePage';
 import { StudentProfilePage } from './pages/profile/StudentProfilePage';
 import { StaffProfilePage } from './pages/profile/StaffProfilePage';
+import { ProfileSettingsPage } from './pages/profile/ProfileSettingsPage';
 import { QRModePage } from './pages/attendance/QRModePage';
 import { ManualModePage } from './pages/attendance/ManualModePage';
 import { HybridModePage } from './pages/attendance/HybridModePage';
@@ -79,6 +80,7 @@ function AppContent() {
               <Route path="/attendance/qr-mode" element={<QRModePage />} />
               <Route path="/attendance/manual-mode" element={<ManualModePage />} />
               <Route path="/attendance/hybrid-mode" element={<HybridModePage />} />
+              <Route path="/profile/settings" element={<ProfileSettingsPage />} />
             </>
           )}
           
@@ -101,6 +103,7 @@ function AppContent() {
               <Route path="/attendance/qr-mode" element={<QRModePage />} />
               <Route path="/attendance/manual-mode" element={<ManualModePage />} />
               <Route path="/attendance/hybrid-mode" element={<HybridModePage />} />
+              <Route path="/profile/settings" element={<ProfileSettingsPage />} />
             </>
           )}
           
@@ -115,6 +118,7 @@ function AppContent() {
               <Route path="/profile" element={<StudentProfilePage />} />
               <Route path="/justifications" element={<MyJustificationsPage />} />
               <Route path={ROUTES.LEADERBOARD} element={<LeaderboardPage />} />
+              <Route path="/profile/settings" element={<ProfileSettingsPage />} />
             </>
           )}
         </>

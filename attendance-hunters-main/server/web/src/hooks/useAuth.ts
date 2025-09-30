@@ -163,11 +163,31 @@ export const useAuth = () => {
     window.location.href = '/';
   };
 
+  const refreshUser = () => {
+    const token = localStorage.getItem('auth_token');
+    const role = localStorage.getItem('user_role');
+    
+    if (token && role && role !== 'student' && role !== 'staff') {
+      const userInfo = localStorage.getItem('userInfo');
+      if (userInfo) {
+        const userData = JSON.parse(userInfo);
+        setUser({
+          id: userData.id?.toString() || '1',
+          email: userData.email,
+          name: userData.name,
+          role: userData.role,
+          avatarUrl: userData.avatarUrl
+        });
+      }
+    }
+  };
+
   return {
     user,
     loading,
     login,
     logout,
+    refreshUser,
     isAuthenticated: !!user,
   };
 };

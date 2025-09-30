@@ -28,6 +28,23 @@ export const LoginPage: React.FC = () => {
 
 
 
+  const getUserFriendlyError = (error: any) => {
+    const message = error.message || '';
+    if (message.includes('Failed to fetch') || message.includes('NetworkError') || message.includes('fetch')) {
+      return 'Unable to connect to server. Please check your internet connection and try again.';
+    }
+    if (message.includes('Invalid credentials') || message.includes('401') || message.includes('Unauthorized')) {
+      return 'Invalid email or password. Please check your credentials and try again.';
+    }
+    if (message.includes('500') || message.includes('Internal Server Error')) {
+      return 'Server error occurred. Please try again in a few moments.';
+    }
+    if (message.includes('timeout') || message.includes('Request timeout')) {
+      return 'Request timed out. Please check your connection and try again.';
+    }
+    return message || 'Login failed. Please try again.';
+  };
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
@@ -42,8 +59,8 @@ export const LoginPage: React.FC = () => {
       const destination = activeRole === 'staff' ? '/staff-dashboard' : '/student-dashboard';
       window.location.href = destination;
     } catch (error: any) {
-      setError(error.message || 'Login failed. Please check your credentials.');
-      addNotification({ message: 'Invalid credentials. Please try again.', type: 'error' });
+      const friendlyError = getUserFriendlyError(error);
+      setError(friendlyError);
     } finally {
       setIsLoading(false);
     }

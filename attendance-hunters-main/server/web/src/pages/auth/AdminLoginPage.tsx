@@ -26,6 +26,23 @@ export const AdminLoginPage: React.FC = () => {
 
 
 
+  const getUserFriendlyError = (error: any) => {
+    const message = error.message || '';
+    if (message.includes('Failed to fetch') || message.includes('NetworkError') || message.includes('fetch')) {
+      return 'Unable to connect to server. Please check your internet connection and try again.';
+    }
+    if (message.includes('Invalid credentials') || message.includes('401') || message.includes('Unauthorized')) {
+      return 'Invalid admin email or password. Please check your credentials and try again.';
+    }
+    if (message.includes('500') || message.includes('Internal Server Error')) {
+      return 'Server error occurred. Please try again in a few moments.';
+    }
+    if (message.includes('timeout') || message.includes('Request timeout')) {
+      return 'Request timed out. Please check your connection and try again.';
+    }
+    return message || 'Admin login failed. Please try again.';
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
@@ -39,8 +56,8 @@ export const AdminLoginPage: React.FC = () => {
       addNotification({ message: `Welcome back, ${user.name || 'Admin'}!`, type: 'success' });
       window.location.href = '/dashboard';
     } catch (error: any) {
-      setError(error.message || 'Invalid admin credentials. Please try again.');
-      addNotification({ message: 'Invalid admin credentials', type: 'error' });
+      const friendlyError = getUserFriendlyError(error);
+      setError(friendlyError);
     } finally {
       setLoading(false);
     }

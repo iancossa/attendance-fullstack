@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Badge } from '../ui/badge';
@@ -32,6 +33,7 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [quickActionsOpen, setQuickActionsOpen] = useState(false);
@@ -227,7 +229,10 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
                            user?.role === 'staff' ? 'Faculty Staff' : 'Student'}
                         </Badge>
                       </div>
-                      <DropdownMenuItem onClick={() => setUserMenuOpen(false)}>
+                      <DropdownMenuItem onClick={() => {
+                        navigate('/profile/settings');
+                        setUserMenuOpen(false);
+                      }}>
                         Profile Settings
                       </DropdownMenuItem>
                       <div className="relative">
