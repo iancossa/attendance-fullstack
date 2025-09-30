@@ -128,7 +128,7 @@ export const attendanceService = {
     
     // Mark attendance
     const attendance = await this.markAttendanceViaQR(sessionData.sessionId, {
-      studentId: student.student_id!,
+      studentId: student.student_id!.toString(),
       studentName: student.name
     });
 

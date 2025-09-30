@@ -1,7 +1,7 @@
 const express = require('express');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { PrismaClient } = require('../generated/prisma');
+const { PrismaClient } = require('../../database/generated/prisma');
 const { validateLogin, validateRegistration, authLimiter } = require('../src/middlewares');
 
 const router = express.Router();
@@ -49,19 +49,40 @@ router.post('/login', validateLogin, async (req, res) => {
     try {
         const { email, password } = req.body;
         
-        const user = await prisma.user.findUnique({ where: { email } });
+        const user = await prisma.user.findUnique({ 
+            where: { email },
+            include: {
+                admin: true,
+                staff: true,
+                student: true
+            }
+        });
         
         if (!user || !await bcrypt.compare(password, user.password)) {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
-        const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: '24h' });
+        // Update last login
+        await prisma.user.update({
+            where: { id: user.id },
+            data: { lastLogin: new Date() }
+        });
+
+        const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, JWT_SECRET, { expiresIn: '24h' });
         
         res.json({
             success: true,
             message: 'Login successful',
             token,
-            user: { id: user.id, email: user.email, name: user.name, role: user.role }
+            user: { 
+                id: user.id, 
+                email: user.email, 
+                name: user.name, 
+                role: user.role,
+                avatarUrl: user.avatarUrl,
+                staff: user.staff,
+                student_id: user.student?.id?.toString()
+            }
         });
     } catch (error) {
         res.status(500).json({ error: error.message });

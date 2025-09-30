@@ -14,7 +14,8 @@ import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 export const Dashboard: React.FC = () => {
   useDocumentTitle('Dashboard');
   const navigate = useNavigate();
-  const { sessions } = useAttendance();
+  // Disable polling for dashboard - we don't need real-time updates here
+  // const { sessions } = useAttendance();
   
   // Mock summary data until backend provides dashboard endpoint
   const summary = {

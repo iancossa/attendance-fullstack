@@ -17,7 +17,7 @@ import {
   Menu,
   Bell
 } from 'lucide-react';
-import { Avatar, AvatarFallback } from '../ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { useTheme } from '../../hooks/useTheme';
 import { useAuth } from '../../hooks/useAuth';
 import { useAppStore } from '../../store';
@@ -195,8 +195,9 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
                 >
                   <Avatar className="h-8 w-8">
+                    {user?.avatarUrl && <AvatarImage src={user.avatarUrl} alt={user.name} />}
                     <AvatarFallback className="bg-primary/10 text-primary">
-                      <User className="h-4 w-4" />
+                      {user?.name ? user.name.charAt(0).toUpperCase() : <User className="h-4 w-4" />}
                     </AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
@@ -207,8 +208,9 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
                       <div className="p-3 border-b bg-gradient-to-r from-orange-50 to-transparent dark:from-[#282a36] dark:to-transparent border-orange-100 dark:border-[#6272a4]">
                         <div className="flex items-center gap-3">
                           <Avatar className="h-10 w-10">
+                            {user?.avatarUrl && <AvatarImage src={user.avatarUrl} alt={user.name} />}
                             <AvatarFallback className="bg-orange-100 text-orange-600">
-                              <User className="h-5 w-5" />
+                              {user?.name ? user.name.charAt(0).toUpperCase() : <User className="h-5 w-5" />}
                             </AvatarFallback>
                           </Avatar>
                           <div>

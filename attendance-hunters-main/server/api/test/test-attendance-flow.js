@@ -66,7 +66,7 @@ async function testAttendanceFlow() {
 
         // 5. Test database records
         console.log('\n5️⃣ Checking database records...');
-        const { PrismaClient } = require('./generated/prisma');
+        const { PrismaClient } = require('../generated/prisma');
         const prisma = new PrismaClient();
         
         const attendanceRecords = await prisma.studentAttendance.findMany({

@@ -1,5 +1,5 @@
 require('dotenv').config({ path: './config/db/.env' });
-const { PrismaClient } = require('./generated/prisma');
+const { PrismaClient } = require('../generated/prisma');
 
 const prisma = new PrismaClient();
 

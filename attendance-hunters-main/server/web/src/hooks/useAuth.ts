@@ -33,12 +33,17 @@ export const useAuth = () => {
           });
         }
       } else {
-        setUser({
-          id: '1',
-          email: 'admin@attendance.com',
-          name: 'Admin User',
-          role: 'admin'
-        });
+        const userInfo = localStorage.getItem('userInfo');
+        if (userInfo) {
+          const user = JSON.parse(userInfo);
+          setUser({
+            id: user.id?.toString() || '1',
+            email: user.email,
+            name: user.name,
+            role: user.role,
+            avatarUrl: user.avatarUrl
+          });
+        }
       }
     }
     setLoading(false);
@@ -48,7 +53,7 @@ export const useAuth = () => {
     try {
       if (role === 'student') {
         // Real API call for student login
-        const response = await fetch('https://attendance-fullstack.onrender.com/api/student-auth/login', {
+        const response = await fetch('http://localhost:5000/api/student-auth/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -111,30 +116,37 @@ export const useAuth = () => {
           throw new Error('Invalid staff credentials');
         }
       } else {
-        // Demo login logic for admin only
-        const isValidLogin = (role === 'admin' && email === 'admin@university.edu' && password === 'admin123');
+        // Real API call for admin/staff login
+        const response = await fetch('http://localhost:5000/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }),
+        });
 
-        if (isValidLogin && role) {
-          await new Promise(resolve => setTimeout(resolve, 1000));
-          
-          const token = `${role}_token_${Date.now()}`;
-          localStorage.setItem('auth_token', token);
-          localStorage.setItem('user_role', role);
-          
-          const newUser = {
-            id: '1',
-            email: email,
-            name: 'Admin User',
-            role: role
-          };
-          
-          return new Promise<typeof newUser>((resolve) => {
-            setUser(newUser);
-            setTimeout(() => resolve(newUser), 50);
-          });
-        } else {
+        if (!response.ok) {
           throw new Error('Invalid credentials');
         }
+
+        const data = await response.json();
+        
+        localStorage.setItem('auth_token', data.token);
+        localStorage.setItem('user_role', data.user.role);
+        localStorage.setItem('userInfo', JSON.stringify(data.user));
+        
+        const newUser = {
+          id: data.user.id.toString(),
+          email: data.user.email,
+          name: data.user.name,
+          role: data.user.role as 'admin' | 'staff',
+          avatarUrl: data.user.avatarUrl
+        };
+        
+        return new Promise<typeof newUser>((resolve) => {
+          setUser(newUser);
+          setTimeout(() => resolve(newUser), 50);
+        });
       }
     } catch (error) {
       throw error;
@@ -146,6 +158,7 @@ export const useAuth = () => {
     localStorage.removeItem('user_role');
     localStorage.removeItem('studentInfo');
     localStorage.removeItem('staffInfo');
+    localStorage.removeItem('userInfo');
     setUser(null);
     window.location.href = '/';
   };

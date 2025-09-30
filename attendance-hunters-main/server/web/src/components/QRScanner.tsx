@@ -142,7 +142,7 @@ export const QRScanner: React.FC<QRScannerProps> = ({
           }
           
           await markViaQR(sessionId, {
-            studentId: user.student_id,
+            studentId: user.student_id?.toString(),
             studentName: user.name
           });
           

@@ -4,7 +4,7 @@ export interface User {
   email: string;
   name: string;
   role: 'student' | 'staff' | 'admin';
-  avatar?: string;
+  avatarUrl?: string;
 }
 
 export interface AttendanceRecord {

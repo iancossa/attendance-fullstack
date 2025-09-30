@@ -14,25 +14,27 @@ export interface User {
   role: 'admin' | 'staff' | 'student';
   status: 'active' | 'inactive' | 'suspended';
   phone?: string;
-  avatar_url?: string;
-  last_seen?: string;
-  created_at: string;
-  updated_at: string;
-  last_login?: string;
-  
-  // Staff fields
-  employee_id?: string;
-  department?: string;
-  position?: string;
-  join_date?: string;
-  
-  // Student fields
+  avatarUrl?: string;
+  lastSeen?: string;
+  createdAt: string;
+  updatedAt: string;
+  lastLogin?: string;
   student_id?: string;
-  class?: string;
-  section?: string;
-  year?: string;
-  enrollment_date?: string;
-  gpa?: number;
+  
+  // Relations
+  staff?: {
+    id: number;
+    employeeId: string;
+    department?: string;
+    position?: string;
+    joinDate?: string;
+  };
+  
+  admin?: {
+    id: number;
+    adminLevel: string;
+    permissions?: any;
+  };
 }
 
 export interface Class {

@@ -8,6 +8,7 @@ import { Badge } from '../../components/ui/badge';
 import { Loading } from '../../components/ui/loading';
 import { ArrowLeft, Users, CheckCircle, QrCode, Zap, X } from 'lucide-react';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle';
+import { useAuth } from '../../hooks/useAuth';
 
 interface Class {
   id: string;
@@ -33,6 +34,7 @@ interface AttendanceData {
 const TakeAttendancePage: React.FC = () => {
   useDocumentTitle('Take Attendance');
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [classes, setClasses] = useState<Class[]>([]);
@@ -42,7 +44,7 @@ const TakeAttendancePage: React.FC = () => {
     location: '',
     notes: '',
     sessionType: 'lecture',
-    conductedBy: 'Admin User',
+    conductedBy: user?.name || 'Admin User',
     plannedTopic: '',
     planningStatus: 'planned',
     targetLearning: '',
@@ -196,100 +198,104 @@ const TakeAttendancePage: React.FC = () => {
       </div>
 
       <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-900 dark:text-[#f8f8f2] mb-2">
-            Session Type
-          </label>
-          <select
-            value={attendanceData.sessionType}
-            onChange={(e) => setAttendanceData(prev => ({ 
-              ...prev, 
-              sessionType: e.target.value as AttendanceData['sessionType']
-            }))}
-            className="w-full p-3 border border-gray-200 dark:border-[#6272a4] rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white dark:bg-[#44475a] text-gray-900 dark:text-[#f8f8f2]"
-          >
-            <option value="lecture">Lecture</option>
-            <option value="lab">Lab</option>
-            <option value="tutorial">Tutorial</option>
-            <option value="exam">Exam</option>
-          </select>
+        {/* Two column grid for most fields */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-900 dark:text-[#f8f8f2] mb-2">
+              Session Type
+            </label>
+            <select
+              value={attendanceData.sessionType}
+              onChange={(e) => setAttendanceData(prev => ({ 
+                ...prev, 
+                sessionType: e.target.value as AttendanceData['sessionType']
+              }))}
+              className="w-full p-3 border border-gray-200 dark:border-[#6272a4] rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white dark:bg-[#44475a] text-gray-900 dark:text-[#f8f8f2]"
+            >
+              <option value="lecture">Lecture</option>
+              <option value="lab">Lab</option>
+              <option value="tutorial">Tutorial</option>
+              <option value="exam">Exam</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-900 dark:text-[#f8f8f2] mb-2">
+              Location
+            </label>
+            <Input
+              value={attendanceData.location}
+              onChange={(e) => setAttendanceData(prev => ({ ...prev, location: e.target.value }))}
+              placeholder="Enter session location"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-900 dark:text-[#f8f8f2] mb-2">
+              Planned Topic
+            </label>
+            <select
+              value={attendanceData.plannedTopic}
+              onChange={(e) => setAttendanceData(prev => ({ ...prev, plannedTopic: e.target.value }))}
+              className="w-full p-3 border border-gray-200 dark:border-[#6272a4] rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white dark:bg-[#44475a] text-gray-900 dark:text-[#f8f8f2]"
+            >
+              <option value="">Select Topic</option>
+              <option value="Boolean Algebra">Boolean Algebra</option>
+              <option value="Sorting Algorithms">Sorting Algorithms</option>
+              <option value="Data Structures">Data Structures</option>
+              <option value="Digital Logic Gates">Digital Logic Gates</option>
+              <option value="Database Normalization">Database Normalization</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-900 dark:text-[#f8f8f2] mb-2">
+              Conducted By
+            </label>
+            <Input
+              value={attendanceData.conductedBy}
+              readOnly
+              className="bg-gray-50 dark:bg-[#44475a] cursor-not-allowed"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-900 dark:text-[#f8f8f2] mb-2">
+              Planning Status
+            </label>
+            <select
+              value={attendanceData.planningStatus}
+              onChange={(e) => setAttendanceData(prev => ({ ...prev, planningStatus: e.target.value as AttendanceData['planningStatus'] }))}
+              className="w-full p-3 border border-gray-200 dark:border-[#6272a4] rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white dark:bg-[#44475a] text-gray-900 dark:text-[#f8f8f2]"
+            >
+              <option value="planned">Planned</option>
+              <option value="in_progress">In Progress</option>
+              <option value="completed">Completed</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-900 dark:text-[#f8f8f2] mb-2">
+              Target Level
+            </label>
+            <select
+              value={attendanceData.tgLevel}
+              onChange={(e) => setAttendanceData(prev => ({ ...prev, tgLevel: e.target.value }))}
+              className="w-full p-3 border border-gray-200 dark:border-[#6272a4] rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white dark:bg-[#44475a] text-gray-900 dark:text-[#f8f8f2]"
+            >
+              <option value="">Select Level</option>
+              <option value="Beginner">Beginner</option>
+              <option value="Intermediate">Intermediate</option>
+              <option value="Advanced">Advanced</option>
+              <option value="1st Year">1st Year</option>
+              <option value="2nd Year">2nd Year</option>
+              <option value="3rd Year">3rd Year</option>
+              <option value="Final Year">Final Year</option>
+            </select>
+          </div>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-900 dark:text-[#f8f8f2] mb-2">
-            Location
-          </label>
-          <Input
-            value={attendanceData.location}
-            onChange={(e) => setAttendanceData(prev => ({ ...prev, location: e.target.value }))}
-            placeholder="Enter session location"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-900 dark:text-[#f8f8f2] mb-2">
-            Planned Topic
-          </label>
-          <select
-            value={attendanceData.plannedTopic}
-            onChange={(e) => setAttendanceData(prev => ({ ...prev, plannedTopic: e.target.value }))}
-            className="w-full p-3 border border-gray-200 dark:border-[#6272a4] rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white dark:bg-[#44475a] text-gray-900 dark:text-[#f8f8f2]"
-          >
-            <option value="">Select Topic</option>
-            <option value="Boolean Algebra">Boolean Algebra</option>
-            <option value="Sorting Algorithms">Sorting Algorithms</option>
-            <option value="Data Structures">Data Structures</option>
-            <option value="Digital Logic Gates">Digital Logic Gates</option>
-            <option value="Database Normalization">Database Normalization</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-900 dark:text-[#f8f8f2] mb-2">
-            Conducted By
-          </label>
-          <Input
-            value={attendanceData.conductedBy}
-            readOnly
-            className="bg-gray-50 dark:bg-[#44475a] cursor-not-allowed"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-900 dark:text-[#f8f8f2] mb-2">
-            Planning Status
-          </label>
-          <select
-            value={attendanceData.planningStatus}
-            onChange={(e) => setAttendanceData(prev => ({ ...prev, planningStatus: e.target.value as AttendanceData['planningStatus'] }))}
-            className="w-full p-3 border border-gray-200 dark:border-[#6272a4] rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white dark:bg-[#44475a] text-gray-900 dark:text-[#f8f8f2]"
-          >
-            <option value="planned">Planned</option>
-            <option value="in_progress">In Progress</option>
-            <option value="completed">Completed</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-900 dark:text-[#f8f8f2] mb-2">
-            Target Level
-          </label>
-          <select
-            value={attendanceData.tgLevel}
-            onChange={(e) => setAttendanceData(prev => ({ ...prev, tgLevel: e.target.value }))}
-            className="w-full p-3 border border-gray-200 dark:border-[#6272a4] rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white dark:bg-[#44475a] text-gray-900 dark:text-[#f8f8f2]"
-          >
-            <option value="">Select Level</option>
-            <option value="Beginner">Beginner</option>
-            <option value="Intermediate">Intermediate</option>
-            <option value="Advanced">Advanced</option>
-            <option value="1st Year">1st Year</option>
-            <option value="2nd Year">2nd Year</option>
-            <option value="3rd Year">3rd Year</option>
-            <option value="Final Year">Final Year</option>
-          </select>
-        </div>
-
+        {/* Full width fields */}
         <div>
           <label className="block text-sm font-medium text-gray-900 dark:text-[#f8f8f2] mb-2">
             Target Learning

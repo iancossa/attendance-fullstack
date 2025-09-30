@@ -1,11 +1,10 @@
 const dotenv = require('dotenv');
-dotenv.config({ path: './config/db/.env' });
+dotenv.config();
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
-const { PrismaClient } = require('../../generated/prisma');
+const { PrismaClient } = require('../../../database/generated/prisma');
 const { apiLimiter, errorHandler, notFound } = require('../middlewares');
-const connectAndQuery = require('../../config/db/db');
 
 const app = express();
 const prisma = new PrismaClient();
@@ -52,6 +51,21 @@ app.use('/api/departments', require('../../routes/departments'));
 app.use('/api/qr', require('../../routes/qr'));
 app.use('/api/classes', require('../../routes/classes'));
 app.use('/api/reports', require('../../routes/reports'));
+
+// Root endpoint
+app.get('/', (req, res) => {
+    res.json({ 
+        message: 'Attendance Hunters API Server',
+        version: '1.0.0',
+        status: 'Running',
+        timestamp: new Date().toISOString(),
+        endpoints: {
+            health: '/health',
+            api: '/api',
+            test: '/api/test'
+        }
+    });
+});
 
 // Simple test endpoint
 app.get('/api/test', (req, res) => {
