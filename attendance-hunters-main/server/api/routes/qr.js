@@ -1,10 +1,9 @@
 const express = require('express');
-const { PrismaClient } = require('../generated/prisma');
+const prisma = require('../db');
 const { verifyToken } = require('../src/middlewares');
 const { validateGeofence } = require('../utils/geofencing');
 
 const router = express.Router();
-const prisma = new PrismaClient();
 
 // In-memory store for QR sessions (use Redis in production)
 const qrSessions = new Map();

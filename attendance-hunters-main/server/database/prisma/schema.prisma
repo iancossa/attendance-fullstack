@@ -1,0 +1,540 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  admin
+  staff
+  student
+}
+
+enum UserStatus {
+  active
+  inactive
+  suspended
+}
+
+enum AttendanceStatus {
+  present
+  absent
+  late
+  excused
+}
+
+enum AttendanceMethod {
+  qr
+  manual
+  hybrid
+}
+
+enum SessionType {
+  lecture
+  lab
+  tutorial
+  exam
+}
+
+enum PlanningStatus {
+  planned
+  in_progress
+  completed
+}
+
+enum JustificationReason {
+  medical
+  family
+  emergency
+  academic
+  other
+}
+
+enum JustificationStatus {
+  pending
+  approved
+  rejected
+}
+
+enum DepartmentType {
+  Technology
+  Engineering
+  Science
+  Arts
+  Business
+  Other
+}
+
+enum DepartmentStatus {
+  Active
+  Inactive
+}
+
+enum NotificationType {
+  absence_reminder
+  justification_status
+  attendance_alert
+  class_reminder
+}
+
+enum NotificationPriority {
+  low
+  normal
+  high
+  urgent
+}
+
+enum RiskLevel {
+  low
+  medium
+  high
+  critical
+}
+
+enum AlertType {
+  notification
+  email
+  parent_email
+  parent_sms
+}
+
+enum AlertStatus {
+  pending
+  sent
+  failed
+}
+
+model User {
+  id        Int        @id @default(autoincrement())
+  email     String     @unique
+  password  String
+  name      String
+  role      UserRole
+  status    UserStatus @default(active)
+  phone     String?
+  avatarUrl String?    @map("avatar_url")
+  lastSeen  DateTime?  @map("last_seen")
+  lastLogin DateTime?  @map("last_login")
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+
+  admin         Admin?
+  staff         Staff?
+  student       Student?
+  notifications Notification[]
+
+  @@map("users")
+}
+
+model Admin {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @unique @map("user_id")
+  adminLevel  String   @default("system") @map("admin_level")
+  permissions Json?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("admins")
+}
+
+model Staff {
+  id             Int       @id @default(autoincrement())
+  userId         Int       @unique @map("user_id")
+  employeeId     String    @unique @map("employee_id")
+  department     String?
+  position       String?
+  joinDate       DateTime? @map("join_date") @db.Date
+  salary         Decimal?  @db.Decimal(10, 2)
+  officeLocation String?   @map("office_location")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  user                  User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  classes               Class[]
+  attendanceSessions    AttendanceSession[]
+  attendanceRecords     AttendanceRecord[]
+  absenceJustifications AbsenceJustification[]
+  departments           Department[]
+  studentAlerts         StudentAlert[]
+
+  @@map("staff")
+}
+
+model Student {
+  id             Int       @id @default(autoincrement())
+  userId         Int       @unique @map("user_id")
+  studentId      String    @unique @map("student_id")
+  class          String?
+  section        String?
+  year           String?
+  enrollmentDate DateTime? @map("enrollment_date") @db.Date
+  gpa            Decimal?  @default(0.00) @db.Decimal(3, 2)
+  parentEmail    String?   @map("parent_email")
+  parentPhone    String?   @map("parent_phone")
+  address        String?
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  user                  User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  classEnrollments      ClassEnrollment[]
+  attendanceRecords     AttendanceRecord[]
+  absenceJustifications AbsenceJustification[]
+  studentRiskTracking   StudentRiskTracking[]
+  studentAlerts         StudentAlert[]
+  studentPoints         StudentPoint[]
+  studentAchievements   StudentAchievement[]
+  studentStreaks        StudentStreak[]
+  leaderboardRankings   LeaderboardRanking[]
+
+  @@map("students")
+}
+
+model Class {
+  id              Int      @id @default(autoincrement())
+  name            String
+  code            String   @unique
+  subject         String
+  description     String?
+  facultyId       Int?     @map("faculty_id")
+  room            String?
+  capacity        Int?     @default(50)
+  schedule        String?
+  department      String?
+  semester        String?
+  academicYear    String?  @map("academic_year")
+  credits         Int?     @default(3)
+  classType       String?  @map("class_type")
+  latitude        Float?   @map("latitude")
+  longitude       Float?   @map("longitude")
+  geofenceRadius  Int?     @default(100) @map("geofence_radius")
+  geofenceEnabled Boolean? @default(true) @map("geofence_enabled")
+  status          String?  @default("active")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  faculty               Staff?                 @relation(fields: [facultyId], references: [id])
+  classEnrollments      ClassEnrollment[]
+  attendanceRecords     AttendanceRecord[]
+  attendanceSessions    AttendanceSession[]
+  absenceJustifications AbsenceJustification[]
+  studentPoints         StudentPoint[]
+  studentStreaks        StudentStreak[]
+  leaderboardRankings   LeaderboardRanking[]
+  classLocations        ClassLocation[]
+
+  @@map("classes")
+}
+
+model ClassEnrollment {
+  id             Int      @id @default(autoincrement())
+  studentId      Int      @map("student_id")
+  classId        Int      @map("class_id")
+  enrollmentDate DateTime @default(now()) @map("enrollment_date") @db.Date
+  status         String?  @default("enrolled")
+  grade          String?
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  student Student @relation(fields: [studentId], references: [id])
+  class   Class   @relation(fields: [classId], references: [id])
+
+  @@unique([studentId, classId])
+  @@map("class_enrollments")
+}
+
+model AttendanceRecord {
+  id                 Int               @id @default(autoincrement())
+  studentId          Int               @map("student_id")
+  classId            Int               @map("class_id")
+  sessionDate        DateTime          @map("session_date") @db.Date
+  sessionTime        DateTime?         @map("session_time") @db.Time
+  status             AttendanceStatus
+  checkInTime        DateTime?         @map("check_in_time")
+  method             AttendanceMethod  @default(manual)
+  qrSessionId        String?           @map("qr_session_id")
+  scanTimestamp      DateTime?         @map("scan_timestamp")
+  isJustified        Boolean           @default(false) @map("is_justified")
+  justificationId    Int?              @map("justification_id")
+  studentLatitude    Float?            @map("student_latitude")
+  studentLongitude   Float?            @map("student_longitude")
+  distanceFromClass  Float?            @map("distance_from_class")
+  locationVerified   Boolean?          @default(false) @map("location_verified")
+  createdAt          DateTime          @default(now()) @map("created_at")
+  updatedAt          DateTime          @updatedAt @map("updated_at")
+  recordedBy         Int?              @map("recorded_by")
+
+  student               Student                @relation(fields: [studentId], references: [id])
+  class                 Class                  @relation(fields: [classId], references: [id])
+  recordedByStaff       Staff?                 @relation(fields: [recordedBy], references: [id])
+  absenceJustifications AbsenceJustification[]
+
+  @@unique([studentId, classId, sessionDate])
+  @@map("attendance_records")
+}
+
+model AttendanceSession {
+  id              Int             @id @default(autoincrement())
+  sessionId       String          @unique @map("session_id")
+  classId         Int             @map("class_id")
+  createdBy       Int             @map("created_by")
+  sessionDate     DateTime        @map("session_date") @db.Date
+  sessionTime     DateTime        @map("session_time") @db.Time
+  sessionType     SessionType     @default(lecture) @map("session_type")
+  location        String?
+  plannedTopic    String?         @map("planned_topic")
+  targetLearning  String?         @map("target_learning")
+  targetLevel     String?         @map("target_level")
+  planningStatus  PlanningStatus  @default(planned) @map("planning_status")
+  notes           String?
+  latitude        Float?          @map("latitude")
+  longitude       Float?          @map("longitude")
+  geofenceRadius  Int?            @default(100) @map("geofence_radius")
+  expiresAt       DateTime        @map("expires_at")
+  status          String?         @default("active")
+  createdAt       DateTime        @default(now()) @map("created_at")
+  updatedAt       DateTime        @updatedAt @map("updated_at")
+
+  class      Class       @relation(fields: [classId], references: [id])
+  creator    Staff       @relation(fields: [createdBy], references: [id])
+  qrSessions QRSession[]
+
+  @@map("attendance_sessions")
+}
+
+model QRSession {
+  id                  Int               @id @default(autoincrement())
+  sessionId           String            @unique @map("session_id")
+  attendanceSessionId Int               @map("attendance_session_id")
+  qrData              String            @map("qr_data")
+  scanCount           Int               @default(0) @map("scan_count")
+  maxScans            Int?              @map("max_scans")
+  expiresAt           DateTime          @map("expires_at")
+  status              String?           @default("active")
+  createdAt           DateTime          @default(now()) @map("created_at")
+
+  attendanceSession AttendanceSession @relation(fields: [attendanceSessionId], references: [id])
+
+  @@map("qr_sessions")
+}
+
+model AbsenceJustification {
+  id                 Int                 @id @default(autoincrement())
+  studentId          Int                 @map("student_id")
+  classId            Int                 @map("class_id")
+  attendanceRecordId Int?                @map("attendance_record_id")
+  absenceDate        DateTime            @map("absence_date") @db.Date
+  reason             JustificationReason
+  description        String?
+  documents          Json?
+  status             JustificationStatus @default(pending)
+  submittedAt        DateTime            @default(now()) @map("submitted_at")
+  reviewedAt         DateTime?           @map("reviewed_at")
+  reviewedBy         Int?                @map("reviewed_by")
+  reviewNote         String?             @map("review_note")
+  createdAt          DateTime            @default(now()) @map("created_at")
+  updatedAt          DateTime            @updatedAt @map("updated_at")
+
+  student          Student          @relation(fields: [studentId], references: [id])
+  class            Class            @relation(fields: [classId], references: [id])
+  attendanceRecord AttendanceRecord? @relation(fields: [attendanceRecordId], references: [id])
+  reviewedByStaff  Staff?           @relation(fields: [reviewedBy], references: [id])
+
+  @@map("absence_justifications")
+}
+
+model Department {
+  id            Int              @id @default(autoincrement())
+  name          String
+  code          String           @unique
+  headId        Int?             @map("head_id")
+  type          DepartmentType   @default(Other)
+  status        DepartmentStatus @default(Active)
+  programsCount Int              @default(0) @map("programs_count")
+  description   String?
+  createdAt     DateTime         @default(now()) @map("created_at")
+  updatedAt     DateTime         @updatedAt @map("updated_at")
+
+  head                Staff?               @relation(fields: [headId], references: [id])
+  leaderboardRankings LeaderboardRanking[]
+
+  @@map("departments")
+}
+
+model Notification {
+  id        Int                  @id @default(autoincrement())
+  userId    Int                  @map("user_id")
+  type      NotificationType
+  title     String
+  message   String
+  read      Boolean              @default(false)
+  priority  NotificationPriority @default(normal)
+  data      Json?
+  createdAt DateTime             @default(now()) @map("created_at")
+  expiresAt DateTime?            @map("expires_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("notifications")
+}
+
+model StudentRiskTracking {
+  id                   Int       @id @default(autoincrement())
+  studentId            Int       @map("student_id")
+  riskLevel            RiskLevel @map("risk_level")
+  attendanceRate       Decimal   @map("attendance_rate") @db.Decimal(5, 2)
+  consecutiveAbsences  Int       @default(0) @map("consecutive_absences")
+  totalAbsences        Int       @default(0) @map("total_absences")
+  lastAttendanceDate   DateTime? @map("last_attendance_date") @db.Date
+  parentEmail          String?   @map("parent_email")
+  parentPhone          String?   @map("parent_phone")
+  notes                String?
+  createdAt            DateTime  @default(now()) @map("created_at")
+  updatedAt            DateTime  @updatedAt @map("updated_at")
+
+  student Student @relation(fields: [studentId], references: [id])
+
+  @@map("student_risk_tracking")
+}
+
+model StudentAlert {
+  id        Int         @id @default(autoincrement())
+  studentId Int         @map("student_id")
+  alertType AlertType   @map("alert_type")
+  message   String
+  recipient String?
+  status    AlertStatus @default(pending)
+  sentBy    Int?        @map("sent_by")
+  sentAt    DateTime?   @map("sent_at")
+  createdAt DateTime    @default(now()) @map("created_at")
+
+  student Student @relation(fields: [studentId], references: [id])
+  sentByStaff Staff? @relation(fields: [sentBy], references: [id])
+
+  @@map("student_alerts")
+}
+
+model StudentPoint {
+  id          Int      @id @default(autoincrement())
+  studentId   Int      @map("student_id")
+  classId     Int?     @map("class_id")
+  points      Int
+  pointType   String   @map("point_type")
+  description String?
+  referenceId Int?     @map("reference_id")
+  awardedBy   Int?     @map("awarded_by")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  student Student @relation(fields: [studentId], references: [id])
+  class   Class?  @relation(fields: [classId], references: [id])
+
+  @@map("student_points")
+}
+
+model Achievement {
+  id                Int      @id @default(autoincrement())
+  name              String
+  description       String?
+  category          String
+  icon              String?
+  pointsReward      Int      @default(0) @map("points_reward")
+  requirementType   String?  @map("requirement_type")
+  requirementValue  Int?     @map("requirement_value")
+  requirementPeriod Int?     @map("requirement_period")
+  isActive          Boolean  @default(true) @map("is_active")
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  studentAchievements StudentAchievement[]
+
+  @@map("achievements")
+}
+
+model StudentAchievement {
+  id            Int       @id @default(autoincrement())
+  studentId     Int       @map("student_id")
+  achievementId Int       @map("achievement_id")
+  progress      Int       @default(0)
+  isEarned      Boolean   @default(false) @map("is_earned")
+  earnedAt      DateTime? @map("earned_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
+
+  student     Student     @relation(fields: [studentId], references: [id])
+  achievement Achievement @relation(fields: [achievementId], references: [id])
+
+  @@unique([studentId, achievementId])
+  @@map("student_achievements")
+}
+
+model StudentStreak {
+  id                 Int       @id @default(autoincrement())
+  studentId          Int       @map("student_id")
+  classId            Int       @map("class_id")
+  currentStreak      Int       @default(0) @map("current_streak")
+  longestStreak      Int       @default(0) @map("longest_streak")
+  lastAttendanceDate DateTime? @map("last_attendance_date") @db.Date
+  streakStartDate    DateTime? @map("streak_start_date") @db.Date
+  createdAt          DateTime  @default(now()) @map("created_at")
+  updatedAt          DateTime  @updatedAt @map("updated_at")
+
+  student Student @relation(fields: [studentId], references: [id])
+  class   Class   @relation(fields: [classId], references: [id])
+
+  @@unique([studentId, classId])
+  @@map("student_streaks")
+}
+
+model LeaderboardRanking {
+  id                Int      @id @default(autoincrement())
+  studentId         Int      @map("student_id")
+  classId           Int?     @map("class_id")
+  departmentId      Int?     @map("department_id")
+  period            String
+  scope             String
+  rankPosition      Int      @map("rank_position")
+  totalPoints       Int      @default(0) @map("total_points")
+  attendanceRate    Decimal? @map("attendance_rate") @db.Decimal(5, 2)
+  streakDays        Int      @default(0) @map("streak_days")
+  achievementsCount Int      @default(0) @map("achievements_count")
+  periodStart       DateTime @map("period_start") @db.Date
+  periodEnd         DateTime @map("period_end") @db.Date
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  student    Student     @relation(fields: [studentId], references: [id])
+  class      Class?      @relation(fields: [classId], references: [id])
+  department Department? @relation(fields: [departmentId], references: [id])
+
+  @@unique([studentId, period, scope, periodStart])
+  @@map("leaderboard_rankings")
+}
+
+model GeofenceSettings {
+  id                 Int      @id @default(autoincrement())
+  defaultRadius      Int      @default(100) @map("default_radius")
+  enabled            Boolean  @default(true)
+  allowOverride      Boolean  @default(true) @map("allow_override")
+  accuracyThreshold  Float    @default(50.0) @map("accuracy_threshold")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  @@map("geofence_settings")
+}
+
+model ClassLocation {
+  id        Int      @id @default(autoincrement())
+  classId   Int      @map("class_id")
+  name      String
+  latitude  Float
+  longitude Float
+  radius    Int      @default(100)
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  class Class @relation(fields: [classId], references: [id], onDelete: Cascade)
+
+  @@map("class_locations")
+}

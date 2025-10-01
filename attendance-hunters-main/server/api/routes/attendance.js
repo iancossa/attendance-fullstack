@@ -1,9 +1,8 @@
 const express = require('express');
-const { PrismaClient } = require('../generated/prisma');
+const prisma = require('../db');
 const { verifyToken, validateAttendance, attendanceLimiter, employeeOrAdmin } = require('../src/middlewares');
 
 const router = express.Router();
-const prisma = new PrismaClient();
 
 // Record attendance
 router.post('/', attendanceLimiter, verifyToken, (req, res, next) => {

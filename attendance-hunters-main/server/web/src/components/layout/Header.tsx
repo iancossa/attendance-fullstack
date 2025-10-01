@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Badge } from '../ui/badge';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '../ui/dropdown-menu';
 import { 
   Search, 
-  Bell, 
   Plus,
   Calendar,
   Users,
@@ -13,36 +13,37 @@ import {
   Sun,
   Moon,
   Monitor,
-  ChevronRight,
   Circle,
-  User
+  User,
+  Menu,
+  Bell
 } from 'lucide-react';
-import { Avatar, AvatarFallback } from '../ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { useTheme } from '../../hooks/useTheme';
 import { useAuth } from '../../hooks/useAuth';
 import { useAppStore } from '../../store';
+import { AddStudentModal } from '../modals/AddStudentModal';
+import { AddClassModal } from '../modals/AddClassModal';
+import { ScheduleSessionModal } from '../modals/ScheduleSessionModal';
+import { Breadcrumb } from '../ui/breadcrumb';
 
-export const Header: React.FC = () => {
+
+interface HeaderProps {
+  onMobileMenuToggle?: () => void;
+}
+
+export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
-  const [notificationCount] = useState(0);
-  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
-  const [notificationDropdownOpen, setNotificationDropdownOpen] = useState(false);
-  const [quickActionDropdownOpen, setQuickActionDropdownOpen] = useState(false);
-  const [themeDropdownOpen, setThemeDropdownOpen] = useState(false);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+  const [quickActionsOpen, setQuickActionsOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [notificationMenuOpen, setNotificationMenuOpen] = useState(false);
+  const [themeSubmenuOpen, setThemeSubmenuOpen] = useState(false);
+  const [activeModal, setActiveModal] = useState<string | null>(null);
   const { theme, setTheme } = useTheme();
   const { logout, user } = useAuth();
-  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
-  const { notifications, addNotification } = useAppStore();
-
-  const closeAllDropdowns = () => {
-    setUserDropdownOpen(false);
-    setNotificationDropdownOpen(false);
-    setQuickActionDropdownOpen(false);
-    setThemeDropdownOpen(false);
-    setMobileSearchOpen(false);
-  };
-
-  const notificationsList = notifications || [];
+  const { addNotification } = useAppStore();
 
   const themeOptions = [
     { id: 'light', name: 'Light', icon: <Sun className="h-4 w-4" /> },
@@ -50,317 +51,291 @@ export const Header: React.FC = () => {
     { id: 'system', name: 'System', icon: <Monitor className="h-4 w-4" /> }
   ] as const;
 
+  const handleModalOpen = (modalType: string) => {
+    setActiveModal(modalType);
+    setQuickActionsOpen(false);
+  };
+
+  const handleModalClose = () => {
+    setActiveModal(null);
+  };
+
+  const handleAddStudent = (studentData: any) => {
+    addNotification({ message: 'Student added successfully', type: 'success' });
+  };
+
+  const handleAddClass = (classData: any) => {
+    addNotification({ message: 'Class created successfully', type: 'success' });
+  };
+
+  const handleScheduleSession = (sessionData: any) => {
+    addNotification({ message: 'Session scheduled successfully', type: 'success' });
+  };
+
   return (
-    <header className="bg-background border-b border-border sticky top-0 z-50">
-      <div className="px-4 lg:px-6">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo and Brand */}
-          <div className="flex items-center gap-3">
-
-            <div>
-              <h1 className="text-lg font-semibold text-foreground">
-                Attendance Hunters
-              </h1>
-              <p className="text-xs text-muted-foreground hidden sm:block">
-                Academic Year 2024-25
-              </p>
+    <>
+      <header className="bg-white dark:bg-[#282a36] border-b border-gray-200 dark:border-[#6272a4] sticky top-0 z-50">
+        <div className="px-4">
+          <div className="flex items-center h-12">
+            {/* Left Section */}
+            <div className="flex items-center gap-3 flex-1">
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="md:hidden hover:bg-orange-100 dark:hover:bg-[#44475a] text-gray-700 dark:text-[#f8f8f2]"
+                onClick={onMobileMenuToggle}
+              >
+                <Menu className="h-4 w-4" />
+              </Button>
+              <Breadcrumb />
             </div>
-          </div>
-          
-          {/* Search Bar */}
-          <div className="hidden md:flex flex-1 max-w-md mx-6">
-            <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input 
-                placeholder="Search students, classes, or reports..."
-                className="pl-10 bg-muted/50 border-0 focus:bg-background"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
+            
+            {/* Center Search Bar */}
+            <div className="hidden md:flex flex-1 max-w-md mx-4 h-full justify-center">
+              <div className="relative w-full max-w-lg flex items-center">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-[#6272a4] z-10" />
+                <Input 
+                  placeholder="Search students, classes..."
+                  className="pl-10 bg-orange-50 dark:bg-[#44475a] border-orange-200 dark:border-[#6272a4] text-sm h-full w-full rounded-none border-0 text-gray-900 dark:text-[#f8f8f2] placeholder:text-gray-500 dark:placeholder:text-[#6272a4] focus:border-orange-300 dark:focus:border-[#bd93f9] focus:ring-0"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
             </div>
-          </div>
-          
-          {/* Actions */}
-          <div className="flex items-center gap-2">
-            {/* Mobile Search */}
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="md:hidden"
-              onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
-            >
-              <Search className="h-4 w-4" />
-            </Button>
-
-            {/* Quick Actions - Admin Only */}
-            {user?.role === 'admin' && (
-              <DropdownMenu open={quickActionDropdownOpen} onOpenChange={setQuickActionDropdownOpen}>
-              <DropdownMenuTrigger 
-                className="inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-muted/80 h-9 px-3"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (quickActionDropdownOpen) {
-                    setQuickActionDropdownOpen(false);
-                  } else {
-                    closeAllDropdowns();
-                    setQuickActionDropdownOpen(true);
-                  }
-                }}
+            
+            {/* Right Actions */}
+            <div className="flex items-center gap-4 flex-1 justify-end">
+              {/* Mobile Search */}
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="md:hidden hover:bg-orange-100 dark:hover:bg-[#44475a] text-gray-700 dark:text-[#f8f8f2]"
+                onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
               >
-                <Plus className="h-4 w-4" />
-                <span className="hidden sm:inline">Quick Add</span>
-              </DropdownMenuTrigger>
-              {quickActionDropdownOpen && (
-                <>
-                  <div className="fixed inset-0 z-40" onClick={closeAllDropdowns} />
-                  <DropdownMenuContent className="w-48 z-50 bg-background dark:bg-background border-border dark:border-border shadow-lg">
-                    <DropdownMenuItem 
-                      onClick={() => {
-                        closeAllDropdowns();
-                        // Add student action
-                      }}
-                      className="hover:bg-primary/10 hover:text-primary transition-colors"
-                    >
-                      <Users className="h-4 w-4 mr-2" />
-                      Add Student
-                    </DropdownMenuItem>
-                    <DropdownMenuItem 
-                      onClick={() => {
-                        closeAllDropdowns();
-                        // Create class action
-                      }}
-                      className="hover:bg-primary/10 hover:text-primary transition-colors"
-                    >
-                      <BookOpen className="h-4 w-4 mr-2" />
-                      Create Class
-                    </DropdownMenuItem>
-                    <DropdownMenuItem 
-                      onClick={() => {
-                        closeAllDropdowns();
-                        // Schedule session action
-                      }}
-                      className="hover:bg-primary/10 hover:text-primary transition-colors"
-                    >
-                      <Calendar className="h-4 w-4 mr-2" />
-                      Schedule Session
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </>
+                <Search className="h-4 w-4" />
+              </Button>
+
+              {/* Quick Actions - Admin Only */}
+              {user?.role === 'admin' && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger 
+                    className="gap-2 text-foreground"
+                    onClick={() => setQuickActionsOpen(!quickActionsOpen)}
+                  >
+                    <Plus className="h-4 w-4" />
+                    <span className="hidden sm:inline">Quick Add</span>
+                  </DropdownMenuTrigger>
+                  {quickActionsOpen && (
+                    <>
+                      <div className="fixed inset-0 z-40" onClick={() => setQuickActionsOpen(false)} />
+                      <DropdownMenuContent className="w-48">
+                        <DropdownMenuItem onClick={() => handleModalOpen('addStudent')}>
+                          <Users className="h-4 w-4 mr-2" />
+                          Add Student
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleModalOpen('addClass')}>
+                          <BookOpen className="h-4 w-4 mr-2" />
+                          Create Class
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleModalOpen('scheduleSession')}>
+                          <Calendar className="h-4 w-4 mr-2" />
+                          Schedule Session
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </>
+                  )}
+                </DropdownMenu>
               )}
-              </DropdownMenu>
-            )}
-
-            {/* Notifications */}
-            <DropdownMenu open={notificationDropdownOpen} onOpenChange={setNotificationDropdownOpen}>
-              <DropdownMenuTrigger 
-                className="relative inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-muted/80 h-9 px-3"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (notificationDropdownOpen) {
-                    setNotificationDropdownOpen(false);
-                  } else {
-                    closeAllDropdowns();
-                    setNotificationDropdownOpen(true);
-                  }
-                }}
-              >
-                <Bell className={`h-4 w-4 ${notificationCount > 0 ? 'animate-pulse' : ''}`} />
-                <span className="hidden sm:inline">Notifications</span>
-                {notificationCount > 0 && (
-                  <Badge className="absolute -top-1 -right-1 h-5 w-5 p-0 text-xs bg-red-500 hover:bg-red-500 animate-pulse">
-                    {notificationCount}
-                  </Badge>
-                )}
-              </DropdownMenuTrigger>
-              {notificationDropdownOpen && (
-                <>
-                  <div className="fixed inset-0 z-40" onClick={closeAllDropdowns} />
-                  <DropdownMenuContent className="w-80 z-50 bg-background dark:bg-background border-border dark:border-border shadow-lg">
-                    <div className="p-3 border-b bg-muted/30">
-                      <div className="flex items-center justify-between">
-                        <h4 className="font-medium">Notifications</h4>
-                        <Button variant="ghost" size="sm" className="text-xs h-6 px-2">
-                          Mark all read
-                        </Button>
-                      </div>
-                      <p className="text-sm text-muted-foreground">{notificationsList.length} unread</p>
-                    </div>
-                    <div className="max-h-64 overflow-y-auto">
-                      {notificationsList.length === 0 ? (
-                        <div className="p-8 text-center">
-                          <Bell className="h-12 w-12 text-muted-foreground/30 mx-auto mb-3" />
-                          <p className="text-sm text-muted-foreground mb-1">No notifications</p>
-                          <p className="text-xs text-muted-foreground">You're all caught up!</p>
-                        </div>
-                      ) : (
-                        notificationsList.map((notification) => (
-                          <DropdownMenuItem 
-                            key={notification.id} 
-                            className="p-3 cursor-pointer hover:bg-muted/50 transition-colors border-l-2 border-l-transparent hover:border-l-primary" 
-                            onClick={() => closeAllDropdowns()}
-                          >
-                            <div className="flex items-start gap-3 flex-1">
-                              <div className="flex-1">
-                                <p className="font-medium text-sm">{notification.type.toUpperCase()}</p>
-                                <p className="text-xs text-muted-foreground mb-1">{notification.message}</p>
-                                <p className="text-xs text-muted-foreground">Just now</p>
-                              </div>
-                            </div>
-                          </DropdownMenuItem>
-                        ))
-                      )}
-                    </div>
-                    <div className="border-t mx-1" />
-                    <DropdownMenuItem 
-                      className="p-3 text-center text-sm text-primary cursor-pointer hover:bg-primary/10 transition-colors font-medium" 
-                      onClick={() => closeAllDropdowns()}
-                    >
-                      View all notifications
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </>
-              )}
-            </DropdownMenu>
 
 
 
-            {/* User Menu */}
-            <DropdownMenu open={userDropdownOpen} onOpenChange={setUserDropdownOpen}>
-              <DropdownMenuTrigger 
-                className="relative inline-flex items-center justify-center rounded-full text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-muted/80 h-9 w-9"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (userDropdownOpen) {
-                    setUserDropdownOpen(false);
-                  } else {
-                    closeAllDropdowns();
-                    setUserDropdownOpen(true);
-                  }
-                }}
-              >
-                <Avatar className="h-8 w-8 ring-2 ring-transparent hover:ring-primary/20 transition-all">
-                  <AvatarFallback className="bg-primary/10 text-primary">
-                    <User className="h-4 w-4" />
-                  </AvatarFallback>
-                </Avatar>
-              </DropdownMenuTrigger>
-              {userDropdownOpen && (
-                <>
-                  <div className="fixed inset-0 z-40" onClick={closeAllDropdowns} />
-                  <DropdownMenuContent className="w-64 z-50 bg-background dark:bg-background border-border dark:border-border shadow-lg">
-                    <div className="p-3 border-b bg-gradient-to-r from-primary/5 to-transparent">
-                      <div className="flex items-center gap-3">
-                        <Avatar className="h-10 w-10">
-                          <AvatarFallback className="bg-primary/10 text-primary">
-                            <User className="h-5 w-5" />
-                          </AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <p className="font-medium">
-                            {user?.name || 'Student User'}
-                          </p>
-                          <p className="text-sm text-muted-foreground">
-                            {user?.email || 'student@university.edu'}
-                          </p>
+
+
+              {/* Notifications */}
+              <DropdownMenu>
+                <DropdownMenuTrigger 
+                  className="flex items-center gap-2 text-sm text-gray-700 dark:text-[#f8f8f2] hover:text-orange-600 dark:hover:text-orange-400 px-3 py-2"
+                  onClick={() => setNotificationMenuOpen(!notificationMenuOpen)}
+                >
+                  <Bell className="h-4 w-4" />
+                  <span className="hidden sm:inline">Notifications</span>
+                </DropdownMenuTrigger>
+                {notificationMenuOpen && (
+                  <>
+                    <div className="fixed inset-0 z-40" onClick={() => setNotificationMenuOpen(false)} />
+                    <DropdownMenuContent className="w-80">
+                      <div className="p-3 border-b bg-gradient-to-r from-orange-50 to-transparent dark:from-[#282a36] dark:to-transparent border-orange-100 dark:border-[#6272a4]">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h3 className="font-medium text-gray-900 dark:text-[#f8f8f2]">Notifications</h3>
+                            <p className="text-sm text-gray-600 dark:text-[#6272a4]">0 unread</p>
+                          </div>
+                          <button className="text-sm text-orange-600 hover:text-orange-700">
+                            Mark all read
+                          </button>
                         </div>
                       </div>
-                      <Badge variant="outline" className="mt-2 text-xs">
-                        {user?.role === 'admin' ? 'Administrator' : 
-                         user?.role === 'staff' ? 'Faculty Staff' : 'Student'}
-                      </Badge>
-                    </div>
-                    <DropdownMenuItem 
-                      onClick={() => closeAllDropdowns()}
-                      className="hover:bg-primary/10 hover:text-primary transition-colors"
-                    >
-                      Profile Settings
-                    </DropdownMenuItem>
-                    <div className="relative">
-                      <DropdownMenuItem 
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setThemeDropdownOpen(!themeDropdownOpen);
-                        }}
-                        className="flex items-center justify-between hover:bg-primary/10 hover:text-primary transition-colors"
-                      >
-                        <div className="flex items-center">
-                          Theme
+                      <div className="p-8 text-center">
+                        <div className="w-12 h-12 mx-auto mb-3 bg-orange-100 dark:bg-orange-500/20 rounded-full flex items-center justify-center">
+                          <Bell className="w-6 h-6 text-orange-600 dark:text-orange-400" />
                         </div>
-                        <ChevronRight className={`h-3 w-3 transition-transform ${themeDropdownOpen ? 'rotate-90' : ''}`} />
+                        <p className="font-medium text-gray-900 dark:text-[#f8f8f2] mb-1">No notifications</p>
+                        <p className="text-sm text-gray-600 dark:text-[#6272a4]">You're all caught up!</p>
+                      </div>
+                      <DropdownMenuItem onClick={() => setNotificationMenuOpen(false)}>
+                        <span className="text-orange-600 dark:text-orange-400 font-medium">View all notifications</span>
                       </DropdownMenuItem>
-                      {themeDropdownOpen && (
-                        <div className="absolute right-full top-0 mr-1 w-40 bg-background dark:bg-background border border-border dark:border-border rounded-lg shadow-xl z-50 py-1 animate-in slide-in-from-right-2">
-                          {themeOptions.map((themeOption) => (
-                            <div
-                              key={themeOption.id}
-                              className="flex items-center justify-between px-3 py-2 text-sm cursor-pointer hover:bg-primary/10 hover:text-primary transition-colors"
-                              onClick={() => {
-                                setTheme(themeOption.id);
-                                setThemeDropdownOpen(false);
-                              }}
-                            >
-                              <div className="flex items-center">
-                                <span>{themeOption.name}</span>
-                              </div>
-                              {theme === themeOption.id ? (
-                                <Circle className="h-2 w-2 fill-primary text-primary" />
-                              ) : (
-                                <Circle className="h-2 w-2 text-muted-foreground" />
-                              )}
-                            </div>
-                          ))}
+                    </DropdownMenuContent>
+                  </>
+                )}
+              </DropdownMenu>
+
+              {/* User Menu */}
+              <DropdownMenu>
+                <DropdownMenuTrigger 
+                  className="rounded-full p-0 h-8 w-8 hover:bg-accent"
+                  onClick={() => setUserMenuOpen(!userMenuOpen)}
+                >
+                  <Avatar className="h-8 w-8">
+                    {user?.avatarUrl && <AvatarImage src={user.avatarUrl} alt={user.name} />}
+                    <AvatarFallback className="bg-primary/10 text-primary">
+                      {user?.name ? user.name.charAt(0).toUpperCase() : <User className="h-4 w-4" />}
+                    </AvatarFallback>
+                  </Avatar>
+                </DropdownMenuTrigger>
+                {userMenuOpen && (
+                  <>
+                    <div className="fixed inset-0 z-40" onClick={() => setUserMenuOpen(false)} />
+                    <DropdownMenuContent className="w-64">
+                      <div className="p-3 border-b bg-gradient-to-r from-orange-50 to-transparent dark:from-[#282a36] dark:to-transparent border-orange-100 dark:border-[#6272a4]">
+                        <div className="flex items-center gap-3">
+                          <Avatar className="h-10 w-10">
+                            {user?.avatarUrl && <AvatarImage src={user.avatarUrl} alt={user.name} />}
+                            <AvatarFallback className="bg-orange-100 text-orange-600">
+                              {user?.name ? user.name.charAt(0).toUpperCase() : <User className="h-5 w-5" />}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <p className="font-medium text-gray-900 dark:text-[#f8f8f2]">
+                              {user?.name || user?.email?.split('@')[0] || 'User'}
+                            </p>
+                            <p className="text-sm text-gray-600 dark:text-[#6272a4]">
+                              {user?.email || 'user@university.edu'}
+                            </p>
+                          </div>
                         </div>
-                      )}
-                    </div>
-                    <DropdownMenuItem 
-                      onClick={() => {
-                        closeAllDropdowns();
-                        window.location.href = '/settings';
-                      }}
-                      className="hover:bg-primary/10 hover:text-primary transition-colors"
-                    >
-                      System Settings
-                    </DropdownMenuItem>
-                    <DropdownMenuItem 
-                      onClick={() => closeAllDropdowns()}
-                      className="hover:bg-primary/10 hover:text-primary transition-colors"
-                    >
-                      Help & Support
-                    </DropdownMenuItem>
-                    <div className="border-t mx-1" />
-                    <DropdownMenuItem 
-                      className="text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors" 
-                      onClick={() => {
-                        closeAllDropdowns();
-                        logout();
-                        addNotification({ message: 'Logged out successfully', type: 'info' });
-                      }}
-                    >
-                      Sign Out
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </>
-              )}
-            </DropdownMenu>
-          </div>
-        </div>
-        
-        {/* Mobile Search Overlay */}
-        {mobileSearchOpen && (
-          <div className="md:hidden absolute top-full left-0 right-0 bg-background border-b border-border p-4 z-50 animate-in slide-in-from-top-2">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input 
-                placeholder="Search students, classes, or reports..."
-                className="pl-10 bg-muted/50 border-0 focus:bg-background"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                autoFocus
-              />
+                        <Badge variant="outline" className="mt-2 text-xs">
+                          {user?.role === 'admin' ? 'Administrator' : 
+                           user?.role === 'staff' ? 'Faculty Staff' : 'Student'}
+                        </Badge>
+                      </div>
+                      <DropdownMenuItem onClick={() => {
+                        navigate('/profile/settings');
+                        setUserMenuOpen(false);
+                      }}>
+                        Profile Settings
+                      </DropdownMenuItem>
+                      <div className="relative">
+                        <DropdownMenuItem 
+                          className="flex items-center justify-between"
+                          onClick={() => setThemeSubmenuOpen(!themeSubmenuOpen)}
+                        >
+                          <div className="flex items-center gap-2">
+                            {theme === 'light' && <Sun className="h-4 w-4" />}
+                            {theme === 'dark' && <Moon className="h-4 w-4" />}
+                            {theme === 'system' && <Monitor className="h-4 w-4" />}
+                            <span>Theme</span>
+                          </div>
+                          <span className="text-xs text-gray-500 dark:text-[#6272a4] capitalize">
+                            {theme}
+                          </span>
+                        </DropdownMenuItem>
+                        {themeSubmenuOpen && (
+                          <div className="absolute right-full top-0 mr-1 w-32 bg-white dark:bg-[#44475a] border border-gray-200 dark:border-[#6272a4] rounded-md shadow-lg z-50 py-1 animate-in fade-in-0 zoom-in-95 slide-in-from-right-2 duration-200">
+                            {themeOptions.map((themeOption) => (
+                              <div
+                                key={themeOption.id}
+                                className="flex items-center justify-between px-3 py-2 text-sm cursor-pointer text-gray-700 dark:text-[#f8f8f2] hover:bg-orange-50 dark:hover:bg-[#bd93f9]/20 hover:text-orange-600 dark:hover:text-[#bd93f9] transition-colors mx-1"
+                                onClick={() => {
+                                  setTheme(themeOption.id);
+                                  setThemeSubmenuOpen(false);
+                                }}
+                              >
+                                <div className="flex items-center gap-2">
+                                  {themeOption.icon}
+                                  <span>{themeOption.name}</span>
+                                </div>
+                                {theme === themeOption.id && (
+                                  <Circle className="h-2 w-2 fill-orange-500 text-orange-500" />
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                      <DropdownMenuItem 
+                        onClick={() => {
+                          window.location.href = '/settings';
+                          setUserMenuOpen(false);
+                        }}
+                      >
+                        System Settings
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => setUserMenuOpen(false)}>
+                        Help & Support
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem 
+                        className="text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20" 
+                        onClick={() => {
+                          logout();
+                          addNotification({ message: 'Logged out successfully', type: 'info' });
+                          setUserMenuOpen(false);
+                        }}
+                      >
+                        Sign Out
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </>
+                )}
+              </DropdownMenu>
             </div>
           </div>
-        )}
-      </div>
-    </header>
+          
+          {/* Mobile Search Overlay */}
+          {mobileSearchOpen && (
+            <div className="md:hidden absolute top-full left-0 right-0 bg-white dark:bg-[#282a36] border-b border-orange-200 dark:border-[#6272a4] p-4 z-50">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Input 
+                  placeholder="Search students, classes..."
+                  className="pl-10 bg-orange-50 dark:bg-[#44475a] border-orange-200 dark:border-[#6272a4] text-sm h-10 rounded-none text-gray-900 dark:text-[#f8f8f2] placeholder:text-gray-500 dark:placeholder:text-[#6272a4]"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  autoFocus
+                />
+              </div>
+            </div>
+          )}
+        </div>
+      </header>
+
+      {/* Modals - Rendered outside header to fix z-index stacking */}
+      <AddStudentModal
+        isOpen={activeModal === 'addStudent'}
+        onClose={handleModalClose}
+        onSave={handleAddStudent}
+      />
+      <AddClassModal
+        isOpen={activeModal === 'addClass'}
+        onClose={handleModalClose}
+        onSave={handleAddClass}
+      />
+      <ScheduleSessionModal
+        isOpen={activeModal === 'scheduleSession'}
+        onClose={handleModalClose}
+        onSave={handleScheduleSession}
+      />
+    </>
   );
 };

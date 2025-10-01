@@ -4,9 +4,11 @@ import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/ca
 import { Button } from '../../components/ui/button';
 import { Badge } from '../../components/ui/badge';
 import QRCode from 'react-qr-code';
-import { RefreshCw, Smartphone, QrCode, CheckCircle } from 'lucide-react';
+import { Smartphone, QrCode, CheckCircle } from 'lucide-react';
 import { QRScanner } from '../../components/QRScanner';
-import { qrService } from '../../services/backendService';
+import { useAttendance, useQRSession } from '../../hooks/useAttendance';
+import { useEnhancedAppStore } from '../../store/enhancedAppStore';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 
 interface Attendee {
   studentId: string;
@@ -30,19 +32,23 @@ interface SessionStatus {
 }
 
 export const QRModePage: React.FC = () => {
+  useDocumentTitle('QR Mode Attendance');
   const [qrValue, setQrValue] = useState('');
-  const [timeLeft, setTimeLeft] = useState(300);
-  const [sessionActive, setSessionActive] = useState(false);
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [sessionData, setSessionData] = useState<any>(null);
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [attendees, setAttendees] = useState<Attendee[]>([]);
-  const [pollingInterval, setPollingInterval] = useState<NodeJS.Timeout | null>(null);
-  const [recentScans, setRecentScans] = useState<Attendee[]>([]);
   const [showScanner, setShowScanner] = useState(false);
+  const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
+  const [recentScans, setRecentScans] = useState<Attendee[]>([]);
   
-  const presentCount = attendees.length;
-  const totalStudents = 50; // This could come from class data
+  // Use new API hooks
+  const { sessions, createSession, loading } = useAttendance();
+  const { qrStatus, generateQR, loading: qrLoading } = useQRSession(activeSessionId || undefined);
+  const { addNotification } = useEnhancedAppStore();
+  
+  const presentCount = qrStatus?.scan_count || recentScans.length;
+  const totalStudents = 50;
+  const timeLeft = qrStatus ? Math.max(0, Math.floor((new Date(qrStatus.expires_at).getTime() - Date.now()) / 1000)) : 300;
+  const sessionActive = qrStatus?.status === 'active' && timeLeft > 0;
 
   useEffect(() => {
     // Load session data from localStorage
@@ -56,8 +62,6 @@ export const QRModePage: React.FC = () => {
     const loadRecentScans = () => {
       const scans = JSON.parse(localStorage.getItem('recentScans') || '[]');
       setRecentScans(scans);
-      // Also update attendees count
-      setAttendees(scans);
     };
     
     loadRecentScans();
@@ -68,123 +72,40 @@ export const QRModePage: React.FC = () => {
     return () => clearInterval(scanInterval);
   }, []);
 
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (sessionActive && timeLeft > 0) {
-      interval = setInterval(() => {
-        setTimeLeft(prev => prev - 1);
-      }, 1000);
-    }
-    return () => clearInterval(interval);
-  }, [sessionActive, timeLeft]);
+  // Timer is now handled by the API hook, no need for local timer
 
   const generateQRCode = async () => {
-    console.log('🔵 Starting QR generation...');
-    setIsGenerating(true);
     try {
-      const storedSession = localStorage.getItem('attendanceSession');
-      const sessionInfo = storedSession ? JSON.parse(storedSession) : {};
+      // First create a session if none exists
+      if (!activeSessionId) {
+        const newSession = await createSession({
+          class_id: 1, // This should come from props or context
+          session_date: new Date().toISOString().split('T')[0],
+          session_time: new Date().toTimeString().slice(0, 5),
+          session_type: 'lecture',
+          location: 'Classroom',
+          planned_topic: 'QR Attendance Session'
+        });
+        setActiveSessionId(newSession.session_id);
+      }
       
-      console.log('📋 Session info:', sessionInfo);
-      console.log('🚀 Calling qrService.generateQRSession...');
-      
-      const response = await qrService.generateQRSession(
-        sessionInfo.courseId || 'CS101',
-        sessionInfo.courseName || 'Demo Class'
-      );
-      
-      console.log('📥 QR Service response:', response);
-      
-      if (response.data) {
-        const data = response.data as QRResponse;
-        console.log('📝 Setting QR data:', data);
-        setQrValue(data.qrData);
-        setSessionActive(true);
-        setTimeLeft(data.expiresIn);
-        
-        // Store session info for polling
-        localStorage.setItem('currentQRSession', JSON.stringify({
-          sessionId: data.sessionId,
-          className: data.className,
-          expiresAt: data.expiresAt
-        }));
-        
-        console.log('🔄 Starting polling for session:', data.sessionId);
-        // Start polling for attendees
-        startPolling(data.sessionId);
-      } else {
-        console.error('❌ No data in response:', response);
+      // Generate QR for the session
+      if (activeSessionId) {
+        const qrSession = await generateQR(activeSessionId);
+        setQrValue(qrSession.qr_data);
+        addNotification({ message: 'QR Code generated successfully', type: 'success' });
       }
     } catch (error) {
-      console.error('❌ Failed to generate QR code:', error);
-      const sanitize = (str: string) => str.replace(/[\r\n\t]/g, ' ');
-      console.error('❌ Error details:', {
-        message: error instanceof Error ? sanitize(error.message) : 'Unknown error',
-        stack: error instanceof Error ? sanitize(error.stack || '') : undefined,
-        response: (error as any)?.response?.data ? sanitize(JSON.stringify((error as any).response.data)) : undefined
-      });
+      console.error('Failed to generate QR:', error);
+      addNotification({ message: 'Failed to generate QR code', type: 'error' });
       
-      // Fallback to local generation
-      console.log('🔄 Using fallback QR generation...');
+      // Fallback
       const qrData = `attendance://demo?class=CS101&time=${Date.now()}`;
       setQrValue(qrData);
-      setSessionActive(true);
-      setTimeLeft(300);
-    } finally {
-      console.log('✅ QR generation completed');
-      setIsGenerating(false);
     }
   };
 
-  const startPolling = (sessionId: string) => {
-    // Clear existing interval
-    if (pollingInterval) {
-      clearInterval(pollingInterval);
-    }
-    
-    let pollCount = 0;
-    const maxPolls = 150; // Stop after 5 minutes (150 * 2s = 300s)
-    
-    // Poll every 5 seconds to reduce server load
-    const interval = setInterval(async () => {
-      try {
-        pollCount++;
-        
-        if (pollCount > maxPolls) {
-          console.log('⏰ Max polling reached, stopping');
-          setSessionActive(false);
-          clearInterval(interval);
-          return;
-        }
-        
-        console.log(`🔍 Polling session (${pollCount}/${maxPolls}):`, sessionId);
-        const response = await qrService.getSessionStatus(sessionId);
-        
-        if (response.data) {
-          const data = response.data as SessionStatus & { pollInterval?: number };
-          setAttendees(data.attendees || []);
-          setTimeLeft(data.timeLeft || 0);
-          
-          if (data.timeLeft <= 0 || !data.isActive) {
-            console.log('⏰ Session expired, stopping polling');
-            setSessionActive(false);
-            clearInterval(interval);
-          }
-        }
-      } catch (error) {
-        console.error('❌ Polling error:', error);
-        // Stop polling on repeated errors
-        if (error instanceof Error && error.message.includes('429')) {
-          console.log('🚫 Rate limited, reducing polling frequency');
-          clearInterval(interval);
-          // Restart with longer interval
-          setTimeout(() => startPolling(sessionId), 10000);
-        }
-      }
-    }, 5000); // Increased from 2s to 5s
-    
-    setPollingInterval(interval);
-  };
+  // Polling is now handled by the useQRSession hook automatically
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -192,36 +113,28 @@ export const QRModePage: React.FC = () => {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
-  // Cleanup polling on unmount
-  useEffect(() => {
-    return () => {
-      if (pollingInterval) {
-        clearInterval(pollingInterval);
-      }
-    };
-  }, [pollingInterval]);
+  // Cleanup is handled by the API hooks
 
   const handleAttendanceMarked = (studentData: any) => {
     console.log('🔄 New attendance marked:', studentData);
     // Refresh recent scans immediately
     const scans = JSON.parse(localStorage.getItem('recentScans') || '[]');
     setRecentScans(scans);
-    setAttendees(scans);
   };
 
   return (
     <Layout>
       <div className="w-full px-4 space-y-4">
         <div className="text-center">
-          <h1 className="text-2xl font-bold mb-1">QR Code Attendance Mode</h1>
-          <p className="text-muted-foreground text-sm">Students scan QR code with mobile app</p>
+          <h1 className="text-lg font-semibold text-gray-900 dark:text-[#f8f8f2] mb-1">QR Code Attendance Mode</h1>
+          <p className="text-sm text-gray-600 dark:text-[#6272a4]">Students scan QR code with mobile app</p>
           {sessionData && (
-            <Card className="mt-3 bg-primary/5 border-primary/20">
-              <CardContent className="p-3">
+            <Card className="mt-3 bg-orange-50 dark:bg-orange-500/10 border-orange-200 dark:border-orange-500/20">
+              <CardContent className="p-3 pt-3">
                 <div className="text-sm">
                   <strong>{sessionData.courseName}</strong> • Section {sessionData.section} • {sessionData.sessionType}
                 </div>
-                <div className="text-xs text-muted-foreground">
+                <div className="text-xs text-gray-500">
                   {new Date().toLocaleDateString()} • {new Date().toLocaleTimeString()}
                 </div>
               </CardContent>
@@ -230,39 +143,39 @@ export const QRModePage: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <Card className="bg-green-50 dark:bg-green-950/20 border-green-200">
-            <CardContent className="p-3 text-center">
-              <div className="text-xl font-bold text-green-600">{presentCount}</div>
+          <Card className="bg-green-50 dark:bg-green-500/10 border-green-200 dark:border-green-500/20">
+            <CardContent className="p-3 pt-3 text-center">
+              <div className="text-xl font-semibold text-green-700">{presentCount}</div>
               <div className="text-xs text-green-600">Present</div>
             </CardContent>
           </Card>
-          <Card className="bg-yellow-50 dark:bg-yellow-950/20 border-yellow-200">
-            <CardContent className="p-3 text-center">
-              <div className="text-xl font-bold text-yellow-600">3</div>
+          <Card className="bg-yellow-50 dark:bg-yellow-500/10 border-yellow-200 dark:border-yellow-500/20">
+            <CardContent className="p-3 pt-3 text-center">
+              <div className="text-xl font-semibold text-yellow-700">3</div>
               <div className="text-xs text-yellow-600">Late</div>
             </CardContent>
           </Card>
-          <Card className="bg-red-50 dark:bg-red-950/20 border-red-200">
-            <CardContent className="p-3 text-center">
-              <div className="text-xl font-bold text-red-600">{totalStudents - presentCount - 3}</div>
+          <Card className="bg-red-50 dark:bg-red-500/10 border-red-200 dark:border-red-500/20">
+            <CardContent className="p-3 pt-3 text-center">
+              <div className="text-xl font-semibold text-red-700">{totalStudents - presentCount - 3}</div>
               <div className="text-xs text-red-600">Absent</div>
             </CardContent>
           </Card>
-          <Card className="bg-blue-50 dark:bg-blue-950/20 border-blue-200">
-            <CardContent className="p-3 text-center">
-              <div className="text-xl font-bold text-blue-600">{Math.round((presentCount / totalStudents) * 100)}%</div>
+          <Card className="bg-blue-50 dark:bg-blue-500/10 border-blue-200 dark:border-blue-500/20">
+            <CardContent className="p-3 pt-3 text-center">
+              <div className="text-xl font-semibold text-blue-700">{Math.round((presentCount / totalStudents) * 100)}%</div>
               <div className="text-xs text-blue-600">Rate</div>
             </CardContent>
           </Card>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base">Live QR Code</CardTitle>
+          <Card className="bg-white dark:bg-[#282a36] border-gray-200 dark:border-[#6272a4]">
+            <CardHeader>
+              <CardTitle className="text-gray-900 dark:text-[#f8f8f2]">Live QR Code</CardTitle>
             </CardHeader>
             <CardContent className="text-center space-y-4">
-              <div className="p-6 bg-white rounded-lg inline-block">
+              <div className="p-6 bg-white dark:bg-white rounded-lg inline-block shadow-sm">
                 {qrValue && <QRCode value={qrValue} size={180} />}
               </div>
               
@@ -276,99 +189,36 @@ export const QRModePage: React.FC = () => {
               </div>
 
               <div className="space-y-2">
-                <Button onClick={generateQRCode} disabled={isGenerating} className="w-full">
-                  {isGenerating ? 'Generating...' : (qrValue ? 'Regenerate QR' : 'Generate QR Code')}
-                </Button>
-                
-                <Button 
-                  variant="outline" 
-                  onClick={() => setShowScanner(true)}
-                  className="w-full"
-                >
-                  📱 Scan QR as Student
-                </Button>
-              </div>
-              
-              <div className="flex gap-2">
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={async () => {
-                    console.log('🔍 Testing API connectivity...');
-                    try {
-                      const response = await fetch('http://localhost:5000/api/test');
-                      const data = await response.json();
-                      console.log('✅ Connectivity test:', data);
-                      alert(`API Connected: ${data.message}`);
-                    } catch (err) {
-                      console.error('❌ Connectivity failed:', err);
-                      alert('API Connection Failed - check console');
-                    }
-                  }}
-                >
-                  Test API
-                </Button>
-                
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={async () => {
-                    const session = localStorage.getItem('currentQRSession');
-                    if (!session) {
-                      alert('Generate QR first');
-                      return;
-                    }
-                    
-                    const { sessionId } = JSON.parse(session);
-                    console.log('🎯 Simulating student scan for session:', sessionId);
-                    
-                    try {
-                      const response = await fetch(`http://localhost:5000/api/qr/mark/${sessionId}`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                          studentId: 'STU' + Math.floor(Math.random() * 1000),
-                          studentName: 'Test Student ' + Math.floor(Math.random() * 100)
-                        })
-                      });
-                      const data = await response.json();
-                      console.log('✅ Student marked:', data);
-                      alert('Student attendance marked!');
-                    } catch (err) {
-                      console.error('❌ Mark failed:', err);
-                      alert('Mark attendance failed');
-                    }
-                  }}
-                >
-                  Simulate Scan
+                <Button onClick={generateQRCode} disabled={qrLoading} size="sm" className="w-full">
+                  {qrLoading ? 'Generating...' : (qrValue ? 'Regenerate QR' : 'Generate QR Code')}
                 </Button>
               </div>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base">Recent Scans</CardTitle>
+          <Card className="bg-white dark:bg-[#282a36] border-gray-200 dark:border-[#6272a4]">
+            <CardHeader>
+              <CardTitle className="text-gray-900 dark:text-[#f8f8f2]">Recent Scans</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-2 max-h-64 overflow-y-auto">
                 {recentScans.length > 0 ? (
                   recentScans.slice(0, 10).map((scan, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 bg-green-50 dark:bg-green-950/20 rounded border border-green-200">
+                    <div key={index} className="flex items-center justify-between p-2 bg-green-50 dark:bg-green-500/10 rounded border border-green-200 dark:border-green-500/20">
                       <div>
-                        <div className="font-medium text-sm">{scan.studentName}</div>
-                        <div className="text-xs text-muted-foreground">{scan.studentId}</div>
+                        <div className="font-medium text-sm text-gray-900 dark:text-[#f8f8f2]">{scan.studentName}</div>
+                        <div className="text-xs text-gray-600 dark:text-[#6272a4]">{scan.studentId}</div>
                       </div>
                       <div className="text-right">
-                        <Badge className="bg-green-500 text-white text-xs">Present</Badge>
-                        <div className="text-xs text-muted-foreground mt-1">
+                        <Badge className="bg-green-100 text-green-700 border-green-200 text-xs">Present</Badge>
+                        <div className="text-xs text-gray-500 mt-1">
                           {new Date(scan.markedAt).toLocaleTimeString()}
                         </div>
                       </div>
                     </div>
                   ))
                 ) : (
-                  <div className="text-center py-8 text-muted-foreground">
+                  <div className="text-center py-8 text-gray-500 dark:text-[#6272a4]">
                     <QrCode className="h-12 w-12 mx-auto mb-3 opacity-30" />
                     <p className="text-sm">Waiting for QR scans...</p>
                     <p className="text-xs mt-1">Students will appear here as they scan</p>
@@ -380,37 +230,37 @@ export const QRModePage: React.FC = () => {
         </div>
 
         <div className="text-center">
-          <Button onClick={() => setShowSaveModal(true)}>
+          <Button onClick={() => setShowSaveModal(true)} size="sm">
             Save Attendance ({presentCount}/{totalStudents})
           </Button>
         </div>
 
-        <Card>
+        <Card className="bg-white dark:bg-[#282a36] border-gray-200 dark:border-[#6272a4]">
           <CardHeader className="pb-3">
-            <CardTitle className="text-base">Instructions</CardTitle>
+            <CardTitle className="text-base text-gray-900 dark:text-[#f8f8f2]">Instructions</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-              <div className="text-center p-6 bg-blue-50 dark:bg-blue-950/20 rounded-lg h-32 flex flex-col justify-center">
-                <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-full w-12 h-12 mx-auto mb-3 flex items-center justify-center">
-                  <Smartphone className="h-6 w-6 text-blue-600" />
+              <div className="text-center p-4 bg-orange-50 dark:bg-orange-500/10 rounded-lg flex flex-col justify-center">
+                <div className="p-2 bg-orange-100 dark:bg-orange-500/20 rounded-full w-10 h-10 mx-auto mb-2 flex items-center justify-center">
+                  <Smartphone className="h-5 w-5 text-orange-600 dark:text-orange-400" />
                 </div>
-                <h3 className="font-medium mb-1 text-sm">Step 1: Open App</h3>
-                <p className="text-xs text-muted-foreground">Launch mobile app</p>
+                <h3 className="font-medium mb-1 text-sm text-gray-900 dark:text-[#f8f8f2]">Step 1: Open App</h3>
+                <p className="text-xs text-gray-600 dark:text-[#6272a4]">Launch mobile app</p>
               </div>
-              <div className="text-center p-6 bg-green-50 dark:bg-green-950/20 rounded-lg h-32 flex flex-col justify-center">
-                <div className="p-3 bg-green-100 dark:bg-green-900/30 rounded-full w-12 h-12 mx-auto mb-3 flex items-center justify-center">
-                  <QrCode className="h-6 w-6 text-green-600" />
+              <div className="text-center p-4 bg-orange-50 dark:bg-orange-500/10 rounded-lg flex flex-col justify-center">
+                <div className="p-2 bg-orange-100 dark:bg-orange-500/20 rounded-full w-10 h-10 mx-auto mb-2 flex items-center justify-center">
+                  <QrCode className="h-5 w-5 text-orange-600 dark:text-orange-400" />
                 </div>
-                <h3 className="font-medium mb-1 text-sm">Step 2: Scan QR</h3>
-                <p className="text-xs text-muted-foreground">Point camera at QR code</p>
+                <h3 className="font-medium mb-1 text-sm text-gray-900 dark:text-[#f8f8f2]">Step 2: Scan QR</h3>
+                <p className="text-xs text-gray-600 dark:text-[#6272a4]">Point camera at QR code</p>
               </div>
-              <div className="text-center p-6 bg-purple-50 dark:bg-purple-950/20 rounded-lg h-32 flex flex-col justify-center">
-                <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-full w-12 h-12 mx-auto mb-3 flex items-center justify-center">
-                  <CheckCircle className="h-6 w-6 text-purple-600" />
+              <div className="text-center p-4 bg-orange-50 dark:bg-orange-500/10 rounded-lg flex flex-col justify-center">
+                <div className="p-2 bg-orange-100 dark:bg-orange-500/20 rounded-full w-10 h-10 mx-auto mb-2 flex items-center justify-center">
+                  <CheckCircle className="h-5 w-5 text-orange-600 dark:text-orange-400" />
                 </div>
-                <h3 className="font-medium mb-1 text-sm">Step 3: Confirm</h3>
-                <p className="text-xs text-muted-foreground">Attendance marked</p>
+                <h3 className="font-medium mb-1 text-sm text-gray-900 dark:text-[#f8f8f2]">Step 3: Confirm</h3>
+                <p className="text-xs text-gray-600 dark:text-[#6272a4]">Attendance marked</p>
               </div>
             </div>
           </CardContent>
@@ -433,8 +283,8 @@ export const QRModePage: React.FC = () => {
         {/* Save Attendance Modal */}
         {showSaveModal && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-background p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
-              <h3 className="text-lg font-semibold mb-4">Save Attendance</h3>
+            <div className="bg-white dark:bg-[#282a36] p-6 rounded-lg shadow-lg max-w-md w-full mx-4 border border-gray-200 dark:border-[#6272a4]">
+              <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-[#f8f8f2]">Save Attendance</h3>
               <p className="text-sm text-muted-foreground mb-4">
                 Save attendance for <strong>{presentCount}</strong> present and <strong>{totalStudents - presentCount}</strong> absent students?
               </p>

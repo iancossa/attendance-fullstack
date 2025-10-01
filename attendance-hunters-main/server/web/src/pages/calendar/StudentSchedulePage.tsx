@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import { Layout } from '../../components/layout/Layout';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { Badge } from '../../components/ui/badge';
 import { Input } from '../../components/ui/input';
+import { UpcomingLectureModal } from '../../components/modals/UpcomingLectureModal';
 import { Calendar, Clock, MapPin, User } from 'lucide-react';
 
 export const StudentSchedulePage: React.FC = () => {
+  useDocumentTitle('Class Schedule');
   const [selectedDate, setSelectedDate] = useState('2025-09-01');
+  const [showLectureModal, setShowLectureModal] = useState(false);
+  const [selectedLecture, setSelectedLecture] = useState<any>(null);
 
   const timeSlots = [
     '09:30 - 10:25',
@@ -73,38 +78,40 @@ export const StudentSchedulePage: React.FC = () => {
 
   return (
     <Layout>
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
+      <div className="space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Class Schedule</h1>
-            <p className="text-muted-foreground mt-1">Academic Year 2024-25 | September 1-5, 2025</p>
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-[#f8f8f2]">Class Schedule</h1>
+            <p className="text-sm text-gray-600 dark:text-[#6272a4]">Academic Year 2024-25 | September 1-5, 2025</p>
           </div>
-          <div className="text-sm text-muted-foreground">
-            Generated on {new Date().toLocaleDateString()} at {new Date().toLocaleTimeString()}
+          <div className="text-xs sm:text-sm text-gray-500 dark:text-[#6272a4]">
+            Generated on {new Date().toLocaleDateString()}
           </div>
         </div>
 
-        <Card>
+        <Card className="border-l-4 border-l-primary bg-white dark:bg-[#282a36] border-gray-200 dark:border-[#6272a4]">
           <CardHeader>
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <CardTitle className="flex items-center gap-2 mb-2">
-                  <Calendar className="h-5 w-5" />
+                <CardTitle className="flex items-center gap-2 mb-2 text-base text-gray-900 dark:text-[#f8f8f2]">
+                  <div className="p-2 bg-orange-100 dark:bg-orange-500/20 rounded-lg">
+                    <Calendar className="h-4 w-4 text-orange-600 dark:text-orange-400" />
+                  </div>
                   Student Timetable
                 </CardTitle>
-                <div className="space-y-1 text-sm text-muted-foreground">
-                  <div className="font-medium text-foreground">IT-3A-2025-26</div>
+                <div className="space-y-1 text-sm text-gray-600 dark:text-[#6272a4]">
+                  <div className="font-medium text-gray-900 dark:text-[#f8f8f2]">IT-3A-2025-26</div>
                   <div>PIET-1 - BTech - IT</div>
                   <div>06-09-2025</div>
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <Calendar className="h-4 w-4 text-muted-foreground" />
+                <Calendar className="h-4 w-4 text-gray-500 dark:text-[#6272a4]" />
                 <Input
                   type="date"
                   value={selectedDate}
                   onChange={(e) => setSelectedDate(e.target.value)}
-                  className="w-auto min-w-[150px] border-input bg-background"
+                  className="w-auto min-w-[150px] text-sm bg-white dark:bg-[#44475a] border-gray-300 dark:border-[#6272a4] text-gray-900 dark:text-[#f8f8f2]"
                 />
               </div>
             </div>
@@ -113,10 +120,10 @@ export const StudentSchedulePage: React.FC = () => {
             <div className="overflow-x-auto">
               <table className="w-full border-collapse">
                 <thead>
-                  <tr className="border-b">
-                    <th className="text-left p-3 font-medium bg-muted/50">Time</th>
+                  <tr className="border-b border-gray-200 dark:border-[#6272a4]">
+                    <th className="text-left p-2 sm:p-3 font-medium bg-orange-50 dark:bg-orange-500/10 text-orange-800 dark:text-orange-400 text-sm">Time</th>
                     {days.map(day => (
-                      <th key={day} className="text-center p-3 font-medium bg-muted/50 min-w-[200px]">
+                      <th key={day} className="text-center p-2 sm:p-3 font-medium bg-orange-50 dark:bg-orange-500/10 text-orange-800 dark:text-orange-400 min-w-[180px] text-sm">
                         {day}
                       </th>
                     ))}
@@ -124,11 +131,11 @@ export const StudentSchedulePage: React.FC = () => {
                 </thead>
                 <tbody>
                   {timeSlots.map((time, timeIndex) => (
-                    <tr key={time} className="border-b hover:bg-muted/30">
-                      <td className="p-3 font-medium text-sm bg-muted/20">
+                    <tr key={time} className="border-b border-gray-200 dark:border-[#6272a4] hover:bg-gray-50 dark:hover:bg-[#44475a]">
+                      <td className="p-2 sm:p-3 font-medium text-sm bg-orange-50/50 dark:bg-orange-500/5">
                         <div className="flex items-center gap-2">
-                          <Clock className="h-4 w-4" />
-                          {time}
+                          <Clock className="h-4 w-4 text-orange-600 dark:text-orange-400" />
+                          <span className="text-gray-700 dark:text-[#f8f8f2]">{time}</span>
                         </div>
                       </td>
                       {days.map(day => {
@@ -136,9 +143,9 @@ export const StudentSchedulePage: React.FC = () => {
                         
                         if (classInfo.code === 'BREAK') {
                           return (
-                            <td key={day} className="p-3 text-center">
-                              <div className="bg-orange-50 dark:bg-orange-900/20 p-2 rounded border-l-4 border-orange-400">
-                                <span className="text-orange-700 dark:text-orange-400 font-medium">
+                            <td key={day} className="p-2 text-center">
+                              <div className="bg-orange-100 dark:bg-orange-500/10 p-2 rounded border-l-4 border-orange-500 dark:border-orange-400">
+                                <span className="text-orange-700 dark:text-orange-400 font-medium text-sm">
                                   Lunch Break
                                 </span>
                               </div>
@@ -147,21 +154,36 @@ export const StudentSchedulePage: React.FC = () => {
                         }
 
                         return (
-                          <td key={day} className="p-2">
-                            <div className="bg-background border rounded-lg p-3 hover:shadow-sm transition-shadow">
+                          <td key={day} className="p-1.5 sm:p-2">
+                            <div 
+                              className="bg-white dark:bg-[#44475a] border border-orange-200 dark:border-[#6272a4] rounded-lg p-2 sm:p-3 hover:shadow-sm hover:border-orange-300 dark:hover:border-orange-400 transition-all cursor-pointer"
+                              onClick={() => {
+                                setSelectedLecture({
+                                  code: classInfo.code,
+                                  name: classInfo.name,
+                                  instructor: classInfo.instructor,
+                                  room: classInfo.room,
+                                  type: classInfo.type,
+                                  time: time,
+                                  date: new Date().toLocaleDateString(),
+                                  duration: '55 minutes'
+                                });
+                                setShowLectureModal(true);
+                              }}
+                            >
                               <div className="flex items-start justify-between mb-2">
-                                <span className="font-bold text-sm text-primary">{classInfo.code}</span>
+                                <span className="font-bold text-sm text-orange-700 dark:text-orange-400">{classInfo.code}</span>
                                 <Badge className={`text-xs ${getTypeColor(classInfo.type)}`}>
                                   {classInfo.type}
                                 </Badge>
                               </div>
                               <div className="space-y-1">
-                                <div className="font-medium text-sm">{classInfo.name}</div>
-                                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                                <div className="font-medium text-sm text-gray-900 dark:text-[#f8f8f2]">{classInfo.name}</div>
+                                <div className="flex items-center gap-1 text-xs text-gray-600 dark:text-[#6272a4]">
                                   <User className="h-3 w-3" />
                                   {classInfo.instructor}
                                 </div>
-                                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                                <div className="flex items-center gap-1 text-xs text-gray-600 dark:text-[#6272a4]">
                                   <MapPin className="h-3 w-3" />
                                   {classInfo.room}
                                 </div>
@@ -179,31 +201,31 @@ export const StudentSchedulePage: React.FC = () => {
         </Card>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card>
+          <Card className="bg-white dark:bg-[#282a36] border-gray-200 dark:border-[#6272a4]">
             <CardHeader>
-              <CardTitle className="text-lg">Legend</CardTitle>
+              <CardTitle className="text-lg text-gray-900 dark:text-[#f8f8f2]">Legend</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
               <div className="flex items-center gap-2">
                 <Badge className="bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">CRT</Badge>
-                <span className="text-sm">Core/Credit</span>
+                <span className="text-sm text-gray-900 dark:text-[#f8f8f2]">Core/Credit</span>
               </div>
               <div className="flex items-center gap-2">
                 <Badge className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">PSS</Badge>
-                <span className="text-sm">Program Specification</span>
+                <span className="text-sm text-gray-900 dark:text-[#f8f8f2]">Program Specification</span>
               </div>
               <div className="flex items-center gap-2">
                 <Badge className="bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400">SB</Badge>
-                <span className="text-sm">Subject/Batch</span>
+                <span className="text-sm text-gray-900 dark:text-[#f8f8f2]">Subject/Batch</span>
               </div>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-white dark:bg-[#282a36] border-gray-200 dark:border-[#6272a4]">
             <CardHeader>
-              <CardTitle className="text-lg">Schedule Info</CardTitle>
+              <CardTitle className="text-lg text-gray-900 dark:text-[#f8f8f2]">Schedule Info</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2 text-sm">
+            <CardContent className="space-y-2 text-sm text-gray-900 dark:text-[#f8f8f2]">
               <div>Session Duration: 55 minutes</div>
               <div>Break Duration: 20 minutes</div>
               <div>Lunch Break: 12:55 - 01:15 PM</div>
@@ -211,11 +233,11 @@ export const StudentSchedulePage: React.FC = () => {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-white dark:bg-[#282a36] border-gray-200 dark:border-[#6272a4]">
             <CardHeader>
-              <CardTitle className="text-lg">Quick Stats</CardTitle>
+              <CardTitle className="text-lg text-gray-900 dark:text-[#f8f8f2]">Quick Stats</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2 text-sm">
+            <CardContent className="space-y-2 text-sm text-gray-900 dark:text-[#f8f8f2]">
               <div>Core Subjects: 12</div>
               <div>Electives: 8</div>
               <div>Lab Sessions: 4</div>
@@ -224,6 +246,12 @@ export const StudentSchedulePage: React.FC = () => {
           </Card>
         </div>
       </div>
+      
+      <UpcomingLectureModal
+        isOpen={showLectureModal}
+        onClose={() => setShowLectureModal(false)}
+        lecture={selectedLecture}
+      />
     </Layout>
   );
 };

@@ -11,11 +11,11 @@ const Alert = React.forwardRef<
     ref={ref}
     role="alert"
     className={cn(
-      "relative w-full rounded-lg border p-3 sm:p-4 transition-colors [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-3 sm:[&>svg]:left-4 [&>svg]:top-3 sm:[&>svg]:top-4 [&>svg]:text-foreground",
-      variant === "default" && "bg-background text-foreground border-border dark:bg-background dark:text-foreground dark:border-border",
-      variant === "destructive" && "border-destructive/50 text-destructive bg-destructive/10 dark:border-destructive dark:bg-destructive/10 dark:text-destructive [&>svg]:text-destructive",
-      variant === "success" && "border-green-500/50 text-green-700 bg-green-50 dark:border-green-500 dark:bg-green-950/30 dark:text-green-400 [&>svg]:text-green-600 dark:[&>svg]:text-green-400",
-      variant === "warning" && "border-yellow-500/50 text-yellow-700 bg-yellow-50 dark:border-yellow-500 dark:bg-yellow-950/30 dark:text-yellow-400 [&>svg]:text-yellow-600 dark:[&>svg]:text-yellow-400",
+      "relative w-full rounded-lg border p-3 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-3 [&>svg]:top-3 [&>svg]:h-4 [&>svg]:w-4",
+      variant === "default" && "bg-orange-50 dark:bg-[#44475a] text-gray-900 dark:text-[#f8f8f2] border-orange-200 dark:border-[#6272a4] [&>svg]:text-orange-600 dark:[&>svg]:text-orange-400",
+      variant === "destructive" && "border-red-200 dark:border-red-500/30 text-red-800 dark:text-red-300 bg-red-50 dark:bg-red-500/10 [&>svg]:text-red-600 dark:[&>svg]:text-red-400",
+      variant === "success" && "border-green-200 dark:border-green-500/30 text-green-800 dark:text-green-300 bg-green-50 dark:bg-green-500/10 [&>svg]:text-green-600 dark:[&>svg]:text-green-400",
+      variant === "warning" && "border-orange-200 dark:border-orange-500/30 text-orange-800 dark:text-orange-300 bg-orange-50 dark:bg-orange-500/10 [&>svg]:text-orange-600 dark:[&>svg]:text-orange-400",
       className
     )}
     {...props}
@@ -29,7 +29,7 @@ const AlertTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <h5
     ref={ref}
-    className={cn("mb-1 font-medium leading-none tracking-tight text-sm sm:text-base", className)}
+    className={cn("mb-1 font-medium leading-none tracking-tight text-sm", className)}
     {...props}
   />
 ))
@@ -41,7 +41,7 @@ const AlertDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("text-xs sm:text-sm [&_p]:leading-relaxed opacity-90", className)}
+    className={cn("text-sm [&_p]:leading-relaxed", className)}
     {...props}
   />
 ))

@@ -17,7 +17,7 @@ const Loading = React.forwardRef<HTMLDivElement, LoadingProps>(
     }
 
     const containerClasses = fullScreen 
-      ? "min-h-screen flex items-center justify-center bg-white dark:bg-gray-950 text-foreground" 
+      ? "min-h-screen flex items-center justify-center bg-white dark:bg-[#282a36]" 
       : "flex items-center justify-center"
 
     if (variant === "dots") {
@@ -28,7 +28,7 @@ const Loading = React.forwardRef<HTMLDivElement, LoadingProps>(
               <div
                 key={i}
                 className={cn(
-                  "rounded-full bg-primary animate-pulse",
+                  "rounded-full bg-orange-500 dark:bg-orange-400 animate-pulse",
                   size === "sm" && "h-2 w-2",
                   size === "md" && "h-3 w-3",
                   size === "lg" && "h-4 w-4",
@@ -46,7 +46,7 @@ const Loading = React.forwardRef<HTMLDivElement, LoadingProps>(
       return (
         <div ref={ref} className={cn(containerClasses, className)} {...props}>
           <div className={cn(
-            "rounded-full bg-primary animate-pulse",
+            "rounded-full bg-orange-500 dark:bg-orange-400 animate-pulse",
             sizeClasses[size]
           )} />
         </div>
@@ -57,7 +57,7 @@ const Loading = React.forwardRef<HTMLDivElement, LoadingProps>(
       <div ref={ref} className={cn(containerClasses, className)} {...props}>
         <div
           className={cn(
-            "animate-spin rounded-full border-2 border-muted border-t-primary dark:border-muted-foreground dark:border-t-primary transition-colors",
+            "animate-spin rounded-full border-2 border-gray-200 dark:border-[#44475a] border-t-orange-500 dark:border-t-orange-400",
             sizeClasses[size]
           )}
         />

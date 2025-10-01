@@ -2,20 +2,36 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Button } from './ui/button';
 import { Camera, X, RotateCcw } from 'lucide-react';
 import { BrowserQRCodeReader } from '@zxing/library';
+import { useQRSession } from '../hooks/useAttendance';
+import { authService } from '../services/authService';
 
 interface QRScannerProps {
   onScan: (data: string) => void;
   onClose: () => void;
   onAttendanceMarked?: (studentData: any) => void;
+  sessionId?: string;
+  autoSubmit?: boolean;
+  studentMode?: boolean;
 }
 
-export const QRScanner: React.FC<QRScannerProps> = ({ onScan, onClose, onAttendanceMarked }) => {
+export const QRScanner: React.FC<QRScannerProps> = ({ 
+  onScan, 
+  onClose, 
+  onAttendanceMarked,
+  sessionId,
+  autoSubmit = false,
+  studentMode = false 
+}) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isScanning, setIsScanning] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [codeReader] = useState(() => new BrowserQRCodeReader());
+  const [processing, setProcessing] = useState(false);
+  const [scanResult, setScanResult] = useState<string | null>(null);
+  
+  const { qrStatus, markViaQR } = useQRSession(sessionId);
 
   useEffect(() => {
     startCamera();
@@ -107,96 +123,95 @@ export const QRScanner: React.FC<QRScannerProps> = ({ onScan, onClose, onAttenda
   };
 
   const processQRData = async (qrData: string) => {
+    if (processing) return;
+    
+    setProcessing(true);
+    setScanResult(qrData);
+    
     try {
       console.log('🔍 Processing QR data:', qrData);
       
-      // Parse QR data
-      let sessionData;
-      try {
-        sessionData = JSON.parse(qrData);
-      } catch {
-        // Handle URL format QR codes
-        if (qrData.includes('/api/qr/mark/')) {
-          const sessionId = qrData.split('/api/qr/mark/')[1];
-          sessionData = { sessionId };
+      if (studentMode && autoSubmit) {
+        // Enhanced auto-submit for student scanning
+        const user = authService.getStoredUser();
+        if (user && user.student_id) {
+          // Parse session ID from QR data
+          let sessionId = qrData;
+          if (qrData.includes('/api/qr/mark/')) {
+            sessionId = qrData.split('/api/qr/mark/')[1];
+          }
+          
+          await markViaQR(sessionId, {
+            studentId: user.student_id?.toString(),
+            studentName: user.name
+          });
+          
+          onScan('Attendance marked successfully!');
         } else {
-          throw new Error('Invalid QR format');
+          throw new Error('Student not logged in');
         }
-      }
+      } else {
+        // Legacy processing for backward compatibility
+        let sessionData;
+        try {
+          sessionData = JSON.parse(qrData);
+        } catch {
+          if (qrData.includes('/api/qr/mark/')) {
+            const sessionId = qrData.split('/api/qr/mark/')[1];
+            sessionData = { sessionId };
+          } else {
+            throw new Error('Invalid QR format');
+          }
+        }
 
-      if (!sessionData.sessionId) {
-        throw new Error('No session ID found in QR code');
-      }
+        if (!sessionData.sessionId) {
+          throw new Error('No session ID found in QR code');
+        }
 
-      // Prompt for student credentials
-      const email = prompt('Enter your university email:');
-      const password = prompt('Enter your password:') || 'student123';
+        // Get student info from localStorage (legacy)
+        const studentData = localStorage.getItem('studentInfo');
+        if (!studentData) {
+          throw new Error('Student not logged in');
+        }
+        
+        const student = JSON.parse(studentData);
+        console.log('✅ Using logged in student:', student.name);
+
+        // Mark attendance using new service
+        if (markViaQR) {
+          await markViaQR(sessionData.sessionId, {
+            studentId: student.studentId,
+            studentName: student.name
+          });
+        }
+
+        // Update localStorage for real-time updates
+        const scanData = {
+          studentId: student.studentId,
+          studentName: student.name,
+          markedAt: new Date().toISOString(),
+          status: 'present',
+          sessionId: sessionData.sessionId
+        };
+
+        const recentScans = JSON.parse(localStorage.getItem('recentScans') || '[]');
+        recentScans.unshift(scanData);
+        localStorage.setItem('recentScans', JSON.stringify(recentScans.slice(0, 50)));
+
+        if (onAttendanceMarked) {
+          onAttendanceMarked(scanData);
+        }
+
+        onScan(qrData);
+      }
       
-      if (!email) {
-        alert('Email is required');
-        return;
-      }
-
-      // Login student
-      console.log('🔐 Logging in student...');
-      const loginResponse = await fetch('https://attendance-fullstack.onrender.com/api/student-auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
-
-      if (!loginResponse.ok) {
-        const error = await loginResponse.json();
-        throw new Error(error.error || 'Login failed');
-      }
-
-      const loginData = await loginResponse.json();
-      console.log('✅ Student logged in:', loginData.student.name);
-
-      // Mark attendance
-      console.log('📝 Marking attendance...');
-      const markResponse = await fetch(`https://attendance-fullstack.onrender.com/api/qr/mark/${sessionData.sessionId}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          studentId: loginData.student.studentId,
-          studentName: loginData.student.name
-        })
-      });
-
-      if (!markResponse.ok) {
-        const error = await markResponse.json();
-        throw new Error(error.error || 'Attendance marking failed');
-      }
-
-      const markData = await markResponse.json();
-      console.log('✅ Attendance marked:', markData);
-
-      // Update localStorage for real-time updates
-      const scanData = {
-        studentId: loginData.student.studentId,
-        studentName: loginData.student.name,
-        markedAt: new Date().toISOString(),
-        status: 'present',
-        sessionId: sessionData.sessionId
-      };
-
-      const recentScans = JSON.parse(localStorage.getItem('recentScans') || '[]');
-      recentScans.unshift(scanData);
-      localStorage.setItem('recentScans', JSON.stringify(recentScans.slice(0, 50)));
-
-      // Notify parent component
-      if (onAttendanceMarked) {
-        onAttendanceMarked(scanData);
-      }
-
-      alert(`✅ Attendance marked for ${loginData.student.name}`);
-      onScan(qrData);
       stopCamera();
 
     } catch (error) {
       console.error('❌ QR processing error:', error);
-      alert(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      setError(error instanceof Error ? error.message : 'Failed to process QR code');
+    } finally {
+      setProcessing(false);
     }
   };
 
@@ -211,6 +226,15 @@ export const QRScanner: React.FC<QRScannerProps> = ({ onScan, onClose, onAttenda
             <X className="h-4 w-4" />
           </Button>
         </div>
+        
+        {/* Session Status */}
+        {sessionId && qrStatus && (
+          <div className="px-4 py-2 bg-blue-50 dark:bg-blue-900/20 border-b">
+            <p className="text-sm text-blue-700 dark:text-blue-300">
+              Session: {sessionId} | Scanned: {qrStatus.scan_count}
+            </p>
+          </div>
+        )}
         
         <div className="p-4">
           {error ? (
@@ -259,22 +283,7 @@ export const QRScanner: React.FC<QRScannerProps> = ({ onScan, onClose, onAttenda
                   Position the QR code within the frame
                 </p>
                 <div className="space-y-2">
-                  <Button 
-                    variant="secondary" 
-                    onClick={() => {
-                      // Test with current session from localStorage
-                      const currentSession = localStorage.getItem('currentQRSession');
-                      if (currentSession) {
-                        const session = JSON.parse(currentSession);
-                        processQRData(JSON.stringify({ sessionId: session.sessionId }));
-                      } else {
-                        alert('Generate a QR session first in QR Mode');
-                      }
-                    }}
-                    className="w-full"
-                  >
-                    Test QR Scan
-                  </Button>
+
                   <Button variant="outline" onClick={handleManualInput} className="w-full">
                     Enter QR Data Manually
                   </Button>

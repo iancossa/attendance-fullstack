@@ -5,6 +5,7 @@ import { Badge } from '../ui/badge';
 import { Card, CardContent } from '../ui/card';
 import { Progress } from '../ui/progress';
 import { X, QrCode, UserCheck, Zap, Calendar, Clock, Users, BookOpen, ArrowRight, CheckCircle } from 'lucide-react';
+import { ModalPortal } from '../ui/modal-portal';
 import { COURSES } from '../../data/mockStudents';
 
 interface TakeAttendanceModalProps {
@@ -104,27 +105,28 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({ isOpen
   ];
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/30 flex items-center justify-center p-4">
-      <div className="bg-background rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden border">
+    <ModalPortal>
+      <div className="fixed inset-0 style={{ zIndex: 9999 }} bg-black/50 flex items-center justify-center p-4">
+      <div className="bg-white dark:bg-[#282a36] rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden border border-gray-200 dark:border-[#6272a4] modal-scrollbar">
         {/* Header with Progress */}
         <div className="relative">
-          <div className="flex items-center justify-between p-4 border-b">
+          <div className="sticky top-0 z-10 flex items-center justify-between p-6 border-b">
             <div className="flex items-center gap-3">
               <Calendar className="h-5 w-5 text-primary" />
               <div>
-                <h2 className="text-lg font-semibold">Setup Attendance Session</h2>
-                <p className="text-xs text-muted-foreground">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-[#f8f8f2]">Setup Attendance Session</h2>
+                <p className="text-xs text-muted-foreground dark:text-[#6272a4]">
                   {new Date().toLocaleDateString()} • {new Date().toLocaleTimeString()}
                 </p>
               </div>
             </div>
             <Button variant="ghost" size="sm" onClick={onClose}>
-              <X className="h-4 w-4" />
+              <X className="h-4 w-4 text-gray-600 dark:text-[#6272a4]" />
             </Button>
           </div>
           
           {/* Progress Steps */}
-          <div className="px-4 py-3 bg-muted/20">
+          <div className="px-4 py-3 bg-gray-50 dark:bg-[#44475a]">
             <div className="flex items-center justify-between mb-2">
               {stepTitles.map((title, index) => (
                 <div key={index} className="flex items-center gap-2">
@@ -136,7 +138,7 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({ isOpen
                     {currentStep > index + 1 ? <CheckCircle className="h-3 w-3" /> : index + 1}
                   </div>
                   <span className={`text-xs font-medium ${
-                    currentStep === index + 1 ? 'text-foreground' : 'text-muted-foreground'
+                    currentStep === index + 1 ? 'text-foreground dark:text-[#f8f8f2]' : 'text-muted-foreground dark:text-[#6272a4]'
                   }`}>
                     {title}
                   </span>
@@ -157,20 +159,20 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({ isOpen
           {currentStep === 1 && (
             <div className="space-y-4">
               <div className="text-center mb-4">
-                <h3 className="text-lg font-semibold mb-1">Select Course & Session Details</h3>
-                <p className="text-muted-foreground text-sm">Choose the course and configure your attendance session</p>
+                <h3 className="text-lg font-semibold mb-1 text-gray-900 dark:text-[#f8f8f2]">Select Course & Session Details</h3>
+                <p className="text-muted-foreground dark:text-[#6272a4] text-sm">Choose the course and configure your attendance session</p>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label className="text-sm font-medium flex items-center gap-2">
+                  <label className="text-sm font-medium flex items-center gap-2 text-gray-900 dark:text-[#f8f8f2]">
                     <BookOpen className="h-4 w-4" />
                     Course
                   </label>
                   <select 
                     value={selectedCourse} 
                     onChange={(e) => setSelectedCourse(e.target.value)}
-                    className="w-full p-3 border rounded-lg bg-background text-sm"
+                    className="w-full p-3 border border-gray-200 dark:border-[#6272a4] rounded-lg bg-background dark:bg-[#44475a] text-sm text-gray-900 dark:text-[#f8f8f2]"
                   >
                     <option value="">Select Course</option>
                     {courses.map(course => (
@@ -182,14 +184,14 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({ isOpen
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium flex items-center gap-2">
+                  <label className="text-sm font-medium flex items-center gap-2 text-gray-900 dark:text-[#f8f8f2]">
                     <Users className="h-4 w-4" />
                     Section
                   </label>
                   <select 
                     value={selectedSection} 
                     onChange={(e) => setSelectedSection(e.target.value)}
-                    className="w-full p-3 border rounded-lg bg-background text-sm disabled:opacity-50"
+                    className="w-full p-3 border border-gray-200 dark:border-[#6272a4] rounded-lg bg-background dark:bg-[#44475a] text-sm text-gray-900 dark:text-[#f8f8f2] disabled:opacity-50"
                     disabled={!selectedCourse}
                   >
                     <option value="">Select Section</option>
@@ -202,14 +204,14 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({ isOpen
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label className="text-sm font-medium flex items-center gap-2">
+                  <label className="text-sm font-medium flex items-center gap-2 text-gray-900 dark:text-[#f8f8f2]">
                     <Clock className="h-4 w-4" />
                     Session Type
                   </label>
                   <select 
                     value={sessionType} 
                     onChange={(e) => setSessionType(e.target.value)}
-                    className="w-full p-3 border rounded-lg bg-background text-sm disabled:opacity-50"
+                    className="w-full p-3 border border-gray-200 dark:border-[#6272a4] rounded-lg bg-background dark:bg-[#44475a] text-sm text-gray-900 dark:text-[#f8f8f2] disabled:opacity-50"
                     disabled={!selectedCourse}
                   >
                     <option value="">Select Type</option>
@@ -220,7 +222,7 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({ isOpen
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Date & Time</label>
+                  <label className="text-sm font-medium text-gray-900 dark:text-[#f8f8f2]">Date & Time</label>
                   <Input 
                     value={new Date().toLocaleString()} 
                     readOnly 
@@ -247,8 +249,8 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({ isOpen
           {currentStep === 2 && selectedCourseData && (
             <div className="space-y-4">
               <div className="text-center mb-4">
-                <h3 className="text-lg font-semibold mb-1">Session Overview</h3>
-                <p className="text-muted-foreground text-sm">Review your session details before proceeding</p>
+                <h3 className="text-lg font-semibold mb-1 text-gray-900 dark:text-[#f8f8f2]">Session Overview</h3>
+                <p className="text-muted-foreground dark:text-[#6272a4] text-sm">Review your session details before proceeding</p>
               </div>
               
               <Card className="p-4 bg-primary/5 border-primary/20">
@@ -258,20 +260,20 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({ isOpen
                     <h3 className="font-semibold mb-2">{selectedCourseData.name}</h3>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
                       <div>
-                        <p className="text-muted-foreground">Department</p>
-                        <p className="font-medium">{selectedCourseData.department}</p>
+                        <p className="text-muted-foreground dark:text-[#6272a4]">Department</p>
+                        <p className="font-medium text-gray-900 dark:text-[#f8f8f2]">{selectedCourseData.department}</p>
                       </div>
                       <div>
-                        <p className="text-muted-foreground">Section</p>
-                        <p className="font-medium">Section {selectedSection}</p>
+                        <p className="text-muted-foreground dark:text-[#6272a4]">Section</p>
+                        <p className="font-medium text-gray-900 dark:text-[#f8f8f2]">Section {selectedSection}</p>
                       </div>
                       <div>
-                        <p className="text-muted-foreground">Session Type</p>
-                        <p className="font-medium">{sessionType}</p>
+                        <p className="text-muted-foreground dark:text-[#6272a4]">Session Type</p>
+                        <p className="font-medium text-gray-900 dark:text-[#f8f8f2]">{sessionType}</p>
                       </div>
                       <div>
-                        <p className="text-muted-foreground">Students</p>
-                        <p className="font-medium">{selectedCourseData.students} enrolled</p>
+                        <p className="text-muted-foreground dark:text-[#6272a4]">Students</p>
+                        <p className="font-medium text-gray-900 dark:text-[#f8f8f2]">{selectedCourseData.students} enrolled</p>
                       </div>
                     </div>
                   </div>
@@ -289,8 +291,8 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({ isOpen
           {currentStep === 3 && (
             <div className="space-y-4">
               <div className="text-center mb-4">
-                <h3 className="text-lg font-semibold mb-1">Choose Attendance Mode</h3>
-                <p className="text-muted-foreground text-sm">Select how you want to take attendance for this session</p>
+                <h3 className="text-lg font-semibold mb-1 text-gray-900 dark:text-[#f8f8f2]">Choose Attendance Mode</h3>
+                <p className="text-muted-foreground dark:text-[#6272a4] text-sm">Select how you want to take attendance for this session</p>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -315,11 +317,11 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({ isOpen
                             <Icon className="h-6 w-6" />
                           </div>
                           <div>
-                            <h4 className="font-semibold mb-1">{mode.title}</h4>
-                            <p className="text-xs text-muted-foreground mb-2">{mode.description}</p>
+                            <h4 className="font-semibold mb-1 text-gray-900 dark:text-[#f8f8f2]">{mode.title}</h4>
+                            <p className="text-xs text-muted-foreground dark:text-[#6272a4] mb-2">{mode.description}</p>
                             <div className="space-y-1">
                               {mode.features.map((feature, idx) => (
-                                <div key={idx} className="flex items-center justify-center gap-1 text-xs text-muted-foreground">
+                                <div key={idx} className="flex items-center justify-center gap-1 text-xs text-muted-foreground dark:text-[#6272a4]">
                                   <CheckCircle className="h-2.5 w-2.5 text-green-500" />
                                   {feature}
                                 </div>
@@ -376,6 +378,7 @@ export const TakeAttendanceModal: React.FC<TakeAttendanceModalProps> = ({ isOpen
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </ModalPortal>
   );
 };

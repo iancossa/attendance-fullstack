@@ -1,5 +1,6 @@
 // Application constants
-export const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://attendance-fullstack.onrender.com/api';
+export const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+export const PRODUCTION_API_URL = 'https://attendance-fullstack.onrender.com/api';
 
 export const ROUTES = {
   DASHBOARD: '/dashboard',

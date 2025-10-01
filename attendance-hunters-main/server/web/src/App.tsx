@@ -5,6 +5,7 @@ import { AttendancePage } from './pages/attendance/AttendancePage';
 import { ClassesPage } from './pages/classes/ClassesPage';
 import { StudentsPage } from './pages/students/StudentsPage';
 import { ReportsPage } from './pages/reports/ReportsPage';
+import { StaffReportsPage } from './pages/reports/StaffReportsPage';
 import { LeaderboardPage } from './pages/leaderboard/LeaderboardPage';
 import { SettingsPage } from './pages/settings/SettingsPage';
 import { FacultyPage } from './pages/faculty/FacultyPage';
@@ -17,10 +18,16 @@ import { StudentSchedulePage } from './pages/calendar/StudentSchedulePage';
 import { StudentClassesPage } from './pages/classes/StudentClassesPage';
 import { StudentAttendancePage } from './pages/attendance/StudentAttendancePage';
 import { StudentProfilePage } from './pages/profile/StudentProfilePage';
+import { StaffProfilePage } from './pages/profile/StaffProfilePage';
+import { ProfileSettingsPage } from './pages/profile/ProfileSettingsPage';
 import { QRModePage } from './pages/attendance/QRModePage';
 import { ManualModePage } from './pages/attendance/ManualModePage';
 import { HybridModePage } from './pages/attendance/HybridModePage';
+import { TakeAttendancePage } from './pages/attendance/TakeAttendancePage';
 import { LoginPage } from './pages/auth/LoginPage';
+import { MyJustificationsPage } from './pages/justification/MyJustificationsPage';
+import { ReviewJustificationsPage } from './pages/justification/ReviewJustificationsPage';
+import { DetentionPage } from './pages/detention/DetentionPage';
 import { useAuth } from './hooks/useAuth';
 import { ROUTES } from './constants';
 import { Loading } from './components/ui/loading';
@@ -66,10 +73,14 @@ function AppContent() {
               <Route path={ROUTES.SETTINGS} element={<SettingsPage />} />
               <Route path="/faculty" element={<FacultyPage />} />
               <Route path="/departments" element={<DepartmentsPage />} />
+              <Route path="/detention" element={<DetentionPage />} />
               <Route path="/calendar" element={<CalendarPage />} />
+              <Route path="/take-attendance" element={<TakeAttendancePage />} />
+              <Route path="/attendance/take" element={<TakeAttendancePage />} />
               <Route path="/attendance/qr-mode" element={<QRModePage />} />
               <Route path="/attendance/manual-mode" element={<ManualModePage />} />
               <Route path="/attendance/hybrid-mode" element={<HybridModePage />} />
+              <Route path="/profile/settings" element={<ProfileSettingsPage />} />
             </>
           )}
           
@@ -80,7 +91,19 @@ function AppContent() {
               <Route path="/staff-dashboard" element={<StaffDashboard />} />
               <Route path={ROUTES.ATTENDANCE} element={<AttendancePage />} />
               <Route path={ROUTES.CLASSES} element={<ClassesPage />} />
+              <Route path="/students" element={<StudentsPage />} />
+              <Route path="/detention" element={<DetentionPage />} />
+              <Route path="/calendar" element={<CalendarPage />} />
               <Route path={ROUTES.REPORTS} element={<ReportsPage />} />
+              <Route path="/staff-reports" element={<StaffReportsPage />} />
+              <Route path="/staff-profile" element={<StaffProfilePage />} />
+              <Route path="/review-justifications" element={<ReviewJustificationsPage />} />
+              <Route path={ROUTES.SETTINGS} element={<SettingsPage />} />
+              <Route path="/attendance/take" element={<TakeAttendancePage />} />
+              <Route path="/attendance/qr-mode" element={<QRModePage />} />
+              <Route path="/attendance/manual-mode" element={<ManualModePage />} />
+              <Route path="/attendance/hybrid-mode" element={<HybridModePage />} />
+              <Route path="/profile/settings" element={<ProfileSettingsPage />} />
             </>
           )}
           
@@ -93,7 +116,9 @@ function AppContent() {
               <Route path="/calendar" element={<StudentSchedulePage />} />
               <Route path={ROUTES.CLASSES} element={<StudentClassesPage />} />
               <Route path="/profile" element={<StudentProfilePage />} />
+              <Route path="/justifications" element={<MyJustificationsPage />} />
               <Route path={ROUTES.LEADERBOARD} element={<LeaderboardPage />} />
+              <Route path="/profile/settings" element={<ProfileSettingsPage />} />
             </>
           )}
         </>
