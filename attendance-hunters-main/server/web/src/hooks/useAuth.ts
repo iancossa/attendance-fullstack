@@ -62,10 +62,15 @@ export const useAuth = () => {
         });
 
         if (!response.ok) {
-          throw new Error('Invalid credentials');
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.error || 'Invalid credentials');
         }
 
         const data = await response.json();
+        
+        if (!data.success || !data.token) {
+          throw new Error('Login failed - invalid response');
+        }
         
         localStorage.setItem('auth_token', data.token);
         localStorage.setItem('user_role', 'student');
@@ -83,38 +88,41 @@ export const useAuth = () => {
           setTimeout(() => resolve(newUser), 50);
         });
       } else if (role === 'staff') {
-        // Demo staff login
-        const isValidStaffLogin = (email === 'staff@university.edu' && password === 'staff123');
-        
-        if (isValidStaffLogin) {
-          await new Promise(resolve => setTimeout(resolve, 1000));
-          
-          const token = `staff_token_${Date.now()}`;
-          localStorage.setItem('auth_token', token);
-          localStorage.setItem('user_role', 'staff');
-          
-          const staffData = {
-            id: '2',
-            email: email,
-            name: 'Staff User',
-            department: 'Computer Science'
-          };
-          localStorage.setItem('staffInfo', JSON.stringify(staffData));
-          
-          const newUser = {
-            id: '2',
-            email: email,
-            name: 'Staff User',
-            role: 'staff' as const
-          };
-          
-          return new Promise<typeof newUser>((resolve) => {
-            setUser(newUser);
-            setTimeout(() => resolve(newUser), 50);
-          });
-        } else {
-          throw new Error('Invalid staff credentials');
+        // Real API call for staff login
+        const response = await fetch('http://localhost:5000/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.error || 'Invalid credentials');
         }
+
+        const data = await response.json();
+        
+        if (!data.success || !data.token) {
+          throw new Error('Login failed - invalid response');
+        }
+        
+        localStorage.setItem('auth_token', data.token);
+        localStorage.setItem('user_role', 'staff');
+        localStorage.setItem('staffInfo', JSON.stringify(data.user));
+        
+        const newUser = {
+          id: data.user.id.toString(),
+          email: data.user.email,
+          name: data.user.name,
+          role: 'staff' as const
+        };
+        
+        return new Promise<typeof newUser>((resolve) => {
+          setUser(newUser);
+          setTimeout(() => resolve(newUser), 50);
+        });
       } else {
         // Real API call for admin/staff login
         const response = await fetch('http://localhost:5000/api/auth/login', {
@@ -126,10 +134,15 @@ export const useAuth = () => {
         });
 
         if (!response.ok) {
-          throw new Error('Invalid credentials');
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.error || 'Invalid credentials');
         }
 
         const data = await response.json();
+        
+        if (!data.success || !data.token) {
+          throw new Error('Login failed - invalid response');
+        }
         
         localStorage.setItem('auth_token', data.token);
         localStorage.setItem('user_role', data.user.role);

@@ -1,7 +1,5 @@
 const jwt = require('jsonwebtoken');
 const prisma = require('../../db');
-
-const prisma = new PrismaClient();
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
 // JWT Token verification middleware
