@@ -21,3 +21,4 @@ export { EditDepartmentModal } from './EditDepartmentModal';
 export { DepartmentSettingsModal } from './DepartmentSettingsModal';
 export { ViewReportModal } from './ViewReportModal';
 export { ViewStaffReportModal } from './ViewStaffReportModal';
+export { ImageEditorModal } from './ImageEditorModal';

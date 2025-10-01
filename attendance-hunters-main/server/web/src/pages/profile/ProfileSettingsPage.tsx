@@ -11,6 +11,7 @@ import { Badge } from '../../components/ui/badge';
 import { User, Mail, Lock, Camera, Save, CheckCircle, Shield, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { apiClient } from '../../utils/apiClient';
+import { ImageEditorModal } from '../../components/modals';
 
 export const ProfileSettingsPage: React.FC = () => {
   useDocumentTitle('Profile Settings');
@@ -28,6 +29,8 @@ export const ProfileSettingsPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const [showImageEditor, setShowImageEditor] = useState(false);
+  const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -53,12 +56,27 @@ export const ProfileSettingsPage: React.FC = () => {
         addNotification({ message: 'Image size must be less than 5MB', type: 'error' });
         return;
       }
-      setAvatarFile(file);
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setAvatarPreview(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
+      setSelectedImageFile(file);
+      setShowImageEditor(true);
+    }
+  };
+
+  const handleImageEditorSave = (editedFile: File) => {
+    setAvatarFile(editedFile);
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setAvatarPreview(e.target?.result as string);
+    };
+    reader.readAsDataURL(editedFile);
+    setShowImageEditor(false);
+    setSelectedImageFile(null);
+  };
+
+  const handleImageEditorCancel = () => {
+    setShowImageEditor(false);
+    setSelectedImageFile(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
     }
   };
 
@@ -86,7 +104,17 @@ export const ProfileSettingsPage: React.FC = () => {
       setAvatarFile(null);
       setAvatarPreview(null);
       
-      refreshUser();
+      // Force a complete refresh of user data
+      await refreshUser();
+      
+      // Also update the form data with new values
+      if (response.data.user) {
+        setFormData(prev => ({
+          ...prev,
+          name: response.data.user.name || prev.name,
+          email: response.data.user.email || prev.email
+        }));
+      }
     } catch (error: any) {
       console.error('Profile update error:', error);
       addNotification({ message: error.message || 'Failed to update profile', type: 'error' });
@@ -281,9 +309,15 @@ export const ProfileSettingsPage: React.FC = () => {
             </Button>
             <Button
               onClick={async () => {
-                await handleSaveProfile();
-                if (formData.currentPassword && formData.newPassword && formData.confirmPassword) {
-                  await handleChangePassword();
+                try {
+                  await handleSaveProfile();
+                  if (formData.currentPassword && formData.newPassword && formData.confirmPassword) {
+                    await handleChangePassword();
+                  }
+                  // Force complete refresh after all changes are saved
+                  window.location.reload();
+                } catch (error) {
+                  // Error handling is already done in individual functions
                 }
               }}
               disabled={loading}
@@ -295,6 +329,13 @@ export const ProfileSettingsPage: React.FC = () => {
           </div>
         </div>
       </div>
+      
+      <ImageEditorModal
+        isOpen={showImageEditor}
+        imageFile={selectedImageFile!}
+        onSave={handleImageEditorSave}
+        onClose={handleImageEditorCancel}
+      />
     </Layout>
   );
 };

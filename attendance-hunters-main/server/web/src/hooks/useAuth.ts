@@ -18,7 +18,8 @@ export const useAuth = () => {
             id: student.id?.toString() || '1',
             email: student.email,
             name: student.name,
-            role: 'student'
+            role: 'student',
+            avatarUrl: student.avatarUrl
           });
         }
       } else if (role === 'staff') {
@@ -29,7 +30,8 @@ export const useAuth = () => {
             id: staff.id?.toString() || '1',
             email: staff.email,
             name: staff.name,
-            role: 'staff'
+            role: 'staff',
+            avatarUrl: staff.avatarUrl
           });
         }
       } else {
@@ -80,7 +82,8 @@ export const useAuth = () => {
           id: data.user.id.toString(),
           email: data.user.email,
           name: data.user.name,
-          role: 'student' as const
+          role: 'student' as const,
+          avatarUrl: data.user.avatarUrl
         };
         
         return new Promise<typeof newUser>((resolve) => {
@@ -116,7 +119,8 @@ export const useAuth = () => {
           id: data.user.id.toString(),
           email: data.user.email,
           name: data.user.name,
-          role: 'staff' as const
+          role: 'staff' as const,
+          avatarUrl: data.user.avatarUrl
         };
         
         return new Promise<typeof newUser>((resolve) => {
