@@ -158,7 +158,7 @@ export const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
                   onClick={() => setNotificationMenuOpen(!notificationMenuOpen)}
                 >
                   <Bell className="h-4 w-4" />
-                  Notifications
+                  <span className="hidden sm:inline">Notifications</span>
                 </DropdownMenuTrigger>
                 {notificationMenuOpen && (
                   <>
