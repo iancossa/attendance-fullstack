@@ -10,6 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '../../components/ui/avatar'
 import { Badge } from '../../components/ui/badge';
 import { User, Mail, Lock, Camera, Save, CheckCircle, Shield, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { apiClient } from '../../utils/apiClient';
 
 export const ProfileSettingsPage: React.FC = () => {
   useDocumentTitle('Profile Settings');
@@ -62,8 +63,8 @@ export const ProfileSettingsPage: React.FC = () => {
   };
 
   const handleSaveProfile = async () => {
+    setLoading(true);
     try {
-      const token = localStorage.getItem('auth_token');
       const formDataToSend = new FormData();
       formDataToSend.append('name', formData.name);
       formDataToSend.append('email', formData.email);
@@ -71,22 +72,14 @@ export const ProfileSettingsPage: React.FC = () => {
         formDataToSend.append('avatar', avatarFile);
       }
 
-      const response = await fetch('http://localhost:5000/api/auth/profile', {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
-        body: formDataToSend
-      });
+      const response = await apiClient.put('/auth/profile', formDataToSend);
 
-      if (!response.ok) {
-        throw new Error('Failed to update profile');
+      if (!response.success) {
+        throw new Error(response.error || 'Failed to update profile');
       }
 
-      const data = await response.json();
-      
       const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
-      const updatedUser = { ...userInfo, ...data.user };
+      const updatedUser = { ...userInfo, ...response.data.user };
       localStorage.setItem('userInfo', JSON.stringify(updatedUser));
       
       addNotification({ message: 'Profile updated successfully!', type: 'success' });
@@ -95,8 +88,11 @@ export const ProfileSettingsPage: React.FC = () => {
       
       refreshUser();
     } catch (error: any) {
+      console.error('Profile update error:', error);
       addNotification({ message: error.message || 'Failed to update profile', type: 'error' });
       throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -111,22 +107,13 @@ export const ProfileSettingsPage: React.FC = () => {
     }
     
     try {
-      const token = localStorage.getItem('auth_token');
-      const response = await fetch('http://localhost:5000/api/auth/change-password', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          currentPassword: formData.currentPassword,
-          newPassword: formData.newPassword
-        })
+      const response = await apiClient.post('/auth/change-password', {
+        currentPassword: formData.currentPassword,
+        newPassword: formData.newPassword
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to change password');
+      if (!response.success) {
+        throw new Error(response.error || 'Failed to change password');
       }
 
       addNotification({ message: 'Password changed successfully!', type: 'success' });

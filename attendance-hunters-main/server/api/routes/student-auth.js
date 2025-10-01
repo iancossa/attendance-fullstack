@@ -14,17 +14,24 @@ router.post('/login', async (req, res) => {
             return res.status(400).json({ error: 'Email and password are required' });
         }
 
-        // Find student by email
-        const student = await prisma.student.findUnique({
-            where: { email }
+        // Find user with student role by email
+        const user = await prisma.user.findUnique({
+            where: { email },
+            include: { student: true }
         });
 
-        if (!student) {
+
+
+        if (!user || user.role !== 'student') {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
+        if (!user.student) {
+            return res.status(401).json({ error: 'Student profile not found' });
+        }
+
         // Check password
-        const isValidPassword = await bcrypt.compare(password, student.password);
+        const isValidPassword = await bcrypt.compare(password, user.password);
         if (!isValidPassword) {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
@@ -32,21 +39,22 @@ router.post('/login', async (req, res) => {
         // Generate JWT token
         const token = jwt.sign(
             { 
-                studentId: student.id,
-                email: student.email,
+                userId: user.id,
+                studentId: user.student?.id || null,
+                email: user.email,
                 role: 'student'
             },
             process.env.JWT_SECRET,
             { expiresIn: '24h' }
         );
 
-        // Return student data without password
-        const { password: _, ...studentData } = student;
+        // Return user and student data without password
+        const { password: _, ...userData } = user;
         
         res.json({
             success: true,
             token,
-            student: studentData
+            user: userData
         });
 
     } catch (error) {
@@ -66,16 +74,17 @@ router.get('/profile', async (req, res) => {
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         
-        const student = await prisma.student.findUnique({
-            where: { id: decoded.studentId }
+        const user = await prisma.user.findUnique({
+            where: { id: decoded.userId },
+            include: { student: true }
         });
 
-        if (!student) {
+        if (!user || !user.student) {
             return res.status(404).json({ error: 'Student not found' });
         }
 
-        const { password: _, ...studentData } = student;
-        res.json({ student: studentData });
+        const { password: _, ...userData } = user;
+        res.json({ user: userData });
 
     } catch (error) {
         console.error('Profile error:', error);

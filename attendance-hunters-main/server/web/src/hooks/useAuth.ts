@@ -12,7 +12,7 @@ export const useAuth = () => {
     if (token && role) {
       if (role === 'student') {
         const studentInfo = localStorage.getItem('studentInfo');
-        if (studentInfo) {
+        if (studentInfo && studentInfo !== 'undefined') {
           const student = JSON.parse(studentInfo);
           setUser({
             id: student.id?.toString() || '1',
@@ -23,7 +23,7 @@ export const useAuth = () => {
         }
       } else if (role === 'staff') {
         const staffInfo = localStorage.getItem('staffInfo');
-        if (staffInfo) {
+        if (staffInfo && staffInfo !== 'undefined') {
           const staff = JSON.parse(staffInfo);
           setUser({
             id: staff.id?.toString() || '1',
@@ -34,7 +34,7 @@ export const useAuth = () => {
         }
       } else {
         const userInfo = localStorage.getItem('userInfo');
-        if (userInfo) {
+        if (userInfo && userInfo !== 'undefined') {
           const user = JSON.parse(userInfo);
           setUser({
             id: user.id?.toString() || '1',
@@ -74,12 +74,12 @@ export const useAuth = () => {
         
         localStorage.setItem('auth_token', data.token);
         localStorage.setItem('user_role', 'student');
-        localStorage.setItem('studentInfo', JSON.stringify(data.student));
+        localStorage.setItem('studentInfo', JSON.stringify(data.user));
         
         const newUser = {
-          id: data.student.id.toString(),
-          email: data.student.email,
-          name: data.student.name,
+          id: data.user.id.toString(),
+          email: data.user.email,
+          name: data.user.name,
           role: 'student' as const
         };
         
@@ -182,7 +182,7 @@ export const useAuth = () => {
     
     if (token && role && role !== 'student' && role !== 'staff') {
       const userInfo = localStorage.getItem('userInfo');
-      if (userInfo) {
+      if (userInfo && userInfo !== 'undefined') {
         const userData = JSON.parse(userInfo);
         setUser({
           id: userData.id?.toString() || '1',
