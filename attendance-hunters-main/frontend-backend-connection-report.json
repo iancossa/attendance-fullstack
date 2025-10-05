@@ -1,0 +1,85 @@
+{
+  "timestamp": "2025-10-01T10:48:40.255Z",
+  "healthScore": 45,
+  "totalTests": 11,
+  "results": {
+    "working": [
+      {
+        "functionality": "QR Generation",
+        "status": "WORKING",
+        "details": "Session created: qr_1759315720652_kswxxt0z2",
+        "timestamp": "2025-10-01T10:48:38.666Z"
+      },
+      {
+        "functionality": "QR Session Status",
+        "status": "WORKING",
+        "details": "Session status retrieved successfully",
+        "timestamp": "2025-10-01T10:48:38.961Z"
+      },
+      {
+        "functionality": "QR Data Structure",
+        "status": "WORKING",
+        "details": "All required fields present",
+        "timestamp": "2025-10-01T10:48:38.961Z"
+      },
+      {
+        "functionality": "CORS Configuration",
+        "status": "WORKING",
+        "details": "CORS headers configured",
+        "timestamp": "2025-10-01T10:48:40.241Z"
+      },
+      {
+        "functionality": "Content Type Headers",
+        "status": "WORKING",
+        "details": "JSON content type set correctly",
+        "timestamp": "2025-10-01T10:48:40.241Z"
+      }
+    ],
+    "broken": [
+      {
+        "functionality": "Admin Authentication",
+        "status": "BROKEN",
+        "details": "Unexpected status: 500",
+        "timestamp": "2025-10-01T10:48:37.290Z"
+      },
+      {
+        "functionality": "Student Authentication",
+        "status": "BROKEN",
+        "details": "Unexpected status: 500",
+        "timestamp": "2025-10-01T10:48:37.732Z"
+      },
+      {
+        "functionality": "Get All Students",
+        "status": "BROKEN",
+        "details": "HTTP 401",
+        "timestamp": "2025-10-01T10:48:38.045Z"
+      },
+      {
+        "functionality": "Get All Classes",
+        "status": "BROKEN",
+        "details": "HTTP 401",
+        "timestamp": "2025-10-01T10:48:38.345Z"
+      }
+    ],
+    "warnings": [
+      {
+        "functionality": "QR Attendance Marking",
+        "status": "WARNING",
+        "details": "Unexpected status: 500",
+        "timestamp": "2025-10-01T10:48:39.635Z"
+      },
+      {
+        "functionality": "Get Attendance Records",
+        "status": "WARNING",
+        "details": "Requires authentication",
+        "timestamp": "2025-10-01T10:48:39.935Z"
+      }
+    ],
+    "summary": {}
+  },
+  "summary": {
+    "working": 5,
+    "broken": 4,
+    "warnings": 2
+  }
+}
