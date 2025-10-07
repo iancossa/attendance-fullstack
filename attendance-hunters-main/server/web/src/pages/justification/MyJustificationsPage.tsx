@@ -5,7 +5,6 @@ import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
 import { JustificationList } from '../../components/justification/JustificationList';
-import { AbsenceRequestModal } from '../../components/modals/AbsenceRequestModal';
 import { Plus, FileText, Clock, CheckCircle, XCircle } from 'lucide-react';
 import { justificationService } from '../../services/justificationService';
 import { useAppStore } from '../../store';
@@ -16,8 +15,7 @@ export const MyJustificationsPage: React.FC = () => {
   const navigate = useNavigate();
   const [justifications, setJustifications] = useState<AbsenceJustification[]>([]);
   const [loading, setLoading] = useState(true);
-  const [showRequestModal, setShowRequestModal] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const { addNotification } = useAppStore();
 
   useEffect(() => {
@@ -39,26 +37,7 @@ export const MyJustificationsPage: React.FC = () => {
     }
   };
 
-  const handleSubmitRequest = async (data: JustificationFormData & { classInfo: any }) => {
-    setIsSubmitting(true);
-    try {
-      await justificationService.submitJustification('temp-id', data);
-      addNotification({
-        message: 'Absence request submitted successfully',
-        type: 'success'
-      });
-      setShowRequestModal(false);
-      fetchJustifications();
-    } catch (error) {
-      console.error('Failed to submit request:', error);
-      addNotification({
-        message: 'Failed to submit absence request',
-        type: 'error'
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+
 
   const getStatusCounts = () => {
     return {
@@ -80,7 +59,7 @@ export const MyJustificationsPage: React.FC = () => {
             <h1 className="text-lg font-semibold text-gray-900 dark:text-[#f8f8f2]">My Absence Requests</h1>
             <p className="text-sm text-gray-600 dark:text-[#6272a4] mt-1">Track your absence requests and approval status</p>
           </div>
-          <Button onClick={() => setShowRequestModal(true)} className="gap-2 flex-1 sm:flex-none">
+          <Button onClick={() => navigate('/request-absence')} className="gap-2 flex-1 sm:flex-none">
             <Plus className="h-4 w-4" />
             <span className="hidden sm:inline">Request New Absence</span>
             <span className="sm:hidden">New Request</span>
@@ -168,13 +147,6 @@ export const MyJustificationsPage: React.FC = () => {
           </CardContent>
         </Card>
       </div>
-      
-      <AbsenceRequestModal
-        isOpen={showRequestModal}
-        onClose={() => setShowRequestModal(false)}
-        onSubmit={handleSubmitRequest}
-        isSubmitting={isSubmitting}
-      />
     </Layout>
   );
 };

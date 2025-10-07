@@ -19,7 +19,7 @@ export const StudentSidebar: React.FC<StudentSidebarProps> = ({ isMobileOpen = f
   ];
 
   const justificationItems = [
-    { name: 'My Absence Requests', path: '/justifications', icon: 'newspaper', badge: null },
+    { name: 'Absence', path: '/justifications', icon: 'newspaper', badge: null },
   ];
 
   const academicItems = [

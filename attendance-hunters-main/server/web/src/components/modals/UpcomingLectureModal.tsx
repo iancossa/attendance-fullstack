@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
-import { JustificationModal } from '../justification/JustificationModal';
+
 import { Clock, MapPin, User, Calendar, X, Bell, FileText } from 'lucide-react';
 import { ModalPortal } from '../ui/modal-portal';
-import { useJustifications } from '../../hooks/useJustifications';
-import { useAppStore } from '../../store';
-import type { JustificationFormData } from '../../types';
+
 
 interface LectureInfo {
   code: string;
@@ -31,25 +30,9 @@ export const UpcomingLectureModal: React.FC<UpcomingLectureModalProps> = ({
   onClose,
   lecture
 }) => {
-  const [showJustificationModal, setShowJustificationModal] = useState(false);
-  const { submitJustification, submitting } = useJustifications();
-  const { addNotification } = useAppStore();
+  const navigate = useNavigate();
 
   if (!isOpen || !lecture) return null;
-
-  const handleJustificationSubmit = async (data: JustificationFormData) => {
-    try {
-      await submitJustification(`lecture_${lecture.code}_${Date.now()}`, data);
-      setShowJustificationModal(false);
-      onClose();
-      addNotification({
-        message: 'Absence request submitted successfully',
-        type: 'success'
-      });
-    } catch (error) {
-      console.error('Failed to submit justification:', error);
-    }
-  };
 
   const getTypeColor = (type: string) => {
     switch (type) {
@@ -170,21 +153,29 @@ export const UpcomingLectureModal: React.FC<UpcomingLectureModalProps> = ({
               </div>
               <Button 
                 variant="outline"
-                onClick={() => setShowJustificationModal(true)}
+                onClick={() => {
+                  onClose();
+                  navigate('/request-absence', {
+                    state: {
+                      selectedClass: {
+                        code: lecture.code,
+                        name: lecture.name,
+                        instructor: lecture.instructor,
+                        room: lecture.room,
+                        type: lecture.type,
+                        time: lecture.time,
+                        date: lecture.date,
+                        day: new Date().toLocaleDateString('en-US', { weekday: 'long' })
+                      }
+                    }
+                  });
+                }}
                 className="w-full flex items-center gap-2 text-orange-600 dark:text-orange-400 border-orange-200 dark:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-500/10"
               >
                 <FileText className="h-4 w-4" />
                 Request Absence Approval
               </Button>
             </div>
-            
-            <JustificationModal
-              isOpen={showJustificationModal}
-              attendanceId={`lecture_${lecture.code}_${Date.now()}`}
-              onClose={() => setShowJustificationModal(false)}
-              onSubmit={handleJustificationSubmit}
-              isSubmitting={submitting}
-            />
           </CardContent>
         </Card>
       </div>

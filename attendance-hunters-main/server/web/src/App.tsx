@@ -27,6 +27,7 @@ import { TakeAttendancePage } from './pages/attendance/TakeAttendancePage';
 import { LoginPage } from './pages/auth/LoginPage';
 import { MyJustificationsPage } from './pages/justification/MyJustificationsPage';
 import { ReviewJustificationsPage } from './pages/justification/ReviewJustificationsPage';
+import { RequestAbsencePage } from './pages/absence/RequestAbsencePage';
 import { DetentionPage } from './pages/detention/DetentionPage';
 import { useAuth } from './hooks/useAuth';
 import { ROUTES } from './constants';
@@ -117,6 +118,7 @@ function AppContent() {
               <Route path={ROUTES.CLASSES} element={<StudentClassesPage />} />
               <Route path="/profile" element={<StudentProfilePage />} />
               <Route path="/justifications" element={<MyJustificationsPage />} />
+              <Route path="/request-absence" element={<RequestAbsencePage />} />
               <Route path={ROUTES.LEADERBOARD} element={<LeaderboardPage />} />
               <Route path="/profile/settings" element={<ProfileSettingsPage />} />
             </>
