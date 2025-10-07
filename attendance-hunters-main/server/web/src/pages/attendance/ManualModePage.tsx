@@ -7,7 +7,7 @@ import { Badge } from '../../components/ui/badge';
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '../../components/ui/table';
 import { Users, Search, Send, Save } from 'lucide-react';
 import { studentService } from '../../services/backendService';
-import { isAuthenticated } from '../../services/api';
+import { isAuthenticated, getUserRole, clearAuthData } from '../../services/api';
 
 interface Student {
   id: number;
@@ -27,22 +27,28 @@ export const ManualModePage: React.FC = () => {
   const [rollNumbers, setRollNumbers] = useState('');
   const [showSubmitModal, setShowSubmitModal] = useState(false);
   const [showSaveModal, setShowSaveModal] = useState(false);
+  const [authError, setAuthError] = useState('');
 
   useEffect(() => {
     const loadStudents = async () => {
       try {
         setLoading(true);
+        setAuthError('');
         
         // Check if user is authenticated
         if (!isAuthenticated()) {
-          console.warn('User not authenticated - redirecting to login');
-          // You can redirect to login or show a login modal here
+          const role = getUserRole();
+          setAuthError(`Authentication required. Please login as ${role || 'admin/staff'} to access student data.`);
+          console.warn('User not authenticated - need to login');
           setStudents([]);
           setLoading(false);
           return;
         }
         
+        console.log('🔍 Loading students with authentication...');
         const response = await studentService.getAllStudents();
+        console.log('📊 Students API Response:', response);
+        
         if (response.data && (response.data as any).students && Array.isArray((response.data as any).students)) {
           const dbStudents = (response.data as any).students.map((s: any) => ({
             id: s.id,
@@ -54,14 +60,28 @@ export const ManualModePage: React.FC = () => {
             section: s.section,
             present: false
           }));
+          console.log(`✅ Loaded ${dbStudents.length} students successfully`);
           setStudents(dbStudents);
+        } else {
+          console.warn('⚠️ No students array found in response:', response.data);
+          setStudents([]);
         }
       } catch (error) {
-        console.error('Failed to load students:', error);
+        console.error('❌ Failed to load students:', error);
+        
         // Check if it's an authentication error
-        if (error instanceof Error && error.message.includes('401')) {
-          console.error('Authentication failed - user may need to login');
-          // Redirect to login or show auth error
+        if (error instanceof Error) {
+          if (error.message.includes('401')) {
+            setAuthError('Authentication expired. Please login again.');
+            clearAuthData();
+            setTimeout(() => {
+              window.location.href = '/login';
+            }, 2000);
+          } else {
+            setAuthError(`Error loading students: ${error.message}`);
+          }
+        } else {
+          setAuthError('Unknown error occurred while loading students.');
         }
         setStudents([]);
       } finally {
@@ -219,13 +239,43 @@ export const ManualModePage: React.FC = () => {
                   {loading ? (
                     <TableRow>
                       <TableCell colSpan={4} className="text-center py-8">
-                        Loading students...
+                        <div className="flex items-center justify-center gap-2">
+                          <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+                          Loading students...
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ) : authError ? (
+                    <TableRow>
+                      <TableCell colSpan={4} className="text-center py-8">
+                        <div className="text-red-600 space-y-2">
+                          <div className="font-medium">Authentication Error</div>
+                          <div className="text-sm">{authError}</div>
+                          <Button 
+                            size="sm" 
+                            onClick={() => window.location.href = '/login'}
+                            className="mt-2"
+                          >
+                            Go to Login
+                          </Button>
+                        </div>
                       </TableCell>
                     </TableRow>
                   ) : students.length === 0 ? (
                     <TableRow>
                       <TableCell colSpan={4} className="text-center py-8 text-muted-foreground">
-                        No students found. Please check your database connection.
+                        <div className="space-y-2">
+                          <div>No students found.</div>
+                          <div className="text-xs">Please check your database connection or contact administrator.</div>
+                          <Button 
+                            size="sm" 
+                            variant="outline"
+                            onClick={() => window.location.reload()}
+                            className="mt-2"
+                          >
+                            Retry
+                          </Button>
+                        </div>
                       </TableCell>
                     </TableRow>
                   ) : (

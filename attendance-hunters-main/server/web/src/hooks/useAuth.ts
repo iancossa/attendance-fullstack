@@ -6,16 +6,30 @@ export const useAuth = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('auth_token');
+    const token = localStorage.getItem('token') || localStorage.getItem('auth_token');
     const role = localStorage.getItem('user_role');
     
     if (token && role) {
-      setUser({
-        id: '1',
-        email: 'admin@attendance.com',
-        name: 'Admin User',
-        role: role as 'student' | 'staff' | 'admin'
-      });
+      // Get user info based on role
+      if (role === 'student') {
+        const studentInfo = localStorage.getItem('studentInfo');
+        if (studentInfo) {
+          const student = JSON.parse(studentInfo);
+          setUser({
+            id: student.id.toString(),
+            email: student.email,
+            name: student.name,
+            role: 'student'
+          });
+        }
+      } else {
+        setUser({
+          id: '1',
+          email: 'admin@attendance.com',
+          name: role === 'admin' ? 'Admin User' : 'Staff User',
+          role: role as 'student' | 'staff' | 'admin'
+        });
+      }
     }
     setLoading(false);
   }, []);
@@ -38,6 +52,8 @@ export const useAuth = () => {
 
         const data = await response.json();
         
+        // Store token in both keys for compatibility
+        localStorage.setItem('token', data.token);
         localStorage.setItem('auth_token', data.token);
         localStorage.setItem('user_role', 'student');
         localStorage.setItem('studentInfo', JSON.stringify(data.student));
@@ -64,6 +80,8 @@ export const useAuth = () => {
           await new Promise(resolve => setTimeout(resolve, 1000));
           
           const token = `${role}_token_${Date.now()}`;
+          // Store token in both keys for compatibility
+          localStorage.setItem('token', token);
           localStorage.setItem('auth_token', token);
           localStorage.setItem('user_role', role);
           
@@ -88,8 +106,11 @@ export const useAuth = () => {
   };
 
   const logout = () => {
+    // Clear all auth data
+    localStorage.removeItem('token');
     localStorage.removeItem('auth_token');
     localStorage.removeItem('user_role');
+    localStorage.removeItem('studentInfo');
     setUser(null);
     window.location.href = '/';
   };

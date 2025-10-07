@@ -9,7 +9,8 @@ class ApiService {
     options: RequestInit = {}
   ): Promise<ApiResponse<T>> {
     const url = `${this.baseURL}${endpoint}`;
-    const token = localStorage.getItem('token');
+    // Check both token keys for compatibility
+    const token = localStorage.getItem('token') || localStorage.getItem('auth_token');
     
     console.log('🌐 API Request:', { url, method: options.method || 'GET', hasToken: !!token });
     
@@ -31,8 +32,13 @@ class ApiService {
         // Handle authentication errors specifically
         if (response.status === 401) {
           console.error('🔐 Authentication failed - token may be invalid or missing');
-          // Clear invalid token
+          // Clear invalid tokens
           localStorage.removeItem('token');
+          localStorage.removeItem('auth_token');
+          // Redirect to login
+          if (typeof window !== 'undefined') {
+            window.location.href = '/login';
+          }
         }
         
         console.error('❌ API Error:', {
@@ -89,17 +95,33 @@ export const apiService = new ApiService();
 
 // Helper function to check if user is authenticated
 export const isAuthenticated = (): boolean => {
-  const token = localStorage.getItem('token');
-  return !!token;
+  const token = localStorage.getItem('token') || localStorage.getItem('auth_token');
+  const role = localStorage.getItem('user_role');
+  return !!(token && role);
+};
+
+// Helper function to get current user role
+export const getUserRole = (): string | null => {
+  return localStorage.getItem('user_role');
 };
 
 // Helper function to ensure user is logged in before making requests
 export const ensureAuthenticated = (): boolean => {
   if (!isAuthenticated()) {
     console.warn('⚠️ No authentication token found - user needs to login');
-    // Redirect to login page or show login modal
-    window.location.href = '/login';
+    // Redirect to login page
+    if (typeof window !== 'undefined') {
+      window.location.href = '/login';
+    }
     return false;
   }
   return true;
+};
+
+// Helper function to clear all auth data
+export const clearAuthData = (): void => {
+  localStorage.removeItem('token');
+  localStorage.removeItem('auth_token');
+  localStorage.removeItem('user_role');
+  localStorage.removeItem('studentInfo');
 };
