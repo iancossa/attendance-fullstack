@@ -6,7 +6,7 @@ const router = express.Router();
 const prisma = new PrismaClient();
 
 // Get all students
-router.get('/', verifyToken, async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const { department, year, section, status, class: className } = req.query;
         
@@ -136,7 +136,7 @@ router.put('/:id', verifyToken, adminOnly, async (req, res) => {
 });
 
 // Get student attendance history
-router.get('/:id/attendance', verifyToken, async (req, res) => {
+router.get('/:id/attendance', async (req, res) => {
     try {
         const { id } = req.params;
         const { startDate, endDate, classId } = req.query;
@@ -194,7 +194,7 @@ router.get('/:id/attendance', verifyToken, async (req, res) => {
 });
 
 // Get students by class
-router.get('/by-class/:className', verifyToken, async (req, res) => {
+router.get('/by-class/:className', async (req, res) => {
     try {
         const { className } = req.params;
         
