@@ -7,6 +7,7 @@ import { Badge } from '../../components/ui/badge';
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '../../components/ui/table';
 import { Users, Search, Send, Save } from 'lucide-react';
 import { studentService } from '../../services/backendService';
+import { isAuthenticated } from '../../services/api';
 
 interface Student {
   id: number;
@@ -31,11 +32,21 @@ export const ManualModePage: React.FC = () => {
     const loadStudents = async () => {
       try {
         setLoading(true);
+        
+        // Check if user is authenticated
+        if (!isAuthenticated()) {
+          console.warn('User not authenticated - redirecting to login');
+          // You can redirect to login or show a login modal here
+          setStudents([]);
+          setLoading(false);
+          return;
+        }
+        
         const response = await studentService.getAllStudents();
         if (response.data && (response.data as any).students && Array.isArray((response.data as any).students)) {
           const dbStudents = (response.data as any).students.map((s: any) => ({
             id: s.id,
-            studentId: s.studentId,
+            studentId: s.studentId || s.id.toString(), // Fallback to id if studentId missing
             name: s.name,
             email: s.email,
             department: s.department,
@@ -47,6 +58,11 @@ export const ManualModePage: React.FC = () => {
         }
       } catch (error) {
         console.error('Failed to load students:', error);
+        // Check if it's an authentication error
+        if (error instanceof Error && error.message.includes('401')) {
+          console.error('Authentication failed - user may need to login');
+          // Redirect to login or show auth error
+        }
         setStudents([]);
       } finally {
         setLoading(false);
