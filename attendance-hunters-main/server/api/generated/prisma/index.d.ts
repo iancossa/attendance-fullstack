@@ -2450,7 +2450,6 @@ export namespace Prisma {
 
   export type StudentMinAggregateOutputType = {
     id: number | null
-    studentId: string | null
     name: string | null
     email: string | null
     password: string | null
@@ -2468,7 +2467,6 @@ export namespace Prisma {
 
   export type StudentMaxAggregateOutputType = {
     id: number | null
-    studentId: string | null
     name: string | null
     email: string | null
     password: string | null
@@ -2486,7 +2484,6 @@ export namespace Prisma {
 
   export type StudentCountAggregateOutputType = {
     id: number
-    studentId: number
     name: number
     email: number
     password: number
@@ -2516,7 +2513,6 @@ export namespace Prisma {
 
   export type StudentMinAggregateInputType = {
     id?: true
-    studentId?: true
     name?: true
     email?: true
     password?: true
@@ -2534,7 +2530,6 @@ export namespace Prisma {
 
   export type StudentMaxAggregateInputType = {
     id?: true
-    studentId?: true
     name?: true
     email?: true
     password?: true
@@ -2552,7 +2547,6 @@ export namespace Prisma {
 
   export type StudentCountAggregateInputType = {
     id?: true
-    studentId?: true
     name?: true
     email?: true
     password?: true
@@ -2657,7 +2651,6 @@ export namespace Prisma {
 
   export type StudentGroupByOutputType = {
     id: number
-    studentId: string
     name: string
     email: string
     password: string
@@ -2694,7 +2687,6 @@ export namespace Prisma {
 
   export type StudentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    studentId?: boolean
     name?: boolean
     email?: boolean
     password?: boolean
@@ -2714,7 +2706,6 @@ export namespace Prisma {
 
   export type StudentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    studentId?: boolean
     name?: boolean
     email?: boolean
     password?: boolean
@@ -2732,7 +2723,6 @@ export namespace Prisma {
 
   export type StudentSelectScalar = {
     id?: boolean
-    studentId?: boolean
     name?: boolean
     email?: boolean
     password?: boolean
@@ -2761,7 +2751,6 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
-      studentId: string
       name: string
       email: string
       password: string
@@ -3170,7 +3159,6 @@ export namespace Prisma {
    */ 
   interface StudentFieldRefs {
     readonly id: FieldRef<"Student", 'Int'>
-    readonly studentId: FieldRef<"Student", 'String'>
     readonly name: FieldRef<"Student", 'String'>
     readonly email: FieldRef<"Student", 'String'>
     readonly password: FieldRef<"Student", 'String'>
@@ -8563,7 +8551,6 @@ export namespace Prisma {
 
   export const StudentScalarFieldEnum: {
     id: 'id',
-    studentId: 'studentId',
     name: 'name',
     email: 'email',
     password: 'password',
@@ -8827,7 +8814,6 @@ export namespace Prisma {
     OR?: StudentWhereInput[]
     NOT?: StudentWhereInput | StudentWhereInput[]
     id?: IntFilter<"Student"> | number
-    studentId?: StringFilter<"Student"> | string
     name?: StringFilter<"Student"> | string
     email?: StringFilter<"Student"> | string
     password?: StringFilter<"Student"> | string
@@ -8846,7 +8832,6 @@ export namespace Prisma {
 
   export type StudentOrderByWithRelationInput = {
     id?: SortOrder
-    studentId?: SortOrder
     name?: SortOrder
     email?: SortOrder
     password?: SortOrder
@@ -8865,7 +8850,6 @@ export namespace Prisma {
 
   export type StudentWhereUniqueInput = Prisma.AtLeast<{
     id?: number
-    studentId?: string
     email?: string
     AND?: StudentWhereInput | StudentWhereInput[]
     OR?: StudentWhereInput[]
@@ -8883,11 +8867,10 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Student"> | Date | string
     updatedAt?: DateTimeFilter<"Student"> | Date | string
     attendance?: StudentAttendanceListRelationFilter
-  }, "id" | "studentId" | "email">
+  }, "id" | "email">
 
   export type StudentOrderByWithAggregationInput = {
     id?: SortOrder
-    studentId?: SortOrder
     name?: SortOrder
     email?: SortOrder
     password?: SortOrder
@@ -8913,7 +8896,6 @@ export namespace Prisma {
     OR?: StudentScalarWhereWithAggregatesInput[]
     NOT?: StudentScalarWhereWithAggregatesInput | StudentScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Student"> | number
-    studentId?: StringWithAggregatesFilter<"Student"> | string
     name?: StringWithAggregatesFilter<"Student"> | string
     email?: StringWithAggregatesFilter<"Student"> | string
     password?: StringWithAggregatesFilter<"Student"> | string
@@ -9392,7 +9374,6 @@ export namespace Prisma {
   }
 
   export type StudentCreateInput = {
-    studentId: string
     name: string
     email: string
     password?: string
@@ -9411,7 +9392,6 @@ export namespace Prisma {
 
   export type StudentUncheckedCreateInput = {
     id?: number
-    studentId: string
     name: string
     email: string
     password?: string
@@ -9429,7 +9409,6 @@ export namespace Prisma {
   }
 
   export type StudentUpdateInput = {
-    studentId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
@@ -9448,7 +9427,6 @@ export namespace Prisma {
 
   export type StudentUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    studentId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
@@ -9467,7 +9445,6 @@ export namespace Prisma {
 
   export type StudentCreateManyInput = {
     id?: number
-    studentId: string
     name: string
     email: string
     password?: string
@@ -9484,7 +9461,6 @@ export namespace Prisma {
   }
 
   export type StudentUpdateManyMutationInput = {
-    studentId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
@@ -9502,7 +9478,6 @@ export namespace Prisma {
 
   export type StudentUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
-    studentId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
@@ -10121,7 +10096,6 @@ export namespace Prisma {
 
   export type StudentCountOrderByAggregateInput = {
     id?: SortOrder
-    studentId?: SortOrder
     name?: SortOrder
     email?: SortOrder
     password?: SortOrder
@@ -10144,7 +10118,6 @@ export namespace Prisma {
 
   export type StudentMaxOrderByAggregateInput = {
     id?: SortOrder
-    studentId?: SortOrder
     name?: SortOrder
     email?: SortOrder
     password?: SortOrder
@@ -10162,7 +10135,6 @@ export namespace Prisma {
 
   export type StudentMinOrderByAggregateInput = {
     id?: SortOrder
-    studentId?: SortOrder
     name?: SortOrder
     email?: SortOrder
     password?: SortOrder
@@ -11041,7 +11013,6 @@ export namespace Prisma {
   }
 
   export type StudentCreateWithoutAttendanceInput = {
-    studentId: string
     name: string
     email: string
     password?: string
@@ -11059,7 +11030,6 @@ export namespace Prisma {
 
   export type StudentUncheckedCreateWithoutAttendanceInput = {
     id?: number
-    studentId: string
     name: string
     email: string
     password?: string
@@ -11092,7 +11062,6 @@ export namespace Prisma {
   }
 
   export type StudentUpdateWithoutAttendanceInput = {
-    studentId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
@@ -11110,7 +11079,6 @@ export namespace Prisma {
 
   export type StudentUncheckedUpdateWithoutAttendanceInput = {
     id?: IntFieldUpdateOperationsInput | number
-    studentId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string

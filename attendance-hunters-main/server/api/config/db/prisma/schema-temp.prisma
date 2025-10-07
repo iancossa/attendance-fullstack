@@ -24,7 +24,7 @@ model User {
 
 model Student {
   id             Int                 @id @default(autoincrement())
-  // studentId      String              @unique  // TEMPORARILY DISABLED - missing in production DB
+  // studentId      String              @unique  // TEMPORARILY DISABLED
   name           String
   email          String              @unique
   password       String              @default("$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi")

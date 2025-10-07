@@ -92,15 +92,20 @@ router.post('/mark/:sessionId', async (req, res) => {
         // Validate student exists in database - handle both studentId and email
         let student;
         
-        // First try to find by studentId
-        student = await prisma.student.findUnique({
-            where: { studentId: studentId }
-        });
-        
-        // If not found and looks like email, try email lookup
-        if (!student && studentId.includes('@')) {
+        // Try to find by email first (since studentId field doesn't exist in production)
+        if (studentId.includes('@')) {
             student = await prisma.student.findUnique({
                 where: { email: studentId }
+            });
+        } else {
+            // If not email, try to find by name or other identifier
+            student = await prisma.student.findFirst({
+                where: { 
+                    OR: [
+                        { name: { contains: studentId, mode: 'insensitive' } },
+                        { email: { contains: studentId, mode: 'insensitive' } }
+                    ]
+                }
             });
         }
         
@@ -127,7 +132,6 @@ router.post('/mark/:sessionId', async (req, res) => {
         
         console.log('✅ Student found:', {
             id: student.id,
-            studentId: student.studentId,
             name: student.name,
             email: student.email
         });
@@ -184,7 +188,7 @@ router.post('/mark/:sessionId', async (req, res) => {
         
         // Add to session attendees with validated student info
         session.attendees.push({
-            studentId: student.studentId,
+            studentId: student.id,
             studentName: student.name,
             department: student.department,
             class: student.class,
@@ -239,7 +243,7 @@ router.post('/mark/:sessionId', async (req, res) => {
         const response = {
             message: 'Attendance marked successfully',
             studentName: student.name,
-            studentId: student.studentId,
+            studentId: student.id,
             department: student.department,
             markedAt: new Date(),
             attendanceId: attendanceRecord.id,
