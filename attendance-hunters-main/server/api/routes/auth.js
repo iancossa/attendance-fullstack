@@ -49,13 +49,24 @@ router.post('/login', validateLogin, async (req, res) => {
     try {
         const { email, password } = req.body;
         
+        console.log('Login attempt for:', email);
+        
         const user = await prisma.user.findUnique({ where: { email } });
         
-        if (!user || !await bcrypt.compare(password, user.password)) {
+        if (!user) {
+            console.log('User not found:', email);
+            return res.status(401).json({ error: 'Invalid credentials' });
+        }
+        
+        const isValidPassword = await bcrypt.compare(password, user.password);
+        if (!isValidPassword) {
+            console.log('Invalid password for:', email);
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
-        const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: '24h' });
+        const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, JWT_SECRET, { expiresIn: '24h' });
+        
+        console.log('Login successful for:', email);
         
         res.json({
             success: true,
@@ -64,7 +75,8 @@ router.post('/login', validateLogin, async (req, res) => {
             user: { id: user.id, email: user.email, name: user.name, role: user.role }
         });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error('Login error:', error);
+        res.status(500).json({ error: 'Authentication service error' });
     }
 });
 

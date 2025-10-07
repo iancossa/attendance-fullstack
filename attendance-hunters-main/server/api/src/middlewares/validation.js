@@ -38,11 +38,7 @@ const validateRegistration = [
         .trim()
         .isLength({ min: 2 })
         .withMessage('Name must be at least 2 characters'),
-    body('employeeId')
-        .optional()
-        .trim()
-        .isLength({ min: 1 })
-        .withMessage('Employee ID cannot be empty'),
+
     handleValidationErrors
 ];
 
