@@ -1,5 +1,6 @@
 import { API_BASE_URL } from '../constants';
 import type { ApiResponse } from '../types';
+import { AuthManager } from '../utils/auth';
 
 class ApiService {
   private baseURL = API_BASE_URL;
@@ -9,10 +10,15 @@ class ApiService {
     options: RequestInit = {}
   ): Promise<ApiResponse<T>> {
     const url = `${this.baseURL}${endpoint}`;
-    // Check both token keys for compatibility
-    const token = localStorage.getItem('token') || localStorage.getItem('auth_token');
+    const token = AuthManager.getToken();
+    const role = AuthManager.getRole();
     
-    console.log('🌐 API Request:', { url, method: options.method || 'GET', hasToken: !!token });
+    console.log('🌐 API Request:', { 
+      url, 
+      method: options.method || 'GET', 
+      hasToken: !!token,
+      userRole: role
+    });
     
     const config: RequestInit = {
       headers: {
@@ -31,10 +37,8 @@ class ApiService {
       if (!response.ok) {
         // Handle authentication errors specifically
         if (response.status === 401) {
-          console.error('🔐 Authentication failed - token may be invalid or missing');
-          // Clear invalid tokens
-          localStorage.removeItem('token');
-          localStorage.removeItem('auth_token');
+          console.error('🔐 Authentication failed - clearing auth data');
+          AuthManager.clearAuth();
           // Redirect to login
           if (typeof window !== 'undefined') {
             window.location.href = '/login';
@@ -62,7 +66,8 @@ class ApiService {
       console.error('🚨 Fetch Error:', {
         message: error instanceof Error ? error.message : 'Unknown error',
         url,
-        hasToken: !!token
+        hasToken: !!token,
+        userRole: role
       });
       throw error;
     }
@@ -93,23 +98,17 @@ class ApiService {
 
 export const apiService = new ApiService();
 
-// Helper function to check if user is authenticated
-export const isAuthenticated = (): boolean => {
-  const token = localStorage.getItem('token') || localStorage.getItem('auth_token');
-  const role = localStorage.getItem('user_role');
-  return !!(token && role);
-};
-
-// Helper function to get current user role
-export const getUserRole = (): string | null => {
-  return localStorage.getItem('user_role');
-};
+// Helper functions using AuthManager
+export const isAuthenticated = (): boolean => AuthManager.isAuthenticated();
+export const getUserRole = (): string | null => AuthManager.getRole();
+export const getUser = () => AuthManager.getUser();
+export const canAccessStudents = (): boolean => AuthManager.canAccessStudents();
+export const clearAuthData = (): void => AuthManager.clearAuth();
 
 // Helper function to ensure user is logged in before making requests
 export const ensureAuthenticated = (): boolean => {
   if (!isAuthenticated()) {
     console.warn('⚠️ No authentication token found - user needs to login');
-    // Redirect to login page
     if (typeof window !== 'undefined') {
       window.location.href = '/login';
     }
@@ -118,10 +117,11 @@ export const ensureAuthenticated = (): boolean => {
   return true;
 };
 
-// Helper function to clear all auth data
-export const clearAuthData = (): void => {
-  localStorage.removeItem('token');
-  localStorage.removeItem('auth_token');
-  localStorage.removeItem('user_role');
-  localStorage.removeItem('studentInfo');
+// Helper function to ensure user can access admin/staff endpoints
+export const ensureCanAccessStudents = (): boolean => {
+  if (!canAccessStudents()) {
+    console.warn('⚠️ Insufficient permissions - need admin/staff access');
+    throw new Error('Access denied: Admin or staff role required');
+  }
+  return true;
 };

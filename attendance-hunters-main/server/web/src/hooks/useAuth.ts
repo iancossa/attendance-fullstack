@@ -1,116 +1,73 @@
 import { useState, useEffect } from 'react';
 import type { User } from '../types';
+import { AuthManager, type AuthUser } from '../utils/auth';
 
 export const useAuth = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('token') || localStorage.getItem('auth_token');
-    const role = localStorage.getItem('user_role');
-    
-    if (token && role) {
-      // Get user info based on role
-      if (role === 'student') {
-        const studentInfo = localStorage.getItem('studentInfo');
-        if (studentInfo) {
-          const student = JSON.parse(studentInfo);
-          setUser({
-            id: student.id.toString(),
-            email: student.email,
-            name: student.name,
-            role: 'student'
-          });
-        }
-      } else {
-        setUser({
-          id: '1',
-          email: 'admin@attendance.com',
-          name: role === 'admin' ? 'Admin User' : 'Staff User',
-          role: role as 'student' | 'staff' | 'admin'
-        });
-      }
+    const authUser = AuthManager.getUser();
+    if (authUser) {
+      setUser({
+        id: authUser.id,
+        email: authUser.email,
+        name: authUser.name,
+        role: authUser.role
+      });
     }
     setLoading(false);
   }, []);
 
   const login = async (email: string, password: string, role?: 'admin' | 'staff' | 'student') => {
     try {
+      let authUser: AuthUser;
+      
       if (role === 'student') {
-        // Real API call for student login
-        const response = await fetch('https://attendance-fullstack.onrender.com/api/student-auth/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email, password }),
-        });
-
-        if (!response.ok) {
-          throw new Error('Invalid credentials');
-        }
-
-        const data = await response.json();
-        
-        // Store token in both keys for compatibility
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('auth_token', data.token);
-        localStorage.setItem('user_role', 'student');
-        localStorage.setItem('studentInfo', JSON.stringify(data.student));
-        
-        const newUser = {
-          id: data.student.id.toString(),
-          email: data.student.email,
-          name: data.student.name,
-          role: 'student' as const
-        };
-        
-        return new Promise<typeof newUser>((resolve) => {
-          setUser(newUser);
-          setTimeout(() => resolve(newUser), 50);
-        });
+        authUser = await AuthManager.loginStudent(email, password);
       } else {
-        // Demo login logic for admin/staff
-        const isValidLogin = (
-          (role === 'admin' && email === 'admin@attendance.com' && password === 'admin123') ||
-          (role === 'staff' && email === 'staff@university.edu' && password === 'staff123')
-        );
-
-        if (isValidLogin && role) {
-          await new Promise(resolve => setTimeout(resolve, 1000));
+        // Try admin login first, fallback to demo credentials
+        try {
+          authUser = await AuthManager.loginAdmin(email, password);
+        } catch {
+          // Demo login fallback
+          const isValidDemo = (
+            (role === 'admin' && email === 'admin@attendance.com' && password === 'admin123') ||
+            (role === 'staff' && email === 'staff@university.edu' && password === 'staff123')
+          );
           
-          const token = `${role}_token_${Date.now()}`;
-          // Store token in both keys for compatibility
-          localStorage.setItem('token', token);
-          localStorage.setItem('auth_token', token);
-          localStorage.setItem('user_role', role);
-          
-          const newUser = {
-            id: '1',
-            email: email,
-            name: role === 'admin' ? 'Admin User' : 'Staff User',
-            role: role
-          };
-          
-          return new Promise<typeof newUser>((resolve) => {
-            setUser(newUser);
-            setTimeout(() => resolve(newUser), 50);
-          });
-        } else {
-          throw new Error('Invalid credentials');
+          if (isValidDemo && role) {
+            await new Promise(resolve => setTimeout(resolve, 500));
+            const token = `demo_${role}_${Date.now()}`;
+            authUser = {
+              id: '1',
+              email: email,
+              name: role === 'admin' ? 'Admin User' : 'Staff User',
+              role: role
+            };
+            AuthManager.setAuthData(token, authUser);
+          } else {
+            throw new Error('Invalid credentials');
+          }
         }
       }
+      
+      const user = {
+        id: authUser.id,
+        email: authUser.email,
+        name: authUser.name,
+        role: authUser.role
+      };
+      
+      setUser(user);
+      return user;
     } catch (error) {
       throw error;
     }
   };
 
   const logout = () => {
-    // Clear all auth data
-    localStorage.removeItem('token');
-    localStorage.removeItem('auth_token');
-    localStorage.removeItem('user_role');
-    localStorage.removeItem('studentInfo');
+    AuthManager.clearAuth();
     setUser(null);
     window.location.href = '/';
   };

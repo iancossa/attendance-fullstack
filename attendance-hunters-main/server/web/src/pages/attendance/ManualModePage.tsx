@@ -7,7 +7,8 @@ import { Badge } from '../../components/ui/badge';
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '../../components/ui/table';
 import { Users, Search, Send, Save } from 'lucide-react';
 import { studentService } from '../../services/backendService';
-import { isAuthenticated, getUserRole, clearAuthData } from '../../services/api';
+import { isAuthenticated, getUserRole, clearAuthData, canAccessStudents } from '../../services/api';
+import { AuthDebug } from '../../components/AuthDebug';
 
 interface Student {
   id: number;
@@ -37,9 +38,18 @@ export const ManualModePage: React.FC = () => {
         
         // Check if user is authenticated
         if (!isAuthenticated()) {
+          setAuthError('Authentication required. Please login to access student data.');
+          console.warn('❌ User not authenticated');
+          setStudents([]);
+          setLoading(false);
+          return;
+        }
+        
+        // Check if user has permission to access students
+        if (!canAccessStudents()) {
           const role = getUserRole();
-          setAuthError(`Authentication required. Please login as ${role || 'admin/staff'} to access student data.`);
-          console.warn('User not authenticated - need to login');
+          setAuthError(`Access denied. Students can only view their own data. Current role: ${role}`);
+          console.warn('❌ Insufficient permissions for student list access');
           setStudents([]);
           setLoading(false);
           return;
@@ -132,6 +142,7 @@ export const ManualModePage: React.FC = () => {
 
   return (
     <Layout>
+      <AuthDebug />
       <div className="w-full px-4 space-y-4">
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-1">Manual Attendance Mode</h1>
