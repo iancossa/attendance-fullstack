@@ -24,6 +24,17 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
 }
 
 /**
+ * Validate GPS coordinates
+ * @param {number} lat - Latitude
+ * @param {number} lon - Longitude
+ * @returns {boolean} True if valid coordinates
+ */
+function isValidCoordinate(lat, lon) {
+    return typeof lat === 'number' && typeof lon === 'number' &&
+           lat >= -90 && lat <= 90 && lon >= -180 && lon <= 180;
+}
+
+/**
  * Validate if student is within geofence radius
  * @param {number} sessionLat - Session latitude
  * @param {number} sessionLon - Session longitude
@@ -33,15 +44,36 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
  * @returns {object} Validation result
  */
 function validateGeofence(sessionLat, sessionLon, studentLat, studentLon, radius = 100) {
+    // Validate input coordinates
+    if (!isValidCoordinate(sessionLat, sessionLon)) {
+        return {
+            isValid: false,
+            distance: null,
+            allowedRadius: radius,
+            error: 'Invalid session coordinates'
+        };
+    }
+    
+    if (!isValidCoordinate(studentLat, studentLon)) {
+        return {
+            isValid: false,
+            distance: null,
+            allowedRadius: radius,
+            error: 'Invalid student coordinates'
+        };
+    }
+    
     const distance = calculateDistance(sessionLat, sessionLon, studentLat, studentLon);
     return {
         isValid: distance <= radius,
         distance: Math.round(distance),
-        allowedRadius: radius
+        allowedRadius: radius,
+        error: distance > radius ? `Student is ${Math.round(distance)}m away (max: ${radius}m)` : null
     };
 }
 
 module.exports = {
     calculateDistance,
-    validateGeofence
+    validateGeofence,
+    isValidCoordinate
 };
