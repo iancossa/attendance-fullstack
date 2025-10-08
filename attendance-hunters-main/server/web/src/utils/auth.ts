@@ -71,7 +71,7 @@ export class AuthManager {
   }
 
   static async loginAdmin(email: string, password: string): Promise<AuthUser> {
-    const response = await fetch('/api/auth/login', {
+    const response = await fetch('https://attendance-fullstack.onrender.com/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
@@ -94,7 +94,7 @@ export class AuthManager {
   }
 
   static async loginStudent(email: string, password: string): Promise<AuthUser> {
-    const response = await fetch('/api/student-auth/login', {
+    const response = await fetch('https://attendance-fullstack.onrender.com/api/student-auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })

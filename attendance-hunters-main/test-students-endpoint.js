@@ -1,98 +1,85 @@
-const https = require('https');
+const fetch = require('node-fetch');
 
-function testStudentsEndpoint() {
-    return new Promise((resolve, reject) => {
-        const options = {
-            hostname: 'attendance-fullstack.onrender.com',
-            port: 443,
-            path: '/api/students',
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        };
-
-        const req = https.request(options, (res) => {
-            let responseData = '';
-            
-            res.on('data', (chunk) => {
-                responseData += chunk;
-            });
-            
-            res.on('end', () => {
-                try {
-                    const parsedData = responseData ? JSON.parse(responseData) : {};
-                    resolve({
-                        status: res.statusCode,
-                        data: parsedData,
-                        raw: responseData
-                    });
-                } catch (error) {
-                    resolve({
-                        status: res.statusCode,
-                        data: responseData,
-                        raw: responseData
-                    });
-                }
-            });
-        });
-
-        req.on('error', (error) => {
-            reject(error);
-        });
-
-        req.end();
-    });
-}
-
-async function testStudentsList() {
-    console.log('🧪 Testing Students Endpoint Fix');
-    console.log('=' .repeat(40));
-
+async function testStudentsEndpoint() {
+    console.log('🧪 Testing Students API Endpoint...\n');
+    
     try {
-        console.log('📚 Testing GET /api/students...');
+        // First, try to login as admin to get a token
+        console.log('1. Attempting admin login...');
+        const loginResponse = await fetch('https://attendance-fullstack.onrender.com/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email: 'admin@test.com',
+                password: 'admin123'
+            })
+        });
         
-        const response = await testStudentsEndpoint();
-        
-        console.log(`Status: ${response.status}`);
-        
-        if (response.status === 200) {
-            console.log('✅ SUCCESS! Students endpoint working');
+        if (!loginResponse.ok) {
+            console.log('❌ Admin login failed, trying with test credentials...');
             
-            if (response.data && response.data.students) {
-                const students = response.data.students;
-                console.log(`📊 Found ${students.length} students`);
+            // Try with different credentials
+            const altLoginResponse = await fetch('https://attendance-fullstack.onrender.com/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: 'test@example.com',
+                    password: 'password123'
+                })
+            });
+            
+            if (!altLoginResponse.ok) {
+                console.log('❌ Alternative login also failed');
+                console.log('📝 Testing students endpoint without authentication...\n');
                 
-                if (students.length > 0) {
-                    console.log('📋 Sample students:');
-                    students.slice(0, 3).forEach(student => {
-                        console.log(`  - ${student.name} (${student.email})`);
-                        console.log(`    Department: ${student.department}`);
-                        console.log(`    Class: ${student.class}`);
-                    });
+                // Test students endpoint without auth
+                const studentsResponse = await fetch('https://attendance-fullstack.onrender.com/api/students');
+                console.log('Students endpoint status:', studentsResponse.status);
+                
+                if (studentsResponse.status === 401) {
+                    console.log('✅ Endpoint properly protected (401 Unauthorized)');
+                } else {
+                    const studentsData = await studentsResponse.text();
+                    console.log('Response:', studentsData);
                 }
-                
-                console.log('\n🎉 HYBRID MODE SHOULD NOW WORK!');
-                console.log('✅ Student list will load in Manual Review');
-                
-            } else {
-                console.log('⚠️  Response structure unexpected');
-                console.log('Data:', JSON.stringify(response.data, null, 2));
+                return;
             }
             
-        } else if (response.status === 401) {
-            console.log('❌ Still getting 401 - authentication issue persists');
-            console.log('Response:', response.data);
-        } else {
-            console.log(`❌ Unexpected status: ${response.status}`);
-            console.log('Response:', response.data);
+            const altLoginData = await altLoginResponse.json();
+            console.log('✅ Alternative login successful');
+            
+            // Test students endpoint with token
+            console.log('2. Testing students endpoint with token...');
+            const studentsResponse = await fetch('https://attendance-fullstack.onrender.com/api/students', {
+                headers: {
+                    'Authorization': `Bearer ${altLoginData.token}`
+                }
+            });
+            
+            console.log('Students endpoint status:', studentsResponse.status);
+            const studentsData = await studentsResponse.json();
+            console.log('Students data:', JSON.stringify(studentsData, null, 2));
+            return;
         }
         
+        const loginData = await loginResponse.json();
+        console.log('✅ Admin login successful');
+        
+        // Test students endpoint with admin token
+        console.log('2. Testing students endpoint with admin token...');
+        const studentsResponse = await fetch('https://attendance-fullstack.onrender.com/api/students', {
+            headers: {
+                'Authorization': `Bearer ${loginData.token}`
+            }
+        });
+        
+        console.log('Students endpoint status:', studentsResponse.status);
+        const studentsData = await studentsResponse.json();
+        console.log('Students data:', JSON.stringify(studentsData, null, 2));
+        
     } catch (error) {
-        console.log(`❌ Connection error: ${error.message}`);
+        console.error('🚨 Test failed:', error.message);
     }
-
-    console.log('\n🎯 Test Complete!');
 }
 
-testStudentsList();
+testStudentsEndpoint();
